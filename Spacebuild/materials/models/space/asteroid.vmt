@@ -1,8 +1,0 @@
-"VertexlitGeneric"
-{
-	"$basetexture" "models/space/asteroid"
-	"$normalmap" "models/space/asteroid_normal"
-	"$dudvmap" "models/space/asteroid_dudv"
-	"$surfaceprop" "Rock"
-	"$model" 1
-}

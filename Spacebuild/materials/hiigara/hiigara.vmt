@@ -1,6 +1,0 @@
-"vertexlitgeneric" {
-    "$basetexture" "hiigara\hiigara"
-    "$surfaceprop" "metal"
-    "$model" "1"
-    "$halflambert" 1
-}

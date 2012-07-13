@@ -2,7 +2,7 @@
 
  JSON Encoder and Parser for Lua 5.1
  
- Copyright © 2007 Shaun Brown (http://www.chipmunkav.com).
+ Copyright ï¿½ 2007 Shaun Brown (http://www.chipmunkav.com).
  All Rights Reserved.
  
  Permission is hereby granted, free of charge, to any person 
@@ -64,7 +64,6 @@ local setmetatable = setmetatable
 local pairs = pairs
 local ipairs = ipairs
 local assert = assert
-local Chipmunk = Chipmunk
 
 module("Json")
 
@@ -512,3 +511,4 @@ end
 function Null()
 	return Null
 end
+

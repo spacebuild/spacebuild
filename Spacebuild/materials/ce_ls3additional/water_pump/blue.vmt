@@ -1,7 +1,0 @@
-"vertexlitgeneric"
-{
-	"$basetexture" 	"ce_ls3additional/water_pump/blue"
-	"$surfaceprop" 	"plastic"
-	"$model" 	"1"
-	"$selfillum" 	"50"
-}

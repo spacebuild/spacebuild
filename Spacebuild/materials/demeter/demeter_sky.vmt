@@ -1,7 +1,0 @@
-"unlitgeneric" {
-    "$basetexture" "demeter\demeter"
-    "$surfaceprop" "metal"
-    "$model" "1"
-    "$translucent" 1
-    "$alpha" .98
-}
