@@ -96,12 +96,12 @@ local error = error;
 local _G = _G
 local pairs = pairs;
 local xpcall = xpcall
-local loadstring = loadstring
+local loadstring = function(code) return CompileString(code, "luaunit") end
 local debug = debug
 local print = print
 local type = type
 local math = math
-local unpack
+local unpack = unpack
 
 module("luaunit");
 

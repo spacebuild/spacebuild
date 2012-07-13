@@ -47,7 +47,7 @@ function C:addResource(name, maxAmount, amount)
 	if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
 	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
 	local res = self.resources[name];
-	if res then
+	if not res then
 		res = sb.class.create("Resource", name, maxAmount, amount);
 		self.resources[name] = res
 	else

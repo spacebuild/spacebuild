@@ -29,7 +29,7 @@ end
 
 if sb.config and sb.config.testMode then
 	require("luaunit")
-	local fls = file.FindInLua("sb/tests/*.lua")
+	local fls = file.Find("sb/tests/*.lua", LUA_PATH)
 	for k, v in ipairs(fls) do
 		print("Running test:", v)
 		include("sb/tests/" .. v)

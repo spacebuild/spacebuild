@@ -44,6 +44,6 @@ end
 
 function class.exists(name)
 	name = tostring(name);
-	return classes[name] ~= nil or #file.FindInLua("sb/classes/" .. name .. ".lua") == 1
+	return classes[name] ~= nil or #file.Find("sb/classes/" .. name .. ".lua", LUA_PATH) == 1
 end
 

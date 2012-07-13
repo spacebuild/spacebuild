@@ -12,8 +12,6 @@ TestClasses = {} --class
 function TestClasses:setUp() 
     -- this function is run before each test, so that multiple
     -- tests can share initialisations
-    self.a = 1
-    self.b = 2
 end
 
 function TestClasses:tearDown() 
