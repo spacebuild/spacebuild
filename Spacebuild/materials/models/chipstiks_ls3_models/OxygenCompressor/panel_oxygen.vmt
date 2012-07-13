@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 		"models\chipstiks_ls3_models/OxygenCompressor/panel_oxygen"
+	"$envmap" 		"env_cubemap"
+	"$envmapcontrast"		"0.8"
+	"$envmapsaturation" 	"0.3"
+	"$detail"			"models\chipstiks_ls3_models/OxygenCompressor/detailmap"
+	"$detailscale"		"2.3"
+}

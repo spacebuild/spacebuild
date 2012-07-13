@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/atmospheres/sun/shell"
+	"$model" "1"
+}

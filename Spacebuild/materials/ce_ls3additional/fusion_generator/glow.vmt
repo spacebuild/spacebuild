@@ -1,0 +1,7 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 		"ce_ls3additional/fusion_generator/glow"
+	"$surfaceprop" 		"plastic"
+	"$selfillum" 		"130"
+	"$model" 		"1"
+}

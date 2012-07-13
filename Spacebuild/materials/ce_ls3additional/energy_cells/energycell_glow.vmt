@@ -1,0 +1,7 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 	"ce_ls3additional/energy_cells/energycell_glow"
+	"$surfaceprop" 	"plastic"
+	"$selfillum" 	"130"
+	"$model" 	"1"
+}

@@ -1,0 +1,18 @@
+VertexLitGeneric
+{
+$basetexture "Models/player/male/back_unit/medic_back_unit_diffuse"
+$surfaceprop Metal
+$basemapalphaphongmask 1
+$selfillum 1
+
+$phong 1
+$phongboost 5
+$phongexponent 10
+$phongalbedotint 1
+$phongfresnelranges "[.1 .25 1]"
+
+
+
+
+
+}

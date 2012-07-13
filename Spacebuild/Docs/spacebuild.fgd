@@ -1,0 +1,91 @@
+@include "base.fgd"
+@include "halflife2.fgd"
+@include "garrysmod.fgd"
+
+//====== Copyright © 2008 - 9001, Olivier 'LuaPineapple' Hamel =======
+
+@SolidClass = sb_environment : "An environment brush."
+[
+	BrushEnvID(integer)		: "Env Brush ID"	: 1337		: "This is a unique identifier for this specific environment brush. MAKE SURE IT'S UNIQUE!"
+	ParentBrushEnvID(integer)	: "Parent Env Brush ID"	: -1		: "The parent env brush ID for this environment brush, make this -1 (default) if this brush doesn't have a parent. (IE: It'll go to the default system for checking.) MAKE SURE THAT THIS BRUSH IS COMPLETELY CONTAINED BY IT'S PARENT! OTHERWISE BAD SHIT WILL HAPPEN!"
+	BrushName(string)		: "Env Brush Name"	: "<none>"	: "The name of your environment. :downs:"
+	
+	Gravity(float)		: "Gravity"		: 1	: "The gravity in this brush environment."
+	Atmosphere(integer)	: "Atmosphere"		: 1	: "The atmospheric pressure in this brush environment, needs to be between 0 and 1."
+	Pressure(integer)	: "Pressure"		: 1	: "The pressure in this brush environment, value < 0 for auto SB3 based pressure (based on atmosphere and pressure) any other value for custom pressure."
+	Temp(integer)		: "Temperature"		: 290	: "The temperature in the brush."
+	AirThickness(integer)	: "Air Thickness"	: 1	: "The air thickness in the brush."
+	
+	Oxygen(integer)		: "O2 Percentage"	: 25	: "The O2 Percentage."
+	Carbon_Dioxide(integer)	: "CO2 Percentage"	: 25	: "The CO2 Percentage."
+	Nitrogen(integer)	: "N Percentage"	: 25	: "The N Percentage."
+	Hydrogen(integer)	: "H Percentage"	: 25	: "The H Percentage."
+	
+	Habitable(choices)	: "Habitable" : 1 : "Is this brush env habitable?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+
+	Stable(choices)		: "Stable" : 0 : "Is this brush 'stable'?" =
+	[
+		1 : "False"
+		0 : "True"
+	]
+	
+	HasBloom(choices)	: "Bloom" : 0 : "Does this brush have a bloom?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	Bloom_R(float)		: "Bloom: Red" : 1 : "Bloom: Red component."
+	Bloom_G(float)		: "Bloom: Green" : 1 : "Bloom: Blue component."
+	Bloom_B(float)		: "Bloom: Blue" : 1 : "Bloom: Green component."
+	Bloom_X(float)		: "Bloom: Size X" : 1 : "Bloom: X size."
+	Bloom_Y(float)		: "Bloom: Size Y" : 1 : "Bloom: Y size"
+	Bloom_Passes(float)	: "Bloom: Passes" : 1 : "Bloom: Number of passes."
+	Bloom_Darken(float)	: "Bloom: Darken" : 1 : "Bloom: Darken by this amount."
+	Bloom_Multiplier(float)	: "Bloom: Multiply" : 1 : "Bloom: Multiply by this amount."
+	
+	Colour_Mod(choices) : "Colour Mod" : 0 : "Does this brush have a colour modification?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	Colour_Mod_R(float)			: "Colour: Add Red"	: 1 : "Colour: Red component."
+	Colour_Mod_G(float)			: "Colour: Add Green"	: 1 : "Colour: Blue component."
+	Colour_Mod_B(float)			: "Colour: Add Blue"	: 1 : "Colour: Green component."
+	Colour_Mod_M_R(float)			: "Colour: Multi Red"	: 1 : "Colour: Red multiplication component."
+	Colour_Mod_M_G(float)			: "Colour: Multi Green"	: 1 : "Colour: Blue multiplication component."
+	Colour_Mod_M_B(float) 			: "Colour: Multi Blue"	: 1 : "Colour: Green multiplication component."
+	Colour_Mod_Brightness(float)		: "Colour: Brightness"	: 1 : "Colour: Brightness setting."
+	Colour_Mod_Contrast(float)		: "Colour: Contrast"	: 1 : "Colour: Contrast setting."
+	Colour_Mod_Range(float)			: "Colour: Range"	: 1 : "Colour: Range setting."
+	
+	Decompression_Explosion_X(float)	: "Decompression X" : 1 : "Decompression: X vector component."
+	Decompression_Explosion_Y(float)	: "Decompression Y" : 1 : "Decompression: Y vector component."
+	Decompression_Explosion_Z(float)	: "Decompression Z" : 1 : "Decompression: Z vector component."
+	
+	output OnSpaced(void)			: "Fires when the brush env gets spaced! --(*Non-Functional*)--"
+	output OnRestored(void)			: "Fires when the brush env gets restored after getting spaced. --(*Non-Functional*)--"
+	output OnCharacteristicsAltered(void)	: "Fires when something changes in our environment characteristics. --(*Non-Functional*)--"
+	output OnDie(void)			: "Fires when this brush env dies. --(*Non-Functional*)--"
+	
+	input SpaceEnv(void)			: "Spaces the environment regardless of the input."
+	input RestoreEnv(void)			: "Restores the environment if it was spaced."
+	input SetPressure(integer)		: "Sets the pressure, values below 0 are considered 0, standard is 1."
+	input SetTemp(integer)			: "Sets the temperature (Kelvin)."
+	input SetGravity(integer)		: "Sets the gravity, standered is 1."
+	input SetUnstable(integer)		: "Sets if it's unstable, 1 is true, 0 is false."
+	input SetAtmosphericContent(string)	: "Resets the atmosphere's gaseous contents to the given vales in this format (use a single space, ' ' as the delimiter): O2 CO2 N H"
+	
+	
+	
+	//Gills(choices) : "Breath under water" : 1 : "Does this env give you gills?" =
+	//[
+	//	0 : "False"
+	//	1 : "True"
+	//]
+	//Wishful thinking on my part :P ~Levy
+	//And it'll stay wishfull thinking unless you want me to attach trout gills to your neck by way of a pneumatic staple gun. ~LuaPineapple (Irritable)
+]

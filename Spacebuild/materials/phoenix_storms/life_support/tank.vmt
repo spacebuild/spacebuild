@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/tank"
+	"$bumpmap" "phoenix_storms/life_support/tank_normal"
+	"$normalmapalphaenvmapmask" "1"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ .035 .035 .035 ]"
+	"$envmapcontrast" 1
+	"$envmapsaturation" 0
+	"$phong" "1"
+	"$phongboost" "0.35" 
+	"$phongfresnelranges" "[ 1 5 20]"
+	"$phongexponent" "20"
+	"$model" 1
+}
+
+

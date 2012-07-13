@@ -1,11 +1,9 @@
-"Gamemode"
+"AddonInfo"
 {
-	"name"		"SpaceBuild Chapter 2: Beyond the Solar System"
-	"version"	"2.1.1"
-
-	"author_name"	"LS/RD/SB Team"
+	"name"		"Spacebuild"
+	"version"	"3.0"
+	"author_name"	"SnakeSVx"
 	"author_email"			"spacebuild.dev@gmail.com"
 	"author_url"	"http://www.snakesvx.net/"
-	
-	"info"		"Space Exploration 2 + stack overflow fix & message returned nil fix"
+	"info"		"Spacebuild Addon"
 }

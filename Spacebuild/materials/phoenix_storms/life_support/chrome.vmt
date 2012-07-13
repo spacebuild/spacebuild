@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/chrome"
+	"$surfaceprop" "metal"
+	"$phong" "1" 
+	"$phongboost" "0.5" 
+	"$phongfresnelranges" "[ 1 5 20]"
+	"$phongexponent" "10"
+	"$model" 1
+}
+
+

@@ -1,0 +1,19 @@
+VertexLitGeneric
+{
+$basetexture "Models/player/male/medic_helmet_diffuse"
+$surfaceprop Metal
+$bumpmap "Models/player/male/helmet_normal"
+
+$selfillum 1
+$selfillumtint "[ 5 1 1 ]"
+$phong 1
+$phongboost 1
+$phongexponent 6
+$phongalbedotint 1
+$phongfresnelranges "[.5 1 3]"
+$color2 "[ 0.8 .45 .45]"
+
+$rimlight 1
+$rimlightexponent 5
+$rimlightboost 25
+}

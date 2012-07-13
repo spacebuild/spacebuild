@@ -1,0 +1,11 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 		"ce_ls3additional/dome/glass"
+	"$surfaceprop" 		"metal"
+	"$envmaptint" 		"[0.5 0.5 0.5]"
+	"$envmap" 		"env_cubemap"
+	"$envmapsaturation" 	"0.3"
+	"$model" 		"1"
+	"$alpha"		"0.5"
+	"$translucent" 		"1"
+}

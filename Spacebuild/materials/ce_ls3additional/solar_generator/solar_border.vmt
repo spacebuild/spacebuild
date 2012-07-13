@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 		"ce_ls3additional/solar_generator/solar_border"
+	"$surfaceprop" 		"metal"
+	"$envmap" 		"env_cubemap"
+	"$envmapcontrast" 	"0.1"
+	"$model" 		"1"
+}

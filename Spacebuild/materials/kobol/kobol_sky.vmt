@@ -1,0 +1,7 @@
+"unlitgeneric" {
+    "$basetexture" "kobol\kobol"
+    "$surfaceprop" "metal"
+    "$model" "1"
+    "$translucent" 1
+    "$alpha" 1
+}

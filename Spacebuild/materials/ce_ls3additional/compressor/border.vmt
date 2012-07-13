@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 		"ce_ls3additional/compressor/border"
+	"$surfaceprop" 		"metal"
+	"$envmaptint" 		"[0.2 0.2 0.2]"
+	"$bumpmap" 			"ce_ls3additional/compressor/border_bump"
+	"$envmap" 			"env_cubemap"
+	"$envmapsaturation" "0.1"
+	"$model" 			"1"
+}

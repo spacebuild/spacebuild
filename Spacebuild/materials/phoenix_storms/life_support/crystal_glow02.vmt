@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/crystal_glow"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$selfillum" 1
+
+"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture" 
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" 8.00
+		}
+
+	}
+
+}
+
+

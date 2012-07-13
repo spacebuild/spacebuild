@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\chipstiks_ls3_models/CO2Comp//panel_carbon_dioxide"
+	"$envmap" 		"env_cubemap"
+	"$envmapcontrast"		"0.8"
+	"$envmapsaturation" 	"0.3"
+	"$detail"			"models\chipstiks_ls3_models/CO2Comp/detailmap"
+	"$detailscale"		"2.3"
+}

@@ -1,0 +1,6 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 	"ce_ls3additional/water_air_extractor/base_w"
+	"$bumpmap" 	"ce_ls3additional/water_air_extractor/base_w_bump"
+	"$model" 	"1"
+}

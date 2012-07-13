@@ -1,0 +1,19 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/LifeSupport/tintedglass"
+	"$surfaceprop" "Glass"
+	"$selfillum"	1
+	"$translucent"	1
+	"$additive"	1
+	"$model"	1
+	"Proxies"
+	{
+		"Sine"
+		{
+			"ResultVar"	"$selfillumtint"
+			"sineperiod"	60
+			"sinemin"		"[0 0 0]"
+			"sinemax"	"[0 0 0]"
+		}
+	}
+}

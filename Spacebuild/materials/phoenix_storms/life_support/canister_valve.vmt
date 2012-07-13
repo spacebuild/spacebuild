@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/canister_valve"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+//	"$basealphaenvmapmask" 1
+	"$envmaptint" "[ .20 .15 .15 ]"
+	"$envmapcontrast" 1
+	"$envmapsaturation" 0
+	"$model" 1
+}
+
+

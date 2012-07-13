@@ -1,0 +1,173 @@
+Method 1: Vector.Distance
+
+32 Entities
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0049999999999955s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+
+213 entities
+SB - Seconds to loop over 213 entities: 0.02800000000002s
+SB - Seconds to loop over 213 entities: 0.026000000000067s
+SB - Seconds to loop over 213 entities: 0.023999999999887s
+SB - Seconds to loop over 213 entities: 0.026999999999816s
+SB - Seconds to loop over 213 entities: 0.023999999999887s
+SB - Seconds to loop over 213 entities: 0.02800000000002s
+SB - Seconds to loop over 213 entities: 0.026000000000067s
+SB - Seconds to loop over 213 entities: 0.025000000000091s
+SB - Seconds to loop over 213 entities: 0.023999999999887s
+SB - Seconds to loop over 213 entities: 0.024000000000115s
+SB - Seconds to loop over 213 entities: 0.027000000000044s
+SB - Seconds to loop over 213 entities: 0.033999999999878s
+SB - Seconds to loop over 213 entities: 0.026000000000067s
+SB - Seconds to loop over 213 entities: 0.025000000000091s
+
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.00099999999997635 (1)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.00099999999997635 (2)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.00099999999997635 (3)
+SB - Seconds to loop over 13 entities: 0.0019999999999527s / 0.0012499999999704 (4)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011999999999716 (5)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011666666666391 (6)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011428571428301 (7)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011249999999734 (8)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011111111110848 (9)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.001099999999974 (10)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010909090908833 (11)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010833333333077 (12)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010769230768976 (13)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010714285714032 (14)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010666666666414 (15)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010624999999749 (16)
+SB - Seconds to loop over 13 entities: 0.0019999999999527s / 0.0011176470587971 (17)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011111111110848 (18)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0011052631578686 (19)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.001099999999974 (20)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010952380952122 (21)
+SB - Seconds to loop over 13 entities: 0.0010000000002037s / 0.0010909090908936 (22)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010869565217233 (23)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010833333333172 (24)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010799999999836 (25)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010769230769064 (26)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010740740740571 (27)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010714285714114 (28)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010689655172239 (29)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.001066666666649 (30)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010645161290144 (31)
+SB - Seconds to loop over 13 entities: 0.0010000000002037s / 0.0010624999999891 (32)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s / 0.0010606060605948 (33)
+
+
+
+Method 2:
+
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0049999999999955s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0039999999999054s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0029999999999291s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0039999999999054s
+
+213 entities
+SB - Seconds to loop over 213 entities: 0.028999999999996s
+SB - Seconds to loop over 213 entities: 0.030999999999949s
+SB - Seconds to loop over 213 entities: 0.032000000000153s
+SB - Seconds to loop over 213 entities: 0.028999999999996s
+SB - Seconds to loop over 213 entities: 0.028999999999996s
+SB - Seconds to loop over 213 entities: 0.028999999999996s
+SB - Seconds to loop over 213 entities: 0.0300000000002s
+SB - Seconds to loop over 213 entities: 0.031999999999925s
+SB - Seconds to loop over 213 entities: 0.037000000000035s
+SB - Seconds to loop over 213 entities: 0.032999999999902s
+SB - Seconds to loop over 213 entities: 0.02800000000002s
+SB - Seconds to loop over 213 entities: 0.030999999999949s
+SB - Seconds to loop over 213 entities: 0.043999999999869s
+SB - Seconds to loop over 213 entities: 0.028999999999996s
+SB - Seconds to loop over 213 entities: 0.028999999999996s
+
+Method 3: 
+
+32 entities: 
+SB - Seconds to loop over 32 entities: 0.0039999999999623s
+SB - Seconds to loop over 32 entities: 0.0039999999999623s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0039999999999623s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0040000000000191s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0039999999999623s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0029999999999859s
+SB - Seconds to loop over 32 entities: 0.0030000000000427s
+
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.00100000000009(2)
+SB - Seconds to loop over 13 entities: 0.0019999999999527s/0.0013333333333776(3)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0012500000000273(4)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0012000000000171(5)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.001166666666677(6)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0011428571428626(7)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0011250000000018(8)
+SB - Seconds to loop over 13 entities: 0.0010000000002037s/0.0011111111111354(9)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0011000000000195(10)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010909090909246(11)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010833333333456(12)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010769230769326(13)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010714285714357(14)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010666666666718(15)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010625000000033(16)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010588235294135(17)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010555555555559(18)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010526315789464(19)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010499999999979(20)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010476190476159(21)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010454545454505(22)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010434782608647(23)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.001041666666661(24)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010399999999936(25)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010384615384545(26)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010370370370294(27)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.001035714285706(28)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010344827586119(29)
+SB - Seconds to loop over 13 entities: 0.0010000000002037s/0.0010333333333316(30)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010322580645137(31)
+SB - Seconds to loop over 13 entities: 0.0010000000002037s/0.001031250000004(32)
+SB - Seconds to loop over 13 entities: 0.00099999999997635s/0.0010303030303062(33)
+
+
+
+
+

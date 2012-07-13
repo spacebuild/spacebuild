@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/battery_label3"
+	"$surfaceprop" "metal"
+	"$phong" "1" 
+	"$phongboost" "0.35" 
+	"$phongfresnelranges" "[ 1 5 20]"
+	"$phongexponent" "10"
+	"$model" 1
+	"$nocull" 1
+//	"$selfillum" 1
+}
+
+

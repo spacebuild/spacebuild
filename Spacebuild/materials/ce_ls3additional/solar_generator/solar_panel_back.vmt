@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 		"ce_ls3additional/solar_generator/solar_panel_back"
+	"$surfaceprop" 		"plastic"
+	"$envmaptint" 		"[0.3 0.3 0.3]"
+	"$bumpmap" 		"ce_ls3additional/solar_generator/solar_panel_back_bump"
+	"$envmap" 		"env_cubemap"
+	"$envmapsaturation" 	"0.2"
+	"$model" 		"1"
+}

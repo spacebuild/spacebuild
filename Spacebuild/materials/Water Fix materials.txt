@@ -1,0 +1,7 @@
+
+materials/0.vmt => 12.vmt
+materials/null.vmt
+
+materials/Nature/ (all textures)
+
+materials/Dev/ (All textures

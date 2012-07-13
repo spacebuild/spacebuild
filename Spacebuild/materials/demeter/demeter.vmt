@@ -1,0 +1,6 @@
+"vertexlitGeneric" {
+    "$basetexture" "demeter\demeter"
+    "$surfaceprop" "metal"
+    "$model" "1"
+    "$halflambert" 1
+}

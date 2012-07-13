@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\chipstiks_ls3_models/NitrogenCompressor/panel_nitrogen"
+	"$envmap" 		"env_cubemap"
+	"$envmapcontrast"		"0.8"
+	"$envmapsaturation" 	"0.3"
+	"$detail"			"models\chipstiks_ls3_models/NitrogenCompressor/detailmap"
+	"$detailscale"		"2.3"
+	
+
+}

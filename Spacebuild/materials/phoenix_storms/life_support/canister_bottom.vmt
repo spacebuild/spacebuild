@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/canister_bottom"
+	"$bumpmap" "phoenix_storms/life_support/canister_bottom_normal"
+	"$surfaceprop" "metal"
+	"$nocull" 1
+	"$phong" "1" 
+	"$phongboost" "0.35" 
+	"$phongfresnelranges" "[ 1 5 20]"
+	"$phongexponent" "20"
+	"$model" 1
+}
+
+

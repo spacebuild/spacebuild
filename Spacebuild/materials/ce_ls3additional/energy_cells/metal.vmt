@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 		"ce_ls3additional/energy_cells/metal"
+	"$surfaceprop" 		"metal"
+	"$envmaptint" 		"[0.5 0.5 0.5]"
+	"$bumpmap" 		"ce_ls3additional/energy_cells/metal_bump"
+	"$envmap" 		"env_cubemap"
+	"$envmapsaturation" 	"0.3"
+	"$model" 		"1"
+}
