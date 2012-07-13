@@ -1,7 +1,7 @@
 "Gamemode"
 {
 	"name"		"SpaceBuild Chapter 2: Beyond the Solar System"
-	"version"	"1.0.2"
+	"version"	"2.1.1"
 
 	"author_name"	"LS/RD/SB Team"
 	"author_email"			"spacebuild.dev@gmail.com"
