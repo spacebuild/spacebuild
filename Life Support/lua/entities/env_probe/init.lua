@@ -17,32 +17,32 @@ function ENT:Initialize()
 	self.gravity2 = 1
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Habitat", "Pressure", "Temperature", "Gravity", "On" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "Habitat", "Pressure", "Temperature", "Gravity", "On" })
 	end
 	--self:ShowOutput()
 end
 
 function ENT:TurnOn()
-	self.Entity:EmitSound( "Buttons.snd17" )
+	self:EmitSound( "Buttons.snd17" )
 	self.Active = 1
 	self:SetOOO(1)
 	self:Sense()
 	self:ShowOutput()
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 1) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
 end
 
 function ENT:TurnOff(warn)
-	if (!warn) then self.Entity:EmitSound( "Buttons.snd17" ) end
+	if (!warn) then self:EmitSound( "Buttons.snd17" ) end
 	self.Active = 0
 	self:SetOOO(0)
 	self:ShowOutput()
 	if not (WireAddon == nil) then
-		Wire_TriggerOutput(self.Entity, "On", 0)
-		Wire_TriggerOutput(self.Entity, "Habitat", 0)
-		Wire_TriggerOutput(self.Entity, "Pressure", 0)
-		Wire_TriggerOutput(self.Entity, "Temperature", 0)
-		Wire_TriggerOutput(self.Entity, "Gravity", 0)
+		Wire_TriggerOutput(self, "On", 0)
+		Wire_TriggerOutput(self, "Habitat", 0)
+		Wire_TriggerOutput(self, "Pressure", 0)
+		Wire_TriggerOutput(self, "Temperature", 0)
+		Wire_TriggerOutput(self, "Gravity", 0)
 	end
 end
 
@@ -57,25 +57,25 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:Sense()
 	if (RD_GetResourceAmount(self, "energy") <= 0) then
-		self.Entity:EmitSound( "common/warning.wav" )
+		self:EmitSound( "common/warning.wav" )
 		self:TurnOff(true)
 		return
 	else
 		if (BeepCount > 0) then
 			BeepCount = BeepCount - 1
 		else
-			self.Entity:EmitSound( "Buttons.snd17" )
+			self:EmitSound( "Buttons.snd17" )
 			BeepCount = 20 --30 was a little long, 3 times a minute is ok
 		end
 	end
@@ -98,10 +98,10 @@ function ENT:Sense()
 	end
 	self.gravity2 = self.gravity2 * 100
 	if not (WireAddon == nil) then
-		Wire_TriggerOutput(self.Entity, "Habitat", self.environment.habitat)
-		Wire_TriggerOutput(self.Entity, "Pressure", self.environment.atmosphere)
-		Wire_TriggerOutput(self.Entity, "Temperature", self.environment.temperature)
-		Wire_TriggerOutput(self.Entity, "Gravity", self.gravity2)
+		Wire_TriggerOutput(self, "Habitat", self.environment.habitat)
+		Wire_TriggerOutput(self, "Pressure", self.environment.atmosphere)
+		Wire_TriggerOutput(self, "Temperature", self.environment.temperature)
+		Wire_TriggerOutput(self, "Gravity", self.gravity2)
 	end
 	RD_ConsumeResource(self, "energy", Energy_Increment)
 end
@@ -112,10 +112,10 @@ function ENT:ShowOutput()
 	else
 		self:SetOverlayText( "Atmospheric Probe (OFF)" )
 	end*/
-	self.Entity:SetNetworkedInt( 1, self.environment.habitat )
-	self.Entity:SetNetworkedInt( 2, self.environment.atmosphere )
-	self.Entity:SetNetworkedInt( 3, self.environment.temperature )
-	self.Entity:SetNetworkedInt( 4, self.gravity or 0 )
+	self:SetNetworkedInt( 1, self.environment.habitat )
+	self:SetNetworkedInt( 2, self.environment.atmosphere )
+	self:SetNetworkedInt( 3, self.environment.temperature )
+	self:SetNetworkedInt( 4, self.gravity or 0 )
 end
 
 function ENT:Think()
@@ -126,7 +126,7 @@ function ENT:Think()
 		self:ShowOutput()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

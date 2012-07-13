@@ -18,15 +18,15 @@ function ENT:Initialize()
 	self.lastused = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On", "Overdrive" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, {"On", "Overdrive" })
+		self.Inputs = Wire_CreateInputs(self, { "On", "Overdrive" })
+		self.Outputs = Wire_CreateOutputs(self, {"On", "Overdrive" })
 	end
 end
 
 function ENT:TurnOn()
-	self.Entity:EmitSound( "Airboat_engine_idle" )
+	self:EmitSound( "Airboat_engine_idle" )
 	self.Active = 1
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 	if ( self.overdrive == 1 ) then
 		self:TurnOnOverdrive()
 	else
@@ -35,35 +35,35 @@ function ENT:TurnOn()
 end
 
 function ENT:TurnOff()
-	self.Entity:StopSound( "Airboat_engine_idle" )
-	self.Entity:EmitSound( "Airboat_engine_stop" )
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "Airboat_engine_idle" )
+	self:EmitSound( "Airboat_engine_stop" )
+	self:StopSound( "apc_engine_start" )
 	self.Active = 0
 	self.overdrive = 0
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 	self:SetOOO(0)
 end
 
 function ENT:TurnOnOverdrive()
 	if ( self.Active == 1 ) then
-		self.Entity:StopSound( "Airboat_engine_idle" )
-		self.Entity:EmitSound( "Airboat_engine_idle" )
-		self.Entity:EmitSound( "apc_engine_start" )
+		self:StopSound( "Airboat_engine_idle" )
+		self:EmitSound( "Airboat_engine_idle" )
+		self:EmitSound( "apc_engine_start" )
 		self:SetOOO(2)
 	end
 	self.overdrive = 1
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Overdrive", self.overdrive) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Overdrive", self.overdrive) end
 end
 
 function ENT:TurnOffOverdrive()
 	if ( self.Active == 1 ) then
-		self.Entity:StopSound( "Airboat_engine_idle" )
-		self.Entity:EmitSound( "Airboat_engine_idle" )
-		self.Entity:StopSound( "apc_engine_start" )
+		self:StopSound( "Airboat_engine_idle" )
+		self:EmitSound( "Airboat_engine_idle" )
+		self:StopSound( "apc_engine_start" )
 		self:SetOOO(1)
 	end
 	self.overdrive = 0
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Overdrive", self.overdrive) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Overdrive", self.overdrive) end
 end
 
 function ENT:SetActive( value )
@@ -110,18 +110,18 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "Airboat_engine_idle" )
+	self:StopSound( "Airboat_engine_idle" )
 end
 
 function ENT:Pump_Coolant()
@@ -145,7 +145,7 @@ function ENT:Think()
 	
 	if ( self.Active == 1 ) then self:Pump_Coolant() end
 	
-	self.Entity:NextThink( CurTime() + 1 )
+	self:NextThink( CurTime() + 1 )
 	return true
 end
 

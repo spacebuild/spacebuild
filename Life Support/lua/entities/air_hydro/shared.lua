@@ -6,7 +6,7 @@ function ENT:GetOverlayText()
 	local txt = ""
 	
 	if (self.OOOActive == 1) then
-		txt = "Plant\nWater left: " .. self.Entity:GetNetworkedInt( 1 ) 
+		txt = "Plant\nWater left: " .. self:GetNetworkedInt( 1 ) 
 	else
 		txt =  "Plant\nNeeds watering";
 	end

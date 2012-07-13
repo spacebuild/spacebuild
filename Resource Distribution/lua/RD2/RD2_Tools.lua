@@ -295,7 +295,7 @@ function RD2_UpdateToolGhost( tool, model, min, GetOffset, offset )
 	if ( not tool.GhostEntity ) then return end
 	if ( not tool.GhostEntity:IsValid() ) then return end
 
-	local tr = utilx.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
+	local tr = util.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
 	local trace = util.TraceLine( tr )
 	if (not trace.Hit) then return end
 

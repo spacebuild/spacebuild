@@ -627,7 +627,7 @@ end
 meta[ "GetResourceAmountTextPrint" ] = function ( self, res )
 	if (type(res) ~= "number") then res = resnames[res] end
 	if (!res) then return "" end
-	return ResNamesPrint[res]..self.Entity:GetResourceAmountText( self, res )
+	return ResNamesPrint[res]..self:GetResourceAmountText( self, res )
 end
 -- get all the ent's net's indexes keyed with the resource IDs
 meta[ "GetResourceNetIDAll" ] = function ( self )

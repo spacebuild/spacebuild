@@ -541,7 +541,7 @@ hook.Add( "PlayerSpawn", "LS_SpawnFunc", LSSpawnFunc )
 
 function ColorDamage(ent, HP, Col)
 	if (ent.health <= (ent.maxhealth / HP)) then
-		ent:SetColor(Col, Col, Col, 255)
+		ent:SetColor(Color(Col, Col, Col, 255))
 	end
 end
 
@@ -563,7 +563,7 @@ function DamageLS(ent, dam)
 		ColorDamage(ent, 6, 100)
 		ColorDamage(ent, 7, 75)
 		if (ent.health <= 0) then
-			ent:SetColor(50, 50, 50, 255)
+			ent:SetColor(Color(50, 50, 50, 255))
 			ent:Destruct()
 		end
 	end

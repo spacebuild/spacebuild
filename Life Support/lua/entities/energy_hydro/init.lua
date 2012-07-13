@@ -14,7 +14,7 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	end
 end
 
@@ -23,18 +23,18 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:Extract_Energy()
 	RD_SupplyResource(self, "energy", Energy_Increment)
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", Energy_Increment) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", Energy_Increment) end
 end
 
 function ENT:GenEnergy()
@@ -52,7 +52,7 @@ function ENT:GenEnergy()
 		if (self.Active == 1) then
 			self.Active = 0
 			self:SetOOO(0)
-			if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", 0) end
+			if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", 0) end
 		end
 	end
 end
@@ -62,6 +62,6 @@ function ENT:Think()
 	
 	self:GenEnergy()
 	
-	self.Entity:NextThink(CurTime() + 1) --0.8??? why not 1 like the rest?
+	self:NextThink(CurTime() + 1) --0.8??? why not 1 like the rest?
 	return true
 end

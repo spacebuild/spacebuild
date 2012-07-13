@@ -11,30 +11,30 @@ function ENT:Initialize()
 	self.time = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Steam", "Max Steam" })
+		self.Outputs = Wire_CreateOutputs(self, { "Steam", "Max Steam" })
 	end
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Damage()
 	if (self.damaged == 0) then
 		self.damaged = 1
-		self.Entity:EmitSound( "PhysicsCannister.ThrusterLoop" )
+		self:EmitSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
 function ENT:Repair()
 	self.health = self.maxhealth
 	self.damaged = 0
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:Leak()
@@ -43,7 +43,7 @@ function ENT:Leak()
 		RD_ConsumeResource(self, "steam", 100)
 	else
 		RD_ConsumeResource(self, "steam", steam)
-		self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+		self:StopSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
@@ -79,6 +79,6 @@ end
 function ENT:UpdateWireOutput()
 	local steam = RD_GetResourceAmount(self, "steam")
 	local maxsteam = RD_GetNetworkCapacity(self, "steam")
-	Wire_TriggerOutput(self.Entity, "Steam", steam)
-	Wire_TriggerOutput(self.Entity, "Max Steam", maxsteam)
+	Wire_TriggerOutput(self, "Steam", steam)
+	Wire_TriggerOutput(self, "Max Steam", maxsteam)
 end

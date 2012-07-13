@@ -10,7 +10,7 @@ function ENT:GetOverlayText()
 	local txt = ""
 	
 	if (self.OOOActive == 1) then
-		txt = self.PrintName.." (ON)\nHabitable: " .. yesno[self.Entity:GetNetworkedInt( 1 )] .. "\nPressure: " .. self.Entity:GetNetworkedInt( 2 ) .. " Atmospheres\nTemperature: " .. self.Entity:GetNetworkedInt( 3 ) .. " K\nGravity: " .. math.floor(self.Entity:GetNetworkedInt( 4 )) .." G"
+		txt = self.PrintName.." (ON)\nHabitable: " .. yesno[self:GetNetworkedInt( 1 )] .. "\nPressure: " .. self:GetNetworkedInt( 2 ) .. " Atmospheres\nTemperature: " .. self:GetNetworkedInt( 3 ) .. " K\nGravity: " .. math.floor(self:GetNetworkedInt( 4 )) .." G"
 	else
 		txt =  self.PrintName.." (OFF)"
 	end

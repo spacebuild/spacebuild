@@ -17,30 +17,30 @@ function ENT:Initialize()
 	self.damaged = 0
 	self.maxradius = 1024
 	self.hasatmosphere  = false
-	SB_Add_Environment(self.Entity, 0, 0, 0, 0, 0)
+	SB_Add_Environment(self, 0, 0, 0, 0, 0)
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On", "Radius" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On", "Air", "Heat" })
+		self.Inputs = Wire_CreateInputs(self, { "On", "Radius" })
+		self.Outputs = Wire_CreateOutputs(self, { "On", "Air", "Heat" })
 	end
 end
 
 function ENT:TurnOn()
-	self.Entity:EmitSound( "apc_engine_start" )
+	self:EmitSound( "apc_engine_start" )
 	self.Active = 1
 	self.HasAir = true
 	self.HasHeat = true
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 	self:SetOOO(1)
 end
 
 function ENT:TurnOff()
-	self.Entity:StopSound( "apc_engine_start" )
-	self.Entity:EmitSound( "apc_engine_stop" )
+	self:StopSound( "apc_engine_start" )
+	self:EmitSound( "apc_engine_stop" )
 	self.Active = 0
 	self.HasAir = false
 	self.HasHeat = false
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 	self:SetOOO(0)
 end
 
@@ -73,13 +73,13 @@ end
 
 function ENT:Destruct()
 	SB_Remove_Environment(self.num)
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	SB_Remove_Environment(self.num)
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 end
 
 function ENT:Climate_Control()
@@ -110,9 +110,9 @@ function ENT:Climate_Control()
 	end
 	local maxradius = 0
 	if self.Active == 1 then
-		self.air = RD_GetResourceAmount(self.Entity, "air")
-		self.coolant = RD_GetResourceAmount(self.Entity, "coolant")
-		self.energy = RD_GetResourceAmount(self.Entity, "energy")
+		self.air = RD_GetResourceAmount(self, "air")
+		self.coolant = RD_GetResourceAmount(self, "coolant")
+		self.energy = RD_GetResourceAmount(self, "energy")
 		if ((self.coolant <= 0 and temperature > FairTemp_Max) or (self.energy <= 0 and temperature < FairTemp_Min)) or self.energy <= 0 then
 			self.HasHeat = false
 		else
@@ -172,33 +172,33 @@ function ENT:Climate_Control()
 			end
 			if self.HasHeat then
 				if temperature > FairTemp_Max then
-					RD_ConsumeResource(self.Entity, "coolant", Coolant_Increment * self.maxradius/256)
+					RD_ConsumeResource(self, "coolant", Coolant_Increment * self.maxradius/256)
 				elseif temperature < FairTemp_Min then
-					RD_ConsumeResource(self.Entity, "energy", Energy_Increment * self.maxradius/256)
+					RD_ConsumeResource(self, "energy", Energy_Increment * self.maxradius/256)
 				end
 			end
 			if self.HasAir then
 				if habitat == 0 then
-					RD_ConsumeResource(self.Entity, "air", Air_Increment * self.maxradius/256)
+					RD_ConsumeResource(self, "air", Air_Increment * self.maxradius/256)
 				end
 			end
-			RD_ConsumeResource(self.Entity, "energy", Energy_Increment * self.maxradius/256)
+			RD_ConsumeResource(self, "energy", Energy_Increment * self.maxradius/256)
 			if self.HasAir then
 				habitat = 1	
 			end
 			if atmosphere > 1 then
-				self.energy = RD_GetResourceAmount(self.Entity, "energy")
+				self.energy = RD_GetResourceAmount(self, "energy")
 				if self.energy > 0 then
-					RD_ConsumeResource(self.Entity, "energy", ((atmosphere - 1)/10) *  (self.maxradius/256))
+					RD_ConsumeResource(self, "energy", ((atmosphere - 1)/10) *  (self.maxradius/256))
 					atmosphere = 1
 				end
 			end
 			if self.HasHeat then
 				temperature = 288
 			end
-			self.air = RD_GetResourceAmount(self.Entity, "air")
-			self.coolant = RD_GetResourceAmount(self.Entity, "coolant")
-			self.energy = RD_GetResourceAmount(self.Entity, "energy")
+			self.air = RD_GetResourceAmount(self, "air")
+			self.coolant = RD_GetResourceAmount(self, "coolant")
+			self.energy = RD_GetResourceAmount(self, "energy")
 			if ((self.coolant <= 0 and temperature > FairTemp_Max) or (self.energy <= 0 and temperature < FairTemp_Min)) or self.energy <= 0 then
 				self.HasHeat = false
 			end
@@ -210,8 +210,8 @@ function ENT:Climate_Control()
 			end
 		end
 		if not (WireAddon == nil) then
-			Wire_TriggerOutput(self.Entity, "Air", tonumber(self.HasAir))
-			Wire_TriggerOutput(self.Entity, "Heat", tonumber(self.HasHeat))
+			Wire_TriggerOutput(self, "Air", tonumber(self.HasAir))
+			Wire_TriggerOutput(self, "Heat", tonumber(self.HasHeat))
 		end
 	end
 	SB_Update_Environment(self.num, maxradius, gravity, habitat, atmosphere, temperature)
@@ -222,7 +222,7 @@ function ENT:Think()
 	
 	self:Climate_Control()
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

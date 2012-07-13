@@ -11,34 +11,34 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Air", "Energy", "Coolant", "Max Air", "Max Energy", "Max Coolant" })
+		self.Outputs = Wire_CreateOutputs(self, { "Air", "Energy", "Coolant", "Max Air", "Max Energy", "Max Coolant" })
 	end
 end
 
 function ENT:Damage()
 	if (self.damaged == 0) then
 		self.damaged = 1
-		self.Entity:EmitSound( "PhysicsCannister.ThrusterLoop" )
-		self.Entity:EmitSound( "ambient.steam01" )
+		self:EmitSound( "PhysicsCannister.ThrusterLoop" )
+		self:EmitSound( "ambient.steam01" )
 	end
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
-	self.Entity:StopSound( "ambient.steam01" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "ambient.steam01" )
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
-	self.Entity:StopSound( "ambient.steam01" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "ambient.steam01" )
 end
 
 function ENT:Leak()
@@ -50,13 +50,13 @@ function ENT:Leak()
 			RD_ConsumeResource(self, "air", 100)
 		else
 			RD_ConsumeResource(self, "air", air)
-			self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+			self:StopSound( "PhysicsCannister.ThrusterLoop" )
 		end
 	end
 	if (energy > 0) then
 		if (self.environment.inwater == 0) then
-			zapme(self.Entity:GetPos(), 1)
-			local tmp = ents.FindInSphere(self.Entity:GetPos(), 600)
+			zapme(self:GetPos(), 1)
+			local tmp = ents.FindInSphere(self:GetPos(), 600)
 			for _, ply in ipairs( tmp ) do
 				if (ply:IsPlayer() and ply.suit.inwater > 0) then --??? wont that be zaping any player in any water??? should do a dist check first and have damage based on dist
 					zapme(ply:GetPos(), 1)
@@ -71,7 +71,7 @@ function ENT:Leak()
 			end
 		else
 			if (math.random(1, 10) < 2) then
-				zapme(self.Entity:GetPos(), 1)
+				zapme(self:GetPos(), 1)
 				local dec = math.random(200, 2000)
 				if (energy > dec) then
 					RD_ConsumeResource(self, "energy", dec)
@@ -86,7 +86,7 @@ function ENT:Leak()
 			RD_ConsumeResource(self, "coolant", 100)
 		else
 			RD_ConsumeResource(self, "coolant", coolant)
-			self.Entity:StopSound( "ambient.steam01" )
+			self:StopSound( "ambient.steam01" )
 		end
 	end
 end
@@ -102,7 +102,7 @@ function ENT:Think()
 		self:UpdateWireOutput()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
@@ -114,10 +114,10 @@ function ENT:UpdateWireOutput()
 	local maxcoolant = RD_GetNetworkCapacity(self, "coolant")
 	local maxenergy = RD_GetNetworkCapacity(self, "energy")
 	
-	Wire_TriggerOutput(self.Entity, "Air", air)
-	Wire_TriggerOutput(self.Entity, "Energy", energy)
-	Wire_TriggerOutput(self.Entity, "Coolant", coolant)
-	Wire_TriggerOutput(self.Entity, "Max Air", maxair)
-	Wire_TriggerOutput(self.Entity, "Max Energy", maxenergy)
-	Wire_TriggerOutput(self.Entity, "Max Coolant", maxcoolant)
+	Wire_TriggerOutput(self, "Air", air)
+	Wire_TriggerOutput(self, "Energy", energy)
+	Wire_TriggerOutput(self, "Coolant", coolant)
+	Wire_TriggerOutput(self, "Max Air", maxair)
+	Wire_TriggerOutput(self, "Max Energy", maxenergy)
+	Wire_TriggerOutput(self, "Max Coolant", maxcoolant)
 end

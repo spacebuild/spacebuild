@@ -15,7 +15,7 @@ function ENT:Initialize()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor( 255, 255, 255, 255 )
+	self:SetColor(Color( 255, 255, 255, 255 ))
 	self.health = self.maxhealth
 	self.damaged = 0
 	self.time = 0
@@ -29,11 +29,11 @@ function ENT:SetActive()
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:ShowOutput()
-	self.Entity:SetNetworkedInt( 1, self.water )
+	self:SetNetworkedInt( 1, self.water )
 end
 
 function ENT:Damage()
@@ -57,7 +57,7 @@ function ENT:Think()
 	else
 		if self.Active == 1 then
 			self:SetOOO(0)
-			self.Entity:SetColor(75, 75, 75, 255)
+			self:SetColor(Color(75, 75, 75, 255))
 			self:ShowOutput()
 		end		
 	end

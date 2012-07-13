@@ -46,7 +46,7 @@ function ENT:SetOverlayText( txt )
 	if ( SERVER ) then
 		self:OldMethodSetOverlayText(txt)
 	else
-		self.Entity:SetNetworkedString( "GModOverlayText", txt )
+		self:SetNetworkedString( "GModOverlayText", txt )
 	end
 end
 
@@ -67,13 +67,13 @@ function ENT:MakeOverlayText( OverlaySettings )
 	
 	if (resnames and num > 0) then
 		for n,resname in pairs(resnames) do
-			txt = txt .. strings[n + o] .. self.Entity:GetResourceAmountText( resname )
+			txt = txt .. strings[n + o] .. self:GetResourceAmountText( resname )
 		end
 	elseif (num < 0) then --print all resources on ent
 		if (num == -2 or num == -3) then --has a name
 			txt = txt .. strings[1]
 		end
-		txt = txt .. self.Entity:GetAllResourcesAmountsText( (num == -3 or num == -4) )
+		txt = txt .. self:GetAllResourcesAmountsText( (num == -3 or num == -4) )
 	end
 	
 	if (num >= 0 and strings and strings[num + o + 1]) then
@@ -86,7 +86,7 @@ end
 function ENT:GetOverlayText()
 	local txt = ""
 	
-	local OverlaySettings = list.Get( "LSEntOverlayText" )[self.Entity:GetClass()]
+	local OverlaySettings = list.Get( "LSEntOverlayText" )[self:GetClass()]
 	
 	if (OverlaySettings) then
 		if (OverlaySettings.func) then
@@ -95,7 +95,7 @@ function ENT:GetOverlayText()
 			txt = self:MakeOverlayText( OverlaySettings ) or ""
 		end
 	else
-		txt = self.Entity:GetNetworkedString( "GModOverlayText" ) or ""
+		txt = self:GetNetworkedString( "GModOverlayText" ) or ""
 	end
 	
 	local PlayerName = self:GetPlayerName()
