@@ -36,7 +36,7 @@ function TOOL:LeftClick( trace )
 		local iNum = self:NumObjects()
 		local Phys = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
 		self:SetObject( iNum + 1, trace.Entity, trace.HitPos, Phys, trace.PhysicsBone, trace.HitNormal )
-		trace.Entity:SetColor(0, 0, 255, 200)
+		trace.Entity:SetColor(Color(0, 0, 255, 200))
 	end
 	return true
 end
@@ -57,7 +57,7 @@ function TOOL:RightClick( trace )
 			local WPos1, WPos2 = self:GetPos(k),		trace.Entity:GetPos()
 			--local LPos1, LPos2 = self:GetLocalPos(k),	self:GetLocalPos(2)
 			local length = ( WPos1 - WPos2):Length()
-			Ent1:SetColor(255, 255, 255, 255) 
+			Ent1:SetColor(Color(255, 255, 255, 255))
 			
 			-- Get client's CVars
 			--local addlength	 = self:GetClientNumber( "addlength" )
@@ -110,7 +110,7 @@ function TOOL:Reload(trace)
 	if iNum > 0 then
 		for k, v in pairs(self.Objects) do
 			local Ent1  = self:GetEnt(k)
-			Ent1:SetColor(255, 255, 255, 255) 
+			Ent1:SetColor(Color(255, 255, 255, 255))
 		end
 	end
 	self:ClearObjects()

@@ -267,7 +267,7 @@ if (SinglePlayer() and SERVER) or (!SinglePlayer() and CLIENT) then --server sid
 		if ( !tool.GhostEntity ) then return end
 		if ( !tool.GhostEntity:IsValid() ) then return end
 		
-		local tr = utilx.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
+		local tr = util.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
 		local trace = util.TraceLine( tr )
 		if (!trace.Hit) then return end
 		

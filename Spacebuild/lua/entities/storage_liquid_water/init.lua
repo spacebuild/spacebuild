@@ -11,8 +11,8 @@ function ENT:Initialize()
 	self.vent = false
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "Vent" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Water", "Max Water" })
+		self.Inputs = Wire_CreateInputs(self, { "Vent" })
+		self.Outputs = Wire_CreateOutputs(self, { "Water", "Max Water" })
 	else
 		self.Inputs = {{Name="Vent"}}
 	end
@@ -32,26 +32,26 @@ end
 function ENT:Damage()
 	if (self.damaged == 0) then
 		self.damaged = 1
-		self.Entity:EmitSound( "PhysicsCannister.ThrusterLoop" )--Change to a new Liquid Vent/Escaping Sound
+		self:EmitSound( "PhysicsCannister.ThrusterLoop" )//Change to a new Liquid Vent/Escaping Sound
 	end
 end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )--Change to a new air Vent/Escaping Sound
+	self:SetColor(Color(255, 255, 255, 255))
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )//Change to a new air Vent/Escaping Sound
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )--Change to a new Liquid Vent/Escaping Sound
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )//Change to a new Liquid Vent/Escaping Sound
 end
 
 function ENT:Leak()
@@ -60,7 +60,7 @@ function ENT:Leak()
 		self:ConsumeResource("water", 100)
 	else
 		self:ConsumeResource("water", coolant)
-		self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )--Change to a new Liquid Vent/Escaping Sound
+		self:StopSound( "PhysicsCannister.ThrusterLoop" )//Change to a new Liquid Vent/Escaping Sound
 	end
 end
 
@@ -68,7 +68,7 @@ function ENT:UpdateMass()
 	local mul = 0.3
 	local div = math.Round(self:GetNetworkCapacity("water")/self.MAXRESOURCE)
 	local mass = self.mass + ((self:GetResourceAmount("water") * mul)/div) -- self.mass = default mass + need a good multiplier
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 		if phys:GetMass() ~= mass then
 			phys:SetMass(mass)
@@ -86,13 +86,13 @@ function ENT:Think()
 		self:UpdateWireOutput()
 	end
 	self:UpdateMass()
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
 function ENT:UpdateWireOutput()
 	local coolant =  self:GetResourceAmount("water")
 	local maxcoolant = self:GetNetworkCapacity("water")
-	Wire_TriggerOutput(self.Entity, "Water", coolant)
-	Wire_TriggerOutput(self.Entity, "Max Water", maxcoolant)
+	Wire_TriggerOutput(self, "Water", coolant)
+	Wire_TriggerOutput(self, "Max Water", maxcoolant)
 end

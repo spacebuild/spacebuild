@@ -9,8 +9,8 @@ function ENT:Initialize()
 	self.vent = false
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "Vent" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Storage", "Max Storage" })
+		self.Inputs = Wire_CreateInputs(self, { "Vent" })
+		self.Outputs = Wire_CreateOutputs(self, { "Storage", "Max Storage" })
 	else
 		self.Inputs = {{Name="Vent"}}
 	end
@@ -42,26 +42,26 @@ function ENT:OnRemove()
 			self.environment:Convert(-1, 2, air)
 		end
 	end
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Damage()
 	if (self.damaged == 0) then
 		self.damaged = 1
-		self.Entity:EmitSound( "PhysicsCannister.ThrusterLoop" )
+		self:EmitSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:SetColor(Color(255, 255, 255, 255))
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -95,7 +95,7 @@ function ENT:Leak()
 				self.environment:Convert(-1, 2, air)
 			end
 		end
-		self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+		self:StopSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
@@ -112,7 +112,7 @@ function ENT:UpdateMass()
 	end
 	local div = math.Round(self:GetNetworkCapacity(self.caf.custom.resource)/self.MAXRESOURCE)
 	local mass = self.mass + ((self:GetResourceAmount(self.caf.custom.resource) * mul)/div) -- self.mass = default mass + need a good multiplier
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 		if phys:GetMass() ~= mass then
 			phys:SetMass(mass)
@@ -137,6 +137,6 @@ end
 function ENT:UpdateWireOutput()
 	local air = self:GetResourceAmount(self.caf.custom.resource)
 	local maxair = self:GetNetworkCapacity(self.caf.custom.resource)
-	Wire_TriggerOutput(self.Entity, "Storage", air)
-	Wire_TriggerOutput(self.Entity, "Max Storage", maxair)
+	Wire_TriggerOutput(self, "Storage", air)
+	Wire_TriggerOutput(self, "Max Storage", maxair)
 end

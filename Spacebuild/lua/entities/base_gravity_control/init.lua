@@ -16,8 +16,8 @@ function ENT:Initialize()
 	self.maxsize = 1024
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On", "Radius", "Gravity" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On", "Gravity" })
+		self.Inputs = Wire_CreateInputs(self, { "On", "Radius", "Gravity" })
+		self.Outputs = Wire_CreateOutputs(self, { "On", "Gravity" })
 	else
 		self.Inputs = {{Name="On"},{Name="Radius"},{Name="Gravity"}}
 	end
@@ -25,21 +25,21 @@ end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
-		self.Entity:EmitSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_start" )
 		self.Active = 1
 		self.sbenvironment.size = self.currentsize
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(1)
 	end
 end
 
 function ENT:TurnOff()
 	if (self.Active == 1) then
-		self.Entity:StopSound( "apc_engine_start" )
-		self.Entity:EmitSound( "apc_engine_stop" )
+		self:StopSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_stop" )
 		self.Active = 0
 		self.sbenvironment.size = 0
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(0)
 	end
 end
@@ -79,19 +79,19 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
-	CAF.GetAddon("Life Support").LS_Destruct( self.Entity, true )
+	CAF.GetAddon("Life Support").LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 end
 
 function ENT:Think()
@@ -106,13 +106,13 @@ function ENT:Think()
 			end
 		end
 		if (self:GetResourceAmount("energy") < math.Round( (Energy_Increment * self:GetMultiplier()) + (Energy_Increment * dif * self:GetMultiplier()))) then
-			self.Entity:EmitSound( "common/warning.wav" )
+			self:EmitSound( "common/warning.wav" )
 			self:TurnOff(true)
 		else
 			self:ConsumeResource("energy", math.Round((Energy_Increment * self:GetMultiplier()) + (Energy_Increment * dif * self:GetMultiplier())))
 		end
 	end
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

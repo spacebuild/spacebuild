@@ -14,7 +14,7 @@ function ENT:Initialize()
 	self.NscoopSpeed = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out"})
+		self.Outputs = Wire_CreateOutputs(self, { "Out"})
 	end
 	self.caf.custom.resource = "hydrogen"
 end
@@ -30,7 +30,7 @@ function ENT:TurnOff()
 	if (self.Active == 1) then
 		self.Active = 0
 		self:SetOOO(0)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", 0) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", 0) end
 	end
 end
 
@@ -43,13 +43,13 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -63,7 +63,7 @@ function ENT:Extract_Energy()
 		end
 	self:SupplyResource(self.caf.custom.resource, inc)
 	end
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", inc) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", inc) end
 end
 
 function ENT:GenEnergy()
@@ -103,8 +103,8 @@ function ENT:Think()
 		end
 		self.thinkcount = 0
 	end
-	if self.Entity:GetParent():IsValid() then  --Determines whether to get local velocity from the Gyropod, or the entity it is parented to, if it exists
-		local par = self.Entity:GetParent()
+	if self:GetParent():IsValid() then  --Determines whether to get local velocity from the Gyropod, or the entity it is parented to, if it exists
+		local par = self:GetParent()
 		local parpos = par:GetPos()
 		local parvel = par:GetVelocity()
 		local speed = par:WorldToLocal(parpos + parvel):Length()
@@ -117,7 +117,7 @@ function ENT:Think()
 			self.NscoopSpeed = speed
 		end	
 	else
-		local ent = self.Entity
+		local ent = self
 		local entpos = ent:GetPos()
 		local entvel = ent:GetVelocity()
 		local speed = ent:WorldToLocal(entpos + entvel):Length()
@@ -130,6 +130,6 @@ function ENT:Think()
 			self.NscoopSpeed = speed
 		end	
 	end
-	self.Entity:NextThink(CurTime() + 0.1)
+	self:NextThink(CurTime() + 0.1)
 	return true
 end

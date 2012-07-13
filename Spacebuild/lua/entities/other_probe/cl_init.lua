@@ -25,7 +25,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			end
 		end
 	end
-	if ( LocalPlayer():GetEyeTrace().Entity == self.Entity and EyePos():Distance( self.Entity:GetPos() ) < rd_overlay_dist and mode ~= 0) then
+	if ( LocalPlayer():GetEyeTrace().Entity == self and EyePos():Distance( self:GetPos() ) < rd_overlay_dist and mode ~= 0) then
 		local trace = LocalPlayer():GetEyeTrace()
 		if ( !bDontDrawModel ) then self:DrawModel() end
 		local nettable = CAF.GetAddon("Resource Distribution").GetEntityTable(self)
@@ -65,13 +65,13 @@ function ENT:DoNormalDraw( bDontDrawModel )
 				OverlayText = OverlayText .. "Temperature: " .. tostring(self:GetNetworkedInt( 6 )).."\n"
 				OverlayText = OverlayText .. "Gravity: " .. tostring(self:GetNetworkedInt( 7 )).."\n"
 			end
-			AddWorldTip( self.Entity:EntIndex(), OverlayText, 0.5, self.Entity:GetPos(), self.Entity  )
+			AddWorldTip( self:EntIndex(), OverlayText, 0.5, self:GetPos(), self  )
 		else
 			local rot = Vector(0,0,90)
 			local TempY = 0
 			
-			--local pos = self.Entity:GetPos() + (self.Entity:GetForward() ) + (self.Entity:GetUp() * 40 ) + (self.Entity:GetRight())
-			local pos = self.Entity:GetPos() + (self.Entity:GetUp() * (self:BoundingRadius( ) + 10))
+			--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
+			local pos = self:GetPos() + (self:GetUp() * (self:BoundingRadius( ) + 10))
 			local angle =  (LocalPlayer():GetPos() - trace.HitPos):Angle()
 			angle.r = angle.r  + 90
 			angle.y = angle.y + 90

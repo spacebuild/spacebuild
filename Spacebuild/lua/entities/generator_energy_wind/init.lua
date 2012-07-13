@@ -13,7 +13,7 @@ function ENT:Initialize()
 	self.thinkcount = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	end
 end
 
@@ -21,9 +21,9 @@ function ENT:TurnOn()
 	if (self.Active == 0) then
 		self.Active = 1
 		self:SetOOO(1)
-		self.sequence = self.Entity:LookupSequence("rotate")
+		self.sequence = self:LookupSequence("rotate")
 		if self.sequence and self.sequence ~= -1 then
-			self.Entity:SetSequence(self.sequence)
+			self:SetSequence(self.sequence)
 			self:ResetSequence(self.sequence)
 			self:SetPlaybackRate( 1 )
 		end
@@ -34,13 +34,13 @@ function ENT:TurnOff()
 	if (self.Active == 1) then
 		self.Active = 0
 		self:SetOOO(0)
-		self.sequence = self.Entity:LookupSequence("idle")
+		self.sequence = self:LookupSequence("idle")
 		if self.sequence and self.sequence ~= -1 then
-			self.Entity:SetSequence(self.sequence)
+			self:SetSequence(self.sequence)
 			self:ResetSequence(self.sequence)
 			self:SetPlaybackRate( 1 )
 		end
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", 0) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", 0) end
 	end
 end
 
@@ -53,13 +53,13 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -79,9 +79,9 @@ function ENT:Extract_Energy()
 			--if (inc > Energy_Increment) then inc = Energy_Increment end
 			einc = math.ceil(einc * self:GetMultiplier())
 			self:SupplyResource("energy", einc)
-			if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", einc) end
+			if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", einc) end
 		else
-			if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", 0) end
+			if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", 0) end
 		end
 	end
 	
@@ -130,6 +130,6 @@ function ENT:Think()
 		end
 		self.thinkcount = 0
 	end
-	self.Entity:NextThink(CurTime() + 0.1)
+	self:NextThink(CurTime() + 0.1)
 	return true
 end

@@ -1,4 +1,17 @@
---Variable Declarations
+local gmod_version_required = 150;
+if ( VERSION < gmod_version_required ) then
+	error("CAF: Your gmod is out of date: found version ", VERSION, "required ", gmod_version_required)
+end
+
+local net = net
+
+local net_pools = {"CAF_Addon_Destruct", "CAF_Addon_Destruct", "CAF_Start_true", "CAF_Start_false", "CAF_Addon_POPUP"};
+for _, v in pairs(net_pools) do
+    print("Pooling ", v, " for net library");
+    util.AddNetworkString(v)
+end
+
+-- Variable Declarations
 local CAF2 = {}
 CAF = CAF2;
 local CAF3 = {}
@@ -129,9 +142,9 @@ end
 
 local function  OnAddonDestruct(name)
 	if not name then return end
-	umsg.Start("CAF_Addon_Destruct")
-		umsg.String(name)
-	umsg.End()
+	net.Start("CAF_Addon_Destruct")
+		net.WriteString(name)
+	net.Broadcast()
 	if not CAF2.StartingUp then
 		for k , v in pairs(hooks["OnAddonDestruct"]) do
 			local ok, err = pcall(v, name)
@@ -144,11 +157,9 @@ end
 
 local function OnAddonConstruct(name)
 	if not name then return end
-	--for k, ply in pairs(player.GetAll( )) do
-		umsg.Start("CAF_Addon_Construct")--, ply
-			umsg.String(name)
-		umsg.End()
-	--end
+    net.Start("CAF_Addon_Construct")
+        net.WriteString(name)
+    net.Broadcast()
 	if not CAF2.StartingUp then
 		for k , v in pairs(hooks["OnAddonConstruct"]) do
 			local ok, err = pcall(v, name)
@@ -253,8 +264,8 @@ end
 function CAF2.Start()
 	Msg("Starting CAF Addons\n");
 	CAF2.StartingUp = true
-	umsg.Start("CAF_Start_true")
-	umsg.End()
+	net.Start("CAF_Start_true")
+	net.Broadcast()
 	CAF2.AddServerTag("CAF")
 	for level, tab in pairs(addonlevel) do
 		print("Loading Level "..tostring(level).." Addons\n")
@@ -301,8 +312,8 @@ function CAF2.Start()
 		end
 	end
 	CAF2.StartingUp = false
-	umsg.Start("CAF_Start_false")
-	umsg.End()
+	net.Start("CAF_Start_false")
+	net.End()
 end
 hook.Add( "InitPostEntity", "CAF_Start", CAF2.Start)
 
@@ -396,13 +407,15 @@ function CAF2.PlayerSpawn(ply)
 	ply:ChatPrint("Report any bugs during the beta on http://www.snakesvx.net\n")
 	
 	ply:ChatPrint("\n\nIf you have any suggestions for future versions of CAF, SB, LS, RD, ... please report them on http://www.snakesvx.net\n\n")
-	for k, v in pairs(Addons) do
-		if v.GetStatus and v.GetStatus() then
-			umsg.Start("CAF_Addon_Construct", ply)
-				umsg.String(k)
-			umsg.End()
+	timer.Simple(1, function()
+		for k, v in pairs(Addons) do
+			if v.GetStatus and v.GetStatus() then
+                net.Start("CAF_Addon_Construct", ply)
+                    net.WriteString(k)
+                net.Broadcast()
+			end
 		end
-	end
+	end)
 	
 	ply:ChatPrint("\n\nNOTE: If you encounter any issues with RD3.1 (alpha) report them on http://www.snakesvx.net!!!!!\n\n")
 end
@@ -423,15 +436,15 @@ function CAF2.POPUP(ply, msg, location, color, displaytime)
 		location = location or "top"
 		color = color or CAF2.colors.white
 		displaytime = displaytime or 1
-		umsg.Start("CAF_Addon_POPUP", ply)
-			umsg.String(msg)
-			umsg.String(location)
-			umsg.Short(color.r)
-			umsg.Short(color.g)
-			umsg.Short(color.b)
-			umsg.Short(color.a)
-			umsg.Short(displaytime)
-		umsg.End()
+		net.Start("CAF_Addon_POPUP", ply)
+			net.WriteString(msg)
+			net.WriteString(location)
+			net.WriteUInt(color.r, 8)
+			net.WriteUInt(color.g, 8)
+			net.WriteUInt(color.b, 8)
+			net.WriteUInt(color.a, 8)
+			net.WriteUInt(displaytime, 16)
+		net.Broadcast()
 	end
 end
 
@@ -467,7 +480,7 @@ CAF = CAF2
 
 --Core files
 
-local Files = file.FindInLua( "CAF/Core/server/*.lua" )
+local Files = file.Find( "CAF/Core/server/*.lua" , LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Loading: "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Core/server/"..File)
@@ -478,7 +491,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.FindInLua("CAF/Core/client/*.lua")
+Files = file.Find("CAF/Core/client/*.lua", LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Core/client/"..File)
@@ -489,7 +502,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.FindInLua("CAF/Core/shared/*.lua")
+Files = file.Find("CAF/Core/shared/*.lua", LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Core/shared/"..File)
@@ -500,7 +513,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.FindInLua("CAF/LanguageVars/*.lua")
+Files = file.Find("CAF/LanguageVars/*.lua", LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/LanguageVars/"..File)
@@ -522,7 +535,7 @@ for k, File in ipairs(Files) do
 end
 
 --Main Addon
-local Files = file.FindInLua( "CAF/Addons/server/*.lua" )
+local Files = file.Find( "CAF/Addons/server/*.lua" , LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Loading: "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Addons/server/"..File)
@@ -533,7 +546,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.FindInLua("CAF/Addons/client/*.lua")
+Files = file.Find("CAF/Addons/client/*.lua", LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Addons/client/"..File)
@@ -544,7 +557,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.FindInLua("CAF/Addons/shared/*.lua")
+Files = file.Find("CAF/Addons/shared/*.lua", LUA_PATH)
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Addons/shared/"..File)

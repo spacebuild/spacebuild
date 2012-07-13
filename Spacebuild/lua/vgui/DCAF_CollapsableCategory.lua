@@ -107,7 +107,7 @@ function PANEL:Setup( name, addon )
 	end
 end
 
-function PANEL:Paint()
+function PANEL:Paint(w, h)
 	
 	if ( !self.Material ) then return end
 	surface.SetDrawColor( 255, 255, 255, 255 )
@@ -177,19 +177,10 @@ end
 /*---------------------------------------------------------
 	Paint
 ---------------------------------------------------------*/
-function PANEL:Paint()
+function PANEL:Paint(w, h)
 
-	derma.SkinHook( "Paint", "CollapsibleCategory", self )
+	derma.SkinHook( "Paint", "CollapsibleCategory", self , w, h)
 	return false
-
-end
-
-/*---------------------------------------------------------
-   Name: ApplySchemeSettings
----------------------------------------------------------*/
-function PANEL:ApplySchemeSettings()
-
-	derma.SkinHook( "Scheme", "CollapsibleCategory", self )
 
 end
 

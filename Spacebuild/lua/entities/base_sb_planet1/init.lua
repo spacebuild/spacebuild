@@ -4,9 +4,9 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
-	self.Entity:PhysicsInit( SOLID_NONE )
-	self.Entity:SetMoveType( MOVETYPE_NONE )
-	self.Entity:SetSolid( SOLID_NONE )
+	self:PhysicsInit( SOLID_NONE )
+	self:SetMoveType( MOVETYPE_NONE )
+	self:SetSolid( SOLID_NONE )
 	self.sbenvironment.temperature2 = 0
 	self.sbenvironment.sunburn = false
 	self.sbenvironment.unstable = false
@@ -200,7 +200,7 @@ end
 
 function ENT:Think()
 	self:Unstable()
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

@@ -57,7 +57,7 @@ end
 function CAFToolSetup.RegEnts()
 	if not TOOL.DevSelect then return end
 	
-	local t_devicefiles = file.FindInLua("CAF/Stools/"..TOOL.Mode.."/*.lua")
+	local t_devicefiles = file.Find("CAF/Stools/"..TOOL.Mode.."/*.lua", LUA_PATH)
 	if t_devicefiles then
 		MsgN("CAF Tool: Loading device defs")
 		
@@ -199,9 +199,9 @@ function CAFToolSetup.MakeCP()
 			tree:SetTall( 400 )
 			
 			function tree:CAFSort(asc)
-				if not self.Items then return end
+				if not self.RootNode or not self.RootNode:HasChildren() then return end
 				if not asc then asc = false end
-				table.sort( self.Items, function( a, b )  
+				table.sort( self.RootNode.ChildNodes:GetChildren(), function( a, b )  
  					if ( asc ) then 
  						local ta = a 
  						local tb = b 
@@ -228,16 +228,13 @@ function CAFToolSetup.MakeCP()
 			for _, devlist in pairs(self.Devices) do
 				if not devlist.hide then
 					
-					local node = tree:AddNode(devlist.Name)
+					local node = tree:AddNode(devlist.Name, devlist.icon)
 					node.caftext = devlist.Name
 					node.var_type = devlist.type
-					if devlist.icon then
-						node.Icon:SetImage(devlist.icon)
-					end
 					function node:CAFSort(asc)
-						if not self.ChildNodes.Items then return end
+						if not self:HasChildren() then return end
 						if not asc then asc = false end
-						table.sort( self.ChildNodes.Items, function( a, b )  
+						table.sort( self.ChildNodes:GetChildren(), function( a, b )  
 		 					if ( asc ) then 
 		 						local ta = a 
 		 						local tb = b 
@@ -253,7 +250,7 @@ function CAFToolSetup.MakeCP()
 					for _, dev in pairs(devlist.devices) do
 						if not dev.hide then
 							
-							local cnode = node:AddNode(dev.Name)
+							local cnode = node:AddNode(dev.Name, dev.icon or "gui/silkicons/newspaper")
 							cnode.caftext 		= dev.Name
 							cnode.var_model		= dev.model
 							util.PrecacheModel(dev.model)
@@ -271,17 +268,10 @@ function CAFToolSetup.MakeCP()
 								RunConsoleCommand( ccv_type, btn.var_type )
 								RunConsoleCommand( ccv_sub_type, btn.var_sub_type )
 							end
-							
-							if dev.icon then
-								cnode.Icon:SetImage(dev.icon)
-							else
-								cnode.Icon:SetImage("gui/silkicons/newspaper")
-							end
-							
 						end
 					end
 					node:CAFSort(true)
-					node:ExpandRecurse(false)
+					--node:ExpandRecurse(false)
 				end	
 			end
 			tree:CAFSort(true)
@@ -481,8 +471,8 @@ function CAFTool.UpdateGhost( self, ent )
         return
     end
 
-	local tr 		= utilx.GetPlayerTrace( self:GetOwner(), self:GetOwner():GetCursorAimVector() )
-	local trace 	= util.TraceLine( tr )
+	local tr = util.GetPlayerTrace( self:GetOwner(), self:GetOwner():GetCursorAimVector() )
+    local trace = util.TraceLine( tr )
 	if (not trace.Hit) then
         return
     end

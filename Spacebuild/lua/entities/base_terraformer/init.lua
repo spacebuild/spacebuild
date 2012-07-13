@@ -19,8 +19,8 @@ function ENT:Initialize()
 	self.Multiplier = 1
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On", "Overdrive", "Mute", "Multiplier" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, {"On", "Overdrive", "EnergyUsage", "GasProduction" })
+		self.Inputs = Wire_CreateInputs(self, { "On", "Overdrive", "Mute", "Multiplier" })
+		self.Outputs = Wire_CreateOutputs(self, {"On", "Overdrive", "EnergyUsage", "GasProduction" })
 	else
 		self.Inputs = {{Name="On"},{Name="Overdrive"}}
 	end
@@ -54,10 +54,10 @@ concommand.Add( "TFTurnOff", TurnOffPump )
 function ENT:TurnOn()
 	if (self.Active == 0) then
 		if (self.Mute == 0) then
-			self.Entity:EmitSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_idle" )
 		end
 		self.Active = 1
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(1)
 	elseif ( self.overdrive == 0 ) then
 		self:TurnOnOverdrive()
@@ -67,13 +67,13 @@ end
 function ENT:TurnOff()
 	if (self.Active == 1) then
 		if (self.Mute == 0) then
-			self.Entity:StopSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "Airboat_engine_stop" )
-			self.Entity:StopSound( "apc_engine_start" )
+			self:StopSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_stop" )
+			self:StopSound( "apc_engine_start" )
 		end
 		self.Active = 0
 		self.overdrive = 0
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(0)
 	end
 end
@@ -81,26 +81,26 @@ end
 function ENT:TurnOnOverdrive()
 	if ( self.Active == 1 ) then
 		if (self.Mute == 0) then
-			self.Entity:StopSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "apc_engine_start" )
+			self:StopSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_idle" )
+			self:EmitSound( "apc_engine_start" )
 		end
 		self:SetOOO(2)
 		self.overdrive = 1
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Overdrive", self.overdrive) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Overdrive", self.overdrive) end
 	end
 end
 
 function ENT:TurnOffOverdrive()
 	if ( self.Active == 1 and self.overdrive == 1) then
 		if (self.Mute == 0) then
-			self.Entity:StopSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "Airboat_engine_idle" )
-			self.Entity:StopSound( "apc_engine_start" )
+			self:StopSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_idle" )
+			self:StopSound( "apc_engine_start" )
 		end
 		self:SetOOO(1)
 		self.overdrive = 0
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Overdrive", self.overdrive) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Overdrive", self.overdrive) end
 	end	
 end
 
@@ -146,19 +146,19 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "Airboat_engine_idle" )
+	self:StopSound( "Airboat_engine_idle" )
 end
 
 function ENT:Think()
@@ -166,6 +166,6 @@ function ENT:Think()
 	if ( self.Active == 1 ) then
 		-- CODE TO IMPROVE A PLANET HERE!!
 	end
-	self.Entity:NextThink( CurTime() + 1 )
+	self:NextThink( CurTime() + 1 )
 	return true
 end

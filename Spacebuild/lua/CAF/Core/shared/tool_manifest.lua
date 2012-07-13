@@ -7,7 +7,7 @@ MsgN("Loading CAF Tools")
 
 include( "tool_helpers.lua" )
 
-for key, val in pairs(file.FindInLua("CAF/Stools/*.lua")) do
+for key, val in pairs(file.Find("CAF/Stools/*.lua", LUA_PATH)) do
 	local _,_,s_toolmode = string.find( val, "([%w_]*)\.lua" )
 	
 	MsgN("\tloading stool: ",val)

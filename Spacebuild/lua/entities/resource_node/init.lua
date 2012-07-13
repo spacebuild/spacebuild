@@ -6,9 +6,9 @@ include('shared.lua')
 
 function ENT:Initialize()
 	--self.BaseClass.Initialize(self) --use this in all ents
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
 	self.netid = CAF.GetAddon("Resource Distribution").CreateNetwork(self)
 	self:SetNetworkedInt( "netid", self.netid )
 	self:SetNetworkedInt( "overlaymode", 2 )
@@ -42,11 +42,11 @@ end
 function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
 	if self.Shield then
 		self.Shield:ShieldDamage(DmgInfo:GetDamage())
-		CDS_ShieldImpact(self.Entity:GetPos())
+		CDS_ShieldImpact(self:GetPos())
 		return
 	end
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").DamageLS(self.Entity, DmgInfo:GetDamage())
+		CAF.GetAddon("Life Support").DamageLS(self, DmgInfo:GetDamage())
 	end
 end
 
@@ -85,7 +85,7 @@ function ENT:Think()
 			end
 		end
 	end
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
@@ -93,22 +93,22 @@ end
 function ENT:OnRemove()
 	CAF.GetAddon("Resource Distribution").UnlinkAllFromNode(self.netid)
 	CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
-	if not (WireAddon == nil) then Wire_Remove(self.Entity) end
+	if not (WireAddon == nil) then Wire_Remove(self) end
 end
 
 function ENT:OnRestore()
 	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
-	if not (WireAddon == nil) then Wire_Restored(self.Entity) end
+	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
 	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
 	local RD = CAF.GetAddon("Resource Distribution")
-	RD.BuildDupeInfo(self.Entity)
+	RD.BuildDupeInfo(self)
 	if not (WireAddon == nil) then
-		local DupeInfo = WireLib.BuildDupeInfo(self.Entity)
+		local DupeInfo = WireLib.BuildDupeInfo(self)
 		if DupeInfo then
-			duplicator.StoreEntityModifier( self.Entity, "WireDupeInfo", DupeInfo )
+			duplicator.StoreEntityModifier( self, "WireDupeInfo", DupeInfo )
 		end
 	end
 end

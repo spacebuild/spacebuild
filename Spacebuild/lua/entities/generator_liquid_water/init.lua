@@ -19,8 +19,8 @@ function ENT:Initialize()
 	self.Multiplier = 1
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On", "Overdrive", "Mute", "Multiplier" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, {"On", "Overdrive", "EnergyUsage", "WaterProduction" })
+		self.Inputs = Wire_CreateInputs(self, { "On", "Overdrive", "Mute", "Multiplier" })
+		self.Outputs = Wire_CreateOutputs(self, {"On", "Overdrive", "EnergyUsage", "WaterProduction" })
 	else
 		self.Inputs = {{Name="On"},{Name="Overdrive"}}
 	end
@@ -29,13 +29,13 @@ end
 function ENT:TurnOn()
 	if (self.Active == 0) then
 		if (self.Mute == 0) then
-			self.Entity:EmitSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_idle" )
 		end
 		self.Active = 1
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
-		self.sequence = self.Entity:LookupSequence("walk")
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
+		self.sequence = self:LookupSequence("walk")
 		if self.sequence and self.sequence ~= -1 then
-			self.Entity:SetSequence(self.sequence)
+			self:SetSequence(self.sequence)
 			self:ResetSequence(self.sequence)
 			self:SetPlaybackRate( 1 )
 		end
@@ -48,17 +48,17 @@ end
 function ENT:TurnOff()
 	if (self.Active == 1) then
 		if (self.Mute == 0) then
-			self.Entity:StopSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "Airboat_engine_stop" )
-			self.Entity:StopSound( "apc_engine_start" )
+			self:StopSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_stop" )
+			self:StopSound( "apc_engine_start" )
 		end
 		self.Active = 0
 		self.overdrive = 0
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(0)
-		self.sequence = self.Entity:LookupSequence("idle")
+		self.sequence = self:LookupSequence("idle")
 		if self.sequence and self.sequence ~= -1 then
-			self.Entity:SetSequence(self.sequence)
+			self:SetSequence(self.sequence)
 			self:ResetSequence(self.sequence)
 			self:SetPlaybackRate( 1 )
 		end
@@ -68,26 +68,26 @@ end
 function ENT:TurnOnOverdrive()
 	if ( self.Active == 1 ) then
 		if (self.Mute == 0) then
-			self.Entity:StopSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "apc_engine_start" )
+			self:StopSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_idle" )
+			self:EmitSound( "apc_engine_start" )
 		end
 		self:SetOOO(2)
 		self.overdrive = 1
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Overdrive", self.overdrive) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Overdrive", self.overdrive) end
 	end
 end
 
 function ENT:TurnOffOverdrive()
 	if ( self.Active == 1 and self.overdrive == 1) then
 		if (self.Mute == 0) then
-			self.Entity:StopSound( "Airboat_engine_idle" )
-			self.Entity:EmitSound( "Airboat_engine_idle" )
-			self.Entity:StopSound( "apc_engine_start" )
+			self:StopSound( "Airboat_engine_idle" )
+			self:EmitSound( "Airboat_engine_idle" )
+			self:StopSound( "apc_engine_start" )
 		end
 		self:SetOOO(1)
 		self.overdrive = 0
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Overdrive", self.overdrive) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Overdrive", self.overdrive) end
 	end	
 end
 
@@ -151,19 +151,19 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "Airboat_engine_idle" )
+	self:StopSound( "Airboat_engine_idle" )
 end
 
 function ENT:Pump_Water()
@@ -176,7 +176,7 @@ function ENT:Pump_Water()
 		waterlevel = self:WaterLevel()
 	end
 	einc = (math.ceil(einc * self:GetMultiplier())) * self.Multiplier
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "EnergyUsage", math.Round(einc)) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "EnergyUsage", math.Round(einc)) end
 	if (waterlevel > 0 and energy >= einc) then --seems to be problem when welding(/freezing when not with CAF)
 		local winc = (math.ceil(Pressure_Increment * (waterlevel / 3))) * self.Multiplier --Base water generation on the amount it is in the water
 		
@@ -194,7 +194,7 @@ function ENT:Pump_Water()
 		winc = math.ceil(winc * self:GetMultiplier())
 		self:ConsumeResource("energy", einc)
 		self:SupplyResource("water", winc)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "WaterProduction", math.Round(winc)) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "WaterProduction", math.Round(winc)) end
 	else
 		self:TurnOff()
 	end
@@ -214,7 +214,7 @@ function ENT:Think()
 		if ( self.Active == 1 ) then self:Pump_Water() end
 		self.thinkcount = 0
 	end
-	self.Entity:NextThink( CurTime() + 0.1 )
+	self:NextThink( CurTime() + 0.1 )
 	return true
 end
 

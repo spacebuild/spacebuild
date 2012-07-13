@@ -192,12 +192,12 @@ function LS.GetCustomStatus()
 end
 
 function LS.AddResourcesToSend()
-	--[[local list = file.Find("models/props_phx/life_support/*.mdl")
+	--[[local list = file.Find("models/props_phx/life_support/*.mdl", "GAME")
 	PrintTable(list)
 	for k,v in pairs(list) do
 		resource.AddFile("models/props_phx/life_support/"..v)
 	end	
-	list = file.Find("materials/props_phx/life_support/*.vtf")
+	list = file.Find("materials/props_phx/life_support/*.vtf", "GAME")
 	PrintTable(list) 
 	for k,v in pairs(list) do
 		resource.AddFile("materials/props_phx/life_support/"..v)
@@ -308,7 +308,7 @@ end
 function LS.ColorDamage(ent, HP, Col)
 	if not ent or not HP or not Col or not ValidEntity(ent) then return end
 	if (ent:Health() <= (ent:GetMaxHealth( ) / HP)) then
-		ent:SetColor(Col, Col, Col, 255)
+		ent:SetColor(Color(Col, Col, Col, 255))
 	end
 end
 
@@ -331,7 +331,7 @@ function LS.DamageLS(ent, dam)
 		LS.ColorDamage(ent, 6, 100)
 		LS.ColorDamage(ent, 7, 75)
 		if (ent:Health( ) <= 0) then
-			ent:SetColor(50, 50, 50, 255)
+			ent:SetColor(Color(50, 50, 50, 255))
 			if ent.Destruct then
 				ent:Destruct()
 			else

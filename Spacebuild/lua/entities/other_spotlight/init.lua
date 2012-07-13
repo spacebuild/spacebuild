@@ -14,8 +14,8 @@ function ENT:Initialize()
 	self.flashlight = nil
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "On" })
 	else
 		self.Inputs = {{Name="On"}}
 	end
@@ -23,20 +23,20 @@ end
 
 function ENT:TurnOn()
 	if self.Active == 0 then
-		self.Entity:EmitSound( "Buttons.snd17" )
+		self:EmitSound( "Buttons.snd17" )
 		self.Active = 1
 		self:SetOOO(1)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 1) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
 	end
 end
 
 function ENT:TurnOff(warn)
 	if self.Active == 1 then
-		if (!warn) then self.Entity:EmitSound( "Buttons.snd17" ) end
+		if (!warn) then self:EmitSound( "Buttons.snd17" ) end
 		self.Active = 0
 		self:SetOOO(0)
 		if not (WireAddon == nil) then
-			Wire_TriggerOutput(self.Entity, "On", 0)
+			Wire_TriggerOutput(self, "On", 0)
 		end
 	end
 end
@@ -57,13 +57,13 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -72,7 +72,7 @@ function ENT:Think()
 	
 	if (self.Active == 1) then
 		if (self:GetResourceAmount("energy") < Energy_Increment) then
-			self.Entity:EmitSound( "common/warning.wav" )
+			self:EmitSound( "common/warning.wav" )
 			self:TurnOff(true)
 		else
 			self:ConsumeResource("energy", Energy_Increment)
@@ -80,10 +80,10 @@ function ENT:Think()
 	end
 	if self.Active == 1 and not self.flashlight then
 		--self:SetOn(true)
-		local angForward = self.Entity:GetAngles() + Angle( 0, 0, 0 )
+		local angForward = self:GetAngles() + Angle( 0, 0, 0 )
 
 		self.flashlight = ents.Create( "env_projectedtexture" )
-		self.flashlight:SetParent( self.Entity )
+		self.flashlight:SetParent( self )
 
 		-- The local positions are the offsets from parent..
 		self.flashlight:SetLocalPos( Vector( 0, 0, 0 ) )
@@ -105,7 +105,7 @@ function ENT:Think()
 		SafeRemoveEntity( self.flashlight )
 		self.flashlight = nil
 	end
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

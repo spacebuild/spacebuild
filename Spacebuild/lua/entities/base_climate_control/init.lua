@@ -17,8 +17,8 @@ function ENT:Initialize()
 	self.maxO2Level = 100
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On", "Radius", "Gravity", "Max O2 level" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On", "Oxygen-Level", "Temperature", "Gravity" })
+		self.Inputs = Wire_CreateInputs(self, { "On", "Radius", "Gravity", "Max O2 level" })
+		self.Outputs = Wire_CreateOutputs(self, { "On", "Oxygen-Level", "Temperature", "Gravity" })
 	else
 		self.Inputs = {{Name="On"},{Name="Radius"},{Name="Gravity"},{Name="Max O2 level"}}
 	end
@@ -26,10 +26,10 @@ end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
-		self.Entity:EmitSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_start" )
 		self.Active = 1
-		self:UpdateSize(self.Entity.sbenvironment.size, self.currentsize) --We turn the forcefield that contains the environment on
-		/*if self.environment and not self.environment:IsSpace() then --Fill the environment with air if the surounding environment has o2, replace with CO2
+		self:UpdateSize(self.sbenvironment.size, self.currentsize) //We turn the forcefield that contains the environment on
+		/*if self.environment and not self.environment:IsSpace() then //Fill the environment with air if the surounding environment has o2, replace with CO2
 			self.sbenvironment.air.o2 = self.sbenvironment.air.o2 + self.environment:Convert(0, -1, math.Round(self.sbenvironment.air.max/18))
 			self.sbenvironment.air.empty = self.sbenvironment.air.empty - self.sbenvironment.air.o2
 		end*/
@@ -44,15 +44,15 @@ function ENT:TurnOn()
 			self.sbenvironment.air.empty = self.sbenvironment.air.empty - self.sbenvironment.air.o2
 		end]]
 		self:ConsumeResource("energy", math.ceil(self.sbenvironment.size / self.maxsize) * 200 * math.ceil(self.maxsize/1024))
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(1)
 	end
 end
 
 function ENT:TurnOff()
 	if (self.Active == 1) then
-		self.Entity:StopSound( "apc_engine_start" )
-		self.Entity:EmitSound( "apc_engine_stop" )
+		self:StopSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_stop" )
 		self.Active = 0
 		if self.environment then --flush all resources into the environment if we are in one (used for the slownes of the SB updating process, we don't want errors do we?)
 			if self.sbenvironment.air.o2 > 0 then
@@ -73,8 +73,8 @@ function ENT:TurnOff()
 			end
 		end
 		self.sbenvironment.temperature = 0
-		self:UpdateSize(self.Entity.sbenvironment.size, 0) --We turn the forcefield that contains the environment off!
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		self:UpdateSize(self.sbenvironment.size, 0) //We turn the forcefield that contains the environment off!
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 		self:SetOOO(0)
 	end
 end
@@ -85,12 +85,12 @@ function ENT:TriggerInput(iname, value)
 	elseif (iname == "Radius") then
 		if value >= 0 and value < self.maxsize then
 			if self.Active == 1 then
-				self:UpdateSize(self.Entity.sbenvironment.size, value)
+				self:UpdateSize(self.sbenvironment.size, value)
 			end
 			self.currentsize = value
 		else
 			if self.Active == 1 then
-				self:UpdateSize(self.Entity.sbenvironment.size, self.maxsize) --Default value
+				self:UpdateSize(self.sbenvironment.size, self.maxsize) //Default value
 			end
 			self.currentsize = self.maxsize
 		end
@@ -118,19 +118,19 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	GAMEMODE:RemoveEnvironment(self)
-	CAF.GetAddon("Life Support").LS_Destruct( self.Entity, true )
+	CAF.GetAddon("Life Support").LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	GAMEMODE:RemoveEnvironment(self)
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 end
 
 function ENT:UpdateSize(oldsize, newsize)
@@ -407,16 +407,16 @@ function ENT:Climate_Control()
 		end
 	end
 	if not (WireAddon == nil) then
-		Wire_TriggerOutput(self.Entity, "Oxygen-Level", tonumber(self:GetO2Percentage()))
-		Wire_TriggerOutput(self.Entity, "Temperature", tonumber(self.sbenvironment.temperature))
-		Wire_TriggerOutput(self.Entity, "Gravity", tonumber(self.sbenvironment.gravity))
+		Wire_TriggerOutput(self, "Oxygen-Level", tonumber(self:GetO2Percentage()))
+		Wire_TriggerOutput(self, "Temperature", tonumber(self.sbenvironment.temperature))
+		Wire_TriggerOutput(self, "Gravity", tonumber(self.sbenvironment.gravity))
 	end
 end
 
 function ENT:Think()
 	self.BaseClass.Think(self)
 	self:Climate_Control()
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

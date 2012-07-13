@@ -15,7 +15,7 @@ function SB_Brush_Environment_Load_Base_Func_Extensions1(ENT) -- HAKZ! HAKZ! HAK
 	end
 
 	function ENT:Unstable()
-		if self.Entity.sbenvironment.unstable then
+		if self.sbenvironment.unstable then
 			--Add some unstable planet shake thingy code here
 		end
 	end
@@ -26,7 +26,7 @@ function SB_Brush_Environment_Load_Base_Func_Extensions1(ENT) -- HAKZ! HAKZ! HAK
 
 	function ENT:Think()
 		self:Unstable()
-		self.Entity:NextThink(CurTime() + 1)
+		self:NextThink(CurTime() + 1)
 		return true
 	end
 

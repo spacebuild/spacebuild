@@ -9,8 +9,8 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	else
 		self.Inputs = {{Name="On"}}
 	end
@@ -134,19 +134,19 @@ end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
-		self.Entity:EmitSound( self.startsound )
+		self:EmitSound( self.startsound )
 		self.Active = 1
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", self.Active) end
 		self:SetOOO(1)
 	end
 end
 
 function ENT:TurnOff()
 	if (self.Active == 1) then
-		self.Entity:StopSound( self.startsound )
-		self.Entity:EmitSound( self.stopsound )
+		self:StopSound( self.startsound )
+		self:EmitSound( self.stopsound )
 		self.Active = 0
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", self.Active) end
 		self:SetOOO(0)
 	end
 end
@@ -196,18 +196,18 @@ end
 --check
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 --check 
 function ENT:Destruct()
-	CAF.GetAddon("Life Support"):LS_Destruct( self.Entity, true )
+	CAF.GetAddon("Life Support"):LS_Destruct( self, true )
 end
 
 --check
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 	CAF.GetAddon("Life Support").RemoveAirRegulator(self)
 end

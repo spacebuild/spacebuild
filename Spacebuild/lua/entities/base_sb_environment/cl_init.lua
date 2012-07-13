@@ -13,11 +13,11 @@ function ENT:Draw( bDontDrawModel )
 	if CAF then
 		local RD = CAF.GetAddon("Resource Distribution")
 		if RD then
-			RD.Beam_Render( self.Entity )
+			RD.Beam_Render( self )
 		end
 	end
 	if (Wire_Render) then
-		Wire_Render(self.Entity)
+		Wire_Render(self)
 	end
 end
 
@@ -53,9 +53,9 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			end
 		end
 	end
-	if RD and ( LocalPlayer():GetEyeTrace().Entity == self.Entity and EyePos():Distance( self.Entity:GetPos() ) < rd_overlay_dist and mode ~= 0) then
+	if RD and ( LocalPlayer():GetEyeTrace().Entity == self and EyePos():Distance( self:GetPos() ) < rd_overlay_dist and mode ~= 0) then
 		--overlaysettings
-		local OverlaySettings = list.Get( "LSEntOverlayText" )[self.Entity:GetClass()]
+		local OverlaySettings = list.Get( "LSEntOverlayText" )[self:GetClass()]
 		local HasOOO = OverlaySettings.HasOOO
 		local num = OverlaySettings.num or 0
 		local strings = OverlaySettings.strings
@@ -106,13 +106,13 @@ function ENT:DoNormalDraw( bDontDrawModel )
 					end
 				end
 			end
-			AddWorldTip( self.Entity:EntIndex(), OverlayText, 0.5, self.Entity:GetPos(), self.Entity  )
+			AddWorldTip( self:EntIndex(), OverlayText, 0.5, self:GetPos(), self  )
 		else
 			local rot = Vector(0,0,90)
 			local TempY = 0
 			
-			--local pos = self.Entity:GetPos() + (self.Entity:GetForward() ) + (self.Entity:GetUp() * 40 ) + (self.Entity:GetRight())
-			local pos = self.Entity:GetPos() + (self.Entity:GetUp() * (self:BoundingRadius( ) + 10))
+			--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
+			local pos = self:GetPos() + (self:GetUp() * (self:BoundingRadius( ) + 10))
 			local angle =  (LocalPlayer():GetPos() - trace.HitPos):Angle()
 			angle.r = angle.r  + 90
 			angle.y = angle.y + 90
@@ -223,7 +223,7 @@ end
 
 if Wire_UpdateRenderBounds then
 	function ENT:Think()
-		Wire_UpdateRenderBounds(self.Entity)
-		self.Entity:NextThink(CurTime() + 3)
+		Wire_UpdateRenderBounds(self)
+		self:NextThink(CurTime() + 3)
 	end
 end

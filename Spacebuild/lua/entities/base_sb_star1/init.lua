@@ -4,9 +4,9 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
-	self.Entity:PhysicsInit( SOLID_NONE )
-	self.Entity:SetMoveType( MOVETYPE_NONE )
-	self.Entity:SetSolid( SOLID_NONE )
+	self:PhysicsInit( SOLID_NONE )
+	self:SetMoveType( MOVETYPE_NONE )
+	self:SetSolid( SOLID_NONE )
 	self:SetNotSolid(true)
 	self:DrawShadow(false)
 	if CAF then

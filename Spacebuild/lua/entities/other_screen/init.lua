@@ -102,8 +102,8 @@ function ENT:Initialize()
 	self.resources = {}
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "On" })
 	else
 		self.Inputs = {{Name="On"},{Name="Overdrive"}}
 	end
@@ -112,20 +112,20 @@ end
 
 function ENT:TurnOn()
 	if self.Active == 0 then
-		self.Entity:EmitSound( "Buttons.snd17" )
+		self:EmitSound( "Buttons.snd17" )
 		self.Active = 1
 		self:SetOOO(1)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 1) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
 	end
 end
 
 function ENT:TurnOff(warn)
 	if self.Active == 1 then
-		if (!warn) then self.Entity:EmitSound( "Buttons.snd17" ) end
+		if (!warn) then self:EmitSound( "Buttons.snd17" ) end
 		self.Active = 0
 		self:SetOOO(0)
 		if not (WireAddon == nil) then
-			Wire_TriggerOutput(self.Entity, "On", 0)
+			Wire_TriggerOutput(self, "On", 0)
 		end
 	end
 end
@@ -157,13 +157,13 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -172,14 +172,14 @@ function ENT:Think()
 	
 	if (self.Active == 1) then
 		if (self:GetResourceAmount("energy") < math.Round(Energy_Increment * self:GetMultiplier())) then
-			self.Entity:EmitSound( "common/warning.wav" )
+			self:EmitSound( "common/warning.wav" )
 			self:TurnOff(true)
 		else
 			self:ConsumeResource("energy", math.Round(Energy_Increment * self:GetMultiplier()))
 		end
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

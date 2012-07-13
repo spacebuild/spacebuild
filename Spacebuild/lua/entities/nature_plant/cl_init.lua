@@ -4,7 +4,7 @@ language.Add("nature_planet", "Plant")
 
 function ENT:DoNormalDraw( bDontDrawModel )
 	local mode = self:GetNetworkedInt("overlaymode")
-	if ( LocalPlayer():GetEyeTrace().Entity == self.Entity and EyePos():Distance( self.Entity:GetPos() ) < 256 and mode ~= 0) then
+	if ( LocalPlayer():GetEyeTrace().Entity == self and EyePos():Distance( self:GetPos() ) < 256 and mode ~= 0) then
 		local trace = LocalPlayer():GetEyeTrace()
 		if ( !bDontDrawModel ) then self:DrawModel() end
 		local nettable = CAF.GetAddon("Resource Distribution").GetEntityTable(self)
@@ -25,18 +25,18 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			if self:GetOOO() == 0 then
 				OverlayText = OverlayText .. "This Plant needs water\n"
 			else
-				OverlayText = OverlayText .. "This plant is healthy and has "..tostring(self.Entity:GetNetworkedInt( 1 ) ).." water left\n"
+				OverlayText = OverlayText .. "This plant is healthy and has "..tostring(self:GetNetworkedInt( 1 ) ).." water left\n"
 			end
 			OverlayText = OverlayText.."Connected resources:\n"
 			OverlayText = OverlayText..CAF.GetAddon("Resource Distribution").GetProperResourceName("carbon dioxide")..": "..CAF.GetAddon("Resource Distribution").GetResourceAmount(self, "carbon dioxide").."\n"
 			OverlayText = OverlayText..CAF.GetAddon("Resource Distribution").GetProperResourceName("water")..": "..CAF.GetAddon("Resource Distribution").GetResourceAmount(self, "water").."\n"
-			AddWorldTip( self.Entity:EntIndex(), OverlayText, 0.5, self.Entity:GetPos(), self.Entity  )
+			AddWorldTip( self:EntIndex(), OverlayText, 0.5, self:GetPos(), self  )
 		else
 			local rot = Vector(0,0,90)
 			local TempY = 0
 			
-			--local pos = self.Entity:GetPos() + (self.Entity:GetForward() ) + (self.Entity:GetUp() * 40 ) + (self.Entity:GetRight())
-			local pos = self.Entity:GetPos() + (self.Entity:GetUp() * (self:BoundingRadius( ) + 10))
+			--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
+			local pos = self:GetPos() + (self:GetUp() * (self:BoundingRadius( ) + 10))
 			local angle =  (LocalPlayer():GetPos() - trace.HitPos):Angle()
 			angle.r = angle.r  + 90
 			angle.y = angle.y + 90
@@ -83,7 +83,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 				if self:GetOOO() == 0 then
 					surface.DrawText("This Plant needs water")
 				else
-					surface.DrawText("This plant is healthy and has "..tostring(self.Entity:GetNetworkedInt( 1 ) ).." water left")
+					surface.DrawText("This plant is healthy and has "..tostring(self:GetNetworkedInt( 1 ) ).." water left")
 				end
 				TempY = TempY + 70
 				local stringUsage = ""

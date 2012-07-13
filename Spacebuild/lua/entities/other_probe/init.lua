@@ -15,8 +15,8 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "O2 Level", "CO2 Level", "Nitrogen Level", "Hydrogen Level", "Empty Air Level", "Pressure", "Temperature", "Gravity", "On" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "O2 Level", "CO2 Level", "Nitrogen Level", "Hydrogen Level", "Empty Air Level", "Pressure", "Temperature", "Gravity", "On" })
 	else
 		self.Inputs = {{Name="On"}}
 	end
@@ -24,29 +24,29 @@ function ENT:Initialize()
 end
 
 function ENT:TurnOn()
-	self.Entity:EmitSound( "Buttons.snd17" )
+	self:EmitSound( "Buttons.snd17" )
 	self.Active = 1
 	self:SetOOO(1)
 	self:Sense()
 	self:ShowOutput()
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 1) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
 end
 
 function ENT:TurnOff(warn)
-	if (!warn) then self.Entity:EmitSound( "Buttons.snd17" ) end
+	if (!warn) then self:EmitSound( "Buttons.snd17" ) end
 	self.Active = 0
 	self:SetOOO(0)
 	self:ShowOutput()
 	if not (WireAddon == nil) then
-		Wire_TriggerOutput(self.Entity, "On", 0)
-		Wire_TriggerOutput(self.Entity, "O2 Level", 0)
-		Wire_TriggerOutput(self.Entity, "CO2 Level", 0)
-		Wire_TriggerOutput(self.Entity, "Nitrogen Level", 0)
-		Wire_TriggerOutput(self.Entity, "Hydrogen Level", 0)
-		Wire_TriggerOutput(self.Entity, "Empty Air Level", 0)
-		Wire_TriggerOutput(self.Entity, "Pressure", 0)
-		Wire_TriggerOutput(self.Entity, "Temperature", 0)
-		Wire_TriggerOutput(self.Entity, "Gravity", 0)
+		Wire_TriggerOutput(self, "On", 0)
+		Wire_TriggerOutput(self, "O2 Level", 0)
+		Wire_TriggerOutput(self, "CO2 Level", 0)
+		Wire_TriggerOutput(self, "Nitrogen Level", 0)
+		Wire_TriggerOutput(self, "Hydrogen Level", 0)
+		Wire_TriggerOutput(self, "Empty Air Level", 0)
+		Wire_TriggerOutput(self, "Pressure", 0)
+		Wire_TriggerOutput(self, "Temperature", 0)
+		Wire_TriggerOutput(self, "Gravity", 0)
 	end
 end
 
@@ -62,54 +62,54 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
 function ENT:Sense()
 	if (self:GetResourceAmount("energy") <= 0) then
-		self.Entity:EmitSound( "common/warning.wav" )
+		self:EmitSound( "common/warning.wav" )
 		self:TurnOff(true)
 		return
 	else
 		if (BeepCount > 0) then
 			BeepCount = BeepCount - 1
 		else
-			self.Entity:EmitSound( "Buttons.snd17" )
+			self:EmitSound( "Buttons.snd17" )
 			BeepCount = 20 --30 was a little long, 3 times a minute is ok
 		end
 	end
 	if not (WireAddon == nil) then
 		if self.environment then
-			Wire_TriggerOutput(self.Entity, "O2 Level", self.environment:GetO2Percentage())
-			Wire_TriggerOutput(self.Entity, "CO2 Level", self.environment:GetCO2Percentage())
-			Wire_TriggerOutput(self.Entity, "Nitrogen Level", self.environment:GetNPercentage())
-			Wire_TriggerOutput(self.Entity, "Hydrogen Level", self.environment:GetHPercentage())
-			Wire_TriggerOutput(self.Entity, "Empty Air Level", self.environment:GetEmptyAirPercentage())
-			Wire_TriggerOutput(self.Entity, "Pressure", self.environment:GetPressure())
-			Wire_TriggerOutput(self.Entity, "Temperature", self.environment:GetTemperature(self))
-			Wire_TriggerOutput(self.Entity, "Gravity", self.environment:GetGravity())
+			Wire_TriggerOutput(self, "O2 Level", self.environment:GetO2Percentage())
+			Wire_TriggerOutput(self, "CO2 Level", self.environment:GetCO2Percentage())
+			Wire_TriggerOutput(self, "Nitrogen Level", self.environment:GetNPercentage())
+			Wire_TriggerOutput(self, "Hydrogen Level", self.environment:GetHPercentage())
+			Wire_TriggerOutput(self, "Empty Air Level", self.environment:GetEmptyAirPercentage())
+			Wire_TriggerOutput(self, "Pressure", self.environment:GetPressure())
+			Wire_TriggerOutput(self, "Temperature", self.environment:GetTemperature(self))
+			Wire_TriggerOutput(self, "Gravity", self.environment:GetGravity())
 		end
 	end
 	self:ConsumeResource("energy", Energy_Increment)
 end
 
 function ENT:ShowOutput()
-	self.Entity:SetNetworkedInt( 1, self.environment:GetO2Percentage() or 0 )
-	self.Entity:SetNetworkedInt( 2, self.environment:GetCO2Percentage() or 0)
-	self.Entity:SetNetworkedInt( 3, self.environment:GetNPercentage() or 0 )
-	self.Entity:SetNetworkedInt( 4, self.environment:GetHPercentage() or 0)
-	self.Entity:SetNetworkedInt( 5, self.environment:GetPressure() or 0)
-	self.Entity:SetNetworkedInt( 6, self.environment:GetTemperature(self) or 0)
-	self.Entity:SetNetworkedInt( 7, self.environment:GetGravity() or 0)
-	self.Entity:SetNetworkedString( 8, self.environment:GetEnvironmentName() or "")
-	self.Entity:SetNetworkedInt( 9, self.environment:GetEmptyAirPercentage() or 0)
+	self:SetNetworkedInt( 1, self.environment:GetO2Percentage() or 0 )
+	self:SetNetworkedInt( 2, self.environment:GetCO2Percentage() or 0)
+	self:SetNetworkedInt( 3, self.environment:GetNPercentage() or 0 )
+	self:SetNetworkedInt( 4, self.environment:GetHPercentage() or 0)
+	self:SetNetworkedInt( 5, self.environment:GetPressure() or 0)
+	self:SetNetworkedInt( 6, self.environment:GetTemperature(self) or 0)
+	self:SetNetworkedInt( 7, self.environment:GetGravity() or 0)
+	self:SetNetworkedString( 8, self.environment:GetEnvironmentName() or "")
+	self:SetNetworkedInt( 9, self.environment:GetEmptyAirPercentage() or 0)
 end
 
 function ENT:Think()
@@ -120,7 +120,7 @@ function ENT:Think()
 		self:ShowOutput()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

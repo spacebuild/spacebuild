@@ -4,14 +4,14 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
-	self.Entity:PhysicsInit( SOLID_NONE )
-	self.Entity:SetMoveType( MOVETYPE_NONE )
-	self.Entity:SetSolid( SOLID_NONE )
-	self.Entity.sbenvironment.temperature2 = 0
-	self.Entity.sbenvironment.sunburn = false
-	self.Entity.sbenvironment.unstable = false
-	self.Entity:SetNotSolid(true)
-	self.Entity:DrawShadow(false)
+	self:PhysicsInit( SOLID_NONE )
+	self:SetMoveType( MOVETYPE_NONE )
+	self:SetSolid( SOLID_NONE )
+	self.sbenvironment.temperature2 = 0
+	self.sbenvironment.sunburn = false
+	self.sbenvironment.unstable = false
+	self:SetNotSolid(true)
+	self:DrawShadow(false)
 	if CAF then
 		self.caf = self.caf or {}
 		self.caf.custom = self.caf.custom or {}
@@ -21,11 +21,11 @@ function ENT:Initialize()
 end
 
 function ENT:GetSunburn()
-	return self.Entity.sbenvironment.sunburn
+	return self.sbenvironment.sunburn
 end
 
 function ENT:GetUnstable()
-	return self.Entity.sbenvironment.unstable
+	return self.sbenvironment.unstable
 end
 
 local function Extract_Bit(bit, field)
@@ -50,8 +50,8 @@ end
 
 function ENT:SetFlags(flags)
 	if not flags or type(flags) ~= "number" then return end
-	self.Entity.sbenvironment.unstable = Extract_Bit(1, flags)
-	self.Entity.sbenvironment.sunburn = Extract_Bit(2, flags)
+	self.sbenvironment.unstable = Extract_Bit(1, flags)
+	self.sbenvironment.sunburn = Extract_Bit(2, flags)
 end
 
 function ENT:GetTemperature(ent)
@@ -121,7 +121,7 @@ function ENT:GetTemperature(ent)
 end
 
 function ENT:Unstable()
-	if self.Entity.sbenvironment.unstable then
+	if self.sbenvironment.unstable then
 		if (math.random(1, 20) < 2) then
 			self:GetParent():Fire("invalue","shake","0") 
 			self:GetParent():Fire("invalue","rumble","0") 
@@ -142,11 +142,11 @@ function ENT:CreateEnvironment(ent, radius, gravity, atmosphere, pressure, tempe
 		if radius < 0 then
 			radius = 0
 		end
-		self.Entity.sbenvironment.size = radius
+		self.sbenvironment.size = radius
 	end
 	--set temperature2 if given
 	if temperature2 and type(temperature2) == "number" then
-		self.Entity.sbenvironment.temperature2 = temperature2
+		self.sbenvironment.temperature2 = temperature2
 	end
 	self.BaseClass.CreateEnvironment(self, gravity, atmosphere, pressure, temperature,  o2, co2, n, h, name)
 end
@@ -155,11 +155,11 @@ end
 function ENT:UpdateEnvironment(radius, gravity, atmosphere, pressure, temperature,  o2, co2, n, h, temperature2,  flags)
 	if radius and type(radius) == "number" then
 		self:SetFlags(flags)
-		self:UpdateSize(self.Entity.sbenvironment.size, radius)
+		self:UpdateSize(self.sbenvironment.size, radius)
 	end
 	--set temperature2 if given
 	if temperature2 and type(temperature2) == "number" then
-		self.Entity.sbenvironment.temperature2 = temperature2
+		self.sbenvironment.temperature2 = temperature2
 	end
 	self.BaseClass.UpdateEnvironment(self, gravity, atmosphere, pressure, temperature, o2, co2, n, h)
 end
@@ -182,7 +182,7 @@ end
 
 function ENT:Think()
 	self:Unstable()
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

@@ -69,7 +69,7 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 	self.critical = 0
 	self.hwcount = 0
@@ -241,14 +241,14 @@ function ENT:Extract_Energy()
 			Smoke:SetKeyValue("endcolor", "255 255 255")
 			Smoke:SetKeyValue("minspeed", 15)
 			Smoke:SetKeyValue("maxspeed", 30)
-			Smoke:SetKeyValue("startsize", (self.Entity:BoundingRadius() / 2))
-			Smoke:SetKeyValue("endsize", self.Entity:BoundingRadius())
+			Smoke:SetKeyValue("startsize", (self:BoundingRadius() / 2))
+			Smoke:SetKeyValue("endsize", self:BoundingRadius())
 			Smoke:SetKeyValue("spawnradius", 10)
 			Smoke:SetKeyValue("emittime", 300)
 			Smoke:SetKeyValue("firesprite", "sprites/firetrail.spr")
 			Smoke:SetKeyValue("smokesprite", "sprites/whitepuff.spr")
-			Smoke:SetPos(self.Entity:GetPos())
-			Smoke:SetParent(self.Entity)
+			Smoke:SetPos(self:GetPos())
+			Smoke:SetParent(self)
 			Smoke:Spawn()
 			Smoke:Activate()
 			Smoke:Fire("kill","", 1)

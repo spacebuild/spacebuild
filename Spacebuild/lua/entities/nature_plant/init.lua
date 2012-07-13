@@ -13,7 +13,7 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 	self.time = 0
 	self.water = 100
@@ -26,13 +26,13 @@ end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
 function ENT:ShowOutput()
 	if self:GetNetworkedInt(1) ~= self.water then
-		self.Entity:SetNetworkedInt( 1, self.water )
+		self:SetNetworkedInt( 1, self.water )
 	end
 end
 
@@ -74,7 +74,7 @@ function ENT:Think()
 	if waterlevel > 0 then
 		if self.water < 100 then
 			if self.Active == 0 then
-				self.Entity:SetColor(255, 255, 255, 255)
+				self:SetColor(Color(255, 255, 255, 255))
 				self.Active = 1
 			end
 			self.water = self.water + 1
@@ -82,7 +82,7 @@ function ENT:Think()
 		end
 	elseif self.reswater > 0 then
 		if self.Active == 0 then
-			self.Entity:SetColor(255, 255, 255, 255)
+			self:SetColor(Color(255, 255, 255, 255))
 			self.Active = 1
 		end
 		self:ConsumeResource("water", 1)
@@ -95,7 +95,7 @@ function ENT:Think()
 		self:ShowOutput()
 	else
 		self.Active = 0
-		self.Entity:SetColor(75, 75, 75, 255)
+		self:SetColor(Color(75, 75, 75, 255))
 		self:ShowOutput()
 	end
 	if self.Active == 1 then

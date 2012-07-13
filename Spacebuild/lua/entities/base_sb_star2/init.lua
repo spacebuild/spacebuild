@@ -4,9 +4,9 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
-	self.Entity:PhysicsInit( SOLID_NONE )
-	self.Entity:SetMoveType( MOVETYPE_NONE )
-	self.Entity:SetSolid( SOLID_NONE )
+	self:PhysicsInit( SOLID_NONE )
+	self:SetMoveType( MOVETYPE_NONE )
+	self:SetSolid( SOLID_NONE )
 	self.sbenvironment.temperature2 = 0
 	self.sbenvironment.temperature3 = 0
 	self:SetNotSolid(true)
@@ -100,13 +100,13 @@ function ENT:UpdateEnvironment(radius, temp1, temp2, temp3)
 		self:UpdateSize(self.sbenvironment.size, radius)
 	end
 	if temp1 and type(temp1) == "number" then
-		self.Entity.sbenvironment.temperature = temp1
+		self.sbenvironment.temperature = temp1
 	end
 	if temp2 and type(temp2) == "number" then
-		self.Entity.sbenvironment.temperature2 = temp2
+		self.sbenvironment.temperature2 = temp2
 	end
 	if temp3 and type(temp3) == "number" then
-		self.Entity.sbenvironment.temperature3 = temp3
+		self.sbenvironment.temperature3 = temp3
 	end
 	SendSunBeam(self)
 end

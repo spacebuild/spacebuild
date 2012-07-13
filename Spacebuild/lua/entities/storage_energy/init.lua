@@ -9,8 +9,8 @@ function ENT:Initialize()
 	self.vent = false
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "Vent" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Energy", "Max Energy" })
+		self.Inputs = Wire_CreateInputs(self, { "Vent" })
+		self.Outputs = Wire_CreateOutputs(self, { "Energy", "Max Energy" })
 	else
 		self.Inputs = {{Name="Vent"}}
 	end
@@ -32,13 +32,13 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -57,9 +57,9 @@ function ENT:Leak()
 		end
 		if (waterlevel > 0) then
 			if zapme then
-				zapme(self.Entity:GetPos(), 1)
+				zapme(self:GetPos(), 1)
 			end
-			local tmp = ents.FindInSphere(self.Entity:GetPos(), 600) --Better check in next version
+			local tmp = ents.FindInSphere(self:GetPos(), 600) --Better check in next version
 			for _, ply in ipairs( tmp ) do
 				if (ply:IsPlayer()) then
 					if (ply:WaterLevel() > 0) then
@@ -74,7 +74,7 @@ function ENT:Leak()
 		else
 			if (math.random(1, 10) < 2) then
 				if zapme then
-					zapme(self.Entity:GetPos(), 1)
+					zapme(self:GetPos(), 1)
 				end
 				local dec = math.random(200, 2000)
 				self:ConsumeResource("energy", dec)
@@ -91,13 +91,13 @@ function ENT:Think()
 	if not (WireAddon == nil) then
 		self:UpdateWireOutput()
 	end
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
 function ENT:UpdateWireOutput()
 	local energy = self:GetResourceAmount("energy")
 	local maxenergy = self:GetNetworkCapacity("energy")
-	Wire_TriggerOutput(self.Entity, "Energy", energy)
-	Wire_TriggerOutput(self.Entity, "Max Energy", maxenergy)
+	Wire_TriggerOutput(self, "Energy", energy)
+	Wire_TriggerOutput(self, "Max Energy", maxenergy)
 end

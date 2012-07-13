@@ -172,7 +172,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			end
 		end
 	end
-	if ( EyePos():Distance( self.Entity:GetPos() ) < rd_overlay_dist and self:GetOOO() ==  1 ) then
+	if ( EyePos():Distance( self:GetPos() ) < rd_overlay_dist and self:GetOOO() ==  1 ) then
 		local trace = LocalPlayer():GetEyeTrace()
 		if ( !bDontDrawModel ) then self:DrawModel() end
 		local enttable = CAF.GetAddon("Resource Distribution").GetEntityTable(self)
@@ -202,8 +202,8 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			res = 0.2
 			mul = 2
 		end
-		--local pos = self.Entity:GetPos() + (self.Entity:GetForward() ) + (self.Entity:GetUp() * 40 ) + (self.Entity:GetRight())
-		local pos = self.Entity:GetPos() + (self.Entity:GetUp() * mul_up) + (self.Entity:GetRight() * mul_ri) + (self.Entity:GetForward() * mul_fr)
+		--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
+		local pos = self:GetPos() + (self:GetUp() * mul_up) + (self:GetRight() * mul_ri) + (self:GetForward() * mul_fr)
 		--[[local angle =  (LocalPlayer():GetPos() - trace.HitPos):Angle()
 		angle.r = angle.r  + 90
 		angle.y = angle.y + 90

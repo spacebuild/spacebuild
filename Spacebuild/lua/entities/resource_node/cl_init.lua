@@ -12,7 +12,7 @@ function ENT:Draw( bDontDrawModel )
 	CAF.GetAddon("Resource Distribution").Beam_Render( self )
 
 	if (Wire_Render) then
-		Wire_Render(self.Entity)
+		Wire_Render(self)
 	end
 end
 
@@ -40,7 +40,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			end
 		end
 	end
-	if ( EyePos():Distance( self.Entity:GetPos() ) < rd_overlay_dist and mode ~= 0 ) and ( (mode ~= 1 and not string.find(self:GetModel(),"s_small_res") ) or LocalPlayer():GetEyeTrace().Entity == self.Entity) then
+	if ( EyePos():Distance( self:GetPos() ) < rd_overlay_dist and mode ~= 0 ) and ( (mode ~= 1 and not string.find(self:GetModel(),"s_small_res") ) or LocalPlayer():GetEyeTrace().Entity == self) then
 		local trace = LocalPlayer():GetEyeTrace()
 		if ( !bDontDrawModel ) then self:DrawModel() end
 		local netid = self:GetNetworkedInt("netid")
@@ -84,7 +84,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 					OverlayText = OverlayText .. "No Resources Connected\n"
 				end
 			end
-			AddWorldTip( self.Entity:EntIndex(), OverlayText, 0.5, self.Entity:GetPos(), self.Entity  )
+			AddWorldTip( self:EntIndex(), OverlayText, 0.5, self:GetPos(), self  )
 		else
 			local TempY = 0
 			local mul_up = 10
@@ -97,8 +97,8 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			elseif string.find(self:GetModel(),"large_res") then
 				mul_up = 15.2
 			end
-			--local pos = self.Entity:GetPos() + (self.Entity:GetForward() ) + (self.Entity:GetUp() * 40 ) + (self.Entity:GetRight())
-			local pos = self.Entity:GetPos() + (self.Entity:GetUp() * mul_up) + (self.Entity:GetRight() * mul_ri) + (self.Entity:GetForward() * mul_fr)
+			--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
+			local pos = self:GetPos() + (self:GetUp() * mul_up) + (self:GetRight() * mul_ri) + (self:GetForward() * mul_fr)
 			--[[local angle =  (LocalPlayer():GetPos() - trace.HitPos):Angle()
 			angle.r = angle.r  + 90
 			angle.y = angle.y + 90
@@ -233,7 +233,7 @@ end
 
 if Wire_UpdateRenderBounds then
 	function ENT:Think()
-		Wire_UpdateRenderBounds(self.Entity)
-		self.Entity:NextThink(CurTime() + 3)
+		Wire_UpdateRenderBounds(self)
+		self:NextThink(CurTime() + 3)
 	end
 end
