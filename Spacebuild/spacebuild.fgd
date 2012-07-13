@@ -1,0 +1,90 @@
+@include "base.fgd"
+@include "halflife2.fgd"
+@include "garrysmod.fgd"
+//====== Copyright © 2008, Olivier 'LuaPineapple' Hamel =======
+
+@SolidClass = sb_environment : "An environment brush, use like a planet except it'll conform to the brush."
+[
+	EnvID(integer) : "Brush Env ID" : 1 : "The ID of the brush env, always set this to a unique number."
+	Parent_ID(integer) : "Parent Brush Env ID" : -1 : "The ID of our parent, when we leave this environment we shall start entering this one instead of getting spaced. Leave this to -1 if you want to get spaced."
+	Grav(float) : "Gravity" : 1 : "The gravity in that brush env."
+	Atmosphere(integer) : "Pressure" : 1 : "The atmospheric pressure in this brush env."
+	SunTemp(integer) : "Sun Temperature" : 290 : "The temperature while in sunlight."
+	ShadowTemp(integer) : "Shadow Temperature" : 273 : "The temperature while in shadow."
+	
+	Habitable(choices) : "Habitable" : 1 : "Is this brush env habitable?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+
+	Stable(choices) : "Stable" : 0 : "Is this brush 'stable'?" =
+	[
+		1 : "False"
+		0 : "True"
+	]
+	
+	IsPlanet(choices) : "Is a Planet" : 1 : "Is this brush a planet?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	
+	Sunburn(choices) : "Sunburn" : 0 : "Is the sun so hot it burns people?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	
+	HasBloom(choices) : "Bloom" : 0 : "Does this brush have a bloom?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	Bloom_R(float) : "Bloom: Red" : 1 : "Bloom: Red component."
+	Bloom_G(float) : "Bloom: Green" : 1 : "Bloom: Blue component."
+	Bloom_B(float) : "Bloom: Blue" : 1 : "Bloom: Green component."
+	Bloom_X(float) : "Bloom: Size X" : 1 : "Bloom: X size."
+	Bloom_Y(float) : "Bloom: Size Y" : 1 : "Bloom: Y size"
+	Bloom_Passes(float) : "Bloom: Passes" : 1 : "Bloom: Number of passes."
+	Bloom_Darken(float) : "Bloom: Darken" : 1 : "Bloom: Darken by this amount."
+	Bloom_Multi(float) : "Bloom: Multiply" : 1 : "Bloom: Multiply by this amount."
+	
+	Colour_Mod(choices) : "Colour Mod" : 0 : "Does this brush have a colour modification?" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	Colour_Mod_R(float) : "Colour: Add Red" : 1 : "Colour: Red component."
+	Colour_Mod_G(float) : "Colour: Add Green" : 1 : "Colour: Blue component."
+	Colour_Mod_B(float) : "Colour: Add Blue" : 1 : "Colour: Green component."
+	Colour_Mod_M_R(float) : "Colour: Multi Red" : 1 : "Colour: Red multiplication component."
+	Colour_Mod_M_G(float) : "Colour: Multi Green" : 1 : "Colour: Blue multiplication component."
+	Colour_Mod_M_B(float) : "Colour: Multi Blue" : 1 : "Colour: Green multiplication component."
+	Colour_Mod_Brightness(float) : "Colour: Brightness" : 1 : "Colour: Brightness setting."
+	Colour_Mod_Contrast(float) : "Colour: Contrast" : 1 : "Colour: Contrast setting."
+	
+	Decompression_Explosion(choices) : "Violent decompression" : 0 : "Does this brush env violently decompress? (Good for airlocks and such.)" =
+	[
+		0 : "False"
+		1 : "True"
+	]
+	Decompression_Explosion_Power(integer) : "Decompression Power" : 1 : "Decompression: Strength."
+	Decompression_Explosion_X(float) : "Decompression X" : 1 : "Decompression: X normalized vector component."
+	Decompression_Explosion_Y(float) : "Decompression Y" : 1 : "Decompression: Y normalized vector component."
+	Decompression_Explosion_Z(float) : "Decompression Z" : 1 : "Decompression: Z normalized vector component."
+	
+	output OnSpaced(void) : "Fires when the brush env gets spaced!"
+	output OnRestored(void) : "Fires when the brush env gets restored after getting spaced."
+	output OnCharacteristicsAltered(void) : "Fires when something to our environment characteristics."
+	output OnDie(void) : "Fires when this brush env dies."
+	
+	input SpaceEnv(void) : "Spaces the environment regardless of the input."
+	input RestoreEnv(void) : "Restores the environment if it was spaced."
+	input SetPressure(integer) : "Sets the pressure, values below 0 are considered 0, standard is 1."
+	input SetSunTemp(integer) : "Sets the sun temperature (Kelvin)."
+	input SetShadowTemp(integer) : "Sets the shadow temperature (Kelvin)."
+	input SetGravity(integer) : "Sets the gravity, standered is 1."
+	input SetSunburn(integer) : "Sets if there's sunburn, 1 is true, 0 is false."
+	input SetUnstable(integer) : "Sets if it's unstable, 1 is true, 0 is false."
+]

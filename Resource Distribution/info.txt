@@ -1,0 +1,10 @@
+"AddonInfo"
+{
+	"name"				"Resource Distribution 2"
+	"version"			"2.0"
+	"up_date"			"Sept 28, 2007"
+	"author_name"		"TAD2020"
+	"author_email"			"spacebuild.dev@gmail.com"
+	"author_url"		"http://www.snakesvx.net"
+	"info"				"Generic Resource Distribution Module."
+}

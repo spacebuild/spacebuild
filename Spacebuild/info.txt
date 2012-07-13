@@ -1,0 +1,11 @@
+"Gamemode"
+{
+	"name"		"SpaceBuild Chapter 2: Beyond the Solar System"
+	"version"	"1.0.2"
+
+	"author_name"	"LS/RD/SB Team"
+	"author_email"			"spacebuild.dev@gmail.com"
+	"author_url"	"http://www.snakesvx.net/"
+	
+	"info"		"Space Exploration 2 + stack overflow fix & message returned nil fix"
+}

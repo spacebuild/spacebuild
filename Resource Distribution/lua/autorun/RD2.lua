@@ -1,0 +1,1 @@
+include( "RD2/manifest.lua" )
