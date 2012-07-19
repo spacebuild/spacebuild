@@ -1,10 +1,10 @@
 "AddonInfo"
 {
-	"name"		    "Spacebuild Core"
-	"version"	    "0.1"
+	"name"		    "Spacebuild Project"
+	"version"	    "4.0.0"
 	"author_name"	"SnakeSVx"
-	"author_email"			"spacebuild.dev@gmail.com"
+	"author_email"	"spacebuild.dev@gmail.com"
 	"author_url"	"http://www.snakesvx.net/"
 	"info"		    "Spacebuild"
-	"up_date"	    "17/09/2011"
+	"up_date"	    "17/07/2012"
 }
