@@ -18,24 +18,24 @@ local temp;
 local extension = ".txt";
 
 function loadConfig(filename, basefolder)
-  basefolder = basefolder or base_folder
-  basefolder = tostring(basefolder)
-  filename = tostring(filename);
-  filename = basefolder..filename..extension
-  if file.Exists(filename) then
-     temp = file.Read(filename);
-     if temp then
-        return Json.Decode(temp);
-     end
-  end
-  return empty_config
+    basefolder = basefolder or base_folder
+    basefolder = tostring(basefolder)
+    filename = tostring(filename);
+    filename = basefolder .. filename .. extension
+    if file.Exists(filename) then
+        temp = file.Read(filename);
+        if temp then
+            return Json.Decode(temp);
+        end
+    end
+    return empty_config
 end
 
 function saveConfig(filename, data, basefolder)
     basefolder = basefolder or base_folder
     basefolder = tostring(basefolder)
     filename = tostring(filename);
-    filename = basefolder..filename..extension
+    filename = basefolder .. filename .. extension
     temp = Json.Encode(data);
     file.Write(filename, temp)
 end

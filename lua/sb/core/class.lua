@@ -18,32 +18,32 @@ local class = sb.class
 local classes = {}
 
 function class.create(name, ...)
-	name = tostring(name);
-	if not classes[name] then
-		if not class.exists(name) then
-			error("Class " .. name .. " not found");
-		end
-		CLASS = {}
-		CLASS.__index = CLASS
-		local c = CLASS
-		include("sb/classes/" .. name .. ".lua");
-		CLASS = nil
-		function c:getClass()
-			return name;
-		end
+    name = tostring(name);
+    if not classes[name] then
+        if not class.exists(name) then
+            error("Class " .. name .. " not found");
+        end
+        CLASS = {}
+        CLASS.__index = CLASS
+        local c = CLASS
+        include("sb/classes/" .. name .. ".lua");
+        CLASS = nil
+        function c:getClass()
+            return name;
+        end
 
-		classes[name] = function(...)
-			local tmp = {}
-			setmetatable(tmp, c)
-			tmp:init(unpack({...}))
-			return tmp
-		end
-	end
-	return classes[name](unpack({...}))
+        classes[name] = function(...)
+            local tmp = {}
+            setmetatable(tmp, c)
+            tmp:init(unpack({ ... }))
+            return tmp
+        end
+    end
+    return classes[name](unpack({ ... }))
 end
 
 function class.exists(name)
-	name = tostring(name);
-	return classes[name] ~= nil or #file.Find("sb/classes/" .. name .. ".lua", LUA_PATH) == 1
+    name = tostring(name);
+    return classes[name] ~= nil or #file.Find("sb/classes/" .. name .. ".lua", LUA_PATH) == 1
 end
 

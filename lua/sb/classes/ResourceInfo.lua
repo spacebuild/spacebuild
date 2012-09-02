@@ -19,35 +19,35 @@ local C = CLASS
 local sb = sb;
 
 function C:init(name, displayName, attributes)
-	if not name then error(self:getClass() + " requires a name") end
-	self.name = name
-	self.displayName = displayName or self.name
-	self.attributes = attributes or {}
+    if not name then error(self:getClass() + " requires a name") end
+    self.name = name
+    self.displayName = displayName or self.name
+    self.attributes = attributes or {}
 end
 
 function C:getName()
-	return self.name
+    return self.name
 end
 
 function C:getDisplayName()
-	return self.displayName
+    return self.displayName
 end
 
 function C:setDisplayName(name)
-	self.displayName = name or self.displayName
+    self.displayName = name or self.displayName
 end
 
 function C:getAttributes()
-	return self.attributes
+    return self.attributes
 end
 
 function C:hasAttribute(attribute)
-	for _, v in pairs(self.attributes) do
-		if v == attribute then
-			return true
-		end
-	end
-	return false
+    for _, v in pairs(self.attributes) do
+        if v == attribute then
+            return true
+        end
+    end
+    return false
 end
 
 

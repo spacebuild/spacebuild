@@ -14,7 +14,7 @@
 local include = include
 
 include("sb/core/init.lua") --Initialize the shared code first
-include("sb/core/server/util.lua") 
+include("sb/core/server/util.lua")
 include("sb/core/server/pool.lua")
 
 

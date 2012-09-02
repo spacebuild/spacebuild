@@ -12,7 +12,7 @@
 
 local config = sb.config
 
-config.testMode   = true
+config.testMode = true
 
 
 
