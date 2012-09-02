@@ -20,65 +20,73 @@ local net       = net
 local C = CLASS
 local sb = sb;
 
-local oldisA = C.isA
+-- Function Refs
+local funcRef = {
+	
+	isA = C.isA,
+	init = C.init,
+	addResource = C.addResource,
+	removeResource = C.removeResource,
+	supplyResource = C.supplyResource,
+	consumeResource = C.consumeResource,
+	getResourceAmount = C.getResourceAmount,
+	getMaxResourceAmount = C.getMaxResourceAmount,
+	sendSignal = C.send, --Less Ambiguous networking functions
+	receiveSignal = C.receive
+
+}
+
 function C:isA(className)
-	return oldisA(self, className) or className == "ResourceEntity"
+	return funcRef.isA(self, className) or className == "ResourceEntity"
 end
 
-local oldinit = C.init
 function C:init(entID)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceEntity") end
-	oldinit(self)
+	funcRef.init(self)
 	self.entID = entID
 	self.network = nil
 end
 
-local oldaddResource = C.addResource;
 function C:addResource(name, maxAmount, amount)
-	oldaddResource(self, name, maxAmount, amount)
+	funcRef.addResource(self, name, maxAmount, amount)
 	if self.network then
 		self.network:addResource(name, maxAmount, amount)
 	end
 end
 
-local oldremoveResource = C.removeResource;
 function C:removeResource(name, maxAmount, amount)
-	oldremoveResource(self, name, maxAmount, amount)
+	funcRef.removeResource(self, name, maxAmount, amount)
 	if self.network then
 		self.network:removeResource(name, maxAmount, amount)
 	end
 end
 
-local oldsupplyResource = C.supplyResource;
 function C:supplyResource(name, amount)
 	if self.network then
 		return self.network:supplyResource(name, amount)
 	end
-	return oldsupplyResource(self, name, amount)
+	return funcRef.supplyResource(self, name, amount)
 end
 
-local oldconsumeResource = C.consumeResource;
 function C:consumeResource(name, amount)
 	if self.network then
 		return self.network:consumeResource(name, amount)
 	end
-	return oldconsumeResource(self, name, amount)
+	return funcRef.supplyResource(self, name, amount)
 end
 
-local oldgetResourceAmount = C.getResourceAmount;
 function C:getResourceAmount(name)
 	if self.network then
 		return self.network:getResourceAmount(name)
 	end
-	return oldgetResourceAmount(self, name);
+	return funcRef.getResourceAmount(self, name);
 end
 
-local oldgetMaxResourceAmount = C.getMaxResourceAmount;
 function C:getMaxResourceAmount(name, visited)
 	if self.network then
 		return self.network:getMaxResourceAmount(name, visited)
 	end
-	return oldgetMaxResourceAmount(self, name)
+	return funcRef.getMaxResourceAmount(self, name)
 end
 
 function C:link(container, dont_link)
@@ -117,7 +125,6 @@ function C:getNetwork()
 	return self.network
 end
 
-local oldSend = C.send
 function C:send(modified, ply, partial)
 	if not partial then
 		net.Start("SBRU")
@@ -125,7 +132,7 @@ function C:send(modified, ply, partial)
 		net.WriteShort(self.syncid)
 		net.WriteShort(self.entID)
 	end
-	oldSend(self, modified, ply, true);
+	funcRef.sendSignal(self, modified, ply, true);
 	-- Add specific class code here
 	if not partial then
 		if ply then
@@ -137,8 +144,7 @@ function C:send(modified, ply, partial)
 	end
 end
 
-local oldReceive = C.receive
 function C:receive(um)
 	self.entID = net.ReadShort()
-	oldReceive(self, um)
+	funcRef.receiveSignal(self, um)
 end
