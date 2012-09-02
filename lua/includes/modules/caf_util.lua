@@ -13,7 +13,7 @@ local string = string
 local tostring = tostring
 local Msg = Msg
 
-module( "caf_util" )
+module("caf_util")
 
 local list = {}
 list.__index = list

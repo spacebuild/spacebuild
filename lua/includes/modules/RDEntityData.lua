@@ -7,15 +7,15 @@
 --
 --=============================================================================--
 
-local table 	= table
-local setmetatable 	= setmetatable
+local table = table
+local setmetatable = setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
 local ValidEntity = ValidEntity
 local pairs = pairs
 
-module( "RDEntityData" )
+module("RDEntityData")
 
 local entities = {}
 
@@ -24,14 +24,14 @@ list.__index = list
 list.TYPE = "RDEntityData";
 
 function list:Init(entity)
-	self.id = entity:EntIndex( );
-	self.entity = entity;
-	self.network = nil;
-	self.resources = {}
-	self.clear = false;
-	self.new = true;
-	self.haschanged = false;
-	entities[entityID] = self;
+    self.id = entity:EntIndex();
+    self.entity = entity;
+    self.network = nil;
+    self.resources = {}
+    self.clear = false;
+    self.new = true;
+    self.haschanged = false;
+    entities[entityID] = self;
 end
 
 --[[
@@ -41,13 +41,13 @@ end
 		Returns the new RDEntityData object
 ]]
 function Create(entity)
-	if not entity then
-		return nil
-	end
-	tmp = {}
-	setmetatable( tmp, list )
-	tmp:Init(entity);
-	return tmp
+    if not entity then
+        return nil
+    end
+    local tmp = {}
+    setmetatable(tmp, list)
+    tmp:Init(entity);
+    return tmp
 end
 
 

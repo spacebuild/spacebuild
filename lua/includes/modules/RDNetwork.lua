@@ -7,15 +7,15 @@
 --
 --=============================================================================--
 
-local table 	= table
-local setmetatable 	= setmetatable
+local table = table
+local setmetatable = setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
 local ValidEntity = ValidEntity
 local pairs = pairs
 
-module( "RDNetwork" )
+module("RDNetwork")
 
 local networks = {}
 local id = 1;
@@ -25,16 +25,16 @@ list.__index = list
 list.TYPE = "RDNetwork";
 
 function list:Init()
-	self.id = id;
-	id = id + 1;
-	networks[self.id] = self;
-	self.resources = {}
-	self.entities = {}
-	self.haschanged = false;
-	self.new = true;
-	self.clear = false;
-	self.connections = {}
-	self.entity = nil;
+    self.id = id;
+    id = id + 1;
+    networks[self.id] = self;
+    self.resources = {}
+    self.entities = {}
+    self.haschanged = false;
+    self.new = true;
+    self.clear = false;
+    self.connections = {}
+    self.entity = nil;
 end
 
 --[[
@@ -44,10 +44,10 @@ end
 		Returns the new RDNetwork object
 ]]
 function Create()
-	tmp = {}
-	setmetatable( tmp, list )
-	tmp:Init();
-	return tmp
+    local tmp = {}
+    setmetatable(tmp, list)
+    tmp:Init();
+    return tmp
 end
 
 

@@ -16,7 +16,7 @@ PROTECTED_CLASS.test1 = "I'm shared and visible inside of this clas and it's chi
 	Constructor called when creating an object of this type
 ]]
 function CLASS:__construct(data) --Constructor
-	Msg("In Base Class Constructor: "..tostring(self.type).."\n");
+    Msg("In Base Class Constructor: " .. tostring(self.type) .. "\n");
 end
 
 --[[
@@ -27,13 +27,13 @@ end
 	Since the base class has no real members, it can only check on reference
 ]]
 function CLASS:Equals(o1, o2)
-	if o1 then
-		if o2 then
-			return o1 == o2
-		end
-		return self == o1
-	end
-	return false
+    if o1 then
+        if o2 then
+            return o1 == o2
+        end
+        return self == o1
+    end
+    return false
 end
 
 --[[
@@ -45,10 +45,10 @@ end
 
 ]]
 function CLASS:HashCode()
-	local PRIME = 31;
+    local PRIME = 31;
     local result = 1;
-	result = PRIME * result; -- + value for a datamember
-	return result;
+    result = PRIME * result; -- + value for a datamember
+    return result;
 end
 
 
@@ -58,7 +58,7 @@ end
 	Returns the type of this 'class'
 ]]
 function CLASS:GetType()
-	return self.type
+    return self.type
 end
 
 --[[
@@ -67,5 +67,5 @@ end
 	Returns a string representation of this object
 ]]
 function CLASS:ToString()
-	return "Class("..self.type..")";
+    return "Class(" .. self.type .. ")";
 end

@@ -11,7 +11,7 @@ local WireAddon = WireAddon
 
 if not inputs or not inputs.version or inputs.version < version then
     inputs = {}
-   local types = {
+    local types = {
         NONE = 0,
         STRING = 1,
         NUMBER = 2,
@@ -23,8 +23,8 @@ if not inputs or not inputs.version or inputs.version < version then
     local convert = {
         tostring,
         tonumber,
-        function (vector_string) return {} end, --TODO
-        function (ent_id) return Entity(tonumer(entid)) end
+        function(vector_string) return {} end, --TODO
+        function(ent_id) return Entity(tonumer(entid)) end
     }
 
     local inpts = inputs;
@@ -36,25 +36,24 @@ if not inputs or not inputs.version or inputs.version < version then
 
     local function generateMutatorNames(str)
         str = capitalize(str);
-        return "get"..str, "set"..str;
+        return "get" .. str, "set" .. str;
     end
 
     local function convertValue(data, value)
-       if data then
-          if(data.type ~= types.NONE) then
-               if(data.type == types.CUSTOM) then
-                   if data.convert then
-                      value = data.convert(value)
-                   end
-               else
-                  if(convert[data.type]) then
-                      value = convert[data.type](value)
-                  end
-               end
-
-          end
-       end
-       return value
+        if data then
+            if (data.type ~= types.NONE) then
+                if (data.type == types.CUSTOM) then
+                    if data.convert then
+                        value = data.convert(value)
+                    end
+                else
+                    if (convert[data.type]) then
+                        value = convert[data.type](value)
+                    end
+                end
+            end
+        end
+        return value
     end
 
     local tmp, tmp2, tmp3;
@@ -64,37 +63,37 @@ if not inputs or not inputs.version or inputs.version < version then
 
         --convert tables to correct input
         if table.IsSequential(input_data) then
-           tmp = input_data;
-           input_data = {}
-           for _, v in pairs(tmp) do
-              input_data[v] = {name = v, type=types.STRING}
-           end
+            tmp = input_data;
+            input_data = {}
+            for _, v in pairs(tmp) do
+                input_data[v] = { name = v, type = types.STRING }
+            end
         end
         if table.IsSequential(output_data) then
             tmp = output_data;
             output_data = {}
             for _, v in pairs(tmp) do
-                output_data[v] = {name = v, type=types.STRING}
+                output_data[v] = { name = v, type = types.STRING }
             end
         end
         if table.IsSequential(shared_data) then
             tmp = shared_data;
             shared_data = {}
             for _, v in pairs(tmp) do
-                shared_data[v] = {name = v, type=types.STRING}
+                shared_data[v] = { name = v, type = types.STRING }
             end
         end
 
         if SERVER then
-           for k, v in pairs(shared_data) do
-               input_data[k] = v;
-               output_data[k] = v;
-           end
-           shared_data = nil
+            for k, v in pairs(shared_data) do
+                input_data[k] = v;
+                output_data[k] = v;
+            end
+            shared_data = nil
         else
-           ent.menu_inputs = input_data;
-           ent.menu_shared = shared_data;
-           ent.menu_outputs = output_data;
+            ent.menu_inputs = input_data;
+            ent.menu_shared = shared_data;
+            ent.menu_outputs = output_data;
         end
 
         --Enable setter function
@@ -119,7 +118,7 @@ if not inputs or not inputs.version or inputs.version < version then
         end
 
         function ent:setValue(iname, value)
-           self:TriggerInput(iname, value)
+            self:TriggerInput(iname, value)
         end
 
 
@@ -129,7 +128,7 @@ if not inputs or not inputs.version or inputs.version < version then
             local output_keys = {}
 
             for k, _ in pairs(input_data) do
-               table.insert(input_keys, k);
+                table.insert(input_keys, k);
             end
             for k, _ in pairs(output_data) do
                 table.insert(output_keys, k);
@@ -139,42 +138,38 @@ if not inputs or not inputs.version or inputs.version < version then
             ent.Inputs = Wire_CreateInputs(ent, input_keys)
             ent.Outputs = Wire_CreateOutputs(ent, output_keys)
         end
-
     end
 
     local function drawMenu(ent)
-
-
     end
 
 
-    properties.Add( "inputmenu",
-    {
-        MenuLabel       =       "Open Input Menu",
-        Order           =       1000,
-
-        Filter          =       function( self, ent )
-            if  not IsValid( ent ) then return false end
-            if  ent:IsPlayer()  then return false end
-            return ent.inputenabled
-        end,
-
-        Action          =       function( self, ent )
-            drawMenu(ent)
-        end
-    });
+    properties.Add("inputmenu",
+        {
+            MenuLabel = "Open Input Menu",
+            Order = 1000,
+            Filter = function(self, ent)
+                if not IsValid(ent) then return false end
+                if ent:IsPlayer() then return false end
+                return ent.inputenabled
+            end,
+            Action = function(self, ent)
+                drawMenu(ent)
+            end
+        });
 
     if SERVER then
-        local function setvalue( player, command, arguments )
+        local function setvalue(player, command, arguments)
             local ent = arguments[1];
             ent = Entity(ent);
             if ent and ent.setValue then
                 ent.setValue(arguments[2], arguments[3])
             end
         end
-        concommand.Add( "input_set_value", setvalue )
 
-        local function getvalue( player, command, arguments )
+        concommand.Add("input_set_value", setvalue)
+
+        local function getvalue(player, command, arguments)
             local ent = arguments[1];
             ent = Entity(ent);
             if ent and ent.getValue then
@@ -182,12 +177,7 @@ if not inputs or not inputs.version or inputs.version < version then
                 -- TODO send it back to the client
             end
         end
-        concommand.Add( "input_get_value", getvalue )
+
+        concommand.Add("input_get_value", getvalue)
     end
-
-
-
-
-
-
 end

@@ -4,13 +4,13 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 
-ENT.PrintName	= "RD Pump"
-ENT.Author		= "SnakeSVx"
-ENT.Purpose		= "Base RD Pump"
-ENT.Instructions	= ""
+ENT.PrintName = "RD Pump"
+ENT.Author = "SnakeSVx"
+ENT.Purpose = "Base RD Pump"
+ENT.Instructions = ""
 
-ENT.Spawnable		= false
-ENT.AdminSpawnable	= false
+ENT.Spawnable = false
+ENT.AdminSpawnable = false
 ENT.IsPump = true
 
-list.Set( "LSEntOverlayText" , "rd_pump", {HasOOO = true} )
+list.Set("LSEntOverlayText", "rd_pump", { HasOOO = true })

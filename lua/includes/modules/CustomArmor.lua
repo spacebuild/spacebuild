@@ -6,22 +6,22 @@
 --
 --=============================================================================--
 
-local table 	= table
-local setmetatable 	= setmetatable
+local table = table
+local setmetatable = setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
 local ValidEntity = ValidEntity
 local pairs = pairs
 
-module( "CustomArmor" )
+module("CustomArmor")
 
 local list = {}
 list.__index = list
 
 function list:Create()
-	self.armor = 0;
-	self.muls = {}
+    self.armor = 0;
+    self.muls = {}
 end
 
 --[[
@@ -31,8 +31,8 @@ end
 
 ]]
 function list:setArmorMultiplier(damtype, amount)
-	self.muls[damtype] = amount
-	self.canreceivedamage = true;
+    self.muls[damtype] = amount
+    self.canreceivedamage = true;
 end
 
 --[[
@@ -40,15 +40,15 @@ end
 
 ]]
 function list:GetArmormultiplier(damtype)
-	return self.muls[damtype] or 0
+    return self.muls[damtype] or 0
 end
 
 function list:SetArmor(amount)
-	self.armor = amount
+    self.armor = amount
 end
 
 function list:GetArmor()
-	return self.armor or 0
+    return self.armor or 0
 end
 
 ---------------------------------------------------------
@@ -57,10 +57,10 @@ end
 	Create,
 ]]
 function Create()
-	tmp = {}
-	setmetatable( tmp, list )
-	tmp:Create()
-	return tmp
+    local tmp = {}
+    setmetatable(tmp, list)
+    tmp:Create()
+    return tmp
 end
 
 

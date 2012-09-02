@@ -4,10 +4,10 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 
-ENT.PrintName	= "Resource Distribution 3 Entity"
-ENT.Author		= "SnakeSVx"
-ENT.Purpose		= "Base for all RD Sents"
-ENT.Instructions	= ""
+ENT.PrintName = "Resource Distribution 3 Entity"
+ENT.Author = "SnakeSVx"
+ENT.Purpose = "Base for all RD Sents"
+ENT.Instructions = ""
 
-ENT.Spawnable		= false
-ENT.AdminSpawnable	= false
+ENT.Spawnable = false
+ENT.AdminSpawnable = false

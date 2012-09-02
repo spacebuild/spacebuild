@@ -7,15 +7,15 @@
 --
 --=============================================================================--
 
-local table 	= table
-local setmetatable 	= setmetatable
+local table = table
+local setmetatable = setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
 local ValidEntity = ValidEntity
 local pairs = pairs
 
-module( "ArrayList" )
+module("ArrayList")
 
 local list = {}
 list.__index = list
@@ -40,9 +40,9 @@ list.__index = list
 		This will set up the new ArrayList
 
 ]]
-function list:Create( thetype, isfunc )
-	self:SetCheckType(thetype, isfunc)
-	self.table = {}
+function list:Create(thetype, isfunc)
+    self:SetCheckType(thetype, isfunc)
+    self.table = {}
 end
 
 --[[
@@ -52,35 +52,35 @@ end
 		This function will return true if this item is allowed into the ArrayList, false otherwise
 	
 ]]
-function list:CheckType( item )
-	if self.hasType then
-		if self.customCheck then
-			local ok, err = pcall(self.func, item)
-			if not ok then 
-				return false, err
-			else
-				return err
-			end
-		elseif type(item) == self.type then
-			return true
-		else
-			if self.type == "ent" then
-				return ValidEntity(item)
-			elseif self.type == "player" then
-				return ValidEntity(item) and item:IsPlayer()
-			elseif self.type == "vehicle" then
-				return ValidEntity(item) and item:IsVehicle()
-			elseif self.type == "npc" then
-				return ValidEntity(item) and item:IsNPC()
-			elseif self.type == "weapon" then
-				return ValidEntity(item) and item:IsWeapon()
-			elseif self.type == "entonly" then
-				return ValidEntity(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
-			end
-		end	
-		return false
-	end
-	return true
+function list:CheckType(item)
+    if self.hasType then
+        if self.customCheck then
+            local ok, err = pcall(self.func, item)
+            if not ok then
+                return false, err
+            else
+                return err
+            end
+        elseif type(item) == self.type then
+            return true
+        else
+            if self.type == "ent" then
+                return ValidEntity(item)
+            elseif self.type == "player" then
+                return ValidEntity(item) and item:IsPlayer()
+            elseif self.type == "vehicle" then
+                return ValidEntity(item) and item:IsVehicle()
+            elseif self.type == "npc" then
+                return ValidEntity(item) and item:IsNPC()
+            elseif self.type == "weapon" then
+                return ValidEntity(item) and item:IsWeapon()
+            elseif self.type == "entonly" then
+                return ValidEntity(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
+            end
+        end
+        return false
+    end
+    return true
 end
 
 --[[
@@ -102,16 +102,16 @@ end
 			self.table = tmptable*/
 
 ]]
-function list:Add( item, index )
-	local ok = self:CheckType( item )
-	if ok then
-		if index and index <= self:Size() then --Check if there is an index and if the index falls in the current range of keys
-			table.insert(self.table, index,  item) -- Should be the valid way of doing it
-		else --Add the value at the end of the table
-			table.insert(self.table, item)
-		end
-	end
-	return ok
+function list:Add(item, index)
+    local ok = self:CheckType(item)
+    if ok then
+        if index and index <= self:Size() then --Check if there is an index and if the index falls in the current range of keys
+            table.insert(self.table, index, item) -- Should be the valid way of doing it
+        else --Add the value at the end of the table
+            table.insert(self.table, item)
+        end
+    end
+    return ok
 end
 
 --[[
@@ -123,17 +123,17 @@ end
 
 
 ]]
-function list:AddAll( items, index )
-	local ok = true
-	local amount = 0
-	for k, v in pairs(items) do
-		if not self:Add(v, index) then
-			ok = false
-			amount = amount + 1
-		end
-		index = index + 1
-	end
-	return ok, tostring(amount).."was the wrong type"
+function list:AddAll(items, index)
+    local ok = true
+    local amount = 0
+    for k, v in pairs(items) do
+        if not self:Add(v, index) then
+            ok = false
+            amount = amount + 1
+        end
+        index = index + 1
+    end
+    return ok, tostring(amount) .. "was the wrong type"
 end
 
 --[[
@@ -143,7 +143,7 @@ end
 		This will clear the inner table
 ]]
 function list:Clear()
-	self.table = {}
+    self.table = {}
 end
 
 --[[
@@ -155,18 +155,18 @@ end
 
 ]]
 function list:SetCheckType(thetype, isfunc)
-	if thetype and isfunc then
-		self.hasType = true
-		self.type = nil
-		self.customCheck = true
-		self.func = thetype
-	elseif thetype and type(thetype) == "string" then
-		self.hasType = true
-		self.type = thetype
-	else
-		self.hasType = false
-		self.type = nil
-	end
+    if thetype and isfunc then
+        self.hasType = true
+        self.type = nil
+        self.customCheck = true
+        self.func = thetype
+    elseif thetype and type(thetype) == "string" then
+        self.hasType = true
+        self.type = thetype
+    else
+        self.hasType = false
+        self.type = nil
+    end
 end
 
 --[[
@@ -176,10 +176,10 @@ end
 
 ]]
 function list:GetCheckType()
-	if self.customCheck then
-		return true, self.func
-	end
-	return false, self.type
+    if self.customCheck then
+        return true, self.func
+    end
+    return false, self.type
 end
 
 --[[
@@ -189,11 +189,11 @@ end
 
 ]]
 function list:ToTable()
-	local tab = {}
-	if not self:IsEmpty() then
-		tab = table.Copy(self.table)
-	end
-	return tab
+    local tab = {}
+    if not self:IsEmpty() then
+        tab = table.Copy(self.table)
+    end
+    return tab
 end
 
 --[[
@@ -203,10 +203,10 @@ end
 		Sets the inner table (no items will be checked !!!)
 
 ]]
-function list:SetTable( items)
-	if items then
-		self.table = items
-	end
+function list:SetTable(items)
+    if items then
+        self.table = items
+    end
 end
 
 --[[
@@ -215,11 +215,11 @@ end
 		Returns a copy of the current ArrayList()
 ]]
 function list:Clone()
-	tmp = {}
-	setmetatable( tmp, list )
-	tmp:Create(self.type)
-	tmp:SetTable(self:ToTable())
-	return tmp
+    local tmp = {}
+    setmetatable(tmp, list)
+    tmp:Create(self.type)
+    tmp:SetTable(self:ToTable())
+    return tmp
 end
 
 --[[
@@ -229,8 +229,8 @@ end
 		Returns true/false
 
 ]]
-function list:Contains( item )
-	return table.HasValue(self.table, item)
+function list:Contains(item)
+    return table.HasValue(self.table, item)
 end
 
 --[[
@@ -240,8 +240,8 @@ end
 		returns the Item at this index or nil
 
 ]]
-function list:Get( index )
-	return self.table[index]
+function list:Get(index)
+    return self.table[index]
 end
 
 --[[
@@ -251,15 +251,15 @@ end
 		Returns the index of the first occurence of this item
 
 ]]
-function list:IndexOf( item )
-	if not self:IsEmpty() then
-		for k, v in pairs(self.table) do
-			if v == item then
-				return k
-			end
-		end
-	end
-	return -1
+function list:IndexOf(item)
+    if not self:IsEmpty() then
+        for k, v in pairs(self.table) do
+            if v == item then
+                return k
+            end
+        end
+    end
+    return -1
 end
 
 --[[
@@ -269,7 +269,7 @@ end
 
 ]]
 function list:IsEmpty()
-	return table.Count(self.table) == 0
+    return table.Count(self.table) == 0
 end
 
 --[[
@@ -279,16 +279,16 @@ end
 		Returns the index of the last occurence of this item
 
 ]]
-function list:LastIndexOf( item ) 
-	local last = -1
-	if not self:IsEmpty() then
-		for k, v in pairs(self.table) do
-			if v == item then
-				last = k
-			end
-		end
-	end
-	return last
+function list:LastIndexOf(item)
+    local last = -1
+    if not self:IsEmpty() then
+        for k, v in pairs(self.table) do
+            if v == item then
+                last = k
+            end
+        end
+    end
+    return last
 end
 
 --[[
@@ -299,16 +299,16 @@ end
 		Removes this item or the item at the specific index
 	
 ]]
-function list:Remove( item, isindex )
-	if isindex then
-		table.remove(self.table, item)
-	else
-		for k, v in pairs(self.table) do
-			if v == item then
-				table.remove(self.table, k)
-			end
-		end
-	end
+function list:Remove(item, isindex)
+    if isindex then
+        table.remove(self.table, item)
+    else
+        for k, v in pairs(self.table) do
+            if v == item then
+                table.remove(self.table, k)
+            end
+        end
+    end
 end
 
 --[[
@@ -319,17 +319,17 @@ end
 		Removes all Items in the specific range
 
 ]]
-function list:RemoveRange( start, tend )
-	if not tend then
-		tend = self:Size()
-	end
-	if start == tend then
-		self:Remove(self:Get(start))
-	else
-		for i = start, tend do
-			self:Remove(self:Get(start)) --the size and index change, so the index stays the same!
-		end
-	end
+function list:RemoveRange(start, tend)
+    if not tend then
+        tend = self:Size()
+    end
+    if start == tend then
+        self:Remove(self:Get(start))
+    else
+        for i = start, tend do
+            self:Remove(self:Get(start)) --the size and index change, so the index stays the same!
+        end
+    end
 end
 
 --[[
@@ -340,13 +340,13 @@ end
 		Will replace the item at the given index with the new item, if index is out of bounds ( smaller then 1 and larger then the Size) then the item will be added to the end of the ArrayList
 
 ]]
-function list:Set( index, item )
-	if self:Size() < index or index <= 0 then
-		table.insert(self.table, item)
-	else
-		self.table[index] = item
-	end
-	return true
+function list:Set(index, item)
+    if self:Size() < index or index <= 0 then
+        table.insert(self.table, item)
+    else
+        self.table[index] = item
+    end
+    return true
 end
 
 --[[
@@ -356,7 +356,7 @@ end
 
 ]]
 function list:Size()
-	return table.Count(self.table)
+    return table.Count(self.table)
 end
 
 ---------------------------------------------------------
@@ -368,11 +368,11 @@ end
 		
 		Returns the new ArrayList object
 ]]
-function Create( thetype, isfunc )
-	tmp = {}
-	setmetatable( tmp, list )
-	tmp:Create(thetype, isfunc )
-	return tmp
+function Create(thetype, isfunc)
+    local tmp = {}
+    setmetatable(tmp, list)
+    tmp:Create(thetype, isfunc)
+    return tmp
 end
 
 

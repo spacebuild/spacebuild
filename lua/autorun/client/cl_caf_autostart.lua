@@ -25,7 +25,7 @@ local Addons = {}
 CAF3.Addons = Addons
 
 --Derma stuff
-local MainInfoMenuData = nil;
+local MainInfoMenuData;
 --local MainStatusMenuData = nil;
 --local TopFrame = nil;
 --local TopFrameHasText = false;
@@ -483,7 +483,7 @@ end
 local function AddCAFInfoToStatus(List)
 
 
-    local descriptiontxt = nil
+    local descriptiontxt
     if GetDescription then
         descriptiontxt = GetDescription()
     end
@@ -511,11 +511,11 @@ local function AddCAFInfoToStatus(List)
 
     local contentpanel = vgui.Create("DPanelList", cat)
     contentpanel:SetWide(List:GetWide())
-    local clientMenu = nil;
+    local clientMenu;
     if GetClientMenu then
         clientMenu = GetClientMenu(contentpanel);
     end
-    local serverMenu = nil;
+    local serverMenu;
     if GetServerMenu then
         serverMenu = GetServerMenu(contentpanel);
     end
@@ -609,7 +609,7 @@ local function GetStatusPanel(frame)
             if v.IsVisible == nil or v.IsVisible() then
                 iteration = iteration + 1;
 
-                local descriptiontxt = nil
+                local descriptiontxt
                 if v.GetDescription then
                     descriptiontxt = v.GetDescription()
                     --else
@@ -622,11 +622,11 @@ local function GetStatusPanel(frame)
 
                 local contentpanel = vgui.Create("DPanelList", cat)
                 contentpanel:SetWide(List:GetWide())
-                local clientMenu = nil;
+                local clientMenu;
                 if v.GetClientMenu then
                     clientMenu = v.GetClientMenu(contentpanel);
                 end
-                local serverMenu = nil;
+                local serverMenu;
                 if v.GetServerMenu then
                     serverMenu = v.GetServerMenu(contentpanel);
                 end
@@ -761,7 +761,7 @@ local function GetAboutPanel(frame)
     return panel
 end
 
-local MainFrame = nil;
+local MainFrame;
 
 function CAF2.CloseMainMenu()
     if MainFrame then MainFrame:Close() end

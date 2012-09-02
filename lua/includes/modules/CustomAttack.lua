@@ -6,37 +6,37 @@
 --
 --=============================================================================--
 
-local table 	= table
-local setmetatable 	= setmetatable
+local table = table
+local setmetatable = setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
 local ValidEntity = ValidEntity
 local pairs = pairs
 
-module( "CustomAttack" )
+module("CustomAttack")
 
 local list = {}
 list.__index = list
 
-function list:Create( target, weapon, attacker )
-	self.target = target
-	self.weapon = weapon
-	self.attacker = attacker
-	self.attacks = {}
-	self.piercing = 0;
+function list:Create(target, weapon, attacker)
+    self.target = target
+    self.weapon = weapon
+    self.attacker = attacker
+    self.attacks = {}
+    self.piercing = 0;
 end
 
 function list:GetTarget()
-	return self.target;
+    return self.target;
 end
 
 function list:GetWeaponEntity()
-	return self.weapon
+    return self.weapon
 end
 
 function list:GetAttacker()
-	return self.attacker;
+    return self.attacker;
 end
 
 --[[
@@ -46,13 +46,13 @@ end
 
 ]]
 function list:AddAttack(damtype, amount)
-	self.attacks[damtype] = amount
+    self.attacks[damtype] = amount
 end
 
 list.SetAttack = list.AddAttack
 
 function list:setPiercing(amount)
-	self.piercing = amount
+    self.piercing = amount
 end
 
 --[[
@@ -60,11 +60,11 @@ end
 
 ]]
 function list:GetAttack(damtype)
-	return self.attacks[damtype] or 0
+    return self.attacks[damtype] or 0
 end
 
 function list:GetPiercing()
-	return self.piercing or 0
+    return self.piercing or 0
 end
 
 ---------------------------------------------------------
@@ -79,10 +79,10 @@ end
 	@param Attacker
 ]]
 function Create(target, weapon, attacker)
-	tmp = {}
-	setmetatable( tmp, list )
-	tmp:Create(target, weapon, attacker)
-	return tmp
+    local tmp = {}
+    setmetatable(tmp, list)
+    tmp:Create(target, weapon, attacker)
+    return tmp
 end
 
 

@@ -454,7 +454,7 @@ function CAF2.POPUP(ply, msg, location, color, displaytime)
     end
 end
 
-local servertags = nil;
+local servertags;
 function CAF2.AddServerTag(tag)
     if not servertags or not CAF2.StartingUp then
         servertags = GetConVarString("sv_tags")
