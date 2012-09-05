@@ -37,6 +37,32 @@ if sb.config and sb.config.testMode then
 	luaunit.run() -- will execute all tests
 end
 
+if sb.config then -- Below finds extensions, and their config files.
+
+	local basePath = "sb/extensions/"
+	local dirList = file.FindDir(basePath.."*", LUA_PATH)
+
+
+	for i, j in ipairs(dirList) do
+
+		local test = file.Find(basePath..j.."/config.lua", LUA_PATH)
+
+		--[[
+		print("Test table length is "..#test)
+		print(basePath..j.."/config.lua")
+		]]
+
+		if #test > 0 then
+
+			MsgN("==========================")
+			MsgN("Found Extension Folder: "..j)
+			MsgN("    Found Config File: "..basePath..j.."/config.lua")
+			MsgN("==========================")
+
+		end
+	end
+end
+
 properties.Add( "rdmenu",
 {
 	MenuLabel       =       "Open RD Menu",

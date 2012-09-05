@@ -20,16 +20,27 @@ local net       = net
 local C         = CLASS
 local sb        = sb;
 
+local funcRef = {
+	
+	isA = C.isA,
+	init = C.init,
+	supplyResource = C.supplyResource,
+	consumeResource = C.consumeResource,
+	getResourceAmount = C.getResourceAmount,
+	getMaxResourceAmount = C.getMaxResourceAmount,
+	sendSignal = C.send, --Less Ambiguous networking functions
+	receiveSignal = C.receive
 
-local oldisA = C.isA
+}
+
 function C:isA(className)
-	return oldisA(self, className) or className == "ResourceNetwork"
+	return funcRef.isA(self, className) or className == "ResourceNetwork"
 end
 
-local oldinit = C.init
+
 function C:init(entID)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceNetwork") end
-	oldinit(self)
+	funcRef.init(self)
 	self.containers = {}
 	self.entID = entID
 	self.networks = {}
@@ -41,9 +52,9 @@ function C:isBusy()
 	return self.busy;
 end
 
-local oldsupplyResource = C.supplyResource;
+
 function C:supplyResource(name, amount)
-	local to_much = oldsupplyResource(self, name, amount)
+	local to_much = funcRef.supplyResource(self, name, amount)
 	if to_much > 0 then
 		self.busy = true;
 		for k, v in pairs(self.networks) do
@@ -59,9 +70,8 @@ function C:supplyResource(name, amount)
 	return to_much
 end
 
-local oldconsumeResource = C.consumeResource;
 function C:consumeResource(name, amount)
-	local to_little = oldconsumeResource(self, name, amount)
+	local to_little = funcRef.consumeResource(self, name, amount)
 	if to_little > 0 then
 		self.busy = true;
 		for k, v in pairs(self.networks) do
@@ -77,10 +87,9 @@ function C:consumeResource(name, amount)
 	return to_little
 end
 
-local oldgetResourceAmount = C.getResourceAmount;
 function C:getResourceAmount(name, visited)
 	visited = visited or {}
-	local amount, tmp = oldgetResourceAmount(self, name), nil;
+	local amount, tmp = funcRef.getResourceAmount(self, name), nil;
 	self.busy = true;
 	for k, v in pairs(self.networks) do
 		if not v:isBusy() and not visited[v:getID()] then
@@ -93,10 +102,9 @@ function C:getResourceAmount(name, visited)
 	return amount, visited
 end
 
-local oldgetMaxResourceAmount = C.getMaxResourceAmount;
 function C:getMaxResourceAmount(name, visited)
 	visited = visited or {}
-	local amount, tmp = oldgetMaxResourceAmount(self, name), nil;
+	local amount, tmp = funcRef.getMaxResourceAmount(self, name), nil;
 	self.busy = true;
 	for k, v in pairs(self.networks) do
 		if not v:isBusy() and not visited[v:getID()] then
@@ -153,7 +161,6 @@ function C:getEntity()
 	return self.entID and Entity(self.entID);
 end
 
-local oldSend = C.send
 function C:send(modified, ply, partial)
 	if not partial then
 		net.Start("SBRU")
@@ -161,7 +168,7 @@ function C:send(modified, ply, partial)
 		net.WriteShort(self.syncid)
 		net.WriteShort(self.entID)
 	end
-	oldSend(self, modified, ply, true);
+	funcRef.sendSignal(self, modified, ply, true);
 	-- Add specific class code here
 	if not partial then
 		if ply then
@@ -173,8 +180,7 @@ function C:send(modified, ply, partial)
 	end
 end
 
-local oldReceive = C.receive
 function C:receive(um)
 	self.entID = net.ReadShort()
-	oldReceive(self, um)
+	funcRef.receiveSignal(self, um)
 end
