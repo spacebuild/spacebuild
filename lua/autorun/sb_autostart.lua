@@ -45,14 +45,9 @@ if sb.config then -- Below finds extensions, and their config files.
 
 	for i, j in ipairs(dirList) do
 
-		local test = file.Find(basePath..j.."/config.lua", LUA_PATH)
+		local configs = file.Find(basePath..j.."/config.lua", LUA_PATH)
 
-		--[[
-		print("Test table length is "..#test)
-		print(basePath..j.."/config.lua")
-		]]
-
-		if #test > 0 then
+		if #configs > 0 then
 
 			MsgN("==========================")
 			MsgN("Found Extension Folder: "..j)
