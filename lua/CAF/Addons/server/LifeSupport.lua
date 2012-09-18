@@ -306,7 +306,7 @@ function LS.LS_Crush(ent)
 end
 
 function LS.ColorDamage(ent, HP, Col)
-    if not ent or not HP or not Col or not ValidEntity(ent) then return end
+    if not ent or not HP or not Col or not IsValid(ent) then return end
     if (ent:Health() <= (ent:GetMaxHealth() / HP)) then
         ent:SetColor(Color(Col, Col, Col, 255))
     end
@@ -443,7 +443,7 @@ function Ply:LsCheck()
             if self.environment:GetPressure() > 1.5 and not pod:IsValid() then
                 local pressure = self.environment:GetPressure() - 1.5
                 for k, v in pairs(LS.GetAirRegulators()) do
-                    if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+                    if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
                         pressure = v:UsePersonPressure(pressure)
                     end
                 end
@@ -504,7 +504,7 @@ function Ply:LsCheck()
                     end
                 end
                 for k, v in pairs(LS.GetTemperatureRegulators()) do
-                    if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+                    if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
                         self.caf.custom.ls.temperature = self.caf.custom.ls.temperature + v:CoolDown(self.caf.custom.ls.temperature)
                     end
                 end
@@ -577,7 +577,7 @@ function Ply:LsCheck()
                 end
                 if not self.caf.custom.ls.airused then
                     for k, v in pairs(LS.GetAirRegulators()) do
-                        if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+                        if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
                             self.suit.air = self.suit.air + v:UsePerson()
                             self.caf.custom.ls.airused = true
                             break
@@ -631,7 +631,7 @@ function Ply:LsCheck()
                     end
                     if not self.caf.custom.ls.airused then
                         for k, v in pairs(LS.GetAirRegulators()) do
-                            if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+                            if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
                                 self.suit.air = self.suit.air + v:UsePerson()
                                 self.caf.custom.ls.airused = true
                                 break

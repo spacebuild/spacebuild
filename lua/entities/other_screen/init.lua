@@ -81,7 +81,7 @@ concommand.Add("RemoveLSSCreenResource", RemoveResource)
 local function UserConnect(ply)
     if table.Count(screens) > 0 then
         for k, v in pairs(screens) do
-            if ValidEntity(v) then
+            if IsValid(v) then
                 if table.Count(v.resources) > 0 then
                     for l, w in pairs(v.resources) do
                         umsg.Start("LS_Add_ScreenResource", ply)

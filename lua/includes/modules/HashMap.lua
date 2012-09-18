@@ -12,7 +12,7 @@ local setmetatable = setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
-local ValidEntity = ValidEntity
+local IsValid = IsValid
 local pairs = pairs
 
 module("HashMap")
@@ -101,17 +101,17 @@ function list:CheckKeyType(item)
             return true
         else
             if self.keytype == "ent" then
-                return ValidEntity(item)
+                return IsValid(item)
             elseif self.keytype == "player" then
-                return ValidEntity(item) and item:IsPlayer()
+                return IsValid(item) and item:IsPlayer()
             elseif self.keytype == "vehicle" then
-                return ValidEntity(item) and item:IsVehicle()
+                return IsValid(item) and item:IsVehicle()
             elseif self.keytype == "npc" then
-                return ValidEntity(item) and item:IsNPC()
+                return IsValid(item) and item:IsNPC()
             elseif self.keytype == "weapon" then
-                return ValidEntity(item) and item:IsWeapon()
+                return IsValid(item) and item:IsWeapon()
             elseif self.keytype == "entonly" then
-                return ValidEntity(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
+                return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
             end
         end
         return false
@@ -132,17 +132,17 @@ function list:CheckValueType(item)
             return true
         else
             if self.valuetype == "ent" then
-                return ValidEntity(item)
+                return IsValid(item)
             elseif self.valuetype == "player" then
-                return ValidEntity(item) and item:IsPlayer()
+                return IsValid(item) and item:IsPlayer()
             elseif self.valuetype == "vehicle" then
-                return ValidEntity(item) and item:IsVehicle()
+                return IsValid(item) and item:IsVehicle()
             elseif self.valuetype == "npc" then
-                return ValidEntity(item) and item:IsNPC()
+                return IsValid(item) and item:IsNPC()
             elseif self.valuetype == "weapon" then
-                return ValidEntity(item) and item:IsWeapon()
+                return IsValid(item) and item:IsWeapon()
             elseif self.valuetype == "entonly" then
-                return ValidEntity(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
+                return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
             end
         end
         return false

@@ -311,7 +311,7 @@ local function ClearEntities()
     if table.Count(ent_table) ~= 0 then
         for k, v in pairs(ent_table) do
             local ent = ents.GetByIndex(k);
-            if ent and ValidEntity(ent) and ent ~= NULL then
+            if ent and IsValid(ent) and ent ~= NULL then
                 ent:Remove()
             end
         end
@@ -412,7 +412,7 @@ CAF.RegisterAddon("Resource Distribution", RD, "1")
 
 ]]
 function RD.RemoveRDEntity(ent)
-    if not ent or not ValidEntity(ent) then return end
+    if not ent or not IsValid(ent) then return end
     if ent.IsNode then
         --RemoveNetWork(ent.netid)
         --nettable[ent.netid].clear = true
@@ -432,7 +432,7 @@ end
 
 ]]
 function RD.RegisterNonStorageDevice(ent)
-    if not ValidEntity(ent) then return false, "Not a valid entity" end
+    if not IsValid(ent) then return false, "Not a valid entity" end
     if not ent_table[ent:EntIndex()] then
         ent_table[ent:EntIndex()] = {}
         local index = ent_table[ent:EntIndex()];
@@ -463,7 +463,7 @@ end
 			Note: If your device doesn't store anything just use RegisterNonStorageDevice instead of this, it's more optimized for it
 ]]
 function RD.AddResource(ent, resource, maxamount, defaultvalue)
-    if not ValidEntity(ent) then return false, "Not a valid entity" end
+    if not IsValid(ent) then return false, "Not a valid entity" end
     if not resource then return false, "No resource given" end
     if not defaultvalue then defaultvalue = 0 end
     if not maxamount then maxamount = 0 end
@@ -622,7 +622,7 @@ end
 ]]
 
 function RD.ConsumeResource(ent, resource, amount)
-    if not ValidEntity(ent) then return 0, "Not a valid entity" end
+    if not IsValid(ent) then return 0, "Not a valid entity" end
     if not resource then return 0, "No resource given" end
     if not amount then return 0, "No amount given" end
     local origamount = amount
@@ -722,7 +722,7 @@ end
 ]]
 function RD.SupplyResource(ent, resource, amount)
     if not amount then return 0, "No amount given" end
-    if not ValidEntity(ent) then return amount, "Not a valid entity" end
+    if not IsValid(ent) then return amount, "Not a valid entity" end
     if not resource then return amount, "No resource given" end
     local left = 0;
     if ent_table[ent:EntIndex()] then
@@ -1012,7 +1012,7 @@ function RD.BuildDupeInfo(ent)
     if table.Count(nettable.cons) > 0 then
         for k, v in pairs(nettable.cons) do
             local nettab = RD.GetNetTable(v)
-            if nettab and table.Count(nettab) > 0 and nettab.nodeent and ValidEntity(nettab.nodeent) then
+            if nettab and table.Count(nettab) > 0 and nettab.nodeent and IsValid(nettab.nodeent) then
                 table.insert(cons, nettab.nodeent:EntIndex())
             end
         end
@@ -1106,7 +1106,7 @@ function RD.GetNetResourceAmount(netid, resource)
 end
 
 function RD.GetResourceAmount(ent, resource)
-    if not ValidEntity(ent) then return 0, "Not a valid entity" end
+    if not IsValid(ent) then return 0, "Not a valid entity" end
     if not resource then return 0, "No resource given" end
     local amount = 0
     if ent_table[ent:EntIndex()] then
@@ -1123,7 +1123,7 @@ function RD.GetResourceAmount(ent, resource)
 end
 
 function RD.GetUnitCapacity(ent, resource)
-    if not ValidEntity(ent) then return 0, "Not a valid entity" end
+    if not IsValid(ent) then return 0, "Not a valid entity" end
     if not resource then return 0, "No resource given" end
     local amount = 0
     if ent_table[ent:EntIndex()] then
@@ -1156,7 +1156,7 @@ function RD.GetNetNetworkCapacity(netid, resource)
 end
 
 function RD.GetNetworkCapacity(ent, resource)
-    if not ValidEntity(ent) then return 0, "Not a valid entity" end
+    if not IsValid(ent) then return 0, "Not a valid entity" end
     if not resource then return 0, "No resource given" end
     local amount = 0
     if ent_table[ent:EntIndex()] then

@@ -250,7 +250,7 @@ if (SERVER) then
     end
 end
 
-if (SinglePlayer() and SERVER) or (not SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
+if (game.SinglePlayer() and SERVER) or (not game.SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
     function CAF_UpdateToolGhost(tool, model, min, GetOffset, offset)
         local model = model or tool:GetClientInfo('model')
         if (model == '') then return end

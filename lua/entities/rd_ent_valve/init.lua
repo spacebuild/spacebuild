@@ -130,11 +130,11 @@ end
 
 function ENT:Think()
     -- Check if all ents are still valid!
-    if self.connected.ent and not ValidEntity(self.connected.ent) then
+    if self.connected.ent and not IsValid(self.connected.ent) then
         self.connected.ent = nil
         self:SetNetworkedInt("entid", nil)
     end
-    if self.connected.node and not ValidEntity(self.connected.node) then
+    if self.connected.node and not IsValid(self.connected.node) then
         self:TurnOff()
         self.connected.node = nil
         self:SetNetworkedInt("netid", nil)

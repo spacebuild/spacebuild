@@ -7,7 +7,7 @@
 --
 --=============================================================================--
 
-local ValidEntity = ValidEntity
+local IsValid = IsValid
 local util = util
 local string = string
 local tostring = tostring

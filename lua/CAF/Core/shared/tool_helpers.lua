@@ -504,7 +504,7 @@ function CAFTool.Think(self)
 
     if (not model) or (model == nil) or (model == "") or (not util.IsValidModel(model)) then return end
 
-    if not ValidEntity(self.GhostEntity) or string.lower(model) ~= string.lower(self.GhostEntity:GetModel()) then
+    if not IsValid(self.GhostEntity) or string.lower(model) ~= string.lower(self.GhostEntity:GetModel()) then
         if self.GetGhostAngle then
             self:MakeGhostEntity(model, Vector(0, 0, 0), self:GetGhostAngle(Angle(0, 0, 0)))
         else

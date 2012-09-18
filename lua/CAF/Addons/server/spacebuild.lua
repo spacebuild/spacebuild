@@ -71,7 +71,7 @@ local function AllowAdminNoclip(ply)
 end
 
 local function PlayerNoClip(ply, on)
-    if SB_InSpace == 1 and not SinglePlayer() and server_settings.Bool("SB_NoClip") and not AllowAdminNoclip(ply) and server_settings.Bool("SB_PlanetNoClipOnly") and ply.environment and ply.environment:IsSpace() then return false end
+    if SB_InSpace == 1 and not game.SinglePlayer() and server_settings.Bool("SB_NoClip") and not AllowAdminNoclip(ply) and server_settings.Bool("SB_PlanetNoClipOnly") and ply.environment and ply.environment:IsSpace() then return false end
     --return server_settings.Bool( "sbox_noclip" ) --Let the gamemode or other hooks take care of it
 end
 
@@ -675,7 +675,7 @@ end
 
 local function ResetGravity()
     for k, ent in ipairs(sb_spawned_entities) do
-        if ent and ValidEntity(ent) then
+        if ent and IsValid(ent) then
             local phys = ent:GetPhysicsObject()
             if phys:IsValid() and not (ent.IgnoreGravity and ent.IgnoreGravity == true) then
                 ent:SetGravity(1)
@@ -822,7 +822,7 @@ function SB.PerformEnvironmentCheck()
     --local begintime = CAF.begintime()
     --local amount = #sb_spawned_entities;
     for k, ent in ipairs(sb_spawned_entities) do
-        if ent and ValidEntity(ent) then
+        if ent and IsValid(ent) then
             SB.PerformEnvironmentCheckOnEnt(ent)
         else
             table.remove(sb_spawned_entities, k)
@@ -880,7 +880,7 @@ function SB.PerformEnvironmentCheckOnEnt(ent)
     end
     if ent:IsPlayer() then
         if SB_InSpace == 1 and (ent.environment == sb_space.Get() or (ent.environment and (not ent.environment:IsPlanet()) and ent.environment.environment and ent.environment.environment == sb_space.Get())) then
-            if not ent:InVehicle() or not SinglePlayer() then
+            if not ent:InVehicle() or not game.SinglePlayer() then
                 if not AllowAdminNoclip(ent) then
                     if ent:GetMoveType() == MOVETYPE_NOCLIP then
                         ent:SetMoveType(MOVETYPE_WALK)
@@ -1120,7 +1120,7 @@ function SB.FindVolume(name, radius)
                 end
                 if found == 1 then
                     for k, v in pairs(Environments) do
-                        if v and ValidEntity(v) and ((v.IsPlanet and v.IsPlanet()) or (v.IsStar and v.IsStar())) and (v:GetPos() == pos or v:GetPos():Distance(pos) < v:GetSize()) then
+                        if v and IsValid(v) and ((v.IsPlanet and v.IsPlanet()) or (v.IsStar and v.IsStar())) and (v:GetPos() == pos or v:GetPos():Distance(pos) < v:GetSize()) then
                             found = 0
                         end
                     end
@@ -1196,7 +1196,7 @@ function SB.FindClosestPlanet(pos, starsto)
     local closestplanet
     if table.Count(Planets) > 0 then
         for k, v in pairs(Planets) do
-            if v and ValidEntity(v) and v.IsPlanet and v.IsPlanet() then
+            if v and IsValid(v) and v.IsPlanet and v.IsPlanet() then
                 if not closestplanet then
                     closestplanet = v
                 else
@@ -1209,7 +1209,7 @@ function SB.FindClosestPlanet(pos, starsto)
     end
     if starsto and table.Count(Stars) > 0 then
         for k, v in pairs(Stars) do
-            if v and ValidEntity(v) and v.IsStar and v.IsStar() then
+            if v and IsValid(v) and v.IsStar and v.IsStar() then
                 if not closestplanet then
                     closestplanet = v
                 else
@@ -1227,21 +1227,21 @@ function SB.FindEnvironmentOnPos(pos)
     local env
     if table.Count(Planets) > 0 then
         for k, v in pairs(Planets) do
-            if v and ValidEntity(v) and v.IsEnvironment and v:IsEnvironment() then
+            if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
                 env = v:PosInEnvironment(pos, env)
             end
         end
     end
     if not env and table.Count(Stars) > 0 then
         for k, v in pairs(Stars) do
-            if v and ValidEntity(v) and v.IsEnvironment and v:IsEnvironment() then
+            if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
                 env = v:PosInEnvironment(pos, env)
             end
         end
     end
     if table.Count(Environments) > 0 then
         for k, v in pairs(Environments) do
-            if v and ValidEntity(v) and v.IsEnvironment and v:IsEnvironment() then
+            if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
                 env = v:PosInEnvironment(pos, env)
             end
         end
