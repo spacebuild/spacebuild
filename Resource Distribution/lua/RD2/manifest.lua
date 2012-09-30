@@ -13,7 +13,7 @@ if (SERVER) then
 	AddCSLuaFile( "cl_tab.lua" )
 	AddCSLuaFile( "RD2_Tools.lua" )
 
-	if file.Exists("/RD2/.svn/entries", LUA_PATH) then
+	if file.Exists("/RD2/.svn/entries", "LUA") then
 		RD2Version = tonumber( string.Explode( "\n", file.Read( "../lua/RD2/.svn/entries" ) )[ 4 ] ) --get svn revision, stolen from ULX
 	else
 		RD2Version = 7	--change this value to the current revision number when making a general release
