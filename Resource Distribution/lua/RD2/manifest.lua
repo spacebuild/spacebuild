@@ -13,12 +13,11 @@ if (SERVER) then
 	AddCSLuaFile( "cl_tab.lua" )
 	AddCSLuaFile( "RD2_Tools.lua" )
 
-	--an SVN update a while ago broke this -MadDog
-	--if file.Exists("../lua/RD2/.svn/entries") then
-	--	RD2Version = tonumber( string.Explode( "\n", file.Read( "../lua/RD2/.svn/entries" ) )[ 4 ] ) --get svn revision, stolen from ULX
-	--else
+	if file.Exists("/RD2/.svn/entries", LUA_PATH) then
+		RD2Version = tonumber( string.Explode( "\n", file.Read( "../lua/RD2/.svn/entries" ) )[ 4 ] ) --get svn revision, stolen from ULX
+	else
 		RD2Version = 7	--change this value to the current revision number when making a general release
-	--end
+	end
 	Msg("===============================\n===  RD2  "..RD2Version.."   Installed   ===\n===============================\n")
 	local function initplayer(ply)
 		umsg.Start( "rd2_initplayer", ply )

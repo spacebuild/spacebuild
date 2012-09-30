@@ -32,7 +32,7 @@ local pstatus = {}
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
-	if not (WireAddon == nil) then
+	if WireAddon then
 		self.Inputs = Wire_CreateInputs(self, { "Deploy", "ReelInPlug", "EjectPlug" })
 		self.Outputs = Wire_CreateOutputs(self, { "InUse" })
 	end
@@ -59,10 +59,8 @@ function ENT:Setup( pump, rate, hoselength )
 	if (pump == 1) then 
 		self.pump_status = PUMP_READY
 	end
-	
-	if (LIFESUPPORT and LIFESUPPORT == 2) then --LS2 is installed
+
 		RD_AddResource(self, "energy", 0)
-	end
 end
 
 function ENT:ResetPlug()
@@ -175,21 +173,6 @@ function ENT:Think()
 	
 	if (self.PumpOn == 1) then -- If we are connected, transfer resources
 		if (self.OtherSocket and self.OtherSocket:IsValid()) then
-			
-			--needs work
-			/*if (LIFESUPPORT and LIFESUPPORT == 2 and self.pump_active == 1) then --LS2 is installed and we has a pump
-				local energyneeded = math.abs(math.floor(rate / 100 * Energy_Increment))
-				if (energyneeded >= 0) then
-					if (RD_GetResourceAmount(self, "energy") >= energyneeded) then
-						local used = RD_ConsumeResource( self, "energy", energyneeded )
-						Msg("energy used = "..used.."\n")
-						self.pump_status = PUMP_ACTIVE
-					elseif (energyneeded > 0) then
-						self.pump_status = PUMP_NO_POWER
-						rate = 0
-					end
-				end
-			end*/
 			RD2_Pump( self, self.OtherSocket )
 		end
 	end
@@ -308,7 +291,7 @@ function ENT:AttachPlug( plug )
 		end
 	end
 	
-	if not (WireAddon == nil) then Wire_TriggerOutput(self, "InUse", 1) end
+	if WireAddon then Wire_TriggerOutput(self, "InUse", 1) end
 	
 end
 
@@ -369,5 +352,5 @@ function ENT:Deploy()
 	self.DeployedPlug = 1
 	self.reel_status = REEL_OUT
 	
-	if not (WireAddon == nil) then Wire_TriggerOutput(self, "InUse", 1) end
+	if WireAddon then Wire_TriggerOutput(self, "InUse", 1) end
 end

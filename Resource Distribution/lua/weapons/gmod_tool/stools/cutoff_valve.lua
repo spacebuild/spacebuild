@@ -12,9 +12,9 @@ util.PrecacheModel( MODEL )
 cleanup.Register('cutoffvalves')
 
 if ( CLIENT ) then
-	language.Add( 'Tool_cutoff_valve_name', 'Cutoff Valve' )
-	language.Add( 'Tool_cutoff_valve_desc', 'Create a Cutoff Valve attached to any surface.' )
-	language.Add( 'Tool_cutoff_valve_0', 'Left-Click: Spawn a Device.' )
+	language.Add( 'tool.cutoff_valve.name', 'Cutoff Valve' )
+	language.Add( 'tool.cutoff_valve.desc', 'Create a Cutoff Valve attached to any surface.' )
+	language.Add( 'tool.cutoff_valve.0', 'Left-Click: Spawn a Device.' )
 
 	language.Add( 'Undone_CutoffValves', 'Cutoff Valve Undone' )
 	language.Add( 'Cleanup_CutoffValves', 'Cutoff Valve' )

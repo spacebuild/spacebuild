@@ -531,11 +531,13 @@ function GM:SB_Ragdoll(ply)
 	end
 end
 
+
 --DPF: Overriding original PlayerSpawn
 /*---------------------------------------------------------
    Name: gamemode:PlayerSpawn( )
    Desc: Called when a player spawns
 ---------------------------------------------------------*/
+/*
 function GM:PlayerSpawn( pl )
 
 	--
@@ -562,6 +564,8 @@ function GM:PlayerSpawn( pl )
 	GAMEMODE:SetPlayerSpeed( pl, 250, 500 )
 	
 end
+*/
+
 
 hook.Add( "PlayerSpawnedSENT", "SBSpawnedSent", GM.SB_SentCheck)
 hook.Add("PlayerKilled","SBRagdoll",GM.SB_Ragdoll)

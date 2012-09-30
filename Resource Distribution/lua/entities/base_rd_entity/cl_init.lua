@@ -14,25 +14,13 @@ function ENT:DrawTranslucent( bDontDrawModel )
 end
 
 function ENT:DoNormalDraw()
-	if ( LocalPlayer():GetEyeTrace().Entity == self and EyePos():Distance( self:GetPos() ) < 512 ) then
-		if ( self.RenderGroup == RENDERGROUP_OPAQUE ) then
-			self.OldRenderGroup = self.RenderGroup
-			self.RenderGroup = RENDERGROUP_TRANSLUCENT
-		end
-		
-		self:DrawModel()
-		
-		if ( self:GetOverlayText() ~= "" ) then
-			AddWorldTip( self:EntIndex(), self:GetOverlayText(), 0.5, self:GetPos(), self  )
-		end
-	else
-		if ( self.OldRenderGroup ~= nil ) then
-			self.RenderGroup = self.OldRenderGroup
-			self.OldRenderGroup = nil
-		end
-		
-		self:DrawModel()
+
+	if ( LocalPlayer():GetEyeTrace().Entity == self and EyePos():Distance( self:GetPos() ) < 512 ) and ( self:GetOverlayText() != "" ) then
+		AddWorldTip( self:EntIndex(), self:GetOverlayText(), 0.5, self:GetPos(), self  )
 	end
+	
+	self:DrawModel()
+	
 end
 
 function ENT:Think()

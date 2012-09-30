@@ -7,11 +7,12 @@ TOOL.ConfigName = ''
 if (CLIENT and GetConVarNumber("RD_UseLSTab") == 1) then TOOL.Tab = "Life Support" end
 
 if ( CLIENT ) then
-	language.Add( "Tool_dev_link_name", "Link Tool" )
-	language.Add( "Tool_dev_link_desc", "Links Resource-Carrying Devices together, including Vehicle Pods." )
-	language.Add( "Tool_dev_link_0", "Left Click: Link Devices.  Right Click: Unlink Two Devices.  Reload: Unlink Device from All." )
-    language.Add( "Tool_dev_link_1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
-    language.Add( "Tool_dev_link_2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
+	language.Add( "tool.dev_link.name", "Link Tool" )
+	language.Add( "tool.dev_link.desc", "Links Resource-Carrying Devices together, including Vehicle Pods." )
+	language.Add( "tool.dev_link.0", "Left Click: Link Devices.  Right Click: Unlink Two Devices.  Reload: Unlink Device from All." )
+    language.Add( "tool.dev_link.1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
+    language.Add( "tool.dev_link.2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
+	
     language.Add( "LinkTool_addlength", "Add Length:" )
     language.Add( "LinkTool_width", "Width:" )
     language.Add( "LinkTool_material", "Material:" )
