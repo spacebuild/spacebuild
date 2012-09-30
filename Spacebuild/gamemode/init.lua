@@ -207,7 +207,7 @@ function GM:Space_Affect_Players()
 						ply.suit.n = 0
 						ply.suit.temperature = 14
 					end
-					if not ply:InVehicle() or not SinglePlayer() then
+					if not ply:InVehicle() or not game.SinglePlayer() then
 						if not AllowAdminNoclip(ply) then
 							if ply:GetMoveType() == MOVETYPE_NOCLIP then
 								ply:SetMoveType(MOVETYPE_WALK)
