@@ -15,7 +15,7 @@ AddCSLuaFile( "autorun/client/cl_lifesupport.lua" )
 LIFESUPPORT = 2
 LS_AllowNukeEffect = true
 
-local version = "SVN(1.0.2)"
+local version = "WORKSHOP"
 
 
 local function registerPF()
@@ -44,7 +44,7 @@ local function registerPF()
 		PF_AddHelpToSection("Life Support 2", "Collecting Energy!", "Get your Link tool and left click the Wind generator and then left click the link junction and continue to do this until all the devices and storage devices are linked together. ")
 		PF_AddHelpToSection("Life Support 2", "Collecting Energy!", "You will notice that you are getting some energy in the energy cell now, this energy is probably from your wind generator and solar panel. ")
 		PF_AddHelpToSection("Life Support 2", "Collecting Energy!", "You say your Solar panel is off? Well your solar panel must be aimed at the sun on the map to work correctly. ")
-		PF_AddHelpToSection("Life Support 2", "Collecting Energy!", "Move the solar panel around a bit with your Physics gun until it says the device is ï¿½ONï¿½ You have just built your first Energy Collecting system. ")
+		PF_AddHelpToSection("Life Support 2", "Collecting Energy!", "Move the solar panel around a bit with your Physics gun until it says the device is “ON” You have just built your first Energy Collecting system. ")
 		PF_AddHelpToSection("Life Support 2", "Collecting Energy!", "However the Wind generator will not work on all planets and will not work in space.")
 		
 		PF_AddHelpSection("Life Support 2", "Collecting Coolant!")
@@ -64,7 +64,7 @@ local function registerPF()
 		PF_AddHelpToSection("Life Support 2", "Collecting Air !", "First spawn 1 Air compressor and 1 Large Air storage device and link both to the link junction using the link tool. ")
 		PF_AddHelpToSection("Life Support 2", "Collecting Air !", "You should have more than enough energy to keep the device active if the fusion generator is working correctly.")
 		PF_AddHelpToSection("Life Support 2", "Collecting Air !", "Now press the E button on your keyboard while looking at the air compressor and standing fairly close to it. ")
-		PF_AddHelpToSection("Life Support 2", "Collecting Air !", "You should hear it making a noise and in the overlay it should say ï¿½ONï¿½ and you should see some air coming into the Air storage device. ")
+		PF_AddHelpToSection("Life Support 2", "Collecting Air !", "You should hear it making a noise and in the overlay it should say “ON” and you should see some air coming into the Air storage device. ")
 		PF_AddHelpToSection("Life Support 2", "Collecting Air !", "However Air Compressors will not work in space. ")
 		
 		PF_AddHelpSection("Life Support 2", "Collecting Air in Space or a planet without Air!")
@@ -88,7 +88,7 @@ local function registerPF()
 		PF_AddHelpSection("Life Support 2", "Water Devices !")
 		PF_AddHelpToSection("Life Support 2", "Water Devices !", "Water Devices !")
 		PF_AddHelpToSection("Life Support 2", "Water Devices !", "You will not need water for much as not many devices use it at all so you do not need to read this.")
-		PF_AddHelpToSection("Life Support 2", "Water Devices !", "You may have noticed that the fusion generator has the ï¿½Heavy Waterï¿½ option on its overlay if you give the fusion generator heavy water it will produce more energy I do not know if it s a lot more or a little more as I have never tested it.")
+		PF_AddHelpToSection("Life Support 2", "Water Devices !", "You may have noticed that the fusion generator has the “Heavy Water” option on its overlay if you give the fusion generator heavy water it will produce more energy I do not know if it s a lot more or a little more as I have never tested it.")
 		PF_AddHelpToSection("Life Support 2", "Water Devices !", "You can also extract Air from from water by using the water pump and putting it in water ( the pole thing in the water the little bit on top of the water fiddle around with it until it stays on ) and spawn a huge water tank and link all the pumps and the water tank to the link junction and you will start to get water and link a water air extractor to the link junction and turn it on and you will start to convert water into air.")
 		PF_AddHelpToSection("Life Support 2", "Water Devices !", "This is good on uninhabitable planets with water as oxygen scrubbers aren't that good at producing air.")
 		PF_AddHelpToSection("Life Support 2", "Water Devices !", "")
@@ -107,8 +107,8 @@ local function registerPF()
 end
 timer.Simple(5, registerPF)--Needed to make sure the Plugin Framework gets loaded first
 
-FairTemp_Min = 288 --15ï¿½C
-FairTemp_Max = 303 --30ï¿½C
+FairTemp_Min = 288 //15°C
+FairTemp_Max = 303 //30°C
 local DrownDamage = 10
 local res_req = 5
 local LSents = {}
@@ -223,7 +223,6 @@ function LS_RegisterEnt( ent, lstype, radius )
 		Msg("Invalid LS type (or radius not set) for "..tostring(ent.PrintName)..": Device not registered!\n")
 		return	
 	end
-	--Msg("DEBUG: "..tostring(lstype).." registered: "..tostring(ent.PrintName).."\n")
 	local hash = {}
 	hash.temperature = FairTemp_Min
 	hash.atmosphere = 1
@@ -295,14 +294,16 @@ function Suit_Reset( s )
 	s.temperature = FairTemp_Min
 end
 
+util.AddNetworkString("LS_netmessage")
+
 function Suit_Update( ply )
-	umsg.Start("LS_umsg", ply)
-		umsg.Short( (ply.suit.habitat + 1) )
-		umsg.Short( ply.suit.air )
-		umsg.Short( ply.suit.temperature )
-		umsg.Short( ply.suit.coolant )
-		umsg.Short( ply.suit.energy )
-	umsg.End() 
+	net.Start( "LS_netmessage" )
+		net.WriteFloat( ply.suit.habitat + 1 )
+		net.WriteFloat( ply.suit.air )
+		net.WriteFloat( ply.suit.temperature )
+		net.WriteFloat( ply.suit.coolant )
+		net.WriteFloat( ply.suit.energy )
+	net.Send( ply )
 end
 
 function Pressure_Update( ply )
@@ -417,7 +418,7 @@ end
 
 
 function Life_Support_Update ()
-	if not server_settings.Bool( "LS_enabled" ) then return end
+	if not GetConVar("LS_enabled") or not GetConVar("LS_enabled"):GetBool() then return end
 	for _, ply in pairs(player.GetAll()) do	
 		if not ply.suit then ply.suit = {} end
 		if ply:Health() <= 0 then
@@ -544,7 +545,6 @@ function ColorDamage(ent, HP, Col)
 		ent:SetColor(Color(Col, Col, Col, 255))
 	end
 end
-
 
 function DamageLS(ent, dam)
 	if not (ent and ent:IsValid() and dam) then return end

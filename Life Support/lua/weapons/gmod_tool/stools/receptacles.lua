@@ -12,9 +12,9 @@ TOOL.ClientConVar['model'] = 'models/props_c17/canister01a.mdl'
 cleanup.Register('storagedevice')
 
 if ( CLIENT ) then
-	language.Add( 'Tool_receptacles_name', 'Life Support Storage Devices' )
-	language.Add( 'Tool_receptacles_desc', 'Create Storage Devices attached to any surface.' )
-	language.Add( 'Tool_receptacles_0', 'Left-Click: Spawn a Device.  Right-Click: Repair Device.' )
+	language.Add( 'tool.receptacles.name', 'Life Support Storage Devices' )
+	language.Add( 'tool.receptacles.desc', 'Create Storage Devices attached to any surface.' )
+	language.Add( 'tool.receptacles.0', 'Left-Click: Spawn a Device.  Right-Click: Repair Device.' )
 
 	language.Add( 'Undone_receptacles', 'Storage Device Undone' )
 	language.Add( 'Cleanup_receptacles', 'LS: Storage Device' )

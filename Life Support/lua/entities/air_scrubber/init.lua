@@ -67,7 +67,6 @@ function ENT:Pump_Air()
 				for _, ent in ipairs( tmp ) do
 					if ent:IsPlayer() or (ent.environment and ent.environment.type and ent.environment.type == "Hydro_Air") then
 						if not ent.water or ent.water > 1 then
-							Msg("found working plant")
 							inc = inc + math.random(3)
 						end
 					end

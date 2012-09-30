@@ -33,12 +33,12 @@ end
 function ENT:Leak()
 	local energy = RD_GetResourceAmount(self, "energy")
 	if (self.environment.inwater == 0) then
-		zapme(self:GetPos(), 1)
+		LS_zapme(self:GetPos(), 1)
 		local tmp = ents.FindInSphere(self:GetPos(), 600)
 		for _, ply in ipairs( tmp ) do
 			if (ply:IsPlayer()) then
 				if (ply.suit.inwater > 0) then
-					zapme(ply:GetPos(), 1)
+					LS_zapme(ply:GetPos(), 1)
 					ply:TakeDamage( (ply.suit.inwater * energy / 100), 0 )
 				end
 			end
@@ -46,7 +46,7 @@ function ENT:Leak()
 		RD_ConsumeResource(self, "energy", energy)
 	else
 		if (math.random(1, 10) < 2) then
-			zapme(self:GetPos(), 1)
+			LS_zapme(self:GetPos(), 1)
 			local dec = math.random(200, 2000)
 			RD_ConsumeResource(self, "energy", dec)
 		end

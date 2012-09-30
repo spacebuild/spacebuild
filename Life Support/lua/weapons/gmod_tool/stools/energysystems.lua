@@ -12,9 +12,9 @@ TOOL.ClientConVar['model'] = 'models/props_wasteland/laundry_washer003.mdl'
 cleanup.Register('energysystem')
 
 if ( CLIENT ) then
-	language.Add( 'Tool_energysystems_name', 'Life Support Generators' )
-	language.Add( 'Tool_energysystems_desc', 'Create Generators attached to any surface.' )
-	language.Add( 'Tool_energysystems_0', 'Left-Click: Spawn a Device.  Right-Click: Repair Device.' )
+	language.Add( 'tool.energysystems.name', 'Life Support Generators' )
+	language.Add( 'tool.energysystems.desc', 'Create Generators attached to any surface.' )
+	language.Add( 'tool.energysystems.0',	'Left-Click: Spawn a Device.  Right-Click: Repair Device.' )
 
 	language.Add( 'Undone_energysystems', 'Generator Undone' )
 	language.Add( 'Cleanup_energysystems', 'LS: Generators' )

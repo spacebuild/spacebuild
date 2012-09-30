@@ -77,7 +77,7 @@ end
 
 function ENT:Destruct()
 	self:StopSound( "coast.siren_citizen" )
-	if (RD_GetResourceAmount(self, "energy") < 100000) or (GetConVarNumber("LS_AllowNukeEffect") == 0) then
+	if (RD_GetResourceAmount(self, "energy") < 100000) or (not GetConVar("LS_AllowNukeEffect"):GetBool()) then
 		LS_Destruct( self )
 	else -- !!oh shi-
 		local effectdata = EffectData()
@@ -190,18 +190,18 @@ function ENT:Extract_Energy()
 		local pos = (self:GetPos() + (ang:Up() * self:BoundingRadius()))
 		local test = math.random(1, 10)
 		if (test <= 2) then
-			zapme((pos + (ang:Right() * 90)), 5)
-			zapme((pos - (ang:Right() * 90)), 5)
+			LS_zapme((pos + (ang:Right() * 90)), 5)
+			LS_zapme((pos - (ang:Right() * 90)), 5)
 			self:EmitSound( "ambient/levels/labs/electric_explosion3.wav" )
 			inc = 0
 		elseif (test <= 4) then
-			zapme((pos + (ang:Right() * 90)), 3)
-			zapme((pos - (ang:Right() * 90)), 3)
+			LS_zapme((pos + (ang:Right() * 90)), 3)
+			LS_zapme((pos - (ang:Right() * 90)), 3)
 			self:EmitSound( "ambient/levels/labs/electric_explosion4.wav" )
 			inc = math.ceil(inc / 4)
 		elseif (test <= 6) then
-			zapme((pos + (ang:Right() * 90)), 2)
-			zapme((pos - (ang:Right() * 90)), 2)
+			LS_zapme((pos + (ang:Right() * 90)), 2)
+			LS_zapme((pos - (ang:Right() * 90)), 2)
 			self:EmitSound( "ambient/levels/labs/electric_explosion1.wav" )
 			inc = math.ceil(inc / 2)
 		end

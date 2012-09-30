@@ -5,10 +5,8 @@ util.PrecacheSound( "Buttons.snd17" )
 
 include('shared.lua')
 
-local Ground = 1 + 0 + 2 + 8 + 32
 local Energy_Increment = 4
 local BeepCount = 3
-local running = 0
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
@@ -107,15 +105,12 @@ function ENT:Sense()
 end
 
 function ENT:ShowOutput()
-	/*if (self.Active == 1) then
-		self:SetOverlayText( "Atmospheric Probe (ON)\nHabitable: " .. self.environment.habitat .. "\nPressure: " .. self.environment.atmosphere .. " Atmospheres\nTemperature: " .. self.environment.temperature .. " Deg. K\nGravity: " .. (self.gravity or 0) .."%")
-	else
-		self:SetOverlayText( "Atmospheric Probe (OFF)" )
-	end*/
-	self:SetNetworkedInt( 1, self.environment.habitat )
-	self:SetNetworkedInt( 2, self.environment.atmosphere )
-	self:SetNetworkedInt( 3, self.environment.temperature )
-	self:SetNetworkedInt( 4, self.gravity or 0 )
+
+	self.dt.Habitable = self.environment.habitat
+	self.dt.Pressure = self.environment.atmosphere
+	self.dt.Temperature = self.environment.temperature
+	self.dt.Gravity = self.gravity or 0
+	
 end
 
 function ENT:Think()
@@ -129,4 +124,3 @@ function ENT:Think()
 	self:NextThink(CurTime() + 1)
 	return true
 end
-

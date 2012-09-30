@@ -12,9 +12,9 @@ TOOL.ClientConVar['model'] = 'models/props_combine/combine_emitter01.mdl'
 cleanup.Register('lifesupport')
 
 if ( CLIENT ) then
-	language.Add( 'Tool_life_support_name', 'Life Support Systems' )
-	language.Add( 'Tool_life_support_desc', 'Create Life Support Systems attached to any surface.' )
-	language.Add( 'Tool_life_support_0', 'Left-Click: Spawn a Device.  Right-Click: Repair Device.' )
+	language.Add( 'tool.life_support.name', 'Life Support Systems' )
+	language.Add( 'tool.life_support.desc', 'Create Life Support Systems attached to any surface.' )
+	language.Add( 'tool.life_support.0', 'Left-Click: Spawn a Device.  Right-Click: Repair Device.' )
 
 	language.Add( 'Undone_life_support', 'Life Support Device Undone' )
 	language.Add( 'Cleanup_life_support', 'LS: Environmental Control Device' )

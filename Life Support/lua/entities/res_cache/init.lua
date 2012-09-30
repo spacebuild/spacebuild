@@ -55,11 +55,11 @@ function ENT:Leak()
 	end
 	if (energy > 0) then
 		if (self.environment.inwater == 0) then
-			zapme(self:GetPos(), 1)
+			LS_zapme(self:GetPos(), 1)
 			local tmp = ents.FindInSphere(self:GetPos(), 600)
 			for _, ply in ipairs( tmp ) do
 				if (ply:IsPlayer() and ply.suit.inwater > 0) then --??? wont that be zaping any player in any water??? should do a dist check first and have damage based on dist
-					zapme(ply:GetPos(), 1)
+					LS_zapme(ply:GetPos(), 1)
 					ply:TakeDamage((ply.suit.inwater * energy / 100), 0)
 				end
 			end
@@ -71,7 +71,7 @@ function ENT:Leak()
 			end
 		else
 			if (math.random(1, 10) < 2) then
-				zapme(self:GetPos(), 1)
+				LS_zapme(self:GetPos(), 1)
 				local dec = math.random(200, 2000)
 				if (energy > dec) then
 					RD_ConsumeResource(self, "energy", dec)
