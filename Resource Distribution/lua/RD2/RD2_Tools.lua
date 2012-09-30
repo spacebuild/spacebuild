@@ -289,7 +289,7 @@ function RD2_UpdateToolGhost( tool, model, min, GetOffset, offset )
 
 	if (not model) or (model == nil) or (model == "") or (not util.IsValidModel(model)) then return end
 
-	if (!isValid(tool.GhostEntity)) or !(string.lower(model) == string.lower(tool.GhostEntity:GetModel())) then --this should fix the entity creation spam ~MadDog
+	if (not IsValid(tool.GhostEntity)) or not (string.lower(model) == string.lower(tool.GhostEntity:GetModel())) then --this should fix the entity creation spam ~MadDog
 		tool:MakeGhostEntity( model, Vector(0,0,0), Angle(0,0,0) )
 	end
 
