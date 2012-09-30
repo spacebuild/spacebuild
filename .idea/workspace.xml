@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3645c090-a9a3-4169-9ab7-dfd2a83cf927" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Resource Distribution/lua/RD2/manifest.lua" afterPath="$PROJECT_DIR$/Resource Distribution/lua/RD2/manifest.lua" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Spacebuild/gamemode/Hooks.lua" afterPath="$PROJECT_DIR$/Spacebuild/gamemode/Hooks.lua" />
     </list>
     <ignored path="spacebuild.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,10 +60,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="manifest.lua" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Resource Distribution/lua/RD2/manifest.lua">
+      <file leaf-file-name="Hooks.lua" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Spacebuild/gamemode/Hooks.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="87" selection-start="894" selection-end="894" vertical-scroll-proportion="0.79965156">
+            <state line="28" column="2" selection-start="1077" selection-end="1077" vertical-scroll-proportion="0.8292683">
               <folding />
             </state>
           </provider>
@@ -84,6 +83,7 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/Resource Distribution/lua/RD2/manifest.lua" />
+        <option value="$PROJECT_DIR$/Spacebuild/gamemode/Hooks.lua" />
       </list>
     </option>
   </component>
@@ -135,6 +135,48 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="spacebuild" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gamemode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -366,6 +408,13 @@
     <entry file="file://$PROJECT_DIR$/Resource Distribution/lua/RD2/manifest.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state line="27" column="87" selection-start="894" selection-end="894" vertical-scroll-proportion="0.79965156">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spacebuild/gamemode/Hooks.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="2" selection-start="1077" selection-end="1077" vertical-scroll-proportion="0.8292683">
           <folding />
         </state>
       </provider>
