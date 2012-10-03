@@ -1,6 +1,6 @@
 -- Much love to the WireMod team for their superb LUA coding
 ENT.Type = "anim"
-ENT.Base = "base_gmodentity"
+ENT.Base = "base_anim"
 
 ENT.PrintName	= "Resource Distribution Entity"
 ENT.Author		= "Thresher and TAD2020"
@@ -56,7 +56,7 @@ function ENT:MakeOverlayText( OverlaySettings )
 	local num = OverlaySettings.num
 	local strings = OverlaySettings.strings
 	local resnames = OverlaySettings.resnames
-	if (!num) then return "" end --no num, nothing to do
+	if (not num) then return "" end --no num, nothing to do
 	
 	local o = 0
 	if (HasOOO) then
