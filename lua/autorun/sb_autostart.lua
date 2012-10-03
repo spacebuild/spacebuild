@@ -29,7 +29,7 @@ end
 
 if sb.config and sb.config.testMode then
 	require("luaunit")
-	local fls = file.Find("sb/tests/*.lua", LUA_PATH)
+	local fls = file.Find("sb/tests/*.lua", "LUA") -- Changed LUA_PATH to new format, blame garry
 	for k, v in ipairs(fls) do
 		print("Running test:", v)
 		include("sb/tests/" .. v)
@@ -40,12 +40,12 @@ end
 if sb.config then -- Below finds extensions, and their config files.
 
 	local basePath = "sb/extensions/"
-	local dirList = file.FindDir(basePath.."*", LUA_PATH)
+	local dirList = file.FindDir(basePath.."*", "LUA")
 
 
 	for i, j in ipairs(dirList) do
 
-		local configs = file.Find(basePath..j.."/config.lua", LUA_PATH)
+		local configs = file.Find(basePath..j.."/config.lua", "LUA")
 
 		if #configs > 0 then
 
