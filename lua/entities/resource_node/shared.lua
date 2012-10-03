@@ -1,6 +1,6 @@
 -- Much love to the WireMod team for their superb LUA coding
 ENT.Type = "anim"
-ENT.Base = "base_gmodentity"
+ENT.Base = "base_anim"
 
 ENT.PrintName = "Resource Distribution Entity"
 ENT.Author = "Thresher and TAD2020"

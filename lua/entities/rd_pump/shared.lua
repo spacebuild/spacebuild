@@ -2,7 +2,7 @@
 -- Based on the RD2 base_rd_entity made by Thresher and TAD2020
 
 ENT.Type = "anim"
-ENT.Base = "base_gmodentity"
+ENT.Base = "base_anim"
 
 ENT.PrintName = "RD Pump"
 ENT.Author = "SnakeSVx"
