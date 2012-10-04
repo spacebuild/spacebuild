@@ -23,6 +23,29 @@ end
 
 local sb = sb
 
+
+---- Experimental ----
+function sb.wrappers:Find(type,name,path,sort)
+
+	if name ~= nil and path ~= nil then
+		if sort then
+			files,dirs = file.Find(name,path,sort)
+		else
+			files,dirs = file.Find(name,path)
+		end
+
+		if type == "file" then
+			return files
+		elseif type == "dir" then
+			return dirs
+		end
+
+	else
+		return nil
+	end	
+end
+----------------------
+
 if not sb then
 	error("SB CORE: failed loading SB core")
 end
@@ -37,15 +60,16 @@ if sb.config and sb.config.testMode then
 	luaunit.run() -- will execute all tests
 end
 
-if sb.config then -- Below finds extensions, and their config files.
+if sb.config and sb.wrappers then -- Below finds extensions, and their config files.
 
 	local basePath = "sb/extensions/"
-	local dirList = file.FindDir(basePath.."*", "LUA")
-
+	local dirList = sb.wrappers:Find("dir",basePath.."*", "LUA")
 
 	for i, j in ipairs(dirList) do
 
-		local configs = file.Find(basePath..j.."/config.lua", "LUA")
+		local configs = sb.wrappers:Find("file",basePath..j.."/config.lua", "LUA")
+
+		MsgN(type(configs))
 
 		if #configs > 0 then
 

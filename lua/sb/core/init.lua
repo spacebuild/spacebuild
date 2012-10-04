@@ -28,6 +28,11 @@ sb.lang = {}
 sb.log = {}
 sb.util = {}
 sb.test = {}
+---- experimental ----
+
+sb.wrappers = {}
+
+----------------------
 
 include("sb/core/config.lua");
 include("sb/core/class.lua");
