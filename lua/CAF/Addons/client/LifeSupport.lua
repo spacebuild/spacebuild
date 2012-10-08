@@ -8,9 +8,9 @@ local Display_temperature = CreateClientConVar( "LS_Display_Temperature", "K", t
 local Display_hud = CreateClientConVar( "LS_Display_HUD", "1", true, false ) 
 
 --local ls_sb_mode = false
-surface.CreateFont( "ariel", {18, 500, true, false, "LS3HudHeader"} ) 
-surface.CreateFont( "ariel", {15, 500, true, false, "LS3HudSubtitle"} ) 
-surface.CreateFont( "ariel", {12, 500, true, false, "LS3HudSubSubtitle"} ) 
+surface.CreateFont( "Verdana", {18, 500, true, false, "LS3HudHeader"} ) 
+surface.CreateFont( "Verdana", {15, 500, true, false, "LS3HudSubtitle"} ) 
+surface.CreateFont( "Verdana", {12, 500, true, false, "LS3HudSubSubtitle"} ) 
 --Temperate 
 local Temp_Min = 0
 local FairTemp_Min = 283
