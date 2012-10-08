@@ -72,7 +72,7 @@ function CAFToolSetup.RegEnts()
 			
 			DEVICEGROUP				= {}
 			--DEVICEGROUP.type		= s_devtype --entity class (can be defined differently in sub_types)
-			--DEVICEGROUP.group.name	= s_devtype --name of this group, file can cange it if needed. should be the same as type in most cases
+			--DEVICEGROUP.group_name	= s_devtype --name of this group, file can cange it if needed. should be the same as type in most cases
 			
 			AddCSLuaFile( s_path..val )
 			include( s_path..val )
