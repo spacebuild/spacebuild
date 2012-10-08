@@ -11,10 +11,10 @@ TOOL.ConfigName	= ''
 if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon Framework" end
 
 if ( CLIENT ) then
-	language.Add( "Tool_rd3_dev_link2_name", "Smart Link Tool" )
-	language.Add( "Tool_rd3_dev_link2_desc", "Links Resource-Carrying Devices to a Resource Node, including Vehicle Pods." )
-	language.Add( "Tool_rd3_dev_link2_0", "Left Click: Select Devices.  Right Click: Link All devices to the selected Node.  Reload: Reset selected devices." )
-    language.Add( "Tool_rd3_dev_link2_1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
+	language.Add( "tool.rd3_dev_link2.name", "Smart Link Tool" )
+	language.Add( "tool.rd3_dev_link2.desc", "Links Resource-Carrying Devices to a Resource Node, including Vehicle Pods." )
+	language.Add( "tool.rd3_dev_link2.0", "Left Click: Select Devices.  Right Click: Link All devices to the selected Node.  Reload: Reset selected devices." )
+    language.Add( "tool.rd3_dev_link2.1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
    	language.Add( "rd3_dev_link2_addlength", "Add Length:" )
 	language.Add( "rd3_dev_link2_width", "Width:" )
 	language.Add( "rd3_dev_link2_material", "Material:" )
@@ -118,7 +118,7 @@ function TOOL:Reload(trace)
 end
 
 function TOOL.BuildCPanel( panel )
-	panel:AddControl( "Header", { Text = "#Tool_rd3_dev_link_name", Description	= "#Tool_rd3_dev_link_desc" }  )
+	panel:AddControl( "Header", { Text = "#tool.rd3_dev_link.name", Description	= "#tool.rd3_dev_link.desc" }  )
 
 	panel:AddControl("Slider", {
 		Label = "#rd3_dev_link2_width",

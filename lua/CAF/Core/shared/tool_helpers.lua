@@ -37,11 +37,11 @@ function CAFToolSetup.BaseLang()
 	cleanup.Register(TOOL.Mode)
 end
 
-function CAFToolSetup.SetLang( s_name, s_desc, s_click )
+function CAFToolSetup.SetLang( s_cname, s_cdesc, s_click )
 	if SERVER then return end
-	language.Add( "Tool_"..TOOL.Mode.."_name", s_cname or TOOL.Name or "" )
-	language.Add( "Tool_"..TOOL.Mode.."_desc", s_cdesc or "" )
-	language.Add( "Tool_"..TOOL.Mode.."_0", s_click or "" )
+	language.Add( "tool."..TOOL.Mode..".name", s_cname or TOOL.Name or "" )
+	language.Add( "tool."..TOOL.Mode..".desc", s_cdesc or "" )
+	language.Add( "tool."..TOOL.Mode..".0", s_click or "" )
 end
 
 function CAFToolSetup.MaxLimit()
@@ -72,7 +72,7 @@ function CAFToolSetup.RegEnts()
 			
 			DEVICEGROUP				= {}
 			--DEVICEGROUP.type		= s_devtype --entity class (can be defined differently in sub_types)
-			--DEVICEGROUP.group_name	= s_devtype --name of this group, file can cange it if needed. should be the same as type in most cases
+			--DEVICEGROUP.group.name	= s_devtype --name of this group, file can cange it if needed. should be the same as type in most cases
 			
 			AddCSLuaFile( s_path..val )
 			include( s_path..val )

@@ -11,10 +11,10 @@ TOOL.ConfigName	= ''
 if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon Framework" end
 
 if ( CLIENT ) then
-	language.Add( "Tool_rd3_dev_link3_name", "Auto Link Tool" )
-	language.Add( "Tool_rd3_dev_link3_desc", "Links Resource-Carrying Devices together to a Resource Node, including Vehicle Pods." )
-	language.Add( "Tool_rd3_dev_link3_0", "Left Click: Auto link all devices in the range of the select node that aren't connected and are owned by you.  Right Click: Unlink Two Devices.  Reload: Unlink Device from All." )
-    language.Add( "Tool_rd3_dev_link3_2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
+	language.Add( "tool.rd3_dev_link3.name", "Auto Link Tool" )
+	language.Add( "tool.rd3_dev_link3.desc", "Links Resource-Carrying Devices together to a Resource Node, including Vehicle Pods." )
+	language.Add( "tool.rd3_dev_link3.0", "Left Click: Auto link all devices in the range of the select node that aren't connected and are owned by you.  Right Click: Unlink Two Devices.  Reload: Unlink Device from All." )
+    language.Add( "tool.rd3_dev_link3_2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
 	language.Add( "rd3_dev_link3_addlength", "Add Length:" )
 	language.Add( "rd3_dev_link3_width", "Width:" )
 	language.Add( "rd3_dev_link3_material", "Material:" )
@@ -258,7 +258,7 @@ function TOOL:Reload(trace)
 end
 
 function TOOL.BuildCPanel( panel )
-	panel:AddControl( "Header", { Text = "#Tool_rd3_dev_link_name", Description	= "#Tool_rd3_dev_link_desc" }  )
+	panel:AddControl( "Header", { Text = "#tool.rd3_dev_link.name", Description	= "#tool.rd3_dev_link.desc" }  )
 
 	panel:AddControl("Slider", {
 		Label = "#rd3_dev_link3_width",
