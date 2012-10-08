@@ -14,7 +14,7 @@ CAF2.HasInternet = false;
 CAF2.InternetEnabled = true --Change this to false if you crash when CAF2 loads clientside
 
 
-surface.CreateFont( "Verdana", 15, 600, true, false, "GModCAFNotify" ) 
+surface.CreateFont( "Verdana", {15, 600, true, false, "GModCAFNotify"} ) 
 
 
 --nederlands, english
@@ -180,12 +180,15 @@ CAF2.HTTP = {
 
 CAF2.LATEST_VERSION = version;
 if(not CAF2.HasInternet and CAF2.InternetEnabled) then
-	http.Get(CAF2.HTTP.INTERNET,"",
+	http.Fetch(CAF2.HTTP.INTERNET,
 		function(html,size)
 			if(html) then
 				MsgN(CAF.GetLangVar("CAF: Client has Internet. Enabled Online-Help"));
 				CAF2.HasInternet = true;
 			end
+		end,
+		function()
+			CAF2.HasInternet = false;
 		end
 	);
 end
@@ -231,6 +234,7 @@ local function DrawPopups()
 			local obj = displaypopups["top"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = (ScrW()/2)- (width/2);
@@ -243,6 +247,7 @@ local function DrawPopups()
 			local obj = displaypopups["left"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = 0
@@ -255,6 +260,7 @@ local function DrawPopups()
 			local obj = displaypopups["right"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = ScrW()- width;
@@ -267,6 +273,7 @@ local function DrawPopups()
 			local obj = displaypopups["bottom"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = (ScrW()/2)- (width/2);
@@ -297,7 +304,7 @@ local function ShowNextPopupMessage()
 				Msg(obj.message.."\n")
 			end
 			displaypopups[v] = obj;
-			timer.Simple(obj.time, ClearPopup, obj);
+			timer.Simple(obj.time, function() ClearPopup(obj) end);
 		end
 	end
 end
@@ -830,7 +837,7 @@ net.Receive("CAF_Addon_POPUP", ProccessMessage)
 
 --Core
 
-local Files = file.Find( "CAF/Core/client/*.lua" , LUA_PATH)
+local Files = file.Find( "CAF/Core/client/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Core/client/"..File)
@@ -841,7 +848,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/LanguageVars/*.lua", LUA_PATH)
+Files = file.Find("CAF/LanguageVars/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/LanguageVars/"..File)
@@ -853,7 +860,7 @@ for k, File in ipairs(Files) do
 end
 
 --Addons
-local Files = file.Find( "CAF/Addons/client/*.lua" , LUA_PATH)
+local Files = file.Find( "CAF/Addons/client/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Addons/client/"..File)

@@ -56,7 +56,7 @@ function ENT:Think()
 		local entities = nettable.entities
 		if table.Count(entities) > 0 then
 			for k, ent in pairs(entities) do
-				if ent and ValidEntity(ent) then
+				if ent and IsValid(ent) then
 					local pos = ent:GetPos()
 					if pos:Distance(self:GetPos()) > self.range then
 						CAF.GetAddon("Resource Distribution").Unlink(ent)
@@ -72,7 +72,7 @@ function ENT:Think()
 				local tab = CAF.GetAddon("Resource Distribution").GetNetTable(v)
 				if tab and table.Count(tab) > 0 then
 					local ent = tab.nodeent
-					if ent and ValidEntity(ent) then
+					if ent and IsValid(ent) then
 						local pos = ent:GetPos()
 						local range = pos:Distance(self:GetPos())
 						if range > self.range and range > ent.range then

@@ -57,7 +57,7 @@ end
 function CAFToolSetup.RegEnts()
 	if not TOOL.DevSelect then return end
 	
-	local t_devicefiles = file.Find("CAF/Stools/"..TOOL.Mode.."/*.lua", LUA_PATH)
+	local t_devicefiles = file.Find("CAF/Stools/"..TOOL.Mode.."/*.lua", "LUA")
 	if t_devicefiles then
 		MsgN("CAF Tool: Loading device defs")
 		
@@ -471,7 +471,7 @@ function CAFTool.UpdateGhost( self, ent )
         return
     end
 
-	local tr = util.GetPlayerTrace( self:GetOwner(), self:GetOwner():GetCursorAimVector() )
+	local tr = util.GetPlayerTrace( self:GetOwner(), self:GetOwner():GetAimVector() )
     local trace = util.TraceLine( tr )
 	if (not trace.Hit) then
         return
@@ -510,7 +510,7 @@ function CAFTool.Think( self )
 
     if (not model) or (model == nil) or (model == "") or (not util.IsValidModel(model)) then return end
 
-    if not ValidEntity(self.GhostEntity) or string.lower(model) ~= string.lower(self.GhostEntity:GetModel()) then
+    if not IsValid(self.GhostEntity) or string.lower(model) ~= string.lower(self.GhostEntity:GetModel()) then
 		if self.GetGhostAngle then
 			self:MakeGhostEntity( model, Vector(0,0,0), self:GetGhostAngle(Angle(0,0,0)) )
 		else

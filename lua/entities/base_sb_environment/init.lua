@@ -512,7 +512,7 @@ function ENT:Convert(air1, air2, value)
 	if air2 < -1 or air2 > 3 then return 0 end
 	if air1 == air2 then return 0 end
 	if value < 1 then return 0 end
-	if server_settings.Bool( "SB_StaticEnvironment" ) then
+	if GetConVar("SB_StaticEnvironment"):GetBool() then
 		return value;
 		--Don't do anything else anymore
 	end

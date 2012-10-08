@@ -83,6 +83,6 @@ function ENT:SetActive( value, caller )
 	end
 	
 	caller.Entity:EmitSound( "ambient.steam01" )
-	timer.Simple(3, quiet_steam, caller.Entity) 
+	timer.Simple(3, function() quiet_steam(caller.Entity) end) 
 end
 
