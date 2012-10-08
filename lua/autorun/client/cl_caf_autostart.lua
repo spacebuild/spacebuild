@@ -14,7 +14,7 @@ CAF2.HasInternet = false;
 CAF2.InternetEnabled = true --Change this to false if you crash when CAF2 loads clientside
 
 
-surface.CreateFont( "Verdana", {15, 600, true, false, "GModCAFNotify"} ) 
+surface.CreateFont( "GModCAFNotify", {font = "verdana", size = 15, weight = 600} ) 
 
 
 --nederlands, english

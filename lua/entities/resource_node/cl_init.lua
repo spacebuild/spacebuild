@@ -2,8 +2,8 @@ include('shared.lua')
 
 ENT.RenderGroup = RENDERGROUP_BOTH
 
-surface.CreateFont( "arial", {60, 600, true, false, "ConflictText"} )
-surface.CreateFont( "arial", {40, 600, true, false, "Flavour"} )
+surface.CreateFont( "ConflictText", {font = "Verdana", size = 60, weight = 600} )
+surface.CreateFont( "Flavour", {font = "Verdana", size = 40, weight = 600} )
 
 function ENT:Draw( bDontDrawModel )
 	self:DoNormalDraw()
