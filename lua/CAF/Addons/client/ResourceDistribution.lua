@@ -463,7 +463,7 @@ function RD.GetNetResourceAmount(netid, resource)
 end
 
 function RD.GetResourceAmount(ent, resource)
-	if not ValidEntity( ent ) then return 0, "Not a valid entity" end
+	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
 	
@@ -477,7 +477,7 @@ function RD.GetResourceAmount(ent, resource)
 end
 
 --[[function RD.GetUnitCapacity(ent, resource)
-	if not ValidEntity( ent ) then return 0, "Not a valid entity" end
+	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
 	if ent_table[ent:EntIndex( )] then
@@ -502,7 +502,7 @@ function RD.GetNetNetworkCapacity(netid, resource)
 end
 
 function RD.GetNetworkCapacity(ent, resource)
-	if not ValidEntity( ent ) then return 0, "Not a valid entity" end
+	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
 	local index=RD.GetEntityTable(ent)

@@ -5,7 +5,7 @@ end
 
 local net = net
 
-local net_pools = {"CAF_Addon_Destruct", "CAF_Addon_Destruct", "CAF_Start_true", "CAF_Start_false", "CAF_Addon_POPUP"};
+local net_pools = {"CAF_Addon_Construct", "CAF_Addon_Destruct", "CAF_Start_true", "CAF_Start_false", "CAF_Addon_POPUP"};
 for _, v in pairs(net_pools) do
     print("Pooling ", v, " for net library");
     util.AddNetworkString(v)
@@ -313,7 +313,6 @@ function CAF2.Start()
 	end
 	CAF2.StartingUp = false
 	net.Start("CAF_Start_false")
-	net.End()
 end
 hook.Add( "InitPostEntity", "CAF_Start", CAF2.Start)
 
@@ -426,7 +425,7 @@ local oldcreate = ents.Create
 
 ents.Create = function(class)
 	local ent = oldcreate(class)
-	timer.Simple( 0.1, OnEntitySpawn, ent, "SENT" )
+	timer.Simple( 0.1, function() OnEntitySpawn( ent, "SENT" ) end)
 	return ent;
 end
 
@@ -480,7 +479,7 @@ CAF = CAF2
 
 --Core files
 
-local Files = file.Find( "CAF/Core/server/*.lua" , LUA_PATH)
+local Files = file.Find( "CAF/Core/server/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg("Loading: "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Core/server/"..File)
@@ -491,7 +490,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Core/client/*.lua", LUA_PATH)
+Files = file.Find("CAF/Core/client/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Core/client/"..File)
@@ -502,7 +501,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Core/shared/*.lua", LUA_PATH)
+Files = file.Find("CAF/Core/shared/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Core/shared/"..File)
@@ -513,7 +512,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/LanguageVars/*.lua", LUA_PATH)
+Files = file.Find("CAF/LanguageVars/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/LanguageVars/"..File)
@@ -535,7 +534,7 @@ for k, File in ipairs(Files) do
 end
 
 --Main Addon
-local Files = file.Find( "CAF/Addons/server/*.lua" , LUA_PATH)
+local Files = file.Find( "CAF/Addons/server/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg("Loading: "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Addons/server/"..File)
@@ -546,7 +545,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Addons/client/*.lua", LUA_PATH)
+Files = file.Find("CAF/Addons/client/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Addons/client/"..File)
@@ -557,7 +556,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Addons/shared/*.lua", LUA_PATH)
+Files = file.Find("CAF/Addons/shared/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
 	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Addons/shared/"..File)

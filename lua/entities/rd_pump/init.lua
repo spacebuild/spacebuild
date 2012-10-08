@@ -107,7 +107,7 @@ concommand.Add( "UnlinkPump", UnlinkPump )
 local function UserConnect(ply)
 	if table.Count(pumps) > 0 then
 		for k, v in pairs(pumps) do
-			if ValidEntity(v) then
+			if IsValid(v) then
 				if table.Count(v.ResourcesToSend) > 0 then
 					for l, w in pairs(v.ResourcesToSend) do
 						umsg.Start("RD_Add_ResourceRate_to_Pump", ply)
@@ -266,9 +266,9 @@ function ENT:Think()
 		self:Disconnect()
 	end
 	--if not self.otherpump then Wire_TriggerOutput(self, "ConnectedPumpID", -1) end --Suggested wireoutput fix, needed??
-	if self.node and (not ValidEntity(self.node) or self.node:GetPos():Distance(self:GetPos()) > self.node.range) then
+	if self.node and (not IsValid(self.node) or self.node:GetPos():Distance(self:GetPos()) > self.node.range) then
 		RD.Beam_clear( self )
-		if ValidEntity(self.node) then
+		if IsValid(self.node) then
 			self:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 			self.node:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 		end

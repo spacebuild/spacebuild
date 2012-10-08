@@ -15,10 +15,10 @@ function ENT:Initialize( )
 end
 
 local function GetPumps(ent, range)
-	if not ent or not ValidEntity(ent) or not range or range < 1 then return {} end
+	if not ent or not IsValid(ent) or not range or range < 1 then return {} end
 	local pumps = {}
 	for k, v in pairs(ents.FindInSphere( ent:GetPos(), range )) do
-		if v and ValidEntity(v) and v.IsPump and v ~= ent then
+		if v and IsValid(v) and v.IsPump and v ~= ent then
 			table.insert(pumps, v)
 		end
 	end
