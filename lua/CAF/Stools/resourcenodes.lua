@@ -29,7 +29,7 @@ end
 function TOOL:GetExtraCCVars()
 	local Extra_Data = {}
 	Extra_Data.auto_link = self:GetClientNumber("auto_link") == 1
-	Extra_Data.custom.name = self:GetClientInfo("custom")
+	Extra_Data.custom_name = self:GetClientInfo("custom")
 	return Extra_Data
 end
 
@@ -75,9 +75,9 @@ local function resource_node_func(ent,type,sub_type,devinfo,Extra_Data,ent_extra
 		range = 2048
 	end
 	ent:SetRange(range)
-	if Extra_Data and Extra_Data.custom.name then
-		Msg("Set name: "..tostring(Extra_Data.custom.name).."\n")
-		ent:SetCustomNodeName(Extra_Data.custom.name)
+	if Extra_Data and Extra_Data.custom_name then
+		Msg("Set name: "..tostring(Extra_Data.custom_name).."\n")
+		ent:SetCustomNodeName(Extra_Data.custom_name)
 	end
 	if Extra_Data and Extra_Data.auto_link then
 		 timer.Simple(0.1, function() link_in_range(ent, range * 2) end)
