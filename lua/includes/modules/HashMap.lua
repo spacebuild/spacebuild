@@ -7,15 +7,15 @@
 --
 --=============================================================================--
 
-local table = table
-local setmetatable = setmetatable
+local table 	= table
+local setmetatable 	= setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
 local IsValid = IsValid
 local pairs = pairs
 
-module("HashMap")
+module( "HashMap" )
 
 local list = {}
 list.__index = list
@@ -40,9 +40,9 @@ list.__index = list
 		This will set up the new ArrayList
 
 ]]
-function list:Create(thetype, isfunc, thetype2, isfunc2)
-    self:SetCheckType(thetype, isfunc, thetype2, isfunc2)
-    self.table = {}
+function list:Create( thetype, isfunc, thetype2, isfunc2 )
+	self:SetCheckType(thetype, isfunc, thetype2, isfunc2)
+	self.table = {}
 end
 
 --[[
@@ -54,31 +54,31 @@ end
 
 ]]
 function list:SetCheckType(thetype, isfunc, thetype2, isfunc2)
-    if thetype and isfunc then
-        self.hasKeyType = true
-        self.keytype = nil
-        self.customKeyCheck = true
-        self.func = thetype
-    elseif thetype and type(thetype) == "string" then
-        self.hasKeyType = true
-        self.keytype = thetype
-    else
-        self.hasKeyType = false
-        self.keytype = nil
-    end
-
-    if thetype2 and isfunc then
-        self.hasValueType = true
-        self.valuetype = nil
-        self.customValueCheck = true
-        self.valuefunc = thetype2
-    elseif thetype2 and type(thetype2) == "string" then
-        self.hasValueType = true
-        self.valuetype = thetype2
-    else
-        self.hasValueType = false
-        self.valuetype = nil
-    end
+	if thetype and isfunc then
+		self.hasKeyType = true
+		self.keytype = nil
+		self.customKeyCheck = true
+		self.func = thetype
+	elseif thetype and type(thetype) == "string" then
+		self.hasKeyType = true
+		self.keytype = thetype
+	else
+		self.hasKeyType = false
+		self.keytype = nil
+	end
+	
+	if thetype2 and isfunc then
+		self.hasValueType = true
+		self.valuetype = nil
+		self.customValueCheck = true
+		self.valuefunc = thetype2
+	elseif thetype2 and type(thetype2) == "string" then
+		self.hasValueType = true
+		self.valuetype = thetype2
+	else
+		self.hasValueType = false
+		self.valuetype = nil
+	end
 end
 
 --[[
@@ -88,66 +88,66 @@ end
 		This function will return true if this item is allowed into the ArrayList, false otherwise
 	
 ]]
-function list:CheckKeyType(item)
-    if self.hasKeyType then
-        if self.customKeyCheck then
-            local ok, err = pcall(self.keyfunc, item)
-            if not ok then
-                return false, err
-            else
-                return err
-            end
-        elseif type(item) == self.keytype then
-            return true
-        else
-            if self.keytype == "ent" then
-                return IsValid(item)
-            elseif self.keytype == "player" then
-                return IsValid(item) and item:IsPlayer()
-            elseif self.keytype == "vehicle" then
-                return IsValid(item) and item:IsVehicle()
-            elseif self.keytype == "npc" then
-                return IsValid(item) and item:IsNPC()
-            elseif self.keytype == "weapon" then
-                return IsValid(item) and item:IsWeapon()
-            elseif self.keytype == "entonly" then
-                return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
-            end
-        end
-        return false
-    end
-    return true
+function list:CheckKeyType( item )
+	if self.hasKeyType then
+		if self.customKeyCheck then
+			local ok, err = pcall(self.keyfunc, item)
+			if not ok then 
+				return false, err
+			else
+				return err
+			end
+		elseif type(item) == self.keytype then
+			return true
+		else
+			if self.keytype == "ent" then
+				return IsValid(item)
+			elseif self.keytype == "player" then
+				return IsValid(item) and item:IsPlayer()
+			elseif self.keytype == "vehicle" then
+				return IsValid(item) and item:IsVehicle()
+			elseif self.keytype == "npc" then
+				return IsValid(item) and item:IsNPC()
+			elseif self.keytype == "weapon" then
+				return IsValid(item) and item:IsWeapon()
+			elseif self.keytype == "entonly" then
+				return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
+			end
+		end	
+		return false
+	end
+	return true
 end
 
-function list:CheckValueType(item)
-    if self.hasValueType then
-        if self.customValueCheck then
-            local ok, err = pcall(self.valuefunc, item)
-            if not ok then
-                return false, err
-            else
-                return err
-            end
-        elseif type(item) == self.valuetype then
-            return true
-        else
-            if self.valuetype == "ent" then
-                return IsValid(item)
-            elseif self.valuetype == "player" then
-                return IsValid(item) and item:IsPlayer()
-            elseif self.valuetype == "vehicle" then
-                return IsValid(item) and item:IsVehicle()
-            elseif self.valuetype == "npc" then
-                return IsValid(item) and item:IsNPC()
-            elseif self.valuetype == "weapon" then
-                return IsValid(item) and item:IsWeapon()
-            elseif self.valuetype == "entonly" then
-                return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
-            end
-        end
-        return false
-    end
-    return true
+function list:CheckValueType( item )
+	if self.hasValueType then
+		if self.customValueCheck then
+			local ok, err = pcall(self.valuefunc, item)
+			if not ok then 
+				return false, err
+			else
+				return err
+			end
+		elseif type(item) == self.valuetype then
+			return true
+		else
+			if self.valuetype == "ent" then
+				return IsValid(item)
+			elseif self.valuetype == "player" then
+				return IsValid(item) and item:IsPlayer()
+			elseif self.valuetype == "vehicle" then
+				return IsValid(item) and item:IsVehicle()
+			elseif self.valuetype == "npc" then
+				return IsValid(item) and item:IsNPC()
+			elseif self.valuetype == "weapon" then
+				return IsValid(item) and item:IsWeapon()
+			elseif self.valuetype == "entonly" then
+				return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
+			end
+		end	
+		return false
+	end
+	return true
 end
 
 --[[
@@ -157,7 +157,7 @@ end
 		This will clear the inner table
 ]]
 function list:Clear()
-    self.table = {}
+	self.table = {}
 end
 
 --[[
@@ -167,8 +167,8 @@ end
 		Returns true/false
 
 ]]
-function list:ContainsValue(item)
-    return table.HasValue(self.table, item)
+function list:ContainsValue( item )
+	return table.HasValue(self.table, item)
 end
 
 --[[
@@ -178,8 +178,8 @@ end
 		Returns true/false
 
 ]]
-function list:ContainsKey(key)
-    return self.table[key]
+function list:ContainsKey( key )
+	return self.table[key]
 end
 
 --[[
@@ -189,8 +189,8 @@ end
 		returns the Item at this index or nil
 
 ]]
-function list:Get(index)
-    return self.table[index]
+function list:Get( index )
+	return self.table[index]
 end
 
 --[[
@@ -200,7 +200,7 @@ end
 
 ]]
 function list:IsEmpty()
-    return table.Count(self.table) == 0
+	return table.Count(self.table) == 0
 end
 
 --[[
@@ -210,13 +210,13 @@ end
 
 ]]
 function list:KeySet()
-    local tmp = {}
-    if not self:IsEmpty() then
-        for k, v in pairs(self.table) do
-            table.insert(tmp, k)
-        end
-    end
-    return tmp
+	local tmp = {}
+	if not self:IsEmpty() then
+		for k, v in pairs(self.table) do
+			table.insert(tmp, k)
+		end
+	end
+	return tmp
 end
 
 --[[
@@ -227,12 +227,12 @@ end
 		This functions will try to add the given item to the HashMap, returns true if succesfull
 
 ]]
-function list:Put(key, item)
-    local ok = (self:CheckKeyType(key) and self:CheckValueType(item))
-    if ok then
-        self.table[key] = item
-    end
-    return ok
+function list:Put( key, item )
+	local ok = (self:CheckKeyType( key ) and self:CheckValueType( item ))
+	if ok then
+		self.table[key] = item
+	end
+	return ok
 end
 
 --[[
@@ -244,16 +244,16 @@ end
 
 
 ]]
-function list:PutAll(htable)
-    local ok = true
-    local amount = 0
-    for k, v in pairs(htable) do
-        if not self:Put(k, v) then
-            ok = false
-            amount = amount + 1
-        end
-    end
-    return ok, tostring(amount) .. "was the wrong type"
+function list:PutAll( htable )
+	local ok = true
+	local amount = 0
+	for k, v in pairs(htable) do
+		if not self:Put(k, v) then
+			ok = false
+			amount = amount + 1
+		end
+	end
+	return ok, tostring(amount).."was the wrong type"
 end
 
 --[[
@@ -263,10 +263,10 @@ end
 
 ]]
 function list:GetKeyCheckType()
-    if self.customKeyCheck then
-        return true, self.keyfunc
-    end
-    return false, self.keytype
+	if self.customKeyCheck then
+		return true, self.keyfunc
+	end
+	return false, self.keytype
 end
 
 --[[
@@ -276,10 +276,10 @@ end
 
 ]]
 function list:GetValueCheckType()
-    if self.customValueCheck then
-        return true, self.valuefunc
-    end
-    return false, self.valuetype
+	if self.customValueCheck then
+		return true, self.valuefunc
+	end
+	return false, self.valuetype
 end
 
 --[[
@@ -289,8 +289,8 @@ end
 		Removes the item at the specified key
 	
 ]]
-function list:Remove(key)
-    self.table[key] = nil
+function list:Remove( key )
+	self.table[key] = nil
 end
 
 --[[
@@ -300,7 +300,7 @@ end
 
 ]]
 function list:Size()
-    return table.Count(self.table)
+	return table.Count(self.table)
 end
 
 --[[
@@ -310,13 +310,13 @@ end
 
 ]]
 function list:Values()
-    local tmp = {}
-    if not self:IsEmpty() then
-        for k, v in pairs(self.table) do
-            table.insert(tmp, v)
-        end
-    end
-    return tmp
+	local tmp = {}
+	if not self:IsEmpty() then
+		for k,v in pairs(self.table) do
+			table.insert(tmp, v)
+		end
+	end
+	return tmp
 end
 
 --[[
@@ -326,11 +326,11 @@ end
 
 ]]
 function list:ToTable()
-    local tab = {}
-    if not self:IsEmpty() then
-        tab = table.Copy(self.table)
-    end
-    return tab
+	local tab = {}
+	if not self:IsEmpty() then
+		tab = table.Copy(self.table)
+	end
+	return tab
 end
 
 ---------------------------------------------------------
@@ -342,11 +342,11 @@ end
 		
 		Returns the new HashMap object
 ]]
-function Create(thetype, isfunc, thetype2, isfunc2)
-    local tmp = {}
-    setmetatable(tmp, list)
-    tmp:Create(thetype, isfunc, thetype2, isfunc2)
-    return tmp
+function Create( thetype, isfunc, thetype2, isfunc2 )
+	tmp = {}
+	setmetatable( tmp, list )
+	tmp:Create(thetype, isfunc, thetype2, isfunc2 )
+	return tmp
 end
 
 
