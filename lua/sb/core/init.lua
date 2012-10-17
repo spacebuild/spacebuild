@@ -28,15 +28,21 @@ sb.lang = {}
 sb.log = {}
 sb.util = {}
 sb.test = {}
----- experimental ----
-
 sb.wrappers = {}
+sb.extensions = {}
 
-----------------------
+include("sb/core/wrappers.lua");
 
 include("sb/core/config.lua");
 include("sb/core/class.lua");
 include("sb/core/debug.lua");
+
+---- Extension System ----
+include("sb/core/extensions.lua")
+--------------------------
+
+
+
 
 function sb.getVersion()
     return VERSION;
