@@ -43,13 +43,13 @@ end
 /*---------------------------------------------------------
    Name: SetID
 ---------------------------------------------------------*/
-function PANEL:SetCommands( toolname, name, model, type, num )
+function PANEL:SetCommands( toolname, name, model, typ, num )
 	
 	self.toolname = toolname
 	self.name = name
 	self.num = tostring(num)
 	self.SpawnButton:SetText( name )
-	self.SpawnButton.DoClick = function() LocalPlayer():ConCommand( toolname.."_name "..num.."\n"..toolname.."_model "..model.."\n"..toolname.."_type "..type.."\n" ) end
+	self.SpawnButton.DoClick = function() LocalPlayer():ConCommand( toolname.."_name "..num.."\n"..toolname.."_model "..model.."\n"..toolname.."_type "..typ.."\n" ) end
 	
 	self:InvalidateLayout()
 
