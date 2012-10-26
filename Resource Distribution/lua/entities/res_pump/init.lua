@@ -303,7 +303,7 @@ function ENT:Deploy()
 	local width = 3
 	local material = "cable/cable2"
 	local pos = self:LocalToWorld( Vector(15,13,10) )
-	local ang = self:GetAngles() + Vector(180,0,0)
+	local ang = self:GetAngles() + Angle(180,0,0)
 	
 	local plug = ents.Create( "prop_physics" )
 		plug:SetModel( "models/props_lab/tpplug.mdl" )
