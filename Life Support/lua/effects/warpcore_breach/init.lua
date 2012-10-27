@@ -7,6 +7,7 @@ tMats.Glow1 = Material("sprites/light_glow02")
 tMats.Glow2 = Material("sprites/yellowflare")
 tMats.Glow3 = Material("sprites/redglow2")
 
+/* // Broken since GMod 13 beta
 for _,mat in pairs(tMats) do
 
 	mat:SetMaterialInt("$spriterendermode",9)
@@ -14,6 +15,7 @@ for _,mat in pairs(tMats) do
 	mat:SetMaterialInt("$illumfactor",8)
 	
 end
+*/
 
 /*---------------------------------------------------------
    Init( data table )
@@ -166,7 +168,7 @@ local startpos = self.Position
 		local Distance = EyePos():Distance( self.Entity:GetPos() )
 		local Pos = self.Entity:GetPos() + (EyePos() - self.Entity:GetPos()):GetNormal() * Distance * (self.Refract^(0.3)) * 0.8
 
-		matRefraction:SetMaterialFloat( "$refractamount", math.sin( self.Refract * math.pi ) * 0.1 )
+		//matRefraction:SetMaterialFloat( "$refractamount", math.sin( self.Refract * math.pi ) * 0.1 )
 		render.SetMaterial( matRefraction )
 		render.UpdateRefractTexture()
 		render.DrawSprite( Pos, self.Size, self.Size )

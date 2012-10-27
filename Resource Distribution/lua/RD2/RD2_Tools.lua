@@ -103,9 +103,9 @@ if ( SERVER ) then
 			return RD2_CallbackFuncs[ToolName]
 		end
 
-		local MakeFunction = function( ply, Ang, Pos, type, model, Frozen )
+		local MakeFunction = function( ply, Ang, Pos, typ, model, Frozen )
 			if not ply:CheckLimit( ToolName ) then return nil end
-			local ent = RD2_MakeRD2Ent( ply, Ang, Pos, ToolName, type, model, frozen )
+			local ent = RD2_MakeRD2Ent( ply, Ang, Pos, ToolName, typ, model, frozen )
 			if not (ent and ent:IsValid()) then return nil end
 			ply:AddCount( ToolName, ent )
 			return ent
@@ -239,20 +239,21 @@ if ( SERVER ) then
 		local Pos = trace.HitPos
 		local Ang = trace.HitNormal:Angle()
 		Ang.pitch = Ang.pitch + 90
-		local type			= tool:GetClientInfo('type')
-		local model			= tool:GetClientInfo('model')
-		local AllowWorldWeld		= tool:GetClientNumber('AllowWorldWeld') == 1
+		
+		local typ				= tool:GetClientInfo('type')
+		local model				= tool:GetClientInfo('model')
+		local AllowWorldWeld	= tool:GetClientNumber('AllowWorldWeld') == 1
 		local DontWeld			= tool:GetClientNumber('DontWeld') == 1
 		local Frozen			= (tool:GetClientNumber('Frozen') == 1) or (AllowWorldWeld and not trace.Entity:IsValid())
 
-		if (not type or type == '') then
+		if (not typ or typ == '') then
 			ErrorNoHalt("RD: GetClientInfo('type') is nil!\n")
 			return false
 		end
-		local func = list.Get( FuncListName )[type]
-		if (not func) then Error("RD2: Unable to find make function for '"..type.."'\n") end
+		local func = list.Get( FuncListName )[typ]
+		if (not func) then Error("RD2: Unable to find make function for '"..typ.."'\n") end
 
-		local ent = func( ply, Ang, Pos, type, model, Frozen )
+		local ent = func( ply, Ang, Pos, typ, model, Frozen )
 		if (not ent) then return false end
 		ent:SetPos( trace.HitPos - trace.HitNormal * ent:OBBMins().z)
 		if CombatDamageSystem then
@@ -263,13 +264,14 @@ if ( SERVER ) then
 			local const = constraint.Weld(ent, trace.Entity,0, trace.PhysicsBone, 0, true ) --add true to turn DOR on
 		end
 
-		if (Frozen) then --fixing the frozen bug. to lazy to figure out where its actually failing so im adding this here ~MadDog
-			local phys = ent:GetPhysicsObject()
-			if (phys:IsValid()) then
-				phys:EnableMotion( false )
-				ply:AddFrozenPhysicsObject( ent, phys )
-			end
-		end
+		-- Stil needed??
+		--if (Frozen) then --fixing the frozen bug. to lazy to figure out where its actually failing so im adding this here ~MadDog
+		--	local phys = ent:GetPhysicsObject()
+		--	if (phys:IsValid()) then
+		--		phys:EnableMotion( false )
+		--		ply:AddFrozenPhysicsObject( ent, phys )
+		--	end
+		--end
 
 		undo.Create( ToolName )
 		undo.AddEntity( ent)
@@ -282,21 +284,22 @@ if ( SERVER ) then
 	end
 end
 
-if (SinglePlayer() and SERVER) or (not SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
+if (game.SinglePlayer() and SERVER) or (not game.SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
 function RD2_UpdateToolGhost( tool, model, min, GetOffset, offset )
 	local model = model or tool:GetClientInfo('model')
 
 	if (not model) or (model == nil) or (model == "") or (not util.IsValidModel(model)) then return end
 
-	if (!ValidEntity(tool.GhostEntity)) or !(string.lower(model) == string.lower(tool.GhostEntity:GetModel())) then --this should fix the entity creation spam ~MadDog
+	if (not IsValid(tool.GhostEntity)) or not (string.lower(model) == string.lower(tool.GhostEntity:GetModel())) then --this should fix the entity creation spam ~MadDog
 		tool:MakeGhostEntity( model, Vector(0,0,0), Angle(0,0,0) )
 	end
 
 	if ( not tool.GhostEntity ) then return end
 	if ( not tool.GhostEntity:IsValid() ) then return end
 
-	local tr = utilx.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
-	local trace = util.TraceLine( tr )
+	--[[local tr = util.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
+	local trace = util.TraceLine( tr )]]
+	local trace = tool:GetOwner():GetEyeTrace()
 	if (not trace.Hit) then return end
 
 	if ( trace.Entity:IsPlayer() ) then

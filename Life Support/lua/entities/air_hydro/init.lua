@@ -9,17 +9,17 @@ function ENT:Initialize()
 	self.BaseClass.Initialize(self)
 	self.damaged = 0
 	self.time = 0
-	self.water = 100
+	self.dt.Water = 100
 	self:SetOOO(1)
 	self:ShowOutput()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor( 255, 255, 255, 255 )
+	self:SetColor( Color(255, 255, 255, 255 ))
 	self.health = self.maxhealth
 	self.damaged = 0
 	self.time = 0
-	self.water = 100
+	self.dt.Water = 100
 	self:SetOOO(1)
 	self:ShowOutput()
 end
@@ -29,11 +29,11 @@ function ENT:SetActive()
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:ShowOutput()
-	self.Entity:SetNetworkedInt( 1, self.water )
+
 end
 
 function ENT:Damage()
@@ -41,23 +41,23 @@ function ENT:Damage()
 end
 
 function ENT:OnRemove()
- --nothing
+ //nothing
 end
 
 function ENT:Think()
 	self.BaseClass.Think(self)
 	if self.environment.inwater == 1 then
-		if self.water < 100 then
-			self.water = self.water + 1
+		if self.dt.Water < 100 then
+			self.dt.Water = self.dt.Water + 1
 			self:ShowOutput()
 		end
-	elseif self.water > 0 then
-		self.water = self.water - 1
+	elseif self.dt.Water > 0 then
+		self.dt.Water = self.dt.Water - 1
 		self:ShowOutput()
 	else
 		if self.Active == 1 then
 			self:SetOOO(0)
-			self.Entity:SetColor(75, 75, 75, 255)
+			self:SetColor(Color(75, 75, 75, 255))
 			self:ShowOutput()
 		end		
 	end

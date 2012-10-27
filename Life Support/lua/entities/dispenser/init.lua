@@ -19,13 +19,13 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.max_health
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 local function quiet_steam(ent)
@@ -33,30 +33,30 @@ local function quiet_steam(ent)
 end
 
 function ENT:SetActive( value, caller )
-	self.air = RD_GetResourceAmount(self.Entity, "air")
-	self.energy = RD_GetResourceAmount(self.Entity, "energy")
-	self.coolant = RD_GetResourceAmount(self.Entity, "coolant")
+	self.air = RD_GetResourceAmount(self, "air")
+	self.energy = RD_GetResourceAmount(self, "energy")
+	self.coolant = RD_GetResourceAmount(self, "coolant")
 	
 	if ( (2000 - caller.suit.air) < self.air ) then
-		RD_ConsumeResource(self.Entity, "air", 2000 - caller.suit.air)
+		RD_ConsumeResource(self, "air", 2000 - caller.suit.air)
 		caller.suit.air = 2000
 	elseif (self.air > 0) then
 		caller.suit.air = caller.suit.air + self.air 
-		RD_ConsumeResource(self.Entity, "air", self.air)
+		RD_ConsumeResource(self, "air", self.air)
 	end
 	if ( (2000 - caller.suit.energy) < self.energy ) then
-		RD_ConsumeResource(self.Entity, "energy", 2000 - caller.suit.energy)
+		RD_ConsumeResource(self, "energy", 2000 - caller.suit.energy)
 		caller.suit.energy = 2000
 	elseif (self.energy > 0) then
 		caller.suit.energy = caller.suit.energy + self.energy 
 		RD_ConsumeResource(self, "energy", self.energy)
 	end
 	if ( (2000 - caller.suit.coolant) < self.coolant ) then
-		RD_ConsumeResource(self.Entity, "coolant", 2000 - caller.suit.coolant)
+		RD_ConsumeResource(self, "coolant", 2000 - caller.suit.coolant)
 		caller.suit.coolant = 2000
 	elseif (self.coolant > 0) then
 		caller.suit.coolant = caller.suit.coolant + self.coolant
-		RD_ConsumeResource(self.Entity, "energy", self.coolant)
+		RD_ConsumeResource(self, "energy", self.coolant)
 	end
 	caller.Entity:EmitSound( "ambient.steam01" )
 	timer.Simple(3, quiet_steam, caller.Entity) 

@@ -60,7 +60,7 @@ function SB_BrushEnvironments.SpaceEnt(ent)
 	tbl.temperature = 14
 
 	if ent:IsPlayer() then
-		if not ent:InVehicle() or not SinglePlayer() and
+		if not ent:InVehicle() or not game.SinglePlayer() and
 		   not AllowAdminNoclip(ent) and ent:GetMoveType() == MOVETYPE_NOCLIP then
 			ent:SetMoveType(MOVETYPE_WALK)
 		end

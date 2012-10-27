@@ -16,9 +16,9 @@ util.PrecacheModel( MODEL )
 cleanup.Register('supplyconnectors')
 
 if ( CLIENT ) then
-	language.Add( 'Tool_sup_connector_name', 'Supply Connector' )
-	language.Add( 'Tool_sup_connector_desc', 'Create a Supply Connector attached to any surface.' )
-	language.Add( 'Tool_sup_connector_0', 'Left-Click: Spawn a Device.' )
+	language.Add( 'tool.sup_connector.name', 'Supply Connector' )
+	language.Add( 'tool.sup_connector.desc', 'Create a Supply Connector attached to any surface.' )
+	language.Add( 'tool.sup_connector.0', 'Left-Click: Spawn a Device.' )
 
 	language.Add( 'Undone_SupplyConnectors', 'Supply Connector Undone' )
 	language.Add( 'Cleanup_SupplyConnectors', 'Supply Connector' )

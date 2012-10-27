@@ -6,9 +6,9 @@ include('shared.lua')
 
 function ENT:Initialize()
 	--self.BaseClass.Initialize(self) --use this in all ents
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
 end
 
 --use this to set self.active
@@ -33,11 +33,11 @@ end
 function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
 	if self.Shield then
 		self.Shield:ShieldDamage(DmgInfo:GetDamage())
-		CDS_ShieldImpact(self.Entity:GetPos())
+		CDS_ShieldImpact(self:GetPos())
 		return
 	end
 	if DamageLS then
-		DamageLS(self.Entity, DmgInfo:GetDamage())
+		DamageLS(self, DmgInfo:GetDamage())
 	end
 end
 
@@ -45,7 +45,7 @@ function ENT:Think()
 	--self.BaseClass.Think(self) --use this in all ents that use standard setoverlaytext
 	if (self.NextOverlayTextTime) and (CurTime() >= self.NextOverlayTextTime) then
 		if (self.NextOverlayText) then
-			self.Entity:SetNetworkedString( "GModOverlayText", self.NextOverlayText )
+			self:SetNetworkedString( "GModOverlayText", self.NextOverlayText )
 			self.NextOverlayText = nil
 		end
 		self.NextOverlayTextTime = CurTime() + 0.2 + math.random() * 0.2
@@ -54,11 +54,11 @@ end
 
 function ENT:OldMethodSetOverlayText(txt) --called from shared
 	if (not self.OverlayDelay) or (self.OverlayDelay == 0) then
-		self.Entity:SetNetworkedString( "GModOverlayText", txt )
+		self:SetNetworkedString( "GModOverlayText", txt )
 	elseif (self.NextOverlayTextTime) then
 		self.NextOverlayText = txt
 	else
-		self.Entity:SetNetworkedString( "GModOverlayText", txt )
+		self:SetNetworkedString( "GModOverlayText", txt )
 		self.NextOverlayText = nil
 		self.NextOverlayTextTime = 0
 	end
@@ -66,22 +66,22 @@ end
 
 function ENT:OnRemove()
 	--self.BaseClass.OnRemove(self) --use this if you have to use OnRemove
-	Dev_Unlink_All(self.Entity)
-	if not (WireAddon == nil) then Wire_Remove(self.Entity) end
+	Dev_Unlink_All(self)
+	if not (WireAddon == nil) then Wire_Remove(self) end
 end
 
 function ENT:OnRestore()
 	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
-	if not (WireAddon == nil) then Wire_Restored(self.Entity) end
+	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
 	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
-	RD_BuildDupeInfo(self.Entity)
+	RD_BuildDupeInfo(self)
 	if not (WireAddon == nil) then
-		local DupeInfo = WireLib.BuildDupeInfo(self.Entity)
+		local DupeInfo = WireLib.BuildDupeInfo(self)
 		if DupeInfo then
-			duplicator.StoreEntityModifier( self.Entity, "WireDupeInfo", DupeInfo )
+			duplicator.StoreEntityModifier( self, "WireDupeInfo", DupeInfo )
 		end
 	end
 end

@@ -12,7 +12,7 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	end
 end
 
@@ -27,7 +27,7 @@ function ENT:TurnOff()
 	if (self.Active == 1) then
 		self.Active = 0
 		self:SetOOO(0)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", 0) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", 0) end
 	end
 end
 
@@ -39,13 +39,13 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity )
+	LS_Destruct( self )
 end
 
 function ENT:Extract_Energy()
@@ -59,12 +59,12 @@ function ENT:Extract_Energy()
 			RD_SupplyResource(self, "energy", inc)
 		end
 	end
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", inc) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", inc) end
 end
 
 function ENT:GenEnergy()
 	if (self.environment.inwater == 1) then
-		self.Entity:SetColor(50, 50, 50, 255)
+		self:SetColor(Color(50, 50, 50, 255))
 		self:TurnOff()
 		self:Destruct()
 	else
@@ -85,6 +85,6 @@ function ENT:Think()
 		self:GenEnergy()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
