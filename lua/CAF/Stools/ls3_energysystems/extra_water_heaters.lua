@@ -1,5 +1,4 @@
-
-DEVICEGROUP.type			= "generator_gas_steam"
+DEVICEGROUP.type = "generator_gas_steam"
 
 --[[
 	You can also use skin = number here to define a skin to make the Module spawn with
@@ -7,10 +6,10 @@ DEVICEGROUP.type			= "generator_gas_steam"
 ]]
 
 DEVICEGROUP.devices = {
-	add_one = {
-		Name		= "CE Small Water Heater",
-		model		= "models/ce_ls3additional/water_heater/water_heater.mdl",
-		skin 		= 0
-	},
+    add_one = {
+        Name = "CE Small Water Heater",
+        model = "models/ce_ls3additional/water_heater/water_heater.mdl",
+        skin = 0
+    },
 }
 

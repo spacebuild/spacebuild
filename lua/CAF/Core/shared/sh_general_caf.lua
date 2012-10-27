@@ -277,7 +277,7 @@ local next_obj_id = 1;
 CAF2.class = {}
 
 local function ClassFileExists(filename)
-	return file.Exists("../lua/caf/classes/"..tostring(filename)..".lua")
+	return file.Exists("../lua/caf/classes/"..tostring(filename)..".lua", "LUA")
 end
 
 local function LoadClassFile(name)

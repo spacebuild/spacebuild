@@ -6,9 +6,9 @@ include('shared.lua')
 
 function ENT:Initialize()
 	--self.BaseClass.Initialize(self) --use this in all ents
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
 	self:SetNetworkedInt( "overlaymode", 1 )
 	self:SetNetworkedInt( "OOO", 0 )
 	self.range = 512
@@ -19,8 +19,8 @@ function ENT:Initialize()
 	self.connected.node = nil
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "Open"} )
-		self.Outputs = Wire_CreateOutputs(self.Entity, {"Open"} )
+		self.Inputs = Wire_CreateInputs(self, { "Open"} )
+		self.Outputs = Wire_CreateOutputs(self, {"Open"} )
 	else
 		self.Inputs = {{Name="Open"}}
 	end
@@ -65,7 +65,7 @@ function ENT:TurnOn()
 			CAF.GetAddon("Resource Distribution").Link(self.connected.ent, self.connected.node.netid)
 			self.Active = 1 
 			self:SetOOO(1)
-			if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Open", self.Active) end
+			if not (WireAddon == nil) then Wire_TriggerOutput(self, "Open", self.Active) end
 		end
 	end
 end
@@ -76,7 +76,7 @@ function ENT:TurnOff()
 			CAF.GetAddon("Resource Distribution").Unlink(self.connected.ent)
 			self.Active = 0 
 			self:SetOOO(0)
-			if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Open", self.Active) end
+			if not (WireAddon == nil) then Wire_TriggerOutput(self, "Open", self.Active) end
 		end
 	end
 end
@@ -121,21 +121,21 @@ end
 function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
 	if self.Shield then
 		self.Shield:ShieldDamage(DmgInfo:GetDamage())
-		CDS_ShieldImpact(self.Entity:GetPos())
+		CDS_ShieldImpact(self:GetPos())
 		return
 	end
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").DamageLS(self.Entity, DmgInfo:GetDamage())
+		CAF.GetAddon("Life Support").DamageLS(self, DmgInfo:GetDamage())
 	end
 end
 
 function ENT:Think()
 	-- Check if all ents are still valid!
-	if self.connected.ent and not ValidEntity(self.connected.ent) then 
+	if self.connected.ent and not IsValid(self.connected.ent) then 
 		self.connected.ent = nil 
 		self:SetNetworkedInt("entid", nil)
 	end
-	if self.connected.node and not ValidEntity(self.connected.node) then 
+	if self.connected.node and not IsValid(self.connected.node) then 
 		self:TurnOff()
 		self.connected.node = nil 
 		self:SetNetworkedInt("netid", nil)
@@ -155,7 +155,7 @@ function ENT:Think()
 			self:SetNetworkedInt("netid", nil)
 		end
 	end
-	self.Entity:NextThink( CurTime() + 1 )
+	self:NextThink( CurTime() + 1 )
 	return true
 end
 
@@ -163,22 +163,22 @@ function ENT:OnRemove()
 	--self.BaseClass.OnRemove(self) --use this if you have to use OnRemove
 	self:TurnOff()
 	--CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
-	if not (WireAddon == nil) then Wire_Remove(self.Entity) end
+	if not (WireAddon == nil) then Wire_Remove(self) end
 end
 
 function ENT:OnRestore()
 	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
-	if not (WireAddon == nil) then Wire_Restored(self.Entity) end
+	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
 	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
 	local RD = CAF.GetAddon("Resource Distribution")
-	RD.BuildDupeInfo(self.Entity)
+	RD.BuildDupeInfo(self)
 	if not (WireAddon == nil) then
-		local DupeInfo = WireLib.BuildDupeInfo(self.Entity)
+		local DupeInfo = WireLib.BuildDupeInfo(self)
 		if DupeInfo then
-			duplicator.StoreEntityModifier( self.Entity, "WireDupeInfo", DupeInfo )
+			duplicator.StoreEntityModifier( self, "WireDupeInfo", DupeInfo )
 		end
 	end
 end

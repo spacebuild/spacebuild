@@ -7,11 +7,11 @@ TOOL.ConfigName	= ""
 if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon Framework" end
 
 if ( CLIENT ) then
-	language.Add( "Tool_rd3_dev_link_adv_name", "Advanced Link Tool" )
-	language.Add( "Tool_rd3_dev_link_adv_desc", "Links Resource-Carrying Devices together to a Resource Node, including Vehicle Pods. Waypoints can be set using this stool!!" )
-	language.Add( "Tool_rd3_dev_link_adv_0", "Left Click: Link Devices.  Right Click: Place link point.  Reload: Unlink Device from All." )
-	language.Add( "Tool_rd3_dev_link_adv_1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
-	language.Add( "Tool_rd3_dev_link_adv_2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
+	language.Add( "tool.rd3_dev_link_adv.name", "Advanced Link Tool" )
+	language.Add( "tool.rd3_dev_link_adv.desc", "Links Resource-Carrying Devices together to a Resource Node, including Vehicle Pods. Waypoints can be set using this stool!!" )
+	language.Add( "tool.rd3_dev_link_adv.0", "Left Click: Link Devices.  Right Click: Place link point.  Reload: Unlink Device from All." )
+	language.Add( "tool.rd3_dev_link_adv.1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
+	language.Add( "tool.rd3_dev_link_adv.2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
 	language.Add( "rd3_dev_link_adv_addlength", "Add Length:" )
 	language.Add( "rd3_dev_link_adv_width", "Width:" )
 	language.Add( "rd3_dev_link_adv_material", "Material:" )
@@ -205,7 +205,7 @@ function TOOL:Reload(trace)
 end
 
 function TOOL.BuildCPanel( CPanel )
-	CPanel:AddControl( "Header", { Text = "#Tool_rd3_dev_link_adv_name", Description	= "#Tool_rd3_dev_link_adv_desc" }  )
+	CPanel:AddControl( "Header", { Text = "#tool.rd3_dev_link_adv.name", Description	= "#tool.rd3_dev_link_adv.desc" }  )
 
 	CPanel:AddControl("Slider", {
 		Label = "#rd3_dev_link_adv_width",
