@@ -255,7 +255,7 @@ if ( SERVER ) then
 	end
 end
 
-if (SinglePlayer() and SERVER) or (!SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
+if (game.SinglePlayer() and SERVER) or (!game.SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
 	function CAF_UpdateToolGhost( tool, model, min, GetOffset, offset )
 		local model = model or tool:GetClientInfo('model')
 		if (model == '') then return end
@@ -267,7 +267,7 @@ if (SinglePlayer() and SERVER) or (!SinglePlayer() and CLIENT) then --server sid
 		if ( !tool.GhostEntity ) then return end
 		if ( !tool.GhostEntity:IsValid() ) then return end
 		
-		local tr = utilx.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetCursorAimVector() )
+		local tr = util.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetAimVector() )
 		local trace = util.TraceLine( tr )
 		if (!trace.Hit) then return end
 		

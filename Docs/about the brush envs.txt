@@ -1,4 +1,0 @@
-No touchy. These are mine runty little children.
-Don't touch the sv_sb_brush_env.lua in the gamemode folder unless you
-gave a gods be good reason!
-IF YOU DON'T I WILL RELEASE THE GAZEBO ON YOU! :3

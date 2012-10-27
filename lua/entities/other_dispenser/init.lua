@@ -22,13 +22,13 @@ end
 
 function ENT:Repair()
 	self.BaseClass.Repair(self)
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
 
 function ENT:Destruct()
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self.Entity, true )
+		CAF.GetAddon("Life Support").Destruct( self, true )
 	end
 end
 
@@ -83,6 +83,6 @@ function ENT:SetActive( value, caller )
 	end
 	
 	caller.Entity:EmitSound( "ambient.steam01" )
-	timer.Simple(3, quiet_steam, caller.Entity) 
+	timer.Simple(3, function() quiet_steam(caller.Entity) end) 
 end
 

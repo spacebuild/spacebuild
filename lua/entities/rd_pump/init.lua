@@ -107,7 +107,7 @@ concommand.Add( "UnlinkPump", UnlinkPump )
 local function UserConnect(ply)
 	if table.Count(pumps) > 0 then
 		for k, v in pairs(pumps) do
-			if ValidEntity(v) then
+			if IsValid(v) then
 				if table.Count(v.ResourcesToSend) > 0 then
 					for l, w in pairs(v.ResourcesToSend) do
 						umsg.Start("RD_Add_ResourceRate_to_Pump", ply)
@@ -125,9 +125,9 @@ hook.Add("PlayerInitialSpawn", "RD_Pump_info_Update", UserConnect)
 
 function ENT:Initialize()
 	--self.BaseClass.Initialize(self) --use this in all ents
-	self.Entity:PhysicsInit( SOLID_VPHYSICS )
-	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
-	self.Entity:SetSolid( SOLID_VPHYSICS )
+	self:PhysicsInit( SOLID_VPHYSICS )
+	self:SetMoveType( MOVETYPE_VPHYSICS )
+	self:SetSolid( SOLID_VPHYSICS )
 	self:SetNetworkedInt( "overlaymode", 1 )
 	self:SetNetworkedInt( "OOO", 0 )
 	self.Active = 0
@@ -168,7 +168,7 @@ function ENT:TurnOn()
 	if (self.Active == 0) then
 		self.Active = 1
 		self:SetOOO(1)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 	end
 end
 
@@ -176,7 +176,7 @@ function ENT:TurnOff()
 	if (self.Active == 1 ) then
 		self.Active = 0
 		self:SetOOO(0)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", self.Active) end
 	end
 end
 
@@ -252,11 +252,11 @@ end
 function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
 	if self.Shield then
 		self.Shield:ShieldDamage(DmgInfo:GetDamage())
-		CDS_ShieldImpact(self.Entity:GetPos())
+		CDS_ShieldImpact(self:GetPos())
 		return
 	end
 	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").DamageLS(self.Entity, DmgInfo:GetDamage())
+		CAF.GetAddon("Life Support").DamageLS(self, DmgInfo:GetDamage())
 	end
 end
 
@@ -265,10 +265,10 @@ function ENT:Think()
 	if self.otherpump and self.otherpump:GetPos():Distance(self:GetPos()) > 768 then
 		self:Disconnect()
 	end
-	--if not self.otherpump then Wire_TriggerOutput(self.Entity, "ConnectedPumpID", -1) end --Suggested wireoutput fix, needed??
-	if self.node and (not ValidEntity(self.node) or self.node:GetPos():Distance(self:GetPos()) > self.node.range) then
+	--if not self.otherpump then Wire_TriggerOutput(self, "ConnectedPumpID", -1) end --Suggested wireoutput fix, needed??
+	if self.node and (not IsValid(self.node) or self.node:GetPos():Distance(self:GetPos()) > self.node.range) then
 		RD.Beam_clear( self )
-		if ValidEntity(self.node) then
+		if IsValid(self.node) then
 			self:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 			self.node:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 		end
@@ -296,7 +296,7 @@ function ENT:Think()
 			end
 		end
 	end
-	self.Entity:NextThink( CurTime() + 1 )
+	self:NextThink( CurTime() + 1 )
 	return true
 end
 
@@ -344,22 +344,22 @@ function ENT:OnRemove()
 	self:Disconnect()
 	CAF.GetAddon("Resource Distribution").Unlink(self)
 	CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
-	if not (WireAddon == nil) then Wire_Remove(self.Entity) end
+	if not (WireAddon == nil) then Wire_Remove(self) end
 end
 
 function ENT:OnRestore()
 	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
-	if not (WireAddon == nil) then Wire_Restored(self.Entity) end
+	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
 	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
 	local RD = CAF.GetAddon("Resource Distribution")
-	RD.BuildDupeInfo(self.Entity)
+	RD.BuildDupeInfo(self)
 	if not (WireAddon == nil) then
-		local DupeInfo = WireLib.BuildDupeInfo(self.Entity)
+		local DupeInfo = WireLib.BuildDupeInfo(self)
 		if DupeInfo then
-			duplicator.StoreEntityModifier( self.Entity, "WireDupeInfo", DupeInfo )
+			duplicator.StoreEntityModifier( self, "WireDupeInfo", DupeInfo )
 		end
 	end
 end

@@ -6,84 +6,85 @@ local status = (LIFESUPPORT == 2)
 	The Constructor for this Custom Addon Class
 ]]
 function RD.__Construct()
-	return true
+    return true
 end
 
 --[[*
 	Is this Addon visible in the menu?
 ]]
 function RD.IsVisible()
-	return status
+    return status
 end
 
 --[[*
 	The Destructor for this Custom Addon Class
 ]]
 function RD.__Destruct()
-	return false, "Can't disable"
+    return false, "Can't disable"
 end
 
 --[[*
 	Get the required Addons for this Addon Class
 ]]
 function RD.GetRequiredAddons()
-	return {}
+    return {}
 end
 
 --[[*
 	Get the Boolean Status from this Addon Class
 ]]
 function RD.GetStatus()
-	return status
+    return status
 end
 
 --[[*
 	Get the Version of this Custom Addon Class
 ]]
 function RD.GetVersion()
-	return 0, "Release"
+    return 0, "Release"
 end
 
 --[[*
 	Get any custom options this Custom Addon Class might have
 ]]
 function RD.GetExtraOptions()
-	return {}
+    return {}
 end
 
 --[[*
 	Gets a menu from this Custom Addon Class
 ]]
 function RD.GetMenu(menutype, menuname) --Name is nil for main menu, String for others
-	local data = {}
-	return data
+    local data = {}
+    return data
 end
 
 --[[*
 	Get the Custom String Status from this Addon Class
 ]]
 function RD.GetCustomStatus()
-	if status then
-		return "Installed"
-	end
-	return "Not installed"
+    if status then
+        return "Installed"
+    end
+    return "Not installed"
 end
 
 --[[*
 	Can the Status of the addon be changed?
 ]]
 function RD.CanChangeStatus()
-	return false;
+    return false;
 end
 
 --[[*
 	Returns a table containing the Description of this addon
 ]]
 function RD.GetDescription()
-	return {
-				"Life Support 2",
-				"",
-				"Life Support  made by the SB2 dev team"
-			}
+    return {
+        "Life Support 2",
+        "",
+        "Life Support  made by the SB2 dev team"
+    }
 end
+
 CAF.RegisterAddon("Life Support 2", RD, "1")
