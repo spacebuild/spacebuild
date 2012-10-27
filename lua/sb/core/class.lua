@@ -44,6 +44,6 @@ end
 
 function class.exists(name)
     name = tostring(name);
-    return classes[name] ~= nil or #file.Find("sb/classes/" .. name .. ".lua", "LUA") == 1 -- Changed LUA_PATH to new format, blame Garry
+    return classes[name] ~= nil or #sb.wrappers:Find("file","sb/classes/" .. name .. ".lua", "LUA") == 1 --FUCK YOU GARRY
 end
 
