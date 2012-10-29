@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"				"Life Support-Core"
+	"version"			"2.0.9"
+	"up_date"			"09-08-2008"
+	"author_name"			"LS/RD/SB Team"
+	"author_email"			"spacebuild.dev@gmail.com"
+	"author_url"		"http://www.snakesvx.net/"
+	"info"				"Adds Life Support Systems."
+	"override"			"0"
+}
