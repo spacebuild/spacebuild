@@ -740,7 +740,7 @@ local function RecvFunc( m )
 	else
 		ResUnitsPrint[id] = ""
 	end
-	Msg("resID= "..id.." name= "..name.." printname= "..ResNamesPrint[id].." 0 "..unit.."\n")
+	//Msg("resID= "..id.." name= "..name.." printname= "..ResNamesPrint[id].." 0 "..unit.."\n")
 end
 usermessage.Hook( "RcvEntityVarBeam_ResNames", RecvFunc )
 end
