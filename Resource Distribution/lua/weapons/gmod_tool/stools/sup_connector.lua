@@ -97,7 +97,7 @@ if (SERVER) then
 end
 
 function TOOL.BuildCPanel( cp )
-	cp:AddControl('Header', {Text = '#Tool_sup_connector_name', Description = '#Tool_sup_connector_desc' }  )
+	cp:AddControl('Header', {Text = '#Tool.sup_connector.name', Description = '#Tool.sup_connector.desc' }  )
 	cp:AddControl("Slider", {Label = "#Hose Length", Type = "Float", Min = 1, Max = 30, Command = "sup_connector_hoselength"})
 	cp:AddControl("Checkbox", {Label = "#Uses Pump", Command = "sup_connector_pump"})
 	cp:AddControl("Slider", {Label = "#Transfer Rate(using pump)", Type = "Integer", Min = -300, Max = 300, Command = "sup_connector_rate"})

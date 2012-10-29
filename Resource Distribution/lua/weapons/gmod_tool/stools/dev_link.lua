@@ -179,7 +179,7 @@ function TOOL:Reload(trace)
 end
 
 function TOOL.BuildCPanel( CPanel )
-	CPanel:AddControl( "Header", { Text = "#Tool_dev_link_name", Description	= "#Tool_dev_link_desc" }  )
+	CPanel:AddControl( "Header", { Text = "#Tool.dev_link.name", Description	= "#Tool.dev_link.desc" }  )
 	
 	CPanel:AddControl("Slider", {
 		Label = "#LinkTool_width",

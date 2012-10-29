@@ -76,7 +76,7 @@ if (SERVER) then
 end
 
 function TOOL.BuildCPanel( cp )
-	cp:AddControl( 'Header', { Text = '#Tool_cutoff_valve_name', Description	= '#Tool_cutoff_valve_desc' }  )
+	cp:AddControl( 'Header', { Text = '#Tool.cutoff_valve.name', Description	= '#Tool.cutoff_valve.desc' }  )
 end
 
 function TOOL:Think()

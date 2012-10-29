@@ -78,7 +78,7 @@ if SERVER then
 end
 
 function TOOL.BuildCPanel( cp )
-	cp:AddControl( 'Header', { Text = '#Tool_link_junction_name', Description	= '#Tool_link_junction_desc' }  )
+	cp:AddControl( 'Header', { Text = '#Tool.link_junction.name', Description	= '#Tool.link_junction.desc' }  )
 end
 
 function TOOL:Think()
