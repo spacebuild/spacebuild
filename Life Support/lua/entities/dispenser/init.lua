@@ -28,10 +28,6 @@ function ENT:Destruct()
 	LS_Destruct( self, true )
 end
 
-local function quiet_steam(ent)
-	ent:StopSound( "ambient.steam01" )
-end
-
 function ENT:SetActive( value, caller )
 	self.air = RD_GetResourceAmount(self, "air")
 	self.energy = RD_GetResourceAmount(self, "energy")
@@ -59,6 +55,9 @@ function ENT:SetActive( value, caller )
 		RD_ConsumeResource(self, "energy", self.coolant)
 	end
 	caller.Entity:EmitSound( "ambient.steam01" )
-	timer.Simple(3, quiet_steam, caller.Entity) 
+	
+	timer.Simple(3, function()
+		caller.Entity:StopSound( "ambient.steam01" )
+	end) 
 end
 
