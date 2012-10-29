@@ -28,8 +28,12 @@ function SB_BrushEnvironments.Add(ID, gravity, habitat, pressure, ltemp, stemp, 
 end
 
 function SB_BrushEnvironments.Remove(ID)
-	SB_BrushEnvironments.Envs[ID] = nil
-	Msg("WARNING: REMOVED ENVIRONMENT ",ID,"!\n")
+	if ID then
+		SB_BrushEnvironments.Envs[ID] = nil
+		Msg("WARNING: REMOVED ENVIRONMENT ",ID,"!\n")
+	else
+		Msg("WARNING: REMOVED ENVIRONMENT FAILED, SUPPLIED ID : ",ID,"!\n")
+	end
 end
 
 function SB_BrushEnvironments.GetEnvData(ID)
