@@ -489,10 +489,10 @@ function RD2_PumpResource( net1, net2, pump, rate, ispump )
 			net2.amount = math.Round(net2.max * factor)
 			BeamNetVars.SetNetAmount( net1.ID, net1.amount )
 			BeamNetVars.SetNetAmount( net2.ID, net2.amount )
-			return oldamount - net1.amount --chage from net1 to net2
+			return oldamount - net1.amount --change from net1 to net2
 		end
 	end
-	--return 0
+	return 0
 end
 
 function RD2_Pump( Socket, OtherSocket )
