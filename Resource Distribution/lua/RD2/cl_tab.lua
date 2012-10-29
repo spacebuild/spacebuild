@@ -17,7 +17,7 @@ hook.Add( "AddToolMenuTabs", "LSTab", LSTab)
 
 function RD2_BuildCPanel( cp, toolname, listname )
 	if (RES_DISTRIB and RES_DISTRIB == 2) then
-		cp:AddControl( 'Header', { Text = '#Tool_'..toolname..'_name', Description	= '#Tool_'..toolname..'_desc' })  
+		cp:AddControl( 'Header', { Text = '#Tool.'..toolname..'.name', Description	= '#Tool.'..toolname..'.desc' })  
 		cp:AddControl("CheckBox", { Label = "Don't Weld", Command = toolname.."_DontWeld" })
 		cp:AddControl("CheckBox", { Label = "Allow welding to world", Command = toolname.."_AllowWorldWeld" })
 		cp:AddControl("CheckBox", { Label = "Make Frozen", Command = toolname.."_Frozen" })
