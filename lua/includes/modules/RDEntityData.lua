@@ -12,7 +12,7 @@ local setmetatable 	= setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
-local ValidEntity = ValidEntity
+local IsValid = IsValid
 local pairs = pairs
 
 module( "RDEntityData" )

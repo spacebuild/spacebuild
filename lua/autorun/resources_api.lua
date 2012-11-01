@@ -1,7 +1,8 @@
 --[[
 	Resources API
-		Last Update: May 5 2012
+		Last Update: 1 May 2012
 		Authors: MadDog, CmdrMatthew, SnakeSVx
+		Type: RD3 implementation (SnakeSVx)
 
 		file: resources_api.lua
 
@@ -17,7 +18,6 @@
 	After that the following functions are available to use:
 		Client Side Functions:
 			ent:ResourcesDraw()
-			ent:ResourcesGetAmount( resourcename )
 
 		Server Side Functions:
 			ent:ResourcesConsume( resourcename, amount )
@@ -32,7 +32,8 @@
 			ent:ResourcesCanLink( entity )
 ]]
 
-local CLIENT, SERVER, pairs, AddCSLuaFile, type, FindMetaTable = CLIENT, SERVER, pairs, AddCSLuaFile, type, FindMetaTable;
+local CLIENT, SERVER, pairs, AddCSLuaFile, type, FindMetaTable, RD = CLIENT, SERVER, pairs, AddCSLuaFile, type, FindMetaTable, nil;
+
 
 if SERVER then
     AddCSLuaFile("autorun/resources_api.lua") --if you change the file name or path change this!
@@ -53,46 +54,29 @@ RESOURCES.Version = {
     minor = 0,
     patch = 0
 }
+RESOURCES.Types = {
+    UNKNOWN = 0,
+    ENTITY = 1,
+    NETWORK = 2,
+    PUMP = 3,
+    VALVE = 4
+}
 
-local ResourcesDraw, ResourcesConsume, ResourcesSupply, ResourcesGetCapacity, ResourcesSetDeviceCapacity, ResourcesGetAmount, ResourcesGetDeviceAmount, ResourcesGetDeviceCapacity, ResourcesLink, ResourcesUnlink, ResourcesCanLink, ResourcesGetConnected, ResourcesBuildDupeInfo, ResourcesApplyDupeInfo
+local ResourcesDraw, ResourcesConsume, ResourcesSupply, ResourcesGetCapacity, ResourcesSetDeviceCapacity, ResourcesGetAmount, ResourcesGetDeviceAmount, ResourcesGetDeviceCapacity, ResourcesLink, ResourcesUnlink, ResourcesGetLinks, ResourcesCanLink, ResourcesGetConnected, ResourcesBuildDupeInfo, ResourcesApplyDupeInfo
 
-
---function to create a new in the Life Support system
---Note: limit may be a number OR function (and called before a device is created)
-function RESOURCES:ToolRegister(name, description, limit)
-end
-
---adds a category row to the tool
---Note: limit may be a number OR function (and called before a device is created)
-function RESOURCES:ToolRegisterCategory(toolname, categoryname, categorydescription, limit)
-end
-
---This function will make it so custom devices could be added to your tool system.
---This call would be placed in the entities shared.lua file
---example: RESOURCES:ToolRegisterDevice("Life Support", "Storage Devices", "Air Tank", "air_tank", "models/props_c17/canister01a.mdl")
---makefunc is for backwards compatibility. This really should just but in the ENT:Initalize function
-function RESOURCES:ToolRegisterDevice(toolname, categoryname, name, class, model, makefunc)
+local function getRD()
+    if not RD then
+        RD = CAF.GetAddon("Resource Distribution");
+    end
+    return RD;
 end
 
 if CLIENT then
 
+
     --Used do draw any connections, "beams", info huds, etc for the devices.
     --this would be placed within the ENT:Draw() function
     ResourcesDraw = function(ent)
-    --RD2 doesnt need this, it uses some funky custom ent creation stuff
-    end
-
-    --Gets the devices stored amount of resource from the connected network
-    --  supply: resource name
-    --  returns: number or table
-    ResourcesGetAmount = function(ent, res)
-        if res then
-            --your code here
-            return 0
-        else
-            --your code here
-            return {} --table of resources
-        end
     end
 
 elseif SERVER then
@@ -108,14 +92,13 @@ elseif SERVER then
             end
             return consume
         end
-
-        --your code here
-        return 0
+        -- TODO add net support
+        return amount - getRD().ConsumeResource(ent, res, amount); --0 = success. Anything larger and it couldnt consume the amount
     end
 
     --Supplies the resource to the connected network
     -- supply: resource name or resource table
-    -- returns: amount not supplied
+    -- returns:  amount not supplied
     ResourcesSupply = function(ent, res, amount)
         if type(res) == "table" then
             local supply = {}
@@ -124,9 +107,8 @@ elseif SERVER then
             end
             return supply
         end
-
-        --your code here
-        return 0
+        -- TODO add net support
+        return getRD().SupplyResource(ent, res, amount); --0 = success. Anything larger and it couldnt supply the amount (insufficient storage)
     end
 
     --Gets the devices networks total storage for the resource
@@ -135,16 +117,22 @@ elseif SERVER then
     -- note: If passed in nothing (nil), return the capity for each resource
     ResourcesGetCapacity = function(ent, res)
         if res then
-            --your code here
-            return 0
+            -- TODO add net support
+            return getRD().GetNetworkCapacity(ent, res);
         else
-            --your code here
-            return {} --table of resources
+            local res_table = {}
+            local ent_table = getRD().GetEntityTable(ent)
+            for k, v in pairs(ent_table.resources) do
+                -- TODO add net support
+                res_table[k] = getRD().GetNetworkCapacity(ent, v);
+            end
+            return res_table;
         end
     end
 
     --Sets the device max storage capacity
     -- supply: resource name or resource table
+    -- returns:
     ResourcesSetDeviceCapacity = function(ent, res, amount)
         if type(res) == "table" then
             for n, v in pairs(res) do ResourcesSetDeviceCapacity(ent, n, v) end
@@ -156,7 +144,7 @@ elseif SERVER then
 
     --  Gets the devices stored amount of resource from the connected network
     --  supply: resource name
-    --  returns: number or table
+    --  returns: number
     ResourcesGetAmount = function(ent, res)
         if res then
             --your code here
@@ -169,7 +157,7 @@ elseif SERVER then
 
     --how much this devive is holding
     -- supply: resource name
-    -- returns: number or table
+    -- returns: number
     ResourcesGetDeviceAmount = function(ent, res)
         if res then
             --your code here
@@ -182,7 +170,7 @@ elseif SERVER then
 
     --how much this devives network is holding
     -- supply: resource name
-    -- returns: number or table
+    -- returns: number
     ResourcesGetDeviceCapacity = function(ent, res)
         if res then
             --your code here
@@ -195,12 +183,14 @@ elseif SERVER then
 
     --link to another device/network
     -- supply: entity
+    -- returns:
     ResourcesLink = function(ent, entity)
-    --your code here to link the two entities
+    --your code here
     end
 
     --removes all link from a network
     -- supply: entity or table of entities (all optional)
+    -- returns:
     -- note: if an entity is passed in then unlink with that entity, otherwise unlink all
     ResourcesUnlink = function(ent, entity)
         if type(entity) == "table" then
@@ -209,10 +199,15 @@ elseif SERVER then
         end
 
         if (not entity) then
-            --your code to unlink all from this device
+            --your code here, unlink all
         else
-            --your code to unlink entity from ent
+            --your code here, unlink with entity
         end
+    end
+
+
+    ResourcesGetLinks = function(ent)
+        return {} --table of connected entities
     end
 
     --Determains if two devices can be linked
@@ -228,13 +223,12 @@ elseif SERVER then
         end
 
         --your code here
-        return true
+        return false
     end
 
     --Returns a list of connected entities
     ResourcesGetConnected = function(ent)
-    --your code here
-        return {}
+        return {} --returns a table of all connected entities
     end
 
     --This function is called to save any resource info so it can be saved using the duplicator
@@ -254,32 +248,25 @@ end
 --register the device clientside
 function RESOURCES:Setup(ent, type)
     --[[
-          your shared code here (if needed)
-      ]]
-
-    if ent.ResourcesDraw or ent.ResourcesConsume then return end --already registered
+         your shared code here
+     ]]
 
     --client functions
     if CLIENT then
         --[[
-                your client side code here
-          ]]
+              your client side code here
+        ]]
 
         --Used do draw any connections, "beams", info huds, etc for the devices.
         --this would be placed within the ENT:Draw() function
-        ent.ResourcesDraw = ResourcesDraw
-
-        --  Gets the devices stored amount of resource from the connected network
-        --  supply: resource name
-        --  returns: number
-        ent.ResourcesGetAmount = ResourcesGetAmount
+        ent.ResourcesDraw = ResourcesDraw;
 
         --server functions
     elseif SERVER then
 
         --[[
-                your server side code here (if needed)
-            ]]
+              your server side code here
+          ]]
 
         --Can be negitive or positive (for consume and generate)
         -- supply: resource name or resource table
@@ -329,6 +316,8 @@ function RESOURCES:Setup(ent, type)
         -- note: if an entity is passed in then unlink with that entity, otherwise unlink all
         ent.ResourcesUnlink = ResourcesUnlink
 
+        ent.ResourcesGetLinks = ResourcesGetLinks
+
         --Determains if two devices can be linked
         -- supply: entity or table of entities
         -- returns: boolean (if entity passed in), or table (if table of entities passed in)
@@ -340,6 +329,7 @@ function RESOURCES:Setup(ent, type)
         --This function is called to save any resource info so it can be saved using the duplicator
         --this goes into ENT:PreEntityCopy
         ent.ResourcesBuildDupeInfo = ResourcesBuildDupeInfo
+
 
         --This function is called to store any resource info after a dup
         --this goes into ENT:PostEntityPaste

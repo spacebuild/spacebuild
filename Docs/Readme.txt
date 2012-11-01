@@ -1,1 +1,0 @@
-Current entities are used for testing, if this system works (ok) it might be used in SB2.5
