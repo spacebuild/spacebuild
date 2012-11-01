@@ -11,7 +11,6 @@ local error = error
 local setmetatable = setmetatable
 local unpack = unpack
 -- Gmod specific
-local class = class
 local file = file
 -- SB Specific
 local class = sb.class

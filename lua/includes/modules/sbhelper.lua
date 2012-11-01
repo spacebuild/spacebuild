@@ -8,7 +8,8 @@
 
 local tostring = tostring;
 local file = file;
-local Json = require("Json");
+require("Json");
+local Json = Json
 
 module("sbhelper")
 
@@ -22,7 +23,7 @@ function loadConfig(filename, basefolder)
     basefolder = tostring(basefolder)
     filename = tostring(filename);
     filename = basefolder .. filename .. extension
-    if file.Exists(filename) then
+    if file.Exists(filename, "DATA" ) then
         temp = file.Read(filename);
         if temp then
             return Json.Decode(temp);

@@ -7,12 +7,13 @@ local environment_classes = { "env_sun", "logic_case" }
 local engines = {}
 local DEFAULT_ENGINE = "legacy"
 local engine = nil
+require("sbhelper")
 
 
 local oldConstruct = A.construct
 function A:construct(config)
     oldConstruct(self, config)
-    self.config = self.checkconfig(sbhelper.loadConfig(self.name))
+    self.config = self:checkConfig(sbhelper.loadConfig(self.name))
 end
 
 function A:checkConfig(config)
@@ -69,17 +70,17 @@ function A:getPlanets()
     engine:getPlanets()
 end
 
-function E:getStars()
+function A:getStars()
     self:initEngine();
     engine:getStars()
 end
 
-function E:getCustomEnvironments()
+function A:getCustomEnvironments()
     self:initEngine();
     engine:getCustomEnvironments()
 end
 
-function E:getAllEnvironments()
+function A:getAllEnvironments()
     self:initEngine();
     engine:getAllEnvironments()
 end
@@ -123,7 +124,7 @@ local function getKey(key)
 end
 
 local function Register_Environments_Data()
-    Msg("Registering environment info\n")
+    print("Registering environment info\n")
     --Load the planets/stars/bloom/color/... data. The actual creation of the environments will be handled by the "engine"
     local entities;
     local data

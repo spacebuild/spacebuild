@@ -16,6 +16,7 @@ end
 
 if SERVER then
 	AddCSLuaFile("autorun/sb_autostart.lua")
+    include("sb/core/server/send.lua")
 	include("sb/core/server/init.lua")
 else
 	include("sb/core/client/init.lua")
