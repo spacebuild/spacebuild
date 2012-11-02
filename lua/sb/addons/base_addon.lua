@@ -11,7 +11,7 @@ function A:construct(config)
     -- Basic implementation: override in your own addon
     self.hidden = true
     self.active = false
-    self.version = 0
+    self.version = 1
     self.name = "Base Addon"
     self.config = config or EMPTY_TABLE
 end

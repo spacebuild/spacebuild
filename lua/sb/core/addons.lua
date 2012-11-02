@@ -6,6 +6,8 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+require("readOnlyList")
+
 -- Lua Specific
 local tostring = tostring
 local error = error
@@ -15,13 +17,15 @@ local unpack = unpack
 local file = file
 -- SB Specific
 local addon = sb.addons
-local addons = {}
+local addons = readOnlyList.create()
 
 addon.SCOPES = {
     SERVER = 1,
     CLIENT = 2,
     SHARED = 3
 }
+
+addon.addons = addons
 
 local function getScopeDir(scope)
     local scopedir = "";
@@ -36,25 +40,19 @@ end
 local function create(scope, name, config)
     local scopedir = getScopeDir(scope);
     name = tostring(name);
-    if not addons[name] then
-        ADDON = {}
-        ADDON.__index = ADDON
-        local c = ADDON
-        include("sb/addons/" ..scopedir .. name..".lua");
-        ADDON = nil
-        function c:getClass()
-            return name;
-        end
-
-        local createAddon = function(config)
-            local tmp = {}
-            setmetatable(tmp, c)
-            tmp:construct(config)
-            return tmp
-        end
-        addons[name] = createAddon(config)
+    ADDON = {}
+    ADDON.__index = ADDON
+    local c = ADDON
+    include("sb/addons/" ..scopedir .. name..".lua");
+    ADDON = nil
+    function c:getClass()
+        return name;
     end
-    return addons[name]
+
+    local tmp = {}
+    setmetatable(tmp, c)
+    tmp:construct(config)
+    addons:register(tmp:getName(), tmp)
 end
 
 local basePath = "sb/addons/"
@@ -66,7 +64,6 @@ local function loadAddons(scope, send)
             AddCSLuaFile(basePath..scopedir..v)
         else
             v = string.sub(v, 0, -5)
-            print("Loading addon", scopedir, v)
             create(scope, v, {})
         end
     end
@@ -83,3 +80,6 @@ else
     loadAddons(addon.SCOPES.CLIENT)
     loadAddons(addon.SCOPES.SHARED)
 end
+
+print("The following addons have been loaded")
+PrintTable(addons:getaddons())

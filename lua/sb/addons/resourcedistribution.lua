@@ -1,4 +1,4 @@
-﻿include("sb/addons/base_addon.lua");
+include("sb/addons/base_addon.lua");
 
 local A = ADDON
 local sb = sb;
@@ -8,7 +8,7 @@ local oldConstruct = A.construct
 function A:construct(config)
     oldConstruct(self, config)
     self.version = 0.1
-    self.name = "Life Support"
+    self.name = "Resource Distribution"
     self.config = self:checkConfig(sbhelper.loadConfig(self:getClass()))
 end
 
@@ -18,7 +18,6 @@ function A:checkConfig(config)
         modified = true
         config = {}
         config.version = 0.1
-        config.temperaturescale = "K" --K, C, F
     else -- check if config needs updates
     end
     if modified then
@@ -26,4 +25,3 @@ function A:checkConfig(config)
     end
     return config;
 end
-

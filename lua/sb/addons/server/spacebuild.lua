@@ -7,33 +7,12 @@ local environment_classes = { "env_sun", "logic_case" }
 local engines = {}
 local DEFAULT_ENGINE = "legacy"
 local engine = nil
-require("sbhelper")
 
 
 local oldConstruct = A.construct
 function A:construct(config)
     oldConstruct(self, config)
-    self.config = self:checkConfig(sbhelper.loadConfig(self.name))
-end
-
-function A:checkConfig(config)
-    local modified = false;
-    if not config.version then --Create new config
-        modified = true
-        config.version = 1
-        config.engine = "legacy"
-        config.usedrag = true
-        config.infiniteresources = false
-        config.allownoclip = false
-        config.allownocliponplanets = true
-        config.allowadminnoclip = true
-        config.engine = DEFAULT_ENGINE
-    else -- check if config needs updates
-    end
-    if modified then
-        sbhelper.saveConfig(self.name, config)
-    end
-    return config;
+    self.hidden = false
 end
 
 function A:addEnvironmentClass(class)
