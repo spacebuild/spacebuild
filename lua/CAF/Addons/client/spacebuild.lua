@@ -7,10 +7,6 @@ local SB = {}
 
 local status = false
 
-SB3 = SB
-include("CAF/Addons/shared/spacebuild.lua")
-SB3 = nil;
-
 --Local functions
 -- used for sun effects
 local stars = {}

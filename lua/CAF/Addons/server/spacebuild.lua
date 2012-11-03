@@ -15,10 +15,6 @@ local SB = {}
 
 local status = false
 
-SB3 = SB
-include("CAF/Addons/shared/spacebuild.lua")
-SB3 = nil;
-
 --Local stuff
 SB_DEBUG = true
 
@@ -78,6 +74,7 @@ local function PlayerNoClip( ply, on )
 end
 
 local function SendColorAndBloom(ent, ply)
+    if IsValid(ent) then
 		umsg.Start( "AddPlanet", ply )
 			umsg.Short( ent:EntIndex())
 			umsg.String(ent:GetEnvironmentName())
@@ -112,15 +109,18 @@ local function SendColorAndBloom(ent, ply)
 				umsg.Bool(false)
 			end
 		umsg.End()
+    end
 end
 
 local function SendSunBeam(ent, ply)
+    if IsValid(ent) then
 		umsg.Start( "AddStar", ply )
 			umsg.Short( ent:EntIndex())
 			umsg.String(ent:GetName())
 			umsg.Vector( ent:GetPos() )
 			umsg.Float( ent.sbenvironment.size )
 		umsg.End()
+     end
 end
 
 local function PlayerInitialSpawn(ply) --Send the player info about the Stars and Planets for Effects
@@ -360,17 +360,22 @@ function sb_space.Get()
 	return space;
 end
 
+
+
 local function Register_Environments()
+    local CONFIGS = {}
 	Msg("Registering planets\n")
 	local Blooms = {}
 	local Colors = {}
-	local Planets = {}
 	local Planetscolor = {}
 	local Planetsbloom = {}
 	--Load the planets/stars/bloom/color
 	local entities = ents.FindByClass( "logic_case" )
-	local case1, case2, case3, case4, case5, case6, case7, case8, case9, case10, case11, case12, case13, case14, case15, case16, hash
+	local case1, case2, case3, case4, case5, case6, case7, case8, case9, case10, case11, case12, case13, case14, case15, case16, hash, angles, pos
 	for _, ent in ipairs( entities ) do
+        print("Planets")
+        PrintTable(Planets)
+
 		case1, case2, case3, case4, case5, case6, case7, case8, case9, case10, case11, case12, case13, case14, case15, case16, hash = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
 		local values = ent:GetKeyValues()
 		for key, value in pairs(values) do
@@ -407,241 +412,273 @@ local function Register_Environments()
 			elseif key == "Case16" then
 				case16 = value
 			end
-		end
-		if case1 == "planet" then
-			SB_InSpace = 1
-			--SetGlobalInt("InSpace", 1)
-			if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, ent:GetPos()) then
-				case2 = tonumber(case2) --radius
-				case3 = tonumber(case3) -- gravity
-				case4 = tonumber(case4) -- atmosphere
-				case5 = tonumber(case5) -- stemperature
-				case6 = tonumber(case6) -- ltemperature
-				if string.len(case7) == 0 then
-					case7 = nil -- COLORID
-				end
-				if string.len(case8) == 0 then
-					case8 = nil -- BloomID
-				end
-				case15 = tonumber(case15) --disabled
-				case16 = tonumber(case16) -- flags
-				if case15 ~= 1 then
-					local planet = ents.Create( "base_sb_planet1" )
-					planet:SetModel("models/props_lab/huladoll.mdl")
-					planet:SetAngles( ent:GetAngles() )
-					planet:SetPos( ent:GetPos() )
-					planet:Spawn()
-					planet:CreateEnvironment(ent, case2, case3, case4, case5, case6, case16)
-					if case7 then
-						Planetscolor[case7] = planet
-					end
-					if case8 then
-						Planetsbloom[case8] = planet
-					end
-					table.insert(Planets, planet)
-					print("Registered New Planet\n")
-				else
-					print("Didn't register SB2 planet\n")
-				end
-			end
-		elseif case1 == "planet2" then
-			SB_InSpace = 1
-			--SetGlobalInt("InSpace", 1)
-			if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, ent:GetPos()) then
-				case2 = tonumber(case2) -- radius
-				case3 = tonumber(case3) -- gravity
-				case4 = tonumber(case4) -- atmosphere
-				case5 = tonumber(case5) -- pressure
-				case6 = tonumber(case6) -- stemperature
-				case7 = tonumber(case7) -- ltemperature
-				case8 = tonumber(case8) -- flags
-				case9 = tonumber(case9) -- o2
-				case10 = tonumber(case10) -- co2
-				case11 = tonumber(case11) -- n
-				case12 = tonumber(case12) -- h
-				case13 = tostring(case13) --name
-				if string.len(case15) == 0 then 
-					case15 = nil -- COLORID
-				end
-				if string.len(case16) == 0 then
-					case16 = nil -- BloomID
-				end
-		
-				local planet = ents.Create( "base_sb_planet2" )
-				planet:SetModel("models/props_lab/huladoll.mdl")
-				planet:SetAngles( ent:GetAngles() )
-				planet:SetPos( ent:GetPos() )
-				planet:Spawn()
-				if case13 == "" then
-					case13 = "Planet " .. tostring(planet:GetEnvironmentID())
-				end
-				planet:CreateEnvironment(ent, case2, case3, case4, case5, case6, case7,  case9, case10, case11, case12, case8, case13)
-				if case15 then
-					Planetscolor[case15] = planet
-				end
-				if case16 then
-					Planetsbloom[case16] = planet
-				end
-				table.insert(Planets, planet)
-				print("Registered New Planet\n")
-			end
-		elseif case1 == "cube" then
-			SB_InSpace = 1
-			--SetGlobalInt("InSpace", 1)
-			if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, ent:GetPos()) then
-				case2 = tonumber(case2) -- radius
-				case3 = tonumber(case3) -- gravity
-				case4 = tonumber(case4) -- atmosphere
-				case5 = tonumber(case5) -- pressure
-				case6 = tonumber(case6) -- stemperature
-				case7 = tonumber(case7) -- ltemperature
-				case8 = tonumber(case8) -- flags
-				case9 = tonumber(case9) -- o2
-				case10 = tonumber(case10) -- co2
-				case11 = tonumber(case11) -- n
-				case12 = tonumber(case12) -- h
-				case13 = tostring(case13) --name
-				if string.len(case15) == 0 then 
-					case15 = nil -- COLORID
-				end
-				if string.len(case16) == 0 then
-					case16 = nil -- BloomID
-				end
-				local planet = ents.Create( "base_cube_environment" )
-				planet:SetModel("models/props_lab/huladoll.mdl")
-				planet:SetAngles( ent:GetAngles() )
-				planet:SetPos( ent:GetPos() )
-				planet:Spawn()
-				if case13 == "" then
-					case13 = "Cube Environment " .. tostring(planet:GetEnvironmentID())
-				end
-				planet:CreateEnvironment(ent, case2, case3, case4, case5, case6, case7,  case9, case10, case11, case12, case8, case13)
-				if case15 then
-					Planetscolor[case15] = planet
-				end
-				if case16 then
-					Planetsbloom[case16] = planet
-				end
-				table.insert(Planets, planet)
-				print("Registered New Planet\n")
-			end
-		elseif case1 == "sb_dev_tree" then
-			local tree = ents.Create( "nature_dev_tree" )
-			tree:SetRate(tonumber(case2), true)
-			tree:SetAngles( ent:GetAngles() )
-			tree:SetPos( ent:GetPos() )
-			tree:Spawn()
-			print("Registered New SB Tree\n")
-		elseif case1 == "planet_color" then
-			hash = {}
-			if string.len(case2) > 0 then
-				hash.AddColor_r = tonumber(string.Left(case2, string.find(case2," ") - 1))
-				case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
-				hash.AddColor_g = tonumber(string.Left(case2, string.find(case2," ") - 1))
-				case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
-				hash.AddColor_b = tonumber(case2)
-			end
-			if string.len(case3) > 0 then
-				hash.MulColor_r = tonumber(string.Left(case3, string.find(case3," ") - 1))
-				case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
-				hash.MulColor_g = tonumber(string.Left(case3, string.find(case3," ") - 1))
-				case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
-				hash.MulColor_b = tonumber(case3)
-			end
-			if case4 then hash.Brightness = tonumber(case4) end
-			if case5 then hash.Contrast = tonumber(case5) end
-			if case6 then hash.Color = tonumber(case6) end
-			Colors[case16] = hash
-			print("Registered New Planet Color\n")
-		elseif case1 == "planet_bloom" then
-			hash = {}
-			if string.len(case2) > 0 then
-				hash.Col_r = tonumber(string.Left(case2, string.find(case2," ") - 1))
-				case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
-				hash.Col_g = tonumber(string.Left(case2, string.find(case2," ") - 1))
-				case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
-				hash.Col_b = tonumber(case2)
-			end
-			if string.len(case3) > 0 then
-				hash.SizeX = tonumber(string.Left(case3, string.find(case3," ") - 1))
-				case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
-				hash.SizeY = tonumber(case3)
-			end
-			if case4 then hash.Passes = tonumber(case4) end
-			if case5 then hash.Darken = tonumber(case5) end
-			if case6 then hash.Multiply = tonumber(case6) end
-			if case7 then hash.Color = tonumber(case7) end
-			Blooms[case16] = hash
-			print("Registered New Planet Bloom\n")
-		elseif case1 == "star" then
-			SB_InSpace = 1
-			--SetGlobalInt("InSpace", 1)
-			if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, ent:GetPos()) then
-				local planet = ents.Create( "base_sb_star1" )
-				planet:SetModel("models/props_lab/huladoll.mdl")
-				planet:SetAngles( ent:GetAngles() )
-				planet:SetPos( ent:GetPos() )
-				planet:Spawn()
-				planet:CreateEnvironment(ent, tonumber(case2))
-				table.insert(TrueSun, ent:GetPos())
-				print("Registered New Star\n")
-			end
-		elseif case1 == "star2" then
-			SB_InSpace = 1
-			--SetGlobalInt("InSpace", 1)
-			if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, ent:GetPos()) then
-				case2 = tonumber(case2) -- radius
-				case3 = tonumber(case3) -- temp1
-				case4 = tonumber(case4) -- temp2
-				case5 = tonumber(case5) -- temp3
-				case6 = tostring(case6) -- name
-				if case6 =="" then
-					case6 = "Star"
-				end
-				local planet = ents.Create( "base_sb_star2" )
-				planet:SetModel("models/props_lab/huladoll.mdl")
-				planet:SetAngles( ent:GetAngles() )
-				planet:SetPos( ent:GetPos() )
-				planet:Spawn()
-				planet:CreateEnvironment(ent, case2, case3, case4, case5, case6)
-				table.insert(TrueSun, ent:GetPos())
-				print("Registered New Star\n")
-			end
-		end
-	end
-	for k, v in pairs(Blooms) do
-		if Planetsbloom[k] then
-			Planetsbloom[k]:BloomEffect(v.Col_r, v.Col_g, v.Col_b, v.SizeX, v.SizeY, v.Passes, v.Darken, v.Multiply, v.Color)
-		end
-	end
-	for k, v in pairs(Colors) do
-		if Planetscolor[k] then
-			Planetscolor[k]:ColorEffect(v.AddColor_r, v.AddColor_g, v.AddColor_b, v.MulColor_r, v.MulColor_g, v.MulColor_b, v.Brightness, v.Contrast, v.Color)
-		end
-	end
-	-- compatibility patch, since this map does not convert to sb3 properly. ~Dubby
-	if game.GetMap() == "gm_interplaneteryfunk" then
-		local p = Entity(40):GetParent()
-		Entity(40):Remove()
-		Entity(41):GetParent():Remove()
-		Entity(42):GetParent():Remove()
-		Entity(43):GetParent():Remove()
-		Entity(44):GetParent():Remove()
-		
-		local e = ents.Create("base_cube_environment")
-		e:SetModel("models/props_lab/huladoll.mdl")
-		e:SetAngles( Angle(0,0,0) )
-		e:SetPos( Vector(0,0,-17400) )
-		e:Spawn()
-		e:CreateEnvironment(p, 15344, 1, 1, 1, 289, 300,  21, 0.45, 78, 0.55, 0, "Earth")
-		e.Active = true
-		--lua_run local e = ents.Create("base_cube_environment") e:SetModel("models/props_lab/huladoll.mdl") e:SetAngles(Angle(0,0,0)) e:SetPos(Vector(0,0,-14472)) e:Spawn() e:CreateEnvironment(Entity(41):GetParent(),15000,1,1,1,289,300,21,0.45,78,0.55,0,"Earth")
-	end
+        end
+        table.insert(CONFIGS, {
+            case1,
+            case2,
+            case3,
+            case4,
+            case5,
+            case6,
+            case7,
+            case8,
+            case9,
+            case10,
+            case11,
+            case12,
+            case13,
+            case14,
+            case15,
+            case16,
+            ent:GetAngles(),
+            ent:GetPos()
+
+        })
+    end
+    timer.Simple(1, function()
+        for _, c in ipairs( CONFIGS ) do
+            case1, case2, case3, case4, case5, case6, case7, case8, case9, case10, case11, case12, case13, case14, case15, case16, hash, angles, pos = c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10], c[11], c[12], c[13], c[14], c[15], c[16], nil, c[17], c[18]
+            if case1 == "planet" then
+                SB_InSpace = 1
+                --SetGlobalInt("InSpace", 1)
+                if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+                    case2 = tonumber(case2) --radius
+                    case3 = tonumber(case3) -- gravity
+                    case4 = tonumber(case4) -- atmosphere
+                    case5 = tonumber(case5) -- stemperature
+                    case6 = tonumber(case6) -- ltemperature
+                    if string.len(case7) == 0 then
+                        case7 = nil -- COLORID
+                    end
+                    if string.len(case8) == 0 then
+                        case8 = nil -- BloomID
+                    end
+                    case15 = tonumber(case15) --disabled
+                    case16 = tonumber(case16) -- flags
+                    if case15 ~= 1 then
+                        local planet = ents.Create( "base_sb_planet1" )
+                        planet:SetModel("models/props_lab/huladoll.mdl")
+                        planet:SetAngles( angles )
+                        planet:SetPos( pos )
+                        planet:Spawn()
+                        planet:CreateEnvironment(case2, case3, case4, case5, case6, case16)
+                        if case7 then
+                            Planetscolor[case7] = planet
+                        end
+                        if case8 then
+                            Planetsbloom[case8] = planet
+                        end
+                        print(planet)
+                        table.insert(Planets, planet)
+                        print("Registered New Planet\n")
+                    else
+                        print("Didn't register SB2 planet\n")
+                    end
+                end
+            elseif case1 == "planet2" then
+                SB_InSpace = 1
+                --SetGlobalInt("InSpace", 1)
+                if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+                    case2 = tonumber(case2) -- radius
+                    case3 = tonumber(case3) -- gravity
+                    case4 = tonumber(case4) -- atmosphere
+                    case5 = tonumber(case5) -- pressure
+                    case6 = tonumber(case6) -- stemperature
+                    case7 = tonumber(case7) -- ltemperature
+                    case8 = tonumber(case8) -- flags
+                    case9 = tonumber(case9) -- o2
+                    case10 = tonumber(case10) -- co2
+                    case11 = tonumber(case11) -- n
+                    case12 = tonumber(case12) -- h
+                    case13 = tostring(case13) --name
+                    if string.len(case15) == 0 then
+                        case15 = nil -- COLORID
+                    end
+                    if string.len(case16) == 0 then
+                        case16 = nil -- BloomID
+                    end
+
+                    local planet = ents.Create( "base_sb_planet2" )
+                    planet:SetModel("models/props_lab/huladoll.mdl")
+                    planet:SetAngles( angles )
+                    planet:SetPos( pos )
+                    planet:Spawn()
+                    if case13 == "" then
+                        case13 = "Planet " .. tostring(planet:GetEnvironmentID())
+                    end
+                    planet:CreateEnvironment(case2, case3, case4, case5, case6, case7,  case9, case10, case11, case12, case8, case13)
+                    if case15 then
+                        Planetscolor[case15] = planet
+                    end
+                    if case16 then
+                        Planetsbloom[case16] = planet
+                    end
+                    print(planet)
+                    table.insert(Planets, planet)
+                    print("Registered New Planet\n")
+                end
+            elseif case1 == "cube" then
+                SB_InSpace = 1
+                --SetGlobalInt("InSpace", 1)
+                if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+                    case2 = tonumber(case2) -- radius
+                    case3 = tonumber(case3) -- gravity
+                    case4 = tonumber(case4) -- atmosphere
+                    case5 = tonumber(case5) -- pressure
+                    case6 = tonumber(case6) -- stemperature
+                    case7 = tonumber(case7) -- ltemperature
+                    case8 = tonumber(case8) -- flags
+                    case9 = tonumber(case9) -- o2
+                    case10 = tonumber(case10) -- co2
+                    case11 = tonumber(case11) -- n
+                    case12 = tonumber(case12) -- h
+                    case13 = tostring(case13) --name
+                    if string.len(case15) == 0 then
+                        case15 = nil -- COLORID
+                    end
+                    if string.len(case16) == 0 then
+                        case16 = nil -- BloomID
+                    end
+                    local planet = ents.Create( "base_cube_environment" )
+                    planet:SetModel("models/props_lab/huladoll.mdl")
+                    planet:SetAngles( angles )
+                    planet:SetPos( pos )
+                    planet:Spawn()
+                    if case13 == "" then
+                        case13 = "Cube Environment " .. tostring(planet:GetEnvironmentID())
+                    end
+                    planet:CreateEnvironment(case2, case3, case4, case5, case6, case7,  case9, case10, case11, case12, case8, case13)
+                    if case15 then
+                        Planetscolor[case15] = planet
+                    end
+                    if case16 then
+                        Planetsbloom[case16] = planet
+                    end
+                    print(planet)
+                    table.insert(Planets, planet)
+                    print("Registered New Planet\n")
+                end
+            elseif case1 == "sb_dev_tree" then
+                local tree = ents.Create( "nature_dev_tree" )
+                tree:SetRate(tonumber(case2), true)
+                tree:SetAngles( angles )
+                tree:SetPos( pos )
+                tree:Spawn()
+                print("Registered New SB Tree\n")
+            elseif case1 == "planet_color" then
+                hash = {}
+                if string.len(case2) > 0 then
+                    hash.AddColor_r = tonumber(string.Left(case2, string.find(case2," ") - 1))
+                    case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
+                    hash.AddColor_g = tonumber(string.Left(case2, string.find(case2," ") - 1))
+                    case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
+                    hash.AddColor_b = tonumber(case2)
+                end
+                if string.len(case3) > 0 then
+                    hash.MulColor_r = tonumber(string.Left(case3, string.find(case3," ") - 1))
+                    case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
+                    hash.MulColor_g = tonumber(string.Left(case3, string.find(case3," ") - 1))
+                    case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
+                    hash.MulColor_b = tonumber(case3)
+                end
+                if case4 then hash.Brightness = tonumber(case4) end
+                if case5 then hash.Contrast = tonumber(case5) end
+                if case6 then hash.Color = tonumber(case6) end
+                Colors[case16] = hash
+                print("Registered New Planet Color\n")
+            elseif case1 == "planet_bloom" then
+                hash = {}
+                if string.len(case2) > 0 then
+                    hash.Col_r = tonumber(string.Left(case2, string.find(case2," ") - 1))
+                    case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
+                    hash.Col_g = tonumber(string.Left(case2, string.find(case2," ") - 1))
+                    case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
+                    hash.Col_b = tonumber(case2)
+                end
+                if string.len(case3) > 0 then
+                    hash.SizeX = tonumber(string.Left(case3, string.find(case3," ") - 1))
+                    case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
+                    hash.SizeY = tonumber(case3)
+                end
+                if case4 then hash.Passes = tonumber(case4) end
+                if case5 then hash.Darken = tonumber(case5) end
+                if case6 then hash.Multiply = tonumber(case6) end
+                if case7 then hash.Color = tonumber(case7) end
+                Blooms[case16] = hash
+                print("Registered New Planet Bloom\n")
+            elseif case1 == "star" then
+                SB_InSpace = 1
+                --SetGlobalInt("InSpace", 1)
+                if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+                    local planet = ents.Create( "base_sb_star1" )
+                    planet:SetModel("models/props_lab/huladoll.mdl")
+                    planet:SetAngles( angles )
+                    planet:SetPos(pos )
+                    planet:Spawn()
+                    planet:CreateEnvironment(tonumber(case2))
+                    table.insert(TrueSun, pos)
+                    print("Registered New Star\n")
+                end
+            elseif case1 == "star2" then
+                SB_InSpace = 1
+                --SetGlobalInt("InSpace", 1)
+                if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+                    case2 = tonumber(case2) -- radius
+                    case3 = tonumber(case3) -- temp1
+                    case4 = tonumber(case4) -- temp2
+                    case5 = tonumber(case5) -- temp3
+                    case6 = tostring(case6) -- name
+                    if case6 =="" then
+                        case6 = "Star"
+                    end
+                    local planet = ents.Create( "base_sb_star2" )
+                    planet:SetModel("models/props_lab/huladoll.mdl")
+                    planet:SetAngles( angles )
+                    planet:SetPos( pos )
+                    planet:Spawn()
+                    planet:CreateEnvironment(case2, case3, case4, case5, case6)
+                    table.insert(TrueSun, pos)
+                    print("Registered New Star\n")
+                end
+            end
+        end
+        for k, v in pairs(Blooms) do
+            if Planetsbloom[k] then
+                Planetsbloom[k]:BloomEffect(v.Col_r, v.Col_g, v.Col_b, v.SizeX, v.SizeY, v.Passes, v.Darken, v.Multiply, v.Color)
+            end
+        end
+        for k, v in pairs(Colors) do
+            if Planetscolor[k] then
+                Planetscolor[k]:ColorEffect(v.AddColor_r, v.AddColor_g, v.AddColor_b, v.MulColor_r, v.MulColor_g, v.MulColor_b, v.Brightness, v.Contrast, v.Color)
+            end
+        end
+        -- compatibility patch, since this map does not convert to sb3 properly. ~Dubby
+        if game.GetMap() == "gm_interplaneteryfunk" then
+            local p = Entity(40):GetParent()
+            Entity(40):Remove()
+            Entity(41):GetParent():Remove()
+            Entity(42):GetParent():Remove()
+            Entity(43):GetParent():Remove()
+            Entity(44):GetParent():Remove()
+
+            local e = ents.Create("base_cube_environment")
+            e:SetModel("models/props_lab/huladoll.mdl")
+            e:SetAngles( Angle(0,0,0) )
+            e:SetPos( Vector(0,0,-17400) )
+            e:Spawn()
+            e:CreateEnvironment(p, 15344, 1, 1, 1, 289, 300,  21, 0.45, 78, 0.55, 0, "Earth")
+            e.Active = true
+            --lua_run local e = ents.Create("base_cube_environment") e:SetModel("models/props_lab/huladoll.mdl") e:SetAngles(Angle(0,0,0)) e:SetPos(Vector(0,0,-14472)) e:Spawn() e:CreateEnvironment(Entity(41):GetParent(),15000,1,1,1,289,300,21,0.45,78,0.55,0,"Earth")
+        end
+        if SB_InSpace == 1 then
+            SB.__Construct();
+        end
+    end)
 end
 
 local function ForcePlyModel(ply)
 	if ForceModel:GetInt() == 1 then
-		if !ply.sbmodel then
+		if not ply.sbmodel then
 			local i = math.Rand(0, 4)
 			if i <= 1 then
 				ply.sbmodel = "models/player/samzanemesis/MarineMedic.mdl"
@@ -659,19 +696,17 @@ local function ForcePlyModel(ply)
 end
   
 --End Local Stuff
-/**
+--[[
 	The AutoStart functions
 	Optional
 	Get's called before/replacing __Construct on CAF Startup
 	Return true = AutoStart (Addon got enabled)
 	Return nil or false = addon didn't get enabled
-*/
+]]
 function SB.__AutoStart()
 	Register_Sun()
 	Register_Environments()
-	if SB_InSpace == 1 then
-		SB.__Construct();
-	end
+
 end
 
 local function ResetGravity()
@@ -691,12 +726,12 @@ local function ResetGravity()
 end
 
 
-/**
+--[[
 	The Constructor for this Custom Addon Class
 	Required
 	Return True if succesfully able to start up this addon
 	Return false, the reason of why it wasn't able to start
-*/
+]]
 function SB.__Construct()
 	if status then return false , CAF.GetLangVar("This Addon is already Active!") end
 	if SB_InSpace == 1 then
@@ -716,12 +751,12 @@ function SB.__Construct()
 	return false, CAF.GetLangVar("Not on a Spacebuild Map!")
 end
 
-/**
+--[[
 	The Destructor for this Custom Addon Class
 	Required
 	Return true if disabled correctly
 	Return false + the reason if disabling failed
-*/
+]]
 function SB.__Destruct()
 	if not status then return false , CAF.GetLangVar("This Addon is already disabled!") end
 	hook.Remove("PlayerNoClip", "SB_PlayerNoClip_Check")
@@ -735,7 +770,7 @@ function SB.__Destruct()
 	return true;
 end
 
-/**
+--[[
 	Get the required Addons for this Addon Class
 	Optional
 	Put the string names of the Addons in here in table format
@@ -743,47 +778,47 @@ end
 	Example: return {"Resource Distribution", "Life Support"}
 	
 	Works together with the startup Level number at the bottom of this file
-*/
+]]
 function SB.GetRequiredAddons()
 	return {}
 end
 
-/**
+--[[
 	Get the Boolean Status from this Addon Class
 	Required, used to know if this addon is active or not
-*/
+]]
 function SB.GetStatus()
 	return status
 end
 
-/**
+--[[
 	Get the Version of this Custom Addon Class
 	Optional (but should be put it in most cases!)
-*/
+]]
 function SB.GetVersion()
 	return 3.1, CAF.GetLangVar("Beta")
 end
 
-/**
+--[[
 	Get any custom options this Custom Addon Class might have
 	Not implemented yet
-*/
+]]
 function SB.GetExtraOptions()
 	return {}
 end
 
-/**
+--[[
 	Get the Custom String Status from this Addon Class
 	Optional, returns a custom String status, could be used if your addon has more then 1 status based on the options activated?
-*/
+]]
 function SB.GetCustomStatus()
 	return
 end
 
-/**
+--[[
 	You can send all the files from here that you want to add to send to the client
 	Optional
-*/
+]]
 function SB.AddResourcesToSend()
 	resource.AddFile( "models/player/samzanemesis/MarineMedic.mdl" )
 	resource.AddFile( "models/player/samzanemesis/MarineSpecial.mdl" )
@@ -822,7 +857,7 @@ function SB.PerformEnvironmentCheck()
 	--local begintime = CAF.begintime()
 	--local amount = #sb_spawned_entities;
 	for k, ent in ipairs( sb_spawned_entities) do
-		if ent and IsValid(ent) then
+		if ent and IsValid(ent) and not ent.IsEnvironment  then
 			SB.PerformEnvironmentCheckOnEnt( ent )
 		else
 			table.remove(sb_spawned_entities, k)
@@ -844,11 +879,11 @@ function SB.PerformEnvironmentCheckOnEnt(ent)
 		local environment = space --restore to default before doing the Environment checks
 		local oldenvironment = ent.environment
 		--end
-		for k, v in pairs(Planets) do
+    for k, v in pairs(Planets) do
 			if v and v:IsValid() then
 				--Msg("Checking planet\n")
 				environment = v:OnEnvironment(ent, environment, space) or environment
-			else
+            else
 				table.remove(Planets, k)
 			end
 		end
@@ -1069,35 +1104,35 @@ end
 
 --Volume Functions
 
-/**
+--[[
 * @param name
 * @return Volume(table) or nil
 *
-*/
+]]
 function SB.GetVolume(name)
 	return volumes[name]
 end
 
-/**
+--[[
 * @param name
 * @param radius
 * @return Volume(table) or ( false + errormessage)
 *
 * Notes: If the volume name already exists, that volume is returned! 
 *
-*/
+]]
 function SB.CreateVolume(name, radius)
 	return SB.FindVolume(name, radius)
 end
 
-/**
+--[[
 * @param name
 * @param radius
 * @return Volume(table) or ( false + errormessage)
 *
 * Notes: If the volume name already exists, that volume is returned! 
 *
-*/
+]]
 function SB.FindVolume(name, radius)
 	if not name then return false, "No Name Entered!" end
 	if not radius or radius < 0 then radius = 0 end
@@ -1158,32 +1193,32 @@ function SB.FindVolume(name, radius)
 	return volumes[name]
 end
 
-/**
+--[[
 * @param name
 * @return nil
 *
-*/
+]]
 function SB.DestroyVolume(name)
 	SB.RemoveVolume(name);
 end
 
-/**
+--[[
 * @param name
 * @return nil
 *
-*/
+]]
 function SB.RemoveVolume(name)
 	if name and volumes[name] then volumes[name] = nil end
 end
 
-/**
+--[[
 * @param name
 * @param pos
 * @param radius
 * @return nil
 *
 * Note: this is meant for people who spawn their props in space using a custom Spawner (like the Stargate Spawner)
-*/
+]]
 function SB.AddCustomVolume(name, pos, radius)
 	if not name or not radius or not pos then return false, "Invalid Parameters" end
 	if volumes[name] then return false, "this volume already exists!" end

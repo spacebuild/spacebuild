@@ -64,15 +64,13 @@ local function SendSunBeam(ent)
         umsg.Start("AddStar", ply)
         --umsg.Entity( ent ) --planet.num
         umsg.Short(ent:EntIndex())
-        umsg.Angle(ent:GetPos()) --planet.num
+        umsg.Vector(ent:GetPos()) --planet.num
         umsg.Float(ent.sbenvironment.size)
         umsg.End()
     end
 end
 
-function ENT:CreateEnvironment(ent, radius, temp1, temp2, temp3, name)
-    if not ent then self:Remove() end --needs a parent!
-    self:SetParent(ent)
+function ENT:CreateEnvironment(radius, temp1, temp2, temp3, name)
     if radius and type(radius) == "number" then
         if radius < 0 then
             radius = 0
@@ -91,7 +89,7 @@ function ENT:CreateEnvironment(ent, radius, temp1, temp2, temp3, name)
         end
         self.sbenvironment.temperature3 = temp3
     end
-    self.BaseClass.CreateEnvironment(self, ent, 0, 100, temp1, 0, 0, 100, 0, name)
+    self.BaseClass.CreateEnvironment(self, 0, 100, temp1, 0, 0, 100, 0, name)
     SendSunBeam(self)
 end
 

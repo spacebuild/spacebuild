@@ -10,7 +10,6 @@ require("caf_util")
 require("Json")
 require("CustomAttack")
 require("CustomArmor")
-require("glon");
 require("cache")
 
 

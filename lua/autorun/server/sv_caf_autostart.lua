@@ -229,7 +229,7 @@ function CAF2.WriteToDebugFile(filename, message)
 	if DEBUG then
 		ErrorNoHalt("Filename: "..tostring(filename)..", Message: "..tostring(message).."\n")
 	end
-	local contents = file.Read("CAF_Debug/server/"..filename..".txt") 
+	local contents = file.Read("CAF_Debug/server/"..filename..".txt")
 	contents = contents or "" 
 	contents = contents .. message
 	file.Write("CAF_Debug/server/"..filename..".txt", contents)
@@ -242,7 +242,7 @@ end
 ]]
 function CAF2.ClearDebugFile(filename)
 	if not filename then return nil , "Missing Argument" end
-	local contents = file.Read("CAF_Debug/server/"..filename..".txt") 
+	local contents = file.Read("CAF_Debug/server/"..filename..".txt")
 	contents = contents or "" 
 	file.Write("CAF_Debug/server/"..filename..".txt", "")
 	return content

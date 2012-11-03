@@ -628,7 +628,7 @@ function RD.Beam_Render( ent )
 	local intBeams = ent:GetNWInt( "Beams" )
 
 	--if we have beams, then create them
-	if intBeams & intBeams ~= 0 then
+	if intBeams and intBeams ~= 0 then
 		--make some vars we are about to use
 		local i, start, scroll = 1, ent:GetNWVector( "Beam1" ), CurTime() * 0.5
 
