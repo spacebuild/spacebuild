@@ -133,9 +133,7 @@ function ENT:GetPriority()
     return 1
 end
 
-function ENT:CreateEnvironment(ent, radius, gravity, atmosphere, pressure, temperature, temperature2, o2, co2, n, h, flags, name)
-    if not ent then self:Remove() end --needs a parent!
-    self:SetParent(ent)
+function ENT:CreateEnvironment(radius, gravity, atmosphere, pressure, temperature, temperature2, o2, co2, n, h, flags, name)
     self:SetFlags(flags)
     --set Radius if one is given
     if radius and type(radius) == "number" then

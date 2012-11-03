@@ -87,9 +87,9 @@ end
 -- End Local Functions
 
 
-/**
+--[[
 	The Constructor for this Custom Addon Class
-*/
+]]
 function LS.__Construct()
 	if status then return false , CAF.GetLangVar("This Addon is already Active!") end
 	if not CAF.GetAddon("Resource Distribution") or not CAF.GetAddon("Resource Distribution").GetStatus() then return false, CAF.GetLangVar("Resource Distribution is Required and needs to be Active!") end
@@ -133,9 +133,9 @@ function LS.__Construct()
 	return true
 end
 
-/**
+--[[
 	The Destructor for this Custom Addon Class
-*/
+]]
 function LS.__Destruct()
 	if not status then return false, CAF.GetLangVar("This addon wasn't on in the first place") end
 	hook.Remove( "PlayerInitialSpawn", "LS_Core_SpawnFunc")
@@ -156,37 +156,37 @@ function LS.__Destruct()
 	return true
 end
 
-/**
+--[[
 	Get the required Addons for this Addon Class
-*/
+]]
 function LS.GetRequiredAddons()
 	return {"Resource Distribution"}
 end
 
-/**
+--[[
 	Get the Boolean Status from this Addon Class
-*/
+]]
 function LS.GetStatus()
 	return status
 end
 
-/**
+--[[
 	Get the Version of this Custom Addon Class
-*/
+]]
 function LS.GetVersion()
 	return 3.08, CAF.GetLangVar("Beta")
 end
 
-/**
+--[[
 	Get any custom options this Custom Addon Class might have
-*/
+]]
 function LS.GetExtraOptions()
 	return {}
 end
 
-/**
+--[[
 	Get the Custom String Status from this Addon Class
-*/
+]]
 function LS.GetCustomStatus()
 	return CAF.GetLangVar("Not Implemented Yet")
 end
@@ -404,28 +404,22 @@ function Ply:LsCheck()
 			local space = SB.GetSpace()
 			local environment = space --restore to default before doing the Environment checks
 			local oldenvironment = self.environment
-			for k, v in pairs(SB.GetPlanets()) do
-				if v and v:IsValid() then
+        for k, v in pairs(SB.GetPlanets()) do
+                if v and v:IsValid() then
 					--Msg("Checking planet\n")
 					environment = v:OnEnvironment(self, environment, space) or environment
-				else
-					table.remove(Planets, k)
 				end
 			end
 			if environment == space then
 				for k, v in pairs(SB.GetStars()) do
 					if v and v:IsValid() then
 						environment = v:OnEnvironment(self, environment, space) or environment
-					else
-						table.remove(Stars, k)
 					end
 				end
 			end
 			for k, v in pairs(SB.GetEnvironments()) do
 				if v and v:IsValid() then
 					environment = v:OnEnvironment(self, environment, space) or environment
-				else
-					table.remove(Environments, k)
 				end
 			end
 			if oldenvironment ~= environment then

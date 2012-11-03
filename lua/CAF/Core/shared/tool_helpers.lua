@@ -56,17 +56,17 @@ end
 
 function CAFToolSetup.RegEnts()
 	if not TOOL.DevSelect then return end
-	
+
 	local t_devicefiles = file.Find("CAF/Stools/"..TOOL.Mode.."/*.lua", "LUA")
 	if t_devicefiles then
 		MsgN("CAF Tool: Loading device defs")
-		
+
 		TOOL.DevClasses = TOOL.DevClasses or {}
 		TOOL.Devices	= TOOL.Devices or {}
-		
+
 		local s_path = "CAF/Stools/"..TOOL.Mode.."/"
 		for key, val in pairs(t_devicefiles) do
-			local _,_,s_devtype = string.find( val, "([%w_]*)\.lua" )
+            local s_devtype = string.sub(val, 0, -5)
 			
 			MsgN("\tLoading dev type: ",s_devtype)
 			

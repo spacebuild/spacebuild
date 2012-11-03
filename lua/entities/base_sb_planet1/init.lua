@@ -136,9 +136,7 @@ function ENT:GetPriority()
     return 1
 end
 
-function ENT:CreateEnvironment(ent, radius, gravity, atmosphere, temperature, temperature2, flags)
-    if not ent then self:Remove() end --needs a parent!
-    self:SetParent(ent)
+function ENT:CreateEnvironment(radius, gravity, atmosphere, temperature, temperature2, flags)
     self:SetFlags(flags)
     local o2 = 0
     local co2 = 0

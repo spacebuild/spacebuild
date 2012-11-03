@@ -246,7 +246,7 @@ local function sendNetworkData(ply, netid, rddata)
 	umsg.End()
 end
 
-/*
+--[[
 function RD.GetEntityTable(ent)
 	local entid = ent:EntIndex( )
 	return ent_table[entid] or {}
@@ -256,7 +256,7 @@ function RD.GetNetTable(netid)
 	return nettable[netid] or {}
 end
 
-*/
+]]
 
 local function RequestResourceData(ply, com, args)
 	if not args then ply:ChatPrint("RD BUG: You forgot to provide arguments") return end
@@ -328,9 +328,9 @@ end
 
 --End local functions
 
-/**
+--[[
 	The Constructor for this Custom Addon Class
-*/
+]]
 function RD.__Construct()
 	if status then return false , CAF.GetLangVar("This Addon is already Active!") end
 	nextnetid = 1
@@ -348,9 +348,9 @@ function RD.__Construct()
 	return true
 end
 
-/**
+--[[
 	The Destructor for this Custom Addon Class
-*/
+]]
 function RD.__Destruct()
 	if not status then return false , CAF.GetLangVar("This Addon is already disabled!") end
 	nextnetid = 1
@@ -365,37 +365,37 @@ function RD.__Destruct()
 	return true
 end
 
-/**
+--[[
 	Get the required Addons for this Addon Class
-*/
+]]
 function RD.GetRequiredAddons()
 	return {}
 end
 
-/**
+--[[
 	Get the Boolean Status from this Addon Class
-*/
+]]
 function RD.GetStatus()
 	return status
 end
 
-/**
+--[[
 	Get the Version of this Custom Addon Class
-*/
+]]
 function RD.GetVersion()
 	return 3.1, "Alpha"
 end
 
-/**
+--[[
 	Get any custom options this Custom Addon Class might have
-*/
+]]
 function RD.GetExtraOptions()
 	return {}
 end
 
-/**
+--[[
 	Get the Custom String Status from this Addon Class
-*/
+]]
 function RD.GetCustomStatus()
 	return "Not Implemented Yet"
 end
@@ -836,24 +836,24 @@ end
 function RD.UnlinkAllFromNode(netid)
 	if nettable[netid] then
 		for k, v in pairs(nettable[netid].cons) do
-			/*for l, w in pairs(nettable[v].cons) do
+			--[[for l, w in pairs(nettable[v].cons) do
 				if w == netid then
 					table.remove(nettable[v].cons, l)
 					break
 				end
 			end
-			table.remove(nettable[netid].cons, k)*/
+			table.remove(nettable[netid].cons, k)]]
 			RD.UnlinkNodes(netid, v)
 		end
 		for l, w in pairs(nettable[netid].entities) do
 			RD.Unlink(w)
 			--table.remove(nettable[netid].entities, l)
 		end
-		/*for l, w in pairs(nettable[netid].resources) do
+		--[[for l, w in pairs(nettable[netid].resources) do
 			w.value = 0
 			w.maxvalue = 0
 			w.haschanged = true
-		end*/
+		end]]
 		nettable[netid].haschanged = true
 		return true
 	end
@@ -1313,7 +1313,7 @@ function RD.Beam_dup_save( ent )
 	beamTable.Beams = ent:GetNWInt( "Beams" )
 
 	--if we have beams, then create them
-	if beamTable.Beams & beamTable.Beams ~= 0 then
+	if beamTable.Beams and beamTable.Beams ~= 0 then
 		--store beam info
 		beamTable.BeamInfo = ent:GetNWString("BeamInfo")
 
@@ -1338,7 +1338,7 @@ end
 --	ent - the ent to get the beam info from
 function RD.Beam_dup_build( ent, CreatedEntities )
 	--exit if no beam dup info
-	if !ent.EntityMods or !ent.EntityMods.RDBeamDupeInfo then return end
+	if not ent.EntityMods or not ent.EntityMods.RDBeamDupeInfo then return end
 
 	--get the beam info table
 	local beamTable = ent.EntityMods.RDBeamDupeInfo
@@ -1395,6 +1395,6 @@ concommand.Add("send_input_selection_to_server", InputFromClientMenu)
 
 function SwapUsage(ply,cmd,args)
 	if not ply.useaction then ply.useaction = false end
-	ply.useaction = !ply.useaction
+	ply.useaction = not ply.useaction
 end 
 concommand.Add("RD_swap_use_key", SwapUsage)
