@@ -1,3 +1,10 @@
+local gmod_version_required = 145;
+if ( VERSION < gmod_version_required ) then
+	error("SB CORE: Your gmod is out of date: found version ", VERSION, "required ", gmod_version_required)
+end
+
+local net = net
+
 --Variable Declarations
 local CAF2 = {}
 CAF = CAF2;
@@ -7,7 +14,8 @@ CAF2.HasInternet = false;
 CAF2.InternetEnabled = true --Change this to false if you crash when CAF2 loads clientside
 
 
-surface.CreateFont( "Verdana", 15, 600, true, false, "GModCAFNotify" ) 
+surface.CreateFont( "GModCAFNotify", {font = "verdana", size = 15, weight = 600} ) 
+
 
 --nederlands, english
 
@@ -138,29 +146,29 @@ function CAF2.ClearDebugFile(filename)
 end
 
 --Server-Client Synchronisation
-function CAF2.ConstructAddon(Message)
-	local name = Message:ReadString()
-	OnAddonConstruct(name)
-	--RunConsoleCommand("Main_CAF_Menu");
+function CAF2.ConstructAddon(len, client)
+    local name = net.ReadString()
+    OnAddonConstruct(name)
+    --RunConsoleCommand("Main_CAF_Menu");
 end
-usermessage.Hook("CAF_Addon_Construct", CAF2.ConstructAddon)
+net.Receive("CAF_Addon_Construct", CAF2.ConstructAddon)
 
-function CAF2.DestructAddon(Message)
-	local name = Message:ReadString()
+function CAF2.DestructAddon(len, client)
+	local name = net.ReadString()
 	OnAddonDestruct(name)
 	--RunConsoleCommand("Main_CAF_Menu");
 end
-usermessage.Hook("CAF_Addon_Destruct", CAF2.DestructAddon)
+net.Receive("CAF_Addon_Destruct", CAF2.DestructAddon)
 
-function CAF2.Start(Message)
+function CAF2.Start(len, client)
 	CAF2.StartingUp = true;
 end
-usermessage.Hook("CAF_Start_true", CAF2.Start)
+net.Receive("CAF_Start_true", CAF2.Start)
 
-function CAF2.endStart(Message)
+function CAF2.endStart(len, client)
 	CAF2.StartingUp = false;
 end
-usermessage.Hook("CAF_Start_false", CAF2.endStart)
+net.Receive("CAF_Start_false", CAF2.endStart)
 
 
 --Menu's
@@ -172,12 +180,15 @@ CAF2.HTTP = {
 
 CAF2.LATEST_VERSION = version;
 if(not CAF2.HasInternet and CAF2.InternetEnabled) then
-	http.Get(CAF2.HTTP.INTERNET,"",
+	http.Fetch(CAF2.HTTP.INTERNET,
 		function(html,size)
 			if(html) then
 				MsgN(CAF.GetLangVar("CAF: Client has Internet. Enabled Online-Help"));
 				CAF2.HasInternet = true;
 			end
+		end,
+		function()
+			CAF2.HasInternet = false;
 		end
 	);
 end
@@ -223,6 +234,7 @@ local function DrawPopups()
 			local obj = displaypopups["top"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = (ScrW()/2)- (width/2);
@@ -235,6 +247,7 @@ local function DrawPopups()
 			local obj = displaypopups["left"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = 0
@@ -247,6 +260,7 @@ local function DrawPopups()
 			local obj = displaypopups["right"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = ScrW()- width;
@@ -259,6 +273,7 @@ local function DrawPopups()
 			local obj = displaypopups["bottom"]
 			surface.SetFont( Font )
 			local width, height = surface.GetTextSize(obj.message)
+			if width == nil or height == nil then return end
 			width = width + 16
 			height = height + 16
 			local left = (ScrW()/2)- (width/2);
@@ -289,7 +304,7 @@ local function ShowNextPopupMessage()
 				Msg(obj.message.."\n")
 			end
 			displaypopups[v] = obj;
-			timer.Simple(obj.time, ClearPopup, obj);
+			timer.Simple(obj.time, function() ClearPopup(obj) end);
 		end
 	end
 end
@@ -446,7 +461,7 @@ local function GetClientMenu(contentpanel)
 	
 	x = x + lbl:GetWide() + 2;
 	
-	local selection = vgui.Create("DMultiChoice", panel)
+	--[[local selection = vgui.Create("DMultiChoice", panel)
 	selection:SetPos(x, y);
 	for k, v in pairs(CAF.LANGUAGE) do
 		selection:AddChoice( k ) 
@@ -461,7 +476,7 @@ local function GetClientMenu(contentpanel)
 	
 	y = y + 15
 	x = x - lbl:GetWide() - 5
-	--Other options here
+	--Other options here]]
 	
 	panel:SetSize(contentpanel:GetWide(), y + 10);
 	return panel;
@@ -769,7 +784,7 @@ function CAF2.OpenMainMenu()
 	MainFrame:SetSize(ScrW() * 0.8, ScrH() * 0.9)
 	MainFrame:Center()
 	local ContentPanel = vgui.Create( "DPropertySheet", MainFrame )
-	ContentPanel:StretchToParent( 4, 26, 4, 4 )
+	ContentPanel:Dock(FILL)
 	ContentPanel:AddSheet( CAF.GetLangVar("Installed Addons"), GetStatusPanel(ContentPanel), "gui/silkicons/application", true, true )
 	ContentPanel:AddSheet( CAF.GetLangVar("Info and Help"), GetHelpPanel(ContentPanel), "gui/silkicons/box", true, true )
 	if LocalPlayer():IsAdmin() then
@@ -784,7 +799,7 @@ concommand.Add("Main_CAF_Menu", CAF2.OpenMainMenu)
 --Panel
 local function BuildMenu( Panel )
 	Panel:ClearControls( )
-	Panel:AddHeader( )
+	Panel:AddControl( "Header", { Text = "Custom Addon Framework", Description   = "Custom Addon Framework" }  )
 	Panel:AddControl( "Button", {
 		Label = "Open Menu",
 		Text = "Custom Addon Framework",
@@ -803,18 +818,18 @@ function CAF2.POPUP(msg, location, color, displaytime)
 	end
 end
 
-local function ProccessMessage(Message)
-	local msg = Message:ReadString()
-	local location = Message:ReadString()
-	local r = Message:ReadShort()
-	local g = Message:ReadShort()
-	local b = Message:ReadShort()
-	local a = Message:ReadShort()
-	local displaytime
+local function ProccessMessage(len, client)
+	local msg = net.ReadString()
+	local location = net.ReadString()
+	local r = net.ReadUInt( 8 )
+	local g = net.ReadUInt( 8 )
+	local b = net.ReadUInt( 8 )
+	local a = net.ReadUInt( 8 )
+	local displaytime = net.ReadUInt( 16 )
 	local color = Color(r, g, b, a);
 	CAF2.POPUP(msg, location, color, displaytime);
 end
-usermessage.Hook("CAF_Addon_POPUP", ProccessMessage)
+net.Receive("CAF_Addon_POPUP", ProccessMessage)
 
 --CAF = CAF2
 
@@ -822,7 +837,7 @@ usermessage.Hook("CAF_Addon_POPUP", ProccessMessage)
 
 --Core
 
-local Files = file.FindInLua( "CAF/Core/client/*.lua" )
+local Files = file.Find( "CAF/Core/client/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Core/client/"..File)
@@ -833,7 +848,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.FindInLua("CAF/LanguageVars/*.lua")
+Files = file.Find("CAF/LanguageVars/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/LanguageVars/"..File)
@@ -845,7 +860,7 @@ for k, File in ipairs(Files) do
 end
 
 --Addons
-local Files = file.FindInLua( "CAF/Addons/client/*.lua" )
+local Files = file.Find( "CAF/Addons/client/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
 	local ErrorCheck, PCallError = pcall(include, "CAF/Addons/client/"..File)

@@ -12,7 +12,7 @@ local setmetatable 	= setmetatable
 local type = type
 local tostring = tostring
 local ErrorNoHalt = ErrorNoHalt
-local ValidEntity = ValidEntity
+local IsValid = IsValid
 local pairs = pairs
 
 module( "ArrayList" )
@@ -65,17 +65,17 @@ function list:CheckType( item )
 			return true
 		else
 			if self.type == "ent" then
-				return ValidEntity(item)
+				return IsValid(item)
 			elseif self.type == "player" then
-				return ValidEntity(item) and item:IsPlayer()
+				return IsValid(item) and item:IsPlayer()
 			elseif self.type == "vehicle" then
-				return ValidEntity(item) and item:IsVehicle()
+				return IsValid(item) and item:IsVehicle()
 			elseif self.type == "npc" then
-				return ValidEntity(item) and item:IsNPC()
+				return IsValid(item) and item:IsNPC()
 			elseif self.type == "weapon" then
-				return ValidEntity(item) and item:IsWeapon()
+				return IsValid(item) and item:IsWeapon()
 			elseif self.type == "entonly" then
-				return ValidEntity(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
+				return IsValid(item) and not item:IsPlayer() and not item:IsVehicle() and not item:IsNPC() and not item:IsWeapon()
 			end
 		end	
 		return false

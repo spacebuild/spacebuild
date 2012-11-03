@@ -9,9 +9,9 @@ tMats.Glow3 = Material("sprites/redglow2")
 
 for _,mat in pairs(tMats) do
 
-	mat:SetMaterialInt("$spriterendermode",9)
-	mat:SetMaterialInt("$ignorez",1)
-	mat:SetMaterialInt("$illumfactor",8)
+	mat:SetInt("$spriterendermode",9)
+	mat:SetInt("$ignorez",1)
+	mat:SetInt("$illumfactor",8)
 	
 end
 

@@ -34,7 +34,7 @@ function TOOL:GetExtraCCVars()
 end
 
 local function link_in_range(ent, range)
-	if ent ~= NULL and ValidEntity(ent) then
+	if ent ~= NULL and IsValid(ent) then
 		for k, v in pairs(ents.FindInSphere( ent:GetPos(), range)) do
 			local enttable = CAF.GetAddon("Resource Distribution").GetEntityTable(v)
 			if table.Count(enttable) > 0 and enttable.network == 0 and ent:GetPlayerName() == v:GetPlayerName() then
@@ -80,7 +80,7 @@ local function resource_node_func(ent,type,sub_type,devinfo,Extra_Data,ent_extra
 		ent:SetCustomNodeName(Extra_Data.custom_name)
 	end
 	if Extra_Data and Extra_Data.auto_link then
-		 timer.Simple(0.1, link_in_range, ent, range * 2)
+		 timer.Simple(0.1, function() link_in_range(ent, range * 2) end)
 	end
 	local mass = math.Round(base_mass * volume_mul)
 	local maxhealth = math.Round(base_health * volume_mul)

@@ -1,4 +1,3 @@
-
 --[[DEVICEGROUP.type			= "generator_liquid_nitrogen"]]
 
 --[[
