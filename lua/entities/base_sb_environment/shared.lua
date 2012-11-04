@@ -4,10 +4,10 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 
-ENT.PrintName	= "Base Spacebuild Environment"
-ENT.Author		= "SnakeSVx"
-ENT.Purpose		= "Base for all Spacebuild Environment"
-ENT.Instructions	= ""
+ENT.PrintName = "Base Spacebuild Environment"
+ENT.Author = "SnakeSVx"
+ENT.Purpose = "Base for all Spacebuild Environment"
+ENT.Instructions = ""
 
-ENT.Spawnable		= false
-ENT.AdminSpawnable	= false
+ENT.Spawnable = false
+ENT.AdminSpawnable = false

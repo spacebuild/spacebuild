@@ -33,7 +33,7 @@ CAF2.colors.white = Color(255, 255, 255, 255)
 
 -- CAF Custom Status Saving
 
-if (!sql.TableExists("CAF_Custom_Vars")) then
+if (not sql.TableExists("CAF_Custom_Vars")) then
 	sql.Query("CREATE TABLE IF NOT EXISTS CAF_Custom_Vars ( varname VARCHAR(255) , varvalue VARCHAR(255));")
 end
 
@@ -60,7 +60,7 @@ function CAF2.LoadVar(name, defaultvalue)
 	if not name then return false, "Problem with the Parameters" end
 	if vars[name] then return vars[name] end
 	local data = sql.Query("SELECT * FROM CAF_Custom_Vars WHERE varname = '"..name.."';")
-	if (!data) then
+	if (not data) then
 		print(sql.LastError())
 		InsertVar(name, defaultvalue);
 		
@@ -267,165 +267,7 @@ function CAF2.GetLangVar(name)
 	return name or "Unknown"
 end
 
---Experimental Class system ???
 
-CLASS = nil
-PROTECTED_CLASS = nil
-local current_obj_id = 0;
-local next_obj_id = 1;
-
-CAF2.class = {}
-
-local function ClassFileExists(filename)
-	return file.Exists("../lua/caf/classes/"..tostring(filename)..".lua")
-end
-
-local function LoadClassFile(name)
-	include("caf/classes/"..tostring(name)..".lua")
-end
-
---[[local function CopyProccedures()
-	local tab = {}
-	for k, v in pairs(CLASS) do
-		--Msg("Found "..tostring(k)..": ")
-		if type(v) == "function" then
-			--Msg("ok\n");
-			tab[k] = v;
-		--else
-		--	Msg("not ok\n");
-		end
-	end
-	return tab;
-end]]
-
-local function CopyMetaProccedures()
-	local tab = {}
-	tab.__index = CLASS.__index;
-	tab.__newindex = CLASS.__newindex
-	tab.__concat = CLASS.__concat
-	tab.__tostring = CLASS.__tostring
-	--Todo add others?
-	tab.__add = CLASS.__add
-	tab.__sub = CLASS.__sub
-	tab.__mul = CLASS.__mul
-	tab.__div = CLASS.__div
-	tab.__mod = CLASS.__mod
-	tab.__pow = CLASS.__pow
-	tab.__unm = CLASS.__unm
-	tab.__len = CLASS.__len
-	tab.__eq  = CLASS.__eq
-	tab.__lt  = CLASS.__lt
-	tab.__le  = CLASS.__le
-	tab.__call = CLASS.__call
-	return tab
-end
-
-local hooks = {
-	"Think"
-}
-
-local function CheckForHooks(obj)
-	--Add hooks to functions with similar names fe: obj:Think() => hooks.add("Think", "some_name", function() obj:Think() end)
-	local id = current_obj_id;
-	for k, v in pairs(hooks) do
-		local func = obj[v]
-		if func and type(func) == "function" then
-			hook.Add(v, "CAF OBJ "..tostring(v).." - "..tostring(id), function(...) func(obj, unpack({...})) end)
-		end
-	end
-end
-
-function CAF2.class.addMeta()
-	function CLASS:__index(key) --returns datamembers
-		--Msg("Calling __index "..tostring(key).."\n")
-		local t = getmetatable(self)
-		local var = rawget(t, key)
-		local parent = rawget(t, "parent")
-		if var then -- If key found in this class, return it's value
-			return var
-		elseif parent then -- If a parent is present, try the parent
-			local var = parent:__index(key)
-			-- We have to check if the returned var is a function or just a value, if it's function we have to modify it to keep the parent as the 'self' variable in the function, otherwise it will get replaced by the 'child' as it's self variable, which could mean double function calls
-			if type(var) == "function" then
-				return function(obj, ...)
-					local arg = { ... }
-					return var(parent, unpack(arg))
-				end
-			end
-			return var
-		end
-		return nil;
-	end
-
-	function CLASS:__newindex(key, value) --sets datamembers
-		--Msg("Calling __newindex "..tostring(key).." - "..tostring(value).."\n")
-		local ok = false;
-		local t = getmetatable(self)
-		if rawget(t, key) then --If this class contains the key, set the value on this class
-			rawset(t, key,  value);
-			return true;
-		elseif rawget(t, "parent") then -- If a parent is present, try the parent
-			ok = rawget(t, "parent"):__newindex(key, value)
-		end
-		if not ok then
-			rawset(t, key,  value); --Better to avoid, will add the var to every parent to!!
-		end
-		return ok;
-	end
-
-	function CLASS.__concat(str1, str2)
-		--Msg("calling __concat\n")
-		if str1 == self then
-			return str1:ToString()..str2
-		else
-			return str1..str2:ToString()
-		end
-	end
-
-	function CLASS:__tostring()
-		--Msg("Calling __tostring\n")
-		return self:ToString()
-	end
-end
-
-function CAF2.class.new(name, ...)
-	local arg = { ... }
-	if not ClassFileExists(name) then error("Can't create non-existing class <"..tostring(name)..">") end
-	local olclass = CLASS --Store oldclass (incase a new object is created while creating an object)
-	local oldprotectedclass = PROTECTED_CLASS  --Store oldclassprotected (incase a new object is created while creating an object)
-	--Set Obj ID for hooks
-	local objid = current_obj_id
-	current_obj_id = next_obj_id
-	next_obj_id = next_obj_id + 1
-	--end obj id stuff
-	CLASS = {} --Start fresh
-	PROTECTED_CLASS = {} --Start fresh
-	CLASS.type = name;
-	LoadClassFile(name) --Start loading the class file
-	local obj = {}
-	setmetatable( obj, CLASS )
-	obj:__construct(unpack(arg)) --Call the constructor
-	CheckForHooks(obj)
-	CLASS = olclass --Restore the previous 'object' or nil
-	PROTECTED_CLASS = oldprotectedclass --Restore the previous 'object' protected members or nil
-	current_obj_id = objid; -- Set old obj id back (in case new objects get created while objects get created
-	return obj -- return the object
-end
-
-function CAF2.class.extend(name)
-	if not CLASS then return error("Can't extend a nil class") end
-	if not ClassFileExists(name) then error("Can't extend from non-existing class <"..tostring(name)..">") end
-	LoadClassFile(name) -- Start loading the parent class file
-	local tmp = {}
-	setmetatable( tmp, CLASS )
-	CLASS = CopyMetaProccedures();
-	CLASS.parent = tmp; --Add the parent object in the parent var for the object
-end
-
-local cl = CAF2.class.new("base2", 1, 2, 3, 4)
-
-Msg(cl:ToString().."\n")
-Msg("test "..cl)
 
 
 

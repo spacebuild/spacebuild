@@ -8,9 +8,9 @@ local Display_temperature = CreateClientConVar( "LS_Display_Temperature", "K", t
 local Display_hud = CreateClientConVar( "LS_Display_HUD", "1", true, false ) 
 
 --local ls_sb_mode = false
-surface.CreateFont( "ariel", 18, 500, true, false, "LS3HudHeader" ) 
-surface.CreateFont( "ariel", 15, 500, true, false, "LS3HudSubtitle" ) 
-surface.CreateFont( "ariel", 12, 500, true, false, "LS3HudSubSubtitle" ) 
+surface.CreateFont( "LS3HudHeader", {font = "Verdana", size = 18, weight = 500} ) 
+surface.CreateFont( "LS3HudSubtitle", {font = "Verdana", size = 15, weight = 500} ) 
+surface.CreateFont( "LS3HudSubSubtitle", {font = "Verdana", size = 12, weight = 500} ) 
 --Temperate 
 local Temp_Min = 0
 local FairTemp_Min = 283
@@ -107,6 +107,7 @@ local function lifesupport_HUDPaint()
 						draw.RoundedBox( hud.Rounding, hud.Left , hud.Top, hud.HalfWidth, hud.Height, colors.Black)
 						surface.SetFont( hud.Font )
 						local width, height = surface.GetTextSize(CAF.GetLangVar("Suit"))
+						if width == nil or height == nil then return end
 						local top = hud.Top
 						draw.DrawText( CAF.GetLangVar("Suit"),	hud.Font, hud.Left + 64 - math.floor(width/2) , top , colors.White,	0 )
 						top = top + 16

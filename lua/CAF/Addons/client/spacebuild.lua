@@ -7,10 +7,6 @@ local SB = {}
 
 local status = false
 
-SB3 = SB
-include("CAF/Addons/shared/spacebuild.lua")
-SB3 = nil;
-
 --Local functions
 -- used for sun effects
 local stars = {}
@@ -116,12 +112,14 @@ local function DrawSunEffects( )
 	for ent, Sun in pairs( stars ) do
 		-- calculate brightness.
 		local entpos = Sun.Position --Sun.ent:LocalToWorld( Vector(0,0,0) )
-		local dot = math.Clamp( EyeAngles():Forward():DotProduct( Vector( entpos - EyePos() ):Normalize() ), -1, 1 );
+		local normVec = Vector( entpos - EyePos() )
+		normVec:Normalize()
+		local dot = math.Clamp( EyeAngles():Forward():DotProduct( normVec ), -1, 1 );
 		dot = math.abs(dot)
 		--local dist = Vector( entpos - EyePos() ):Length();
 		local dist = entpos:Distance(EyePos())/1.5
 		-- draw sunbeams.
-		local sunpos = EyePos() + Vector( entpos - EyePos() ):Normalize() * ( dist * 0.5 );
+		local sunpos = EyePos() + normVec * ( dist * 0.5 );
 		local scrpos = sunpos:ToScreen();
 		if( dist <= Sun.BeamRadius and dot > 0 ) then
 			local frac = ( 1 - ( ( 1 / ( Sun.BeamRadius ) ) * dist ) ) * dot;

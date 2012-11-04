@@ -87,9 +87,9 @@ end
 -- End Local Functions
 
 
-/**
+--[[
 	The Constructor for this Custom Addon Class
-*/
+]]
 function LS.__Construct()
 	if status then return false , CAF.GetLangVar("This Addon is already Active!") end
 	if not CAF.GetAddon("Resource Distribution") or not CAF.GetAddon("Resource Distribution").GetStatus() then return false, CAF.GetLangVar("Resource Distribution is Required and needs to be Active!") end
@@ -133,9 +133,9 @@ function LS.__Construct()
 	return true
 end
 
-/**
+--[[
 	The Destructor for this Custom Addon Class
-*/
+]]
 function LS.__Destruct()
 	if not status then return false, CAF.GetLangVar("This addon wasn't on in the first place") end
 	hook.Remove( "PlayerInitialSpawn", "LS_Core_SpawnFunc")
@@ -156,48 +156,48 @@ function LS.__Destruct()
 	return true
 end
 
-/**
+--[[
 	Get the required Addons for this Addon Class
-*/
+]]
 function LS.GetRequiredAddons()
 	return {"Resource Distribution"}
 end
 
-/**
+--[[
 	Get the Boolean Status from this Addon Class
-*/
+]]
 function LS.GetStatus()
 	return status
 end
 
-/**
+--[[
 	Get the Version of this Custom Addon Class
-*/
+]]
 function LS.GetVersion()
 	return 3.08, CAF.GetLangVar("Beta")
 end
 
-/**
+--[[
 	Get any custom options this Custom Addon Class might have
-*/
+]]
 function LS.GetExtraOptions()
 	return {}
 end
 
-/**
+--[[
 	Get the Custom String Status from this Addon Class
-*/
+]]
 function LS.GetCustomStatus()
 	return CAF.GetLangVar("Not Implemented Yet")
 end
 
 function LS.AddResourcesToSend()
-	--[[local list = file.Find("models/props_phx/life_support/*.mdl")
+	--[[local list = file.Find("models/props_phx/life_support/*.mdl", "GAME")
 	PrintTable(list)
 	for k,v in pairs(list) do
 		resource.AddFile("models/props_phx/life_support/"..v)
 	end	
-	list = file.Find("materials/props_phx/life_support/*.vtf")
+	list = file.Find("materials/props_phx/life_support/*.vtf", "GAME")
 	PrintTable(list) 
 	for k,v in pairs(list) do
 		resource.AddFile("materials/props_phx/life_support/"..v)
@@ -291,7 +291,7 @@ function LS.LS_Immolate(ent)
 	if not ent then return end
 	ent:EmitSound( "NPC_Stalker.BurnFlesh" )
 	ent:SetModel("models/player/charple01.mdl")
-	timer.Simple(3, function(self, ent) self.Burn_Quiet(ent) end, LS, ent)
+	timer.Simple(3, function() LS.Burn_Quiet(ent) end)
 end
 
 
@@ -306,9 +306,9 @@ function LS.LS_Crush(ent)
 end
 
 function LS.ColorDamage(ent, HP, Col)
-	if not ent or not HP or not Col or not ValidEntity(ent) then return end
+	if not ent or not HP or not Col or not IsValid(ent) then return end
 	if (ent:Health() <= (ent:GetMaxHealth( ) / HP)) then
-		ent:SetColor(Col, Col, Col, 255)
+		ent:SetColor(Color(Col, Col, Col, 255))
 	end
 end
 
@@ -331,7 +331,7 @@ function LS.DamageLS(ent, dam)
 		LS.ColorDamage(ent, 6, 100)
 		LS.ColorDamage(ent, 7, 75)
 		if (ent:Health( ) <= 0) then
-			ent:SetColor(50, 50, 50, 255)
+			ent:SetColor(Color(50, 50, 50, 255))
 			if ent.Destruct then
 				ent:Destruct()
 			else
@@ -345,10 +345,10 @@ function LS.Destruct( ent, Simple )
 	if (Simple) then
 		Explode2( ent )
 	else
-		timer.Simple(1, Explode1, ent)
-		timer.Simple(1.2, Explode1, ent)
-		timer.Simple(2, Explode1, ent)
-		timer.Simple(2, Explode2, ent)
+		timer.Simple(1, function() Explode1(ent) end)
+		timer.Simple(1.2, function() Explode1(ent) end)
+		timer.Simple(2, function() Explode1(ent) end)
+		timer.Simple(2, function() Explode2(ent) end)
 	end
 end
 
@@ -404,28 +404,22 @@ function Ply:LsCheck()
 			local space = SB.GetSpace()
 			local environment = space --restore to default before doing the Environment checks
 			local oldenvironment = self.environment
-			for k, v in pairs(SB.GetPlanets()) do
-				if v and v:IsValid() then
+        for k, v in pairs(SB.GetPlanets()) do
+                if v and v:IsValid() then
 					--Msg("Checking planet\n")
 					environment = v:OnEnvironment(self, environment, space) or environment
-				else
-					table.remove(Planets, k)
 				end
 			end
 			if environment == space then
 				for k, v in pairs(SB.GetStars()) do
 					if v and v:IsValid() then
 						environment = v:OnEnvironment(self, environment, space) or environment
-					else
-						table.remove(Stars, k)
 					end
 				end
 			end
 			for k, v in pairs(SB.GetEnvironments()) do
 				if v and v:IsValid() then
 					environment = v:OnEnvironment(self, environment, space) or environment
-				else
-					table.remove(Environments, k)
 				end
 			end
 			if oldenvironment ~= environment then
@@ -439,7 +433,7 @@ function Ply:LsCheck()
 			if self.environment:GetPressure() > 1.5 and not pod:IsValid() then
 				local pressure = self.environment:GetPressure() - 1.5
 				for k, v in pairs(LS.GetAirRegulators()) do
-					if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+					if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
 						pressure = v:UsePersonPressure(pressure)
 					end
 				end
@@ -500,7 +494,7 @@ function Ply:LsCheck()
 					end
 				end
 				for k, v in pairs(LS.GetTemperatureRegulators()) do
-					if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+					if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
 						self.caf.custom.ls.temperature = self.caf.custom.ls.temperature + v:CoolDown(self.caf.custom.ls.temperature)
 					end
 				end
@@ -573,7 +567,7 @@ function Ply:LsCheck()
 				end
 				if not self.caf.custom.ls.airused then
 					for k, v in pairs(LS.GetAirRegulators()) do
-						if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+						if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
 							self.suit.air = self.suit.air + v:UsePerson()
 							self.caf.custom.ls.airused = true
 							break
@@ -627,7 +621,7 @@ function Ply:LsCheck()
 					end
 					if not self.caf.custom.ls.airused then
 						for k, v in pairs(LS.GetAirRegulators()) do
-							if v and ValidEntity(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
+							if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
 								self.suit.air = self.suit.air + v:UsePerson()
 								self.caf.custom.ls.airused = true
 								break

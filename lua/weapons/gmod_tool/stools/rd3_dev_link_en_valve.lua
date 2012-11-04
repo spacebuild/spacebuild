@@ -12,11 +12,11 @@ TOOL.ConfigName	= ''
 if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon Framework" end
 
 if ( CLIENT ) then
-	language.Add( "Tool_rd3_dev_link_en_valve_name", "Entity Valve Link Tool" )
-	language.Add( "Tool_rd3_dev_link_en_valve_desc", "Links an Entity or Resource Node to an Entity Valve." )
-	language.Add( "Tool_rd3_dev_link_en_valve_0", "Left Click: Link Devices.  Right Click: Unlink Two Devices.  Reload: Unlink Device from All." )
-	language.Add( "Tool_rd3_dev_link_en_valve_1", "Click on the next device (entity/Entity Valve/Resource node)" )
-	language.Add( "Tool_rd3_dev_link_en_valve_2", "Right-Click on the next device (entity/Entity Valve/Resource node) to unlink the 2 devices" )
+	language.Add( "tool.rd3_dev_link_en_valve.name", "Entity Valve Link Tool" )
+	language.Add( "tool.rd3_dev_link_en_valve.desc", "Links an Entity or Resource Node to an Entity Valve." )
+	language.Add( "tool.rd3_dev_link_en_valve.0", "Left Click: Link Devices.  Right Click: Unlink Two Devices.  Reload: Unlink Device from All." )
+	language.Add( "tool.rd3_dev_link_en_valve.1", "Click on the next device (entity/Entity Valve/Resource node)" )
+	language.Add( "tool.rd3_dev_link_en_valve.2", "Right-Click on the next device (entity/Entity Valve/Resource node) to unlink the 2 devices" )
 	language.Add( "rd3_dev_link_en_valve_addlength", "Add Length:" )
 	language.Add( "rd3_dev_link_en_valve_width", "Width:" )
 	language.Add( "rd3_dev_link_en_valve_material", "Material:" )
@@ -253,7 +253,7 @@ function TOOL:Reload(trace)
 end
 
 function TOOL.BuildCPanel( panel )
-	panel:AddControl( "Header", { Text = "#Tool_rd3_dev_link_en_valve_name", Description	= "#Tool_rd3_dev_link_en_valve_desc" }  )
+	panel:AddControl( "Header", { Text = "#tool.rd3_dev_link_en_valve.name", Description	= "#tool.rd3_dev_link_en_valve.desc" }  )
 
 	panel:AddControl("Slider", {
 		Label = "#rd3_dev_link_en_valve_width",
