@@ -120,7 +120,7 @@ function RD2.MoveEntToNet( ent, net1, net2 ) --move ent from net2 to net1
 		restab.nets[ net1.ID ] = net1.ID
 	else
 		restab.net = net1.ID
-		ent.Entity:SetResourceNetID( net1.resID, net1.ID, true )
+		ent:SetResourceNetID( net1.resID, net1.ID, true )
 	end
 	net2.ents[ ent:EntIndex() ] = nil --remove ent from net2
 	net1.ents[ ent:EntIndex() ] = ent --put ent on net1
@@ -165,7 +165,7 @@ function RD2.RebuildNet( net, resID, ent, restab, list )
 	net.max = net.max + restab.capacity
 	net.ents[ ent:EntIndex() ] = ent
 	restab.net = net.ID
-	ent.Entity:SetResourceNetID( net.resID, net.ID, true )
+	ent:SetResourceNetID( net.resID, net.ID, true )
 	
 	for _,ent2 in pairs(restab.links) do
 		if (not net.ents[ ent2:EntIndex() ]) then --is this ent alread on this net?
@@ -375,7 +375,7 @@ function RD_AddResource( ent, resname, capacity )
 	restab.res_name			= resname
 	if (ent.is_valve) then restab.nets = restab.nets or {} end
 	
-	ent.Entity:SetResourceNetID( resID, restab.net, true )
+	ent:SetResourceNetID( resID, restab.net, true )
 end
 
 --Consumes a named resource from the entity
@@ -702,7 +702,7 @@ function Dev_Unlink_All( ent1 )
 			net.ents[ ent1ID ] = ent1
 			restab1.net = net.ID
 			BeamNetVars.SetNetAmount( net.ID, net.amount )
-			ent1.Entity:SetResourceNetID( resID, net.ID, true )
+			ent1:SetResourceNetID( resID, net.ID, true )
 			
 			--build new nets for all connected ents
 			local newnets = RD2.RebuildNets( resID, ents, factor )
