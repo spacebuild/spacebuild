@@ -82,7 +82,7 @@ function ENT:SetActive( value, caller )
 		self:ConsumeResource("water", self.coolant)
 	end
 	
-	caller.Entity:EmitSound( "ambient.steam01" )
-	timer.Simple(3, function() quiet_steam(caller.Entity) end) 
+	caller:EmitSound( "ambient.steam01" )
+	timer.Simple(3, function() quiet_steam(caller) end)
 end
 

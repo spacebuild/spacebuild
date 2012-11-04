@@ -1,5 +1,5 @@
 ENT.Type = "anim"
-ENT.Base = "base_anim"
+ENT.Base = "base_gmodentity"
 
 ENT.PrintName = "Resource Node (2-way) Valve"
 ENT.Author = "SnakeSVx"
