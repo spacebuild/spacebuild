@@ -15,32 +15,32 @@ function ENT:Initialize()
 	self.damaged = 0
 	self.time = 0
 	self.broken = false
-	LS_RegisterEnt(self.Entity, "TerraForm")
+	LS_RegisterEnt(self, "TerraForm")
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "On" })
 	end
 	self.lifetime = math.random(1800,2600)		--Generate a lifespan
 end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
-		self.Entity:EmitSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_start" )
 		self.Active = 1
 		self:SetOOO(self.Active)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 1) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
 	end
 end
 
 function ENT:TurnOff() --do we really what to be able to turn it off so easily, or at all?
 	if (self.Active == 1) then
-		self.Entity:StopSound( "apc_engine_start" )
-		self.Entity:EmitSound( "apc_engine_stop" )
+		self:StopSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_stop" )
 		self.Active = 0
 		self.time = 0
 		self:SetOOO(self.Active)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 0) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 0) end
 	end
 end
 
@@ -71,35 +71,35 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	if self.planet and SB_GetTerraformer(self.planet) and SB_GetTerraformer(self.planet) == self.Entity then 
-		SB_Terraform_UnStep(self.Entity, self.planet)
-		SB_RemTerraformer(self.planet, self.Entity)
+	if self.planet and SB_GetTerraformer(self.planet) and SB_GetTerraformer(self.planet) == self then 
+		SB_Terraform_UnStep(self, self.planet)
+		SB_RemTerraformer(self.planet, self)
 	end
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 end
 
 function ENT:Terra_Form()
-	self.terrajuice = RD_GetResourceAmount(self.Entity, "terrajuice")
-	self.energy = RD_GetResourceAmount(self.Entity, "energy")
+	self.terrajuice = RD_GetResourceAmount(self, "terrajuice")
+	self.energy = RD_GetResourceAmount(self, "energy")
 	self.time = self.time + 1
-	if self.energy <= 0 or self.time > self.lifetime or not self.planet or not self.onplanet or (not SB_GetTerraformer(self.planet) or not SB_GetTerraformer(self.planet) == self.Entity) or self.terrajuice <= 0 then
+	if self.energy <= 0 or self.time > self.lifetime or not self.planet or not self.onplanet or (not SB_GetTerraformer(self.planet) or not SB_GetTerraformer(self.planet) == self) or self.terrajuice <= 0 then
 		self.broken = true
 		self:TurnOff()
 		return
 	end
 	local valid, planet, _ , radius, gravity, habitat, atmosphere, ltemperature, stemperature, sunburn = SB_Get_Environment_Info(self.planet)
 	if not valid or not planet then self:TurnOff() return end
-	RD_ConsumeResource(self.Entity, "energy",math.ceil(radius/64))
-	RD_ConsumeResource(self.Entity, "terrajuice",math.ceil(radius/128))
-	self.terrajuice = RD_GetResourceAmount(self.Entity, "terrajuice")
-	self.energy = RD_GetResourceAmount(self.Entity, "energy")														--12 before
+	RD_ConsumeResource(self, "energy",math.ceil(radius/64))
+	RD_ConsumeResource(self, "terrajuice",math.ceil(radius/128))
+	self.terrajuice = RD_GetResourceAmount(self, "terrajuice")
+	self.energy = RD_GetResourceAmount(self, "energy")														//12 before
 	if self.Active == 1 and (self.energy <= (math.ceil(radius/64)*180) or self.terrajuice <= (math.ceil(radius/512)*180)) then
-		self.Entity:EmitSound( "common/warning.wav" )
+		self:EmitSound( "common/warning.wav" )
 	end
 end
 
@@ -114,7 +114,7 @@ function ENT:Think()
 		self:Terra_Form()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

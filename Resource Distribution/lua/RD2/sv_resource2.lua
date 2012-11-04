@@ -429,7 +429,7 @@ function RD2_PumpResource( net1, net2, pump, rate, ispump )
 				if (pullnet.res_name == "energy" and RD_GetResourceAmount(self, "energy") >= energyneeded + take)
 				 or (pullnet.res_name ~= "energy" and RD_GetResourceAmount(self, "energy") >= energyneeded) then
 					energyused = RD_ConsumeResource( self, "energy", energyneeded )
-				else --not enought energy!not !
+				else --not enough energy!!!
 					return 0
 				end
 			end

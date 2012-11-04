@@ -7,6 +7,6 @@ ENT.Contact			= "http://www.wiremod.com/"
 
 
 function ENT:GetEnt()
-	return self.Entity:GetNetworkedEntity( 1 )
+	return self:GetNetworkedEntity( 1 )
 end
 

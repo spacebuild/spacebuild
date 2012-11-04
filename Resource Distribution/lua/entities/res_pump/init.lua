@@ -32,9 +32,9 @@ local pstatus = {}
 
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
-	if not (WireAddon == nil) then
-		self.Inputs = Wire_CreateInputs(self.Entity, { "Deploy", "ReelInPlug", "EjectPlug" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "InUse" })
+	if WireAddon then
+		self.Inputs = Wire_CreateInputs(self, { "Deploy", "ReelInPlug", "EjectPlug" })
+		self.Outputs = Wire_CreateOutputs(self, { "InUse" })
 	end
 	
 	self.damaged = 0
@@ -59,10 +59,8 @@ function ENT:Setup( pump, rate, hoselength )
 	if (pump == 1) then 
 		self.pump_status = PUMP_READY
 	end
-	
-	if (LIFESUPPORT and LIFESUPPORT == 2) then --LS2 is installed
-		RD_AddResource(self.Entity, "energy", 0)
-	end
+
+		RD_AddResource(self, "energy", 0)
 end
 
 function ENT:ResetPlug()
@@ -83,7 +81,7 @@ function ENT:ResetPlug()
 		
 	elseif (self.Connected == 1) then
 		
-		if (self.MyPlug:IsValid() and self.MyPlug.MySocket == self.Entity) then
+		if (self.MyPlug:IsValid() and self.MyPlug.MySocket == self) then
 			self.MyPlug.MySocket = nil
 		end
 		if (self.OtherSocket:IsValid()) then
@@ -104,7 +102,7 @@ function ENT:ResetPlug()
 	end
 	
 	self.PumpOn = 0
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "InUse", 0) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "InUse", 0) end
 end
 
 function ENT:Think()
@@ -117,7 +115,7 @@ function ENT:Think()
 	
 	if (self.DeployedPlug == 0) then --no plug deployed
 		if (self.Connected == 0) then --no plug connected
-			local sockCenter = self.Entity:LocalToWorld( Vector(5,13,10) )
+			local sockCenter = self:LocalToWorld( Vector(5,13,10) )
 			local local_ents = ents.FindInSphere( sockCenter, PLUG_IN_ATTACH_RANGE )
 			for key, plug in pairs(local_ents) do
 				-- If we find a plug, try to attach it to us
@@ -130,7 +128,7 @@ function ENT:Think()
 	elseif (self.reel_status > REEL_STOP) then --plug deployed and we need to do something with the reel
 		
 		if (self.reel_status == REEL_OUT) then
-			local dist = (self.Entity:GetPos() - self.plug.Entity:GetPos()):Length()
+			local dist = (self:GetPos() - self.plug.Entity:GetPos()):Length()
 			if (self.ropelength <= self.ropemax) and (dist > self.ropelength - 32 ) then
 				self.ropelength = self.ropelength + 50
 				if (self.Hose and self.Hose:IsValid()) then
@@ -168,35 +166,20 @@ function ENT:Think()
 				self.plug = nil
 				self.DeployedPlug = 0
 				self.reel_status = REEL_STOP
-				if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "InUse", 0) end
+				if not (WireAddon == nil) then Wire_TriggerOutput(self, "InUse", 0) end
 			end
 		end
 	end
 	
 	if (self.PumpOn == 1) then -- If we are connected, transfer resources
 		if (self.OtherSocket and self.OtherSocket:IsValid()) then
-			
-			--needs work
-			/*if (LIFESUPPORT and LIFESUPPORT == 2 and self.pump_active == 1) then --LS2 is installed and we has a pump
-				local energyneeded = math.abs(math.floor(rate / 100 * Energy_Increment))
-				if (energyneeded >= 0) then
-					if (RD_GetResourceAmount(self, "energy") >= energyneeded) then
-						local used = RD_ConsumeResource( self, "energy", energyneeded )
-						Msg("energy used = "..used.."\n")
-						self.pump_status = PUMP_ACTIVE
-					elseif (energyneeded > 0) then
-						self.pump_status = PUMP_NO_POWER
-						rate = 0
-					end
-				end
-			end*/
 			RD2_Pump( self, self.OtherSocket )
 		end
 	end
 	
 	self:ShowOutput()
 	if (self.PumpOn == 1) or (self.DeployedPlug == 0 and self.Connected == 0) then
-		self.Entity:NextThink( CurTime() + 1 )
+		self:NextThink( CurTime() + 1 )
 		return true
 	end
 end
@@ -204,7 +187,7 @@ end
 
 function ENT:ReelInPlug()
 	if !(self.DeployedPlug == 1) then return end
-	self.Entity:EmitSound( "Buttons.snd17" )
+	self:EmitSound( "Buttons.snd17" )
 	self.ropemax = 0
 	self.reel_status = REEL_IN
 	constraint.RemoveConstraints( self.plug, "Weld")
@@ -213,13 +196,13 @@ function ENT:ReelInPlug()
 		phys:EnableMotion( true )
 		phys:Wake()
 	end
-	self.plug.MySocket = self.Entity
+	self.plug.MySocket = self
 end
 
 function ENT:EjectPlug()
 	if !(self.Connected == 1) then return end
 	if (self.OtherSocket == nil) then return end
-	self.Entity:EmitSound( "Buttons.snd17" )
+	self:EmitSound( "Buttons.snd17" )
 	constraint.RemoveConstraints( self.OtherSocket.plug, "Weld")
 end
 
@@ -259,7 +242,7 @@ end
 
 --this needs to be done client side
 function ENT:ShowOutput()
-	local resbuf = "\nResources available:\n" .. self.Entity:GetAllResourcesAmountsText()
+	local resbuf = "\nResources available:\n" .. self:GetAllResourcesAmountsText()
 	if (self.pump_status > PUMP_NONE) then
 		self:SetOverlayText("Supply Connector\nHose Length: "..self.hose_length.."\nPump: "..pstatus[self.pump_status].."\nPump Rate: "..self.pump_rate.."\n"..resbuf)
 	else
@@ -270,7 +253,7 @@ end
 function ENT:AttachPlug( plug )
 	
 	-- Set references between them
-	plug.MySocket = self.Entity
+	plug.MySocket = self
 	self.MyPlug = plug
 	self.OtherSocket = plug.socket
 	plug.socket.OtherSocket = self
@@ -278,12 +261,12 @@ function ENT:AttachPlug( plug )
 	-- Position plug
 	local phys = plug:GetPhysicsObject()
 		phys:EnableMotion( true )
-		plug:SetPos( self.Entity:LocalToWorld( Vector(5,13,10) ) )
-		plug:SetAngles( self.Entity:GetAngles() )
+		plug:SetPos( self:LocalToWorld( Vector(5,13,10) ) )
+		plug:SetAngles( self:GetAngles() )
 	phys:Wake() --force plug to update
 	
 	-- Constrain together
-	self.Weld = constraint.Weld( self.Entity, plug, 0, 0, PLUG_IN_SOCKET_CONSTRAINT_POWER, true, false )
+	self.Weld = constraint.Weld( self, plug, 0, 0, PLUG_IN_SOCKET_CONSTRAINT_POWER, true, false )
 	if (not self.Weld) then
 		self.MyPlug = nil
 		plug.MySocket = nil
@@ -292,7 +275,7 @@ function ENT:AttachPlug( plug )
 	
 	-- Prepare clearup incase one is removed
 	plug:DeleteOnRemove( self.Weld )
-	self.Entity:DeleteOnRemove( self.Weld )
+	self:DeleteOnRemove( self.Weld )
 	
 	self.Connected = 1 --we has plug
 	self.PumpOn = 1 --start the pump
@@ -308,31 +291,31 @@ function ENT:AttachPlug( plug )
 		end
 	end
 	
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "InUse", 1) end
+	if WireAddon then Wire_TriggerOutput(self, "InUse", 1) end
 	
 end
 
 function ENT:Deploy()
-	self.Entity:EmitSound( "Buttons.snd17" )
+	self:EmitSound( "Buttons.snd17" )
 	
 	local LPos1 = Vector(5,13,10)
 	local LPos2 = Vector(10,0,0)
 	local width = 3
 	local material = "cable/cable2"
-	local pos = self.Entity:LocalToWorld( Vector(15,13,10) )
-	local ang = self.Entity:GetAngles() + Vector(180,0,0)
+	local pos = self:LocalToWorld( Vector(15,13,10) )
+	local ang = self:GetAngles() + Angle(180,0,0)
 	
 	local plug = ents.Create( "prop_physics" )
 		plug:SetModel( "models/props_lab/tpplug.mdl" )
 		plug:SetPos( pos )
 		plug:SetAngles( ang )
-		plug:SetColor( 255, 255, 255, 255 )
+		plug:SetColor(Color( 255, 255, 255, 255 ))
 		plug:Spawn()
 		
 		local phys = plug:GetPhysicsObject()
 			phys:EnableGravity( true )
 			phys:EnableMotion( true )
-			phys:SetVelocity(self.Entity:GetForward() * 50)
+			phys:SetVelocity(self:GetForward() * 50)
 		phys:Wake()
 		plug.is_plug = true
 		plug.MySocket = nil
@@ -341,12 +324,12 @@ function ENT:Deploy()
 		
 	self.plug = plug
 	
-	self.nocollide = constraint.NoCollide( self.Entity, plug, 0, 0 )
-	self.Hose, self.rope = constraint.Elastic( self.Entity, plug, 0, 0, LPos1, LPos2, 500, 0, 0, material, width, true )
+	self.nocollide = constraint.NoCollide( self, plug, 0, 0 )
+	self.Hose, self.rope = constraint.Elastic( self, plug, 0, 0, LPos1, LPos2, 500, 0, 0, material, width, true )
 	local ctable = {
 		Type 		= "LSWinch",
 		pl			= self:GetPlayer(),
-		Ent1		= self.Entity,
+		Ent1		= self,
 		Ent2		= plug,
 		Bone1		= Bone1,
 		Bone2		= Bone2,
@@ -359,8 +342,8 @@ function ENT:Deploy()
 	
 	plug:DeleteOnRemove( self.Hose )
 	plug:DeleteOnRemove( self.nocollide )
-	self.Entity:DeleteOnRemove( self.Hose )
-	self.Entity:DeleteOnRemove( self.plug )
+	self:DeleteOnRemove( self.Hose )
+	self:DeleteOnRemove( self.plug )
 	self.Hose:DeleteOnRemove( self.nocollide )
 	self.Hose:DeleteOnRemove( self.rope )
 	
@@ -369,5 +352,5 @@ function ENT:Deploy()
 	self.DeployedPlug = 1
 	self.reel_status = REEL_OUT
 	
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "InUse", 1) end
+	if WireAddon then Wire_TriggerOutput(self, "InUse", 1) end
 end

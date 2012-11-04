@@ -627,7 +627,7 @@ end
 meta[ "GetResourceAmountTextPrint" ] = function ( self, res )
 	if (type(res) ~= "number") then res = resnames[res] end
 	if (!res) then return "" end
-	return ResNamesPrint[res]..self.Entity:GetResourceAmountText( self, res )
+	return ResNamesPrint[res]..self:GetResourceAmountText( self, res )
 end
 -- get all the ent's net's indexes keyed with the resource IDs
 meta[ "GetResourceNetIDAll" ] = function ( self )
@@ -924,8 +924,16 @@ end
 -- Offset the sending of data a little after the player has join
 local function DelayedFullUpdateEntityNetworkVars( ply )
 	--Msg("==starting timer for sending var data to "..tostring(ply).."\n")
-	timer.Simple(4, FullUpdateEntityNetworkVars, ply)
-	timer.Simple(7, SendAllBeams, ply)
+	/*timer.Simple(4, FullUpdateEntityNetworkVars, ply) // Broken since GMod 13 beta
+	timer.Simple(7, SendAllBeams, ply)*/
+	
+	timer.Simple(4, function()
+		FullUpdateEntityNetworkVars(ply)
+	end)
+	timer.Simple(7, function()
+		SendAllBeams(ply)
+	end)
+	
 	hook.Add("Think", "NetBeamLib_Think", NetworkVarsSend)
 end
 hook.Add( "PlayerInitialSpawn", "FullUpdateEntityNetworkBeamVars", DelayedFullUpdateEntityNetworkVars )

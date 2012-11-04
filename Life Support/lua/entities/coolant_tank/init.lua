@@ -10,31 +10,31 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Coolant", "Max Coolant" })
+		self.Outputs = Wire_CreateOutputs(self, { "Coolant", "Max Coolant" })
 	end
 end
 
 function ENT:Damage()
 	if (self.damaged == 0) then
 		self.damaged = 1
-		self.Entity:EmitSound( "PhysicsCannister.ThrusterLoop" )
+		self:EmitSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.max_health
 	self.damaged = 0
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Leak()
@@ -43,7 +43,7 @@ function ENT:Leak()
 		RD_ConsumeResource(self, "coolant", 100)
 	else
 		RD_ConsumeResource(self, "coolant", coolant)
-		self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+		self:StopSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
@@ -58,13 +58,13 @@ function ENT:Think()
 		self:UpdateWireOutput()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
 function ENT:UpdateWireOutput()
 	local coolant = RD_GetResourceAmount(self, "coolant")
 	local maxcoolant = RD_GetNetworkCapacity(self, "coolant")
-	Wire_TriggerOutput(self.Entity, "Coolant", coolant)
-	Wire_TriggerOutput(self.Entity, "Max Coolant", maxcoolant)
+	Wire_TriggerOutput(self, "Coolant", coolant)
+	Wire_TriggerOutput(self, "Max Coolant", maxcoolant)
 end

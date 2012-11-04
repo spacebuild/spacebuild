@@ -18,7 +18,13 @@ local H1	= ScH / 10
 local H2	= ScH - H1
 local H3	= H1 - 5
 local TH	= { H2 + 5, H2 + 20, H2 + 35, H2 + 50 }
-local Font	= "ScoreboardText"
+
+local FontName	= "LifeSupport_HUDText"
+surface.CreateFont( FontName, {	font		= "Tahoma",
+								size		= 16,
+								weight		= 1000,
+								antialias	= true,
+								additive	= false })
 
 local White	= Color(225,225,225,255)
 local Black	= Color(0,0,0,100)
@@ -49,33 +55,75 @@ local function lifesupport_HUDPaint()
 			if Coolant	< 4 then ValCol[3] = Warn end
 			if Energy	< 4 then ValCol[4] = Warn end
 			
+			surface.SetFont(FontName)
 			draw.RoundedBox( 8, Left2 , H2, 160, H3, Black)
 			
-			draw.DrawText( "Temperature:",			Font, Left,	TH[1], White,		0 )
-			draw.DrawText( tostring(Temp).." K",	Font, Right,TH[1], ValCol[1],	2 )
-			draw.DrawText( "Air:",					Font, Left,	TH[2], White,		0 )
-			draw.DrawText( tostring(Air).."%",		Font, Right,TH[2], ValCol[2],	2 )
-			draw.DrawText( "Coolant:",				Font, Left,	TH[3], White,		0 )
-			draw.DrawText( tostring(Coolant).."%",	Font, Right,TH[3], ValCol[3],	2 )
-			draw.DrawText( "Energy:",				Font, Left,	TH[4], White, 		0 )
-			draw.DrawText( tostring(Energy).."%",	Font, Right,TH[4], ValCol[4],	2 )
+			// Temperature
+			draw.Text({	text = "Temperature:",
+						font = FontName,
+						pos = {Left, TH[1]},
+						xalign = TEXT_ALIGN_LEFT,
+						color = White})
+			draw.Text({ text = tostring(Temp).." K",
+						font = FontName,
+						pos = {Right, TH[1]},
+						xalign = TEXT_ALIGN_RIGHT,
+						color = ValCol[1]})
 			
+			// Air
+			draw.Text({ text = "Air:",
+						font = FontName,
+						pos = {Left, TH[2]},
+						xalign = TEXT_ALIGN_LEFT,
+						color = White})
+			draw.Text({ text = tostring(Air).."%",
+						font = FontName,
+						pos = {Right, TH[2]},
+						xalign = TEXT_ALIGN_RIGHT,
+						color = ValCol[2]})
+			
+			// Coolant
+			draw.Text({ text = "Coolant:",
+						font = FontName,
+						pos = {Left, TH[3]},
+						xalign = TEXT_ALIGN_LEFT,
+						color = White})
+			draw.Text({ text = tostring(Coolant).."%",
+						font = FontName,
+						pos = {Right, TH[3]},
+						xalign = TEXT_ALIGN_RIGHT,
+						color = ValCol[3]})
+			
+			// Energy
+			draw.Text({ text = "Energy:",
+						font = FontName,
+						pos = {Left, TH[4]},
+						xalign = TEXT_ALIGN_LEFT,
+						color = White})
+			draw.Text({ text = tostring(Energy).."%",
+						font = FontName,
+						pos = {Right, TH[4]},
+						xalign = TEXT_ALIGN_RIGHT,
+						color = ValCol[4]})
+
 		end
 		
 	end
 	
 end 
 hook.Add("HUDPaint", "Shan_LifeSupport_HUDPaint", lifesupport_HUDPaint)
--- shanjaq: End Life Support mod.
 
-function LS_umsg_hook( um )
-	ls_habitat = um:ReadShort()
-	ls_air = um:ReadShort()
-	ls_tmp = um:ReadShort()
-	ls_coolant = um:ReadShort()
-	ls_energy = um:ReadShort()
-end
-usermessage.Hook("LS_umsg", LS_umsg_hook) 
+net.Receive("LS_netmessage", function( len )
+
+	ls_habitat = net.ReadFloat()
+	ls_air = net.ReadFloat()
+	ls_tmp = net.ReadFloat()
+	ls_coolant = net.ReadFloat()
+	ls_energy = net.ReadFloat()
+
+end)
+
+-- End Life Support mod.
 
 -- Start eHud Stuff
 if not huddata then

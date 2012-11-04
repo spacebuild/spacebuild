@@ -11,15 +11,15 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	end
-	self.Entity:SetColor( 10, 96, 180, 255 )
+	self:SetColor(Color( 10, 96, 180, 255 ))
 end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
 		self.Active = 1
-		if (self.damaged == 0) then self.Entity:SetColor( 10, 96, 255, 255 ) end --light up blue when on
+		if (self.damaged == 0) then self:SetColor(Color( 10, 96, 255, 255 )) end --light up blue when on
 		self:SetOOO(1)
 	end
 end
@@ -27,9 +27,9 @@ end
 function ENT:TurnOff()
 	if (self.Active == 1) then
 		self.Active = 0
-		if (self.damaged == 0) then self.Entity:SetColor( 10, 96, 180, 255 ) end --go dark when off
+		if (self.damaged == 0) then self:SetColor(Color( 10, 96, 180, 255 )) end --go dark when off
 		self:SetOOO(0)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", 0) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", 0) end
 	end
 end
 
@@ -38,13 +38,13 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor( 10, 96, 255, 255 )
+	self:SetColor(Color( 10, 96, 255, 255 ))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:Extract_Energy()
@@ -53,7 +53,7 @@ function ENT:Extract_Energy()
 	if (inc > 0) then
 		RD_SupplyResource(self, "energy", inc)
 	end
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", inc) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", inc) end
 end
 
 
@@ -61,7 +61,7 @@ function ENT:GenEnergy()
 	if (self.environment.inwater == 1) then
 		self:TurnOff()
 	else
-		local entpos = self.Entity:GetPos()
+		local entpos = self:GetPos()
 		local trace = {}
 		if not ( TrueSun == nil ) then
 			SunAngle = (entpos - TrueSun)
@@ -70,7 +70,7 @@ function ENT:GenEnergy()
 		local startpos = (entpos - (SunAngle * 4096))
 		trace.start = startpos
 		trace.endpos = entpos
-		trace.filter = self.Entity
+		trace.filter = self
 		local tr = util.TraceLine( trace )
 		if (tr.Hit) and (tr.Entity:IsValid()) then
 			self:TurnOff()
@@ -86,6 +86,6 @@ function ENT:Think()
 	
 	self:GenEnergy()
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end

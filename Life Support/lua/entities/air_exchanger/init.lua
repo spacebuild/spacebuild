@@ -16,25 +16,25 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	end
 end
 
 function ENT:TurnOn()
-	self.Entity:EmitSound( "apc_engine_start" )
+	self:EmitSound( "apc_engine_start" )
 	self.Active = 1
 	self.HasAir = true
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", self.Active) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", self.Active) end
 	self:SetOOO(1)
 end
 
 function ENT:TurnOff()
-	self.Entity:StopSound( "apc_engine_start" )
-	self.Entity:EmitSound( "apc_engine_stop" )
+	self:StopSound( "apc_engine_start" )
+	self:EmitSound( "apc_engine_stop" )
 	self.Active = 0
 	self.HasAir = false
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", self.Active) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", self.Active) end
 	self:SetOOO(0)
 end
 
@@ -54,24 +54,24 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 end
 
 function ENT:Pump_Air()
 	if not self.environment then return end
-	self.air = RD_GetResourceAmount(self.Entity, "air")
-	self.energy = RD_GetResourceAmount(self.Entity, "energy")
+	self.air = RD_GetResourceAmount(self, "air")
+	self.energy = RD_GetResourceAmount(self, "energy")
 	if ((self.air <= 0) or (self.energy <= 0)) then
 		self.HasAir = false
 	else
@@ -79,25 +79,25 @@ function ENT:Pump_Air()
 	end
 	--this should work faster than FindInSphere
 	if (self.Active == 1) and (self.HasAir) then
-		local MyPos = self.Entity:GetPos()
+		local MyPos = self:GetPos()
 		for _, ply in pairs( player.GetAll() ) do
 			local dist = (ply:GetPos() - MyPos):Length()
 			if (dist <= self.environment.radius) then
 				if ((self.environment.habitat == 0) or (ply.suit.inwater > 2)) then
 					if (ply.suit.air < 100) then
 						if ( (100 - ply.suit.air) < self.air ) then
-							RD_ConsumeResource(self.Entity, "air", 100 - ply.suit.air)
+							RD_ConsumeResource(self, "air", 100 - ply.suit.air)
 							ply.suit.air = 100
 						elseif (self.air > 0) then
 							ply.suit.air = ( ply.suit.air + self.air )
-							RD_ConsumeResource(self.Entity, "air", self.air)
+							RD_ConsumeResource(self, "air", self.air)
 						end
 					end
-					RD_ConsumeResource(self.Entity, "energy", Energy_Increment)
-					if self.Entity.environment.atmosphere > 1 then
-						RD_ConsumeResource(self.Entity, "air", Air_Increment + ((self.environment.atmosphere-1)* Air_Increment))
+					RD_ConsumeResource(self, "energy", Energy_Increment)
+					if self.environment.atmosphere > 1 then
+						RD_ConsumeResource(self, "air", Air_Increment + ((self.environment.atmosphere-1)* Air_Increment))
 					else
-						RD_ConsumeResource(self.Entity, "air", Air_Increment)
+						RD_ConsumeResource(self, "air", Air_Increment)
 					end
 				end
 			end

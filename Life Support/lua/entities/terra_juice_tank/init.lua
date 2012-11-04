@@ -10,31 +10,31 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Terra Juice", "Max Terra Juice" })
+		self.Outputs = Wire_CreateOutputs(self, { "Terra Juice", "Max Terra Juice" })
 	end
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Damage()
 	if (self.damaged == 0) then
 		self.damaged = 1
-		self.Entity:EmitSound( "PhysicsCannister.ThrusterLoop" )
+		self:EmitSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.max_health
 	self.damaged = 0
-	self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+	self:StopSound( "PhysicsCannister.ThrusterLoop" )
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:Leak()
@@ -43,7 +43,7 @@ function ENT:Leak()
 		RD_ConsumeResource(self, "terrajuice", 100)
 	else
 		RD_ConsumeResource(self, "terrajuice", terrajuice)
-		self.Entity:StopSound( "PhysicsCannister.ThrusterLoop" )
+		self:StopSound( "PhysicsCannister.ThrusterLoop" )
 	end
 end
 
@@ -51,7 +51,7 @@ function ENT:UpdateMass()
 	--change mass
 	if(!self.mass) then return end
 	local mass = self.mass  + (RD_GetResourceAmount(self, "terrajuice") * 1.25)
-	local phys = self.Entity:GetPhysicsObject()
+	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 		if phys:GetMass() ~= mass then
 			phys:SetMass(mass)
@@ -73,13 +73,13 @@ function ENT:Think()
 	
 	self:UpdateMass()
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
 function ENT:UpdateWireOutput()
 	local terrajuice = RD_GetResourceAmount(self, "terrajuice")
 	local maxterrajuice = RD_GetNetworkCapacity(self, "terrajuice")
-	Wire_TriggerOutput(self.Entity, "Terra Juice", terrajuice)
-	Wire_TriggerOutput(self.Entity, "Max Terra Juice", maxterrajuice)
+	Wire_TriggerOutput(self, "Terra Juice", terrajuice)
+	Wire_TriggerOutput(self, "Max Terra Juice", maxterrajuice)
 end

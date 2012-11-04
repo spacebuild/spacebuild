@@ -12,9 +12,9 @@ util.PrecacheModel( MODEL )
 cleanup.Register('linkjunctions')
 
 if ( CLIENT ) then
-	language.Add( 'Tool_link_junction_name', 'Link Junction' )
-	language.Add( 'Tool_link_junction_desc', 'Create a resource link junction attached to any surface.' )
-	language.Add( 'Tool_link_junction_0', 'Left-Click: Spawn a Device.' )
+	language.Add( 'tool.link_junction.name', 'Link Junction' )
+	language.Add( 'tool.link_junction.desc', 'Create a resource link junction attached to any surface.' )
+	language.Add( 'tool.link_junction.0', 'Left-Click: Spawn a Device.' )
 
 	language.Add( 'Undone_LinkJunctions', 'Link Junction Undone' )
 	language.Add( 'Cleanup_LinkJunctions', 'Link Junction' )

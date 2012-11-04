@@ -3,7 +3,7 @@ util.PrecacheSound( "NPC_Stalker.BurnFlesh" )
 util.PrecacheModel("models/player/charple01.mdl")
 
 
-function zapme(pos, magnitude)
+function LS_zapme(pos, magnitude)
 	zap = ents.Create("point_tesla")
 	zap:SetKeyValue("targetname", "teslab")
 	zap:SetKeyValue("m_SoundName" ,"DoSpark")
@@ -24,18 +24,11 @@ function zapme(pos, magnitude)
 	zap:Fire("kill","", 1)
 end
 
-
-function burn_quiet(ent)
-	ent:StopSound( "NPC_Stalker.BurnFlesh" )
-end
-
-
 function LS_Immolate(ent)
 	ent:EmitSound( "NPC_Stalker.BurnFlesh" )
 	ent:SetModel("models/player/charple01.mdl")
-	timer.Simple(3, burn_quiet, ent)
+	timer.Simple(3, function() ent:StopSound("NPC_Stalker.BurnFlesh") end)
 end
-
 
 function LS_Frosty(ent)
 	ent:EmitSound( "vehicles/v8/skid_lowfriction.wav" )

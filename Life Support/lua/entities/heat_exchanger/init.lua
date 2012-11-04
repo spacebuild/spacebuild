@@ -16,28 +16,28 @@ function ENT:Initialize()
 	self.damaged = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "Out" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "Out" })
 	end
 end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
-		self.Entity:EmitSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_start" )
 		self.Active = 1
 		self.HasHeat = true
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", self.Active) end
 		self:SetOOO(self.Active)
 	end
 end
 
 function ENT:TurnOff()
 	if (self.Active == 1) then
-		self.Entity:StopSound( "apc_engine_start" )
-		self.Entity:EmitSound( "apc_engine_stop" )
+		self:StopSound( "apc_engine_start" )
+		self:EmitSound( "apc_engine_stop" )
 		self.Active = 0
 		self.HasHeat = false
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Out", self.Active) end
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", self.Active) end
 		self:SetOOO(self.Active)
 	end
 end
@@ -58,18 +58,18 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor(255, 255, 255, 255)
+	self:SetColor(Color(255, 255, 255, 255))
 	self.health = self.maxhealth
 	self.damaged = 0
 end
 
 function ENT:Destruct()
-	LS_Destruct( self.Entity, true )
+	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "apc_engine_start" )
+	self:StopSound( "apc_engine_start" )
 end
 
 function ENT:Pump_Heat()
@@ -85,7 +85,7 @@ function ENT:Pump_Heat()
 	
 	--this should work faster than FindInSphere
 	if (self.HasHeat) then
-		local MyPos = self.Entity:GetPos()
+		local MyPos = self:GetPos()
 		for _, ply in pairs( player.GetAll() ) do
 			local dist = (ply:GetPos() - MyPos):Length()
 			if (dist <= self.environment.radius) then
@@ -103,7 +103,7 @@ function ENT:Pump_Heat()
 						RD_ConsumeResource(self, "energy", self.energy)
 						self.HasHeat = false
 					end
-					RD_ConsumeResource(self.Entity, "energy", Energy_Increment)
+					RD_ConsumeResource(self, "energy", Energy_Increment)
 				end
 				if (ply.suit.coolant < 100) then
 					if ( (100 - ply.suit.coolant) < self.coolant ) then
@@ -114,7 +114,7 @@ function ENT:Pump_Heat()
 						RD_ConsumeResource(self, "coolant", self.coolant)
 						self.HasHeat = false
 					end
-					RD_ConsumeResource(self.Entity, "coolant", Coolant_Increment)
+					RD_ConsumeResource(self, "coolant", Coolant_Increment)
 				end
 			end
 		end
@@ -126,7 +126,7 @@ function ENT:Think()
 	
 	if ( self.Active == 1 ) then self:Pump_Heat() end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 

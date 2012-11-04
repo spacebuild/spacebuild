@@ -27,18 +27,18 @@ function ENT:Initialize()
 	self.time = 0
 	if not (WireAddon == nil) then
 		self.WireDebugName = self.PrintName
-		self.Inputs = Wire_CreateInputs(self.Entity, { "On" })
-		self.Outputs = Wire_CreateOutputs(self.Entity, { "On", "Output" })
+		self.Inputs = Wire_CreateInputs(self, { "On" })
+		self.Outputs = Wire_CreateOutputs(self, { "On", "Output" })
 	end
-	self.Entity:SetColor( 10, 96, 255, 255 )
+	self:SetColor(Color( 10, 96, 255, 255 ))
 end
 
 function ENT:TurnOn()
 	if (self.Active == 0) then
 		self.Active = 1
-		self.Entity:EmitSound( "k_lab.ambient_powergenerators" )
-		self.Entity:EmitSound( "ambient/machines/thumper_startup1.wav" )
-		if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "On", 1) end
+		self:EmitSound( "k_lab.ambient_powergenerators" )
+		self:EmitSound( "ambient/machines/thumper_startup1.wav" )
+		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
 		self:SetOOO(1)
 	end
 end
@@ -46,11 +46,11 @@ end
 function ENT:TurnOff()
 	if (self.Active == 1) then
 		self.Active = 0
-		self.Entity:StopSound( "k_lab.ambient_powergenerators" )
-		self.Entity:StopSound( "coast.siren_citizen" )
+		self:StopSound( "k_lab.ambient_powergenerators" )
+		self:StopSound( "coast.siren_citizen" )
 		if not (WireAddon == nil) then 
-			Wire_TriggerOutput(self.Entity, "On", 0)
-			Wire_TriggerOutput(self.Entity, "Output", 0)
+			Wire_TriggerOutput(self, "On", 0)
+			Wire_TriggerOutput(self, "Output", 0)
 		end
 		self:SetOOO(0)
 	end
@@ -67,23 +67,23 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.Entity:SetColor( 10, 96, 255, 255 )
+	self:SetColor(Color( 10, 96, 255, 255 ))
 	self.health = self.maxhealth
 	self.damaged = 0
 	self.critical = 0
 	self.hwcount = 0
-	self.Entity:StopSound( "coast.siren_citizen" )
+	self:StopSound( "coast.siren_citizen" )
 end
 
 function ENT:Destruct()
-	self.Entity:StopSound( "coast.siren_citizen" )
-	if (RD_GetResourceAmount(self, "energy") < 100000) or (GetConVarNumber("LS_AllowNukeEffect") == 0) then
-		LS_Destruct( self.Entity )
+	self:StopSound( "coast.siren_citizen" )
+	if (RD_GetResourceAmount(self, "energy") < 100000) or (not GetConVar("LS_AllowNukeEffect"):GetBool()) then
+		LS_Destruct( self )
 	else -- !!oh shi-
 		local effectdata = EffectData()
 		effectdata:SetMagnitude( 1 )
 		
-		local Pos = self.Entity:GetPos()
+		local Pos = self:GetPos()
 	
 		effectdata:SetOrigin( Pos )
 		effectdata:SetScale( 23000 )
@@ -96,8 +96,8 @@ function ENT:Destruct()
 		
 		local blastradius = 3000
 		
-		for _,Ent in pairs( constraint.GetAllConstrainedEntities( self.Entity ) ) do
-			if Ent ~= self.Entity then
+		for _,Ent in pairs( constraint.GetAllConstrainedEntities( self ) ) do
+			if Ent ~= self then
 				if (string.find(Ent.Entity:GetClass(),"prop") ~= nil) then
 					local delay = (math.random(300, 700) / 100)
 					Ent.Entity:SetSolid( SOLID_NONE ) --we don't need to be crunching the phys collisions too
@@ -126,10 +126,10 @@ function ENT:Destruct()
 				vecang:Normalize()
 			
 				if found:IsNPC() then --ugh, messy
-					util.BlastDamage(self.Entity, self:GetPlayer(), found:GetPos(), 256, 512)
+					util.BlastDamage(self, self:GetPlayer(), found:GetPos(), 256, 512)
 				elseif found:IsPlayer() then
 					found:SetModel("models/player/charple01.mdl")
-					util.BlastDamage(self.Entity, self:GetPlayer(), found:GetPos(), 256, 512)
+					util.BlastDamage(self, self:GetPlayer(), found:GetPos(), 256, 512)
 				elseif found:IsValid() then
 					
 					local physobj = found:GetPhysicsObject()
@@ -146,7 +146,7 @@ function ENT:Destruct()
 						physobj:ApplyForceOffset(vecang*(8e4*mass),entpos + Vector(math.random(-20,20),math.random(-20,20),math.random(20,40))) --still push it away
 					end
 					
-					util.BlastDamage(self.Entity, self:GetPlayer(), Pos - vecang*64, 384, 1000) --splode it
+					util.BlastDamage(self, self:GetPlayer(), Pos - vecang*64, 384, 1000) --splode it
 				end
 			end
 		end
@@ -172,44 +172,44 @@ function ENT:Destruct()
 			local dist = (v:GetPos() - Pos):Length()
 			v:Fire("break","",dist/19e3)
 		end
-		self.Entity:Remove()
+		self:Remove()
 	end
 end
 
 function ENT:OnRemove()
 	self.BaseClass.OnRemove(self)
-	self.Entity:StopSound( "k_lab.ambient_powergenerators" )
-	self.Entity:StopSound( "coast.siren_citizen" )	
+	self:StopSound( "k_lab.ambient_powergenerators" )
+	self:StopSound( "coast.siren_citizen" )	
 end
 
 function ENT:Extract_Energy()
 	local inc = Energy_Increment
 
 	if (self.critical == 1) then
-		local ang = self.Entity:GetAngles()
-		local pos = (self.Entity:GetPos() + (ang:Up() * self.Entity:BoundingRadius()))
+		local ang = self:GetAngles()
+		local pos = (self:GetPos() + (ang:Up() * self:BoundingRadius()))
 		local test = math.random(1, 10)
 		if (test <= 2) then
-			zapme((pos + (ang:Right() * 90)), 5)
-			zapme((pos - (ang:Right() * 90)), 5)
-			self.Entity:EmitSound( "ambient/levels/labs/electric_explosion3.wav" )
+			LS_zapme((pos + (ang:Right() * 90)), 5)
+			LS_zapme((pos - (ang:Right() * 90)), 5)
+			self:EmitSound( "ambient/levels/labs/electric_explosion3.wav" )
 			inc = 0
 		elseif (test <= 4) then
-			zapme((pos + (ang:Right() * 90)), 3)
-			zapme((pos - (ang:Right() * 90)), 3)
-			self.Entity:EmitSound( "ambient/levels/labs/electric_explosion4.wav" )
+			LS_zapme((pos + (ang:Right() * 90)), 3)
+			LS_zapme((pos - (ang:Right() * 90)), 3)
+			self:EmitSound( "ambient/levels/labs/electric_explosion4.wav" )
 			inc = math.ceil(inc / 4)
 		elseif (test <= 6) then
-			zapme((pos + (ang:Right() * 90)), 2)
-			zapme((pos - (ang:Right() * 90)), 2)
-			self.Entity:EmitSound( "ambient/levels/labs/electric_explosion1.wav" )
+			LS_zapme((pos + (ang:Right() * 90)), 2)
+			LS_zapme((pos - (ang:Right() * 90)), 2)
+			self:EmitSound( "ambient/levels/labs/electric_explosion1.wav" )
 			inc = math.ceil(inc / 2)
 		end
 	end
 	
 	--coolant check (no coolant causes damage and greatly reduces output)
 	if (RD_GetResourceAmount(self, "coolant") <= 0) then
-		DamageLS(self.Entity, 15)
+		DamageLS(self, 15)
 		local Smoke = ents.Create("env_smoketrail")
 			Smoke:SetKeyValue("opacity", 1)
 			Smoke:SetKeyValue("spawnrate", 10)
@@ -218,28 +218,28 @@ function ENT:Extract_Energy()
 			Smoke:SetKeyValue("endcolor", "255 255 255")
 			Smoke:SetKeyValue("minspeed", 15)
 			Smoke:SetKeyValue("maxspeed", 30)
-			Smoke:SetKeyValue("startsize", (self.Entity:BoundingRadius() / 2))
-			Smoke:SetKeyValue("endsize", self.Entity:BoundingRadius())
+			Smoke:SetKeyValue("startsize", (self:BoundingRadius() / 2))
+			Smoke:SetKeyValue("endsize", self:BoundingRadius())
 			Smoke:SetKeyValue("spawnradius", 10)
 			Smoke:SetKeyValue("emittime", 300)
 			Smoke:SetKeyValue("firesprite", "sprites/firetrail.spr")
 			Smoke:SetKeyValue("smokesprite", "sprites/whitepuff.spr")
-			Smoke:SetPos(self.Entity:GetPos())
-			Smoke:SetParent(self.Entity)
+			Smoke:SetPos(self:GetPos())
+			Smoke:SetParent(self)
 			Smoke:Spawn()
 			Smoke:Activate()
 			Smoke:Fire("kill","", 1)
 
 		if (self.critical == 0) then
 			if self.time > 3 then 
-				self.Entity:EmitSound( "common/warning.wav" )
+				self:EmitSound( "common/warning.wav" )
 				self.time = 0
 			else
 				self.time = self.time + 1
 			end
 		else
 			if self.time > 3 then 
-				self.Entity:EmitSound( "coast.siren_citizen" )
+				self:EmitSound( "coast.siren_citizen" )
 				self.time = 0
 			else
 				self.time = self.time + 1
@@ -269,7 +269,7 @@ function ENT:Extract_Energy()
 
 	--the money shot!
 	if (inc > 0) then RD_SupplyResource(self, "energy", inc) end
-	if not (WireAddon == nil) then Wire_TriggerOutput(self.Entity, "Output", inc) end
+	if not (WireAddon == nil) then Wire_TriggerOutput(self, "Output", inc) end
 
 	--[[   	     Base: 2000
 
@@ -293,7 +293,7 @@ function ENT:Leak() --leak cause this is like with storage, make be it could lea
 		end
 	else
 		if (self.critical == 1) then
-			self.Entity:StopSound( "coast.siren_citizen" )
+			self:StopSound( "coast.siren_citizen" )
 			self.critical = 0
 		end
 	end
@@ -314,7 +314,7 @@ function ENT:Think()
 		self:Leak()
 	end
 	
-	self.Entity:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 1)
 	return true
 end
 
