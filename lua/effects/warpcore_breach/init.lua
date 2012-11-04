@@ -163,8 +163,8 @@ local startpos = self.Position
 	--shockwave
 	if self.Size < 32768 then
 
-		local Distance = EyePos():Distance( self.Entity:GetPos() )
-		local Pos = self.Entity:GetPos() + (EyePos() - self.Entity:GetPos()):GetNormal() * Distance * (self.Refract^(0.3)) * 0.8
+		local Distance = EyePos():Distance( self:GetPos() )
+		local Pos = self:GetPos() + (EyePos() - self:GetPos()):GetNormal() * Distance * (self.Refract^(0.3)) * 0.8
 
 		matRefraction:SetMaterialFloat( "$refractamount", math.sin( self.Refract * math.pi ) * 0.1 )
 		render.SetMaterial( matRefraction )
