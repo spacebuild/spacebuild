@@ -31,6 +31,10 @@ sb.test = {}
 sb.wrappers = {}
 sb.extensions = {}
 
+function sb.getVersion()
+    return VERSION;
+end
+
 include("sb/core/wrappers.lua");
 
 include("sb/core/config.lua");
@@ -43,9 +47,6 @@ include("sb/core/addons.lua")
 include("sb/core/extensions.lua")
 --------------------------
 
-function sb.getVersion()
-    return VERSION;
-end
 
 
 
