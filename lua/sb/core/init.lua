@@ -36,14 +36,12 @@ include("sb/core/wrappers.lua");
 include("sb/core/config.lua");
 include("sb/core/class.lua");
 include("sb/core/debug.lua");
+include("sb/core/util.lua")
 include("sb/core/addons.lua")
 
 ---- Extension System ----
 include("sb/core/extensions.lua")
 --------------------------
-
-
-
 
 function sb.getVersion()
     return VERSION;
