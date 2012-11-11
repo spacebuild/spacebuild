@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fbcf05d6-36d9-471a-8b8f-f7ed87609fe6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lua/includes/modules/readOnlyList.lua" afterPath="$PROJECT_DIR$/lua/includes/modules/readOnlyList.lua" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lua/sb/addons/base_addon.lua" afterPath="$PROJECT_DIR$/lua/sb/addons/base_addon.lua" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lua/sb/core/extensions.lua" afterPath="$PROJECT_DIR$/lua/sb/core/extensions.lua" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lua/sb/core/wrappers.lua" afterPath="$PROJECT_DIR$/lua/sb/core/wrappers.lua" />
     </list>
     <ignored path="spacebuild.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,7 +73,7 @@
             <file leaf-file-name="addons.lua" pinned="false" current="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/lua/sb/core/addons.lua">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="66" column="37" selection-start="1509" selection-end="1509" vertical-scroll-proportion="0.64787114">
+                  <state line="38" column="97" selection-start="726" selection-end="726" vertical-scroll-proportion="0.8659517">
                     <folding />
                   </state>
                 </provider>
@@ -93,7 +92,7 @@
       <file leaf-file-name="readOnlyList.lua" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lua/includes/modules/readOnlyList.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="9" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
+            <state line="33" column="32" selection-start="634" selection-end="634" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -108,19 +107,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="extensions.lua" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="extensions.lua" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lua/sb/core/extensions.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="111" column="14" selection-start="2321" selection-end="2321" vertical-scroll-proportion="0.52819335">
+            <state line="100" column="51" selection-start="2406" selection-end="2406" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fluix_base.lua" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lua/sb/extensions/fluixHUD/autorun/fluix_base.lua">
+      <file leaf-file-name="base_addon.lua" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lua/sb/addons/base_addon.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="35" selection-start="445" selection-end="445" vertical-scroll-proportion="0.0">
+            <state line="70" column="59" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.82393557">
               <folding />
             </state>
           </provider>
@@ -148,6 +147,7 @@
         <option value="$PROJECT_DIR$/lua/includes/modules/readOnlyList.lua" />
         <option value="$APPLICATION_HOME_DIR$/plugins/IDLua/stdlibrary/string.lua" />
         <option value="$PROJECT_DIR$/lua/sb/core/extensions.lua" />
+        <option value="$PROJECT_DIR$/lua/sb/addons/base_addon.lua" />
       </list>
     </option>
   </component>
@@ -219,9 +219,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -273,6 +270,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spacebuild" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lua" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sb" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="extensions" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -412,25 +431,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spacebuild" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spacebuild" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dictionaries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -438,14 +442,14 @@
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="MemberChooser.sorted" value="false" />
+    <property name="options.lastSelected" value="editor.preferences.appearance" />
+    <property name="recentsLimit" value="5" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Lua Script.wrappers.lua">
     <configuration default="false" name="wrappers.lua" type="#com.sylvanaar.idea.Lua.run.LuaConfigurationType" factoryName="Lua Script" temporary="true">
@@ -487,6 +491,24 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -512,24 +534,6 @@
       <envs />
       <properties />
       <listeners />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -779,56 +783,52 @@
         <state line="0" column="29" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lua/sb/addons/base_addon.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="24" selection-start="874" selection-end="874" vertical-scroll-proportion="0.87931037" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lua/sb/addons/spacebuild.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="22" selection-start="205" selection-end="205" vertical-scroll-proportion="0.17606445">
-          <folding />
-        </state>
+        <state line="9" column="22" selection-start="205" selection-end="205" vertical-scroll-proportion="0.17606445" />
       </provider>
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/IDLua/stdlibrary/string.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="65" selection-start="377" selection-end="377" vertical-scroll-proportion="0.3521289">
+        <state line="18" column="65" selection-start="377" selection-end="377" vertical-scroll-proportion="0.3521289" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lua/sb/extensions/fluixHUD/autorun/fluix_base.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="35" selection-start="445" selection-end="445" vertical-scroll-proportion="0.019562716">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lua/sb/core/addons.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="37" selection-start="1509" selection-end="1509" vertical-scroll-proportion="0.64787114">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lua/sb/extensions/fluixHUD/autorun/fluix_base.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="35" selection-start="445" selection-end="445" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lua/includes/modules/readOnlyList.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="9" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lua/includes/modules/sbhelper.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="26" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0">
+        <state line="38" column="97" selection-start="726" selection-end="726" vertical-scroll-proportion="0.8659517">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lua/sb/core/extensions.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="14" selection-start="2321" selection-end="2321" vertical-scroll-proportion="0.52819335">
+        <state line="100" column="51" selection-start="2406" selection-end="2406" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lua/includes/modules/sbhelper.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="26" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lua/includes/modules/readOnlyList.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="32" selection-start="634" selection-end="634" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lua/sb/addons/base_addon.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="59" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.82393557">
           <folding />
         </state>
       </provider>

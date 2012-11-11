@@ -21,7 +21,7 @@ local rawset = rawset
 
 local generated_key
 
-local scopes = {
+local scopes = {  -- Scopes table, links server scopes to the correct folder/paths.
 
     server = "server/",
     client = "client/",
@@ -89,22 +89,18 @@ local extBase = {
     end;
 
     getSyncKey = function(self)
+    --Since the name shouldn't change we are only going to generate it once!!
         if not generated_key then
-            generated_key = string.len(self.name)
-
-            for k,v in self.name do
-                generated_key = (generated_key * string.byte(v) - 32 ) / string.len(self.name)
-
+            generated_key = 23
+            for k, v in self.name do
+                generated_key = generated_key * (string.byte(v) - 64) -- A = 65, a = 97
             end
-
-            generated_key = generated_key * ((string.len(self.name) + string.len(self.name))*string.len(self.name))
-            generated_key = generated_key % 32767
-
-
+            generated_key = generated_key + string.len(self.name)
+            --generated_key = generated_key %  2,147,483,647 --We don't want more then a LONG INTEGER
+            generated_key = generated_key % 32767 --We don't want more then a SHORT INTEGER
         end
-
         return generated_key
-    end;
+    end
 }
 
 
@@ -172,49 +168,28 @@ end
 sb.extensions = readOnly(sb.extensions)
 
 local basePath = "sb/extensions/"
---local dirList = sb.wrappers:Find("dir",basePath.."*", "LUA")
+local exts = sb.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
+
+--- Extension Loading function
+-- @param scope Which scope you wish to load, server/client/shared
+-- @param send Whether to send the file to the client or not. Using AddCSLuaFile
+-- Searches through each extension folder under the relevant scope folder, eg "server/" for any lua files,
+-- and based upon 'send' will either send them or just include.
 
 local function loadExts(scope,send)
 
     local scopedir = scopes[scope]
 
-    local exts = {} -- table for storing exts in temporarily.
-
-    for k,v in ipairs(sb.wrappers:Find("dir","sb/extensions/*","LUA")) do
-        table.insert(exts,v)
-    end
-
     for k,v in pairs(exts) do
-        local files = sb.wrappers:Find("file",basePath.. v.. "/autorun/".. scopedir.. "*", "LUA")
-
-        for i,j in pairs(files) do
+        for i,j in ipairs(sb.wrappers:Find("file",basePath.. v.. "/autorun/".. scopedir.. "*", "LUA")) do
             if send then
                 AddCSLuaFile(basePath.. v.. "/autorun/".. scopedir..j)
             else
                 include(basePath.. v.. "/autorun/".. scopedir.. j)
             end
-
         end
-
     end
 end
-
-
-        --[[if sb.wrappers:Find("dir",v.."/autorun","LUA") then
-            for i,j in pairs(scopes) do
-                print(v.."/autorun/"..j.."/")
-                if (j == "server" and manuel) then
-                    for x,y in ipairs(sb.wrappers:Find("file",v.."/autorun/"..j.."/*", "LUA")) do
-                        include(v.."/autorun/"..j.."/"..y)
-                    end
-                else
-                    for x,y in ipairs(sb.wrappers:Find("file",v.."/autorun/"..j.."/*","LUA")) do
-                        AddCSLuaFile(v.."/autorun/"..j.."/"..y)
-                        include(v.."autorun/"..j.."/"..y)
-                    end
-                end
-            end
-        end--]]
 
 if SERVER then
     loadExts("server")
@@ -225,19 +200,3 @@ else
     loadExts("client")
     loadExts("shared")
 end
-
-
-
-
---[[for k,v in ipairs(dirList) do
-
-	local files = sb.wrappers:Find("file",basePath..v.."/autorun/*", "LUA")
-
-	if #files > 0 then
-		for i,j in ipairs(files) do
-			AddCSLuaFile(basePath..v.."/autorun/"..j)
-			include(basePath..v.."/autorun/"..j)
-
-		end
-	end
-end      --]]
