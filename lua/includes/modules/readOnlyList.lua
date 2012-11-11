@@ -12,6 +12,7 @@ local rawset = rawset
 
 module("readOnlyList")
 
+-- TODO Compact down into a local function for making a table read only, saves the linear approach.
 local list = {}
 list.__index = list
 
