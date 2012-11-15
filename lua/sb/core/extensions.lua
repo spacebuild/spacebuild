@@ -18,16 +18,13 @@ local AddCSLuaFile = AddCSLuaFile
 local setmetatable = setmetatable
 local ipairs = ipairs
 local rawset = rawset
+local debug = debug
+local pairs = pairs
+local print = print
+local string = string
 
+local util = sb.util
 local generated_key
-
-local scopes = {  -- Scopes table, links server scopes to the correct folder/paths.
-
-    server = "server/",
-    client = "client/",
-    shared = "shared/"
-
-}
 
 --- Extension Base Table Literal
 -- Defined within are all the functions that an extension should posses in default form.
@@ -178,25 +175,23 @@ local exts = sb.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storin
 
 local function loadExts(scope,send)
 
-    local scopedir = scopes[scope]
-
     for k,v in pairs(exts) do
-        for i,j in ipairs(sb.wrappers:Find("file",basePath.. v.. "/autorun/".. scopedir.. "*", "LUA")) do
+        for i,j in ipairs(sb.wrappers:Find("file",basePath.. v.. "/autorun/".. scope.. "*", "LUA")) do
             if send then
-                AddCSLuaFile(basePath.. v.. "/autorun/".. scopedir..j)
+                AddCSLuaFile(basePath.. v.. "/autorun/".. scope..j)
             else
-                include(basePath.. v.. "/autorun/".. scopedir.. j)
+                include(basePath.. v.. "/autorun/".. scope.. j)
             end
         end
     end
 end
 
 if SERVER then
-    loadExts("server")
-    loadExts("client", true)
-    loadExts("shared", true)
-    loadExts("shared")
+    loadExts(util.SCOPES.SERVER)
+    loadExts(util.SCOPES.CLIENT, true)
+    loadExts(util.SCOPES.SHARED, true)
+    loadExts(util.SCOPES.SHARED)
 else
-    loadExts("client")
-    loadExts("shared")
+    loadExts(util.SCOPES.CLIENT)
+    loadExts(util.SCOPES.SHARED)
 end
