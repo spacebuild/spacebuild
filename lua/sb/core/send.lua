@@ -16,7 +16,6 @@ local AddCSLuaFile = AddCSLuaFile
 AddCSLuaFile("includes/modules/Json.lua")
 AddCSLuaFile("includes/modules/sbhelper.lua")
 AddCSLuaFile("includes/modules/luaunit.lua")
-AddCSLuaFile("includes/modules/readOnlyList.lua")
 
 --Send core files
 AddCSLuaFile("sb/core/config.lua")
