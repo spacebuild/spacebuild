@@ -100,41 +100,6 @@ local extBase = {
     end
 }
 
-
---- Merging the extension base table, with a user specified table
--- Used to include some defaults for extension tables when registering.
--- Will only set functions and attributes from base if the entry does not already exist.
--- @param base Base table that the latter will inherit from
--- @param ext The table given as a parameter to the register function, or any table which requires extension base methods.
-local function mergeTable(base,ext)
-    for k,v in pairs(base) do
-        if ext[k] == nil then
-            ext[k] = v
-        end
-    end
-    return ext
-end
-
-
-
---- Way of making a table read-only.
--- The function will take the table which you pass it, and use this as the __index,
--- it will set the __newindex metamethod to prohibit updates to the table such as table.newkey = somevalue.
--- It will throw an error if this metamethod is triggered.
--- __metatable = false will prevent any getmetatable and setmetatable tampering with the new table.
--- setmetable simply uses a proxy table, as a way of returning a new table.
--- @param t Any table which you wish to make read-only.
---
-local function readOnly(t)
-    return setmetatable({},{
-        __index = t,
-        __newindex = function (t,k,v)
-            print("Attempt to update a read-only table")
-        end,
-        __metatable = false
-    })
-end
-
 --- Registering Extensions. Responsible for assigning values and keys on the extensions table.
 -- Such as sb.extensions.key = value
 -- @param name The name of the extension, or the name used to store it on the extensions table
@@ -146,7 +111,7 @@ function sb.extensions:register(name,value)
 
 
         value.basePath = "sb/extensions/"..folder.."/" -- Restructure the basePath. Add trailing /
-        value = mergeTable(extBase,value) -- Make value table inherit from extensions base.
+        value = util.mergeTable(extBase,value) -- Make value table inherit from extensions base.
         rawset(self,name,value) -- Set the key and value using rawset as writing metamethod has been disabled.
     else
         print("That key already exists in the table") -- To stop duplicate entries, or overrides.
@@ -162,7 +127,7 @@ end
 
 
 -- After declaring the setter and getter methods, now make the table read only!
-sb.extensions = readOnly(sb.extensions)
+sb.extensions = util.createReadOnlyTable(sb.extensions)
 
 local basePath = "sb/extensions/"
 local exts = sb.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
