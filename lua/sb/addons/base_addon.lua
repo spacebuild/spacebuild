@@ -68,7 +68,7 @@ function A:getSyncKey()
         end
         generated_key = generated_key + string.len(self.name)
         --generated_key = generated_key %  2,147,483,647 --We don't want more then a LONG INTEGER
-        generated_key = generated_key % 32, 767 --We don't want more then a SHORT INTEGER
+        generated_key = generated_key % 32767 --We don't want more then a SHORT INTEGER
     end
     return generated_key;
 end

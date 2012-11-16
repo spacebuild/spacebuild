@@ -6,8 +6,6 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-require("readOnlyList")
-
 -- Lua Specific
 local tostring = tostring
 local error = error
@@ -17,8 +15,34 @@ local unpack = unpack
 local file = file
 -- SB Specific
 local addon = sb.addons
-local addons = readOnlyList.create()
+
+local list = {
+
+    register = function(self,name,value)
+        if not self[name] then
+            rawset(self, name, value)
+        end
+    end,
+
+    get = function(self,name)
+        return self[name] or false
+    end,
+
+    getaddons = function(self)
+        local tmp = {}
+        for k,v in pairs(self) do
+            if k ~= "register" and k ~= "get" and k ~= "getaddons" then
+                tmp[k] = v
+            end
+        end
+        return tmp
+    end
+
+}
+
+
 local util =  sb.util
+local addons = util.createReadOnlyTable(list)
 
 addon.addons = addons
 
