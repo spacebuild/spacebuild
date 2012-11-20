@@ -419,7 +419,7 @@ end
 
 function Life_Support_Update ()
 	if not GetConVar("LS_enabled") or not GetConVar("LS_enabled"):GetBool() then return end
-	if not RD2Version return end
+	if not RD2Version then return end
 	for _, ply in pairs(player.GetAll()) do	
 		if not ply.suit then ply.suit = {} end
 		if ply:Health() <= 0 then
