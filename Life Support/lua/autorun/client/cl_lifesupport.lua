@@ -37,7 +37,7 @@ local function lifesupport_HUDPaint()
 	if GetConVarString('cl_hudversion') == "" then
 		
 		local ply = LocalPlayer()
-		if not ply or not ply:Alive() then return end
+		if !IsValid(ply) or !ply:IsPlayer() or !ply:Alive() then return end
 		
 		if ply:WaterLevel() > 2 or ls_habitat == 1 or (ls_tmp > 0 and not (ls_tmp >= FairTemp_Min and ls_tmp <= FairTemp_Max)) then
 			

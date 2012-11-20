@@ -63,7 +63,7 @@ function ENT:GenEnergy()
 	else
 		local entpos = self:GetPos()
 		local trace = {}
-		if not ( TrueSun == nil ) then
+		if ( type(TrueSun) == "Vector" ) then
 			SunAngle = (entpos - TrueSun)
 			SunAngle:Normalize()
 		end

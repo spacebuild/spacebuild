@@ -118,7 +118,7 @@ util.PrecacheSound( "Player.FallGib" )
 
 function LSEntCheck()
 	for i ,a in pairs(LSents) do
-		if (a:IsValid()) then
+		if IsValid(a) then
 			local pos = a:GetPos()
 			if (a.environment.lastpos == nil) or (a.environment.lastpos ~= pos) then --if it hasn't moved, it could not have entered/left any water
 				a.environment.lastpos = pos
@@ -419,6 +419,7 @@ end
 
 function Life_Support_Update ()
 	if not GetConVar("LS_enabled") or not GetConVar("LS_enabled"):GetBool() then return end
+	if not RD2Version return end
 	for _, ply in pairs(player.GetAll()) do	
 		if not ply.suit then ply.suit = {} end
 		if ply:Health() <= 0 then
@@ -464,7 +465,7 @@ function Life_Support_Update ()
 			ply.NoCrush = true
 		end
 		local pod = ply:GetParent()
-		if (pod:IsValid()) then
+		if IsValid(pod) then
 			ply.NoCrush = true
 			if pod.environment then
 				--air
@@ -547,7 +548,7 @@ function ColorDamage(ent, HP, Col)
 end
 
 function DamageLS(ent, dam)
-	if not (ent and ent:IsValid() and dam) then return end
+	if not (IsValid(ent) and dam) then return end
 	if not ent.health then return end
 	dam = math.floor(dam / 2)
 	if (ent.health > 0) then
@@ -570,13 +571,13 @@ function DamageLS(ent, dam)
 end
 
 local function RemoveEntity( ent )
-	if (ent:IsValid()) then
+	if (IsValid(ent)) then
 		ent:Remove()
 	end
 end
 
 local function Explode1( ent )
-	if ent:IsValid() then
+	if IsValid(ent) then
 		local Effect = EffectData()
 			Effect:SetOrigin(ent:GetPos() + Vector( math.random(-60, 60), math.random(-60, 60), math.random(-60, 60) ))
 			Effect:SetScale(1)
@@ -586,7 +587,7 @@ local function Explode1( ent )
 end
 
 local function Explode2( ent )
-	if ent:IsValid() then
+	if IsValid(ent) then
 		local Effect = EffectData()
 			Effect:SetOrigin(ent:GetPos())
 			Effect:SetScale(3)
@@ -636,7 +637,7 @@ function Wire_BuildDupeInfo( ent )
 				info.Wires[k].Path = {}
 				
 			    for _,v in ipairs(input.Path) do
-			        if (v.Entity) and (v.Entity:IsValid()) then
+			        if IsValid(v.Entity) then
 			        	table.insert(info.Wires[k].Path, { Entity = v.Entity:EntIndex(), Pos = v.Pos })
 					end
 			    end
@@ -663,8 +664,8 @@ function Wire_ApplyDupeInfo(ply, ent, info, GetEntByID)
 		        for _,v in ipairs(input.Path) do
 					
 					local ent2 = GetEntByID(v.Entity)
-					if (!ent2) or (!ent2:IsValid()) then ent2 = ents.GetByIndex(v.Entity) end
-					if (ent2) or (ent2:IsValid()) then
+					if IsValid(!ent2) then ent2 = ents.GetByIndex(v.Entity) end
+					if IsValid(ent2)then
 						Wire_Link_Node(ply:UniqueID(), ent2, v.Pos)
 					else
 						Msg("ApplyDupeInfo: Error, Could not find the entity for wire path\n")
@@ -673,8 +674,8 @@ function Wire_ApplyDupeInfo(ply, ent, info, GetEntByID)
 		    end
 			
 			local ent2 = GetEntByID(input.Src)
-		    if (!ent2) or (!ent2:IsValid()) then ent2 = ents.GetByIndex(input.Src) end
-			if (ent2) or (ent2:IsValid()) then
+		    if IsValid(!ent2) then ent2 = ents.GetByIndex(input.Src) end
+			if IsValid(ent2) then
 				Wire_Link_End(ply:UniqueID(), ent2, input.SrcPos, input.SrcId)
 			else
 				Msg("ApplyDupeInfo: Error, Could not find the output entity\n")

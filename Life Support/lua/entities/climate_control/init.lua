@@ -72,12 +72,12 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-	SB_Remove_Environment(self.num)
+	if type(SB_Remove_Environment) == "function" then SB_Remove_Environment(self.num) end
 	LS_Destruct( self, true )
 end
 
 function ENT:OnRemove()
-	SB_Remove_Environment(self.num)
+	if type(SB_Remove_Environment) == "function" then SB_Remove_Environment(self.num) end
 	self.BaseClass.OnRemove(self)
 	self:StopSound( "apc_engine_start" )
 end
