@@ -719,7 +719,7 @@ end
 function Dev_Unlink( ent1, ent2 )
 	RDbeamlib.ClearBeam( ent1, ent2 )
 	
-	if (not ent1 or not ent1.resources2) or (not ent2 or not ent2.resources2) then
+	if (not ent1 or not ent1.resources2 or not ent1.resources2links) or (not ent2 or not ent2.resources2 or not ent2.resources2links) then
 		Error("Dev_Unlink: One or both entities are not valid!\n")
 		return
 	end

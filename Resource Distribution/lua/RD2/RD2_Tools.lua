@@ -22,6 +22,8 @@ if ( SERVER ) then
 	--DO NOT register this function with the duplication, you MUST wrap this function in another one as to add CheckLimit (ther is a generic function to generate these functions below)
 	function RD2_MakeRD2Ent( ply, Ang, Pos, system_type, system_class, model, frozen )
 
+		if !IsValid(ply)then return end
+	
 		local ent = ents.Create( system_class )
 		if not ent:IsValid() then return false end
 		ent:SetModel( model )
