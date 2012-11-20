@@ -176,7 +176,7 @@ local function SendNetworkUpdate( VarType, Index, Key, Value, Player )
 		umsg.End()
 		
 	elseif (VarType == "clearallentbeams") then
-		if !IsValid(Key.source_ent)) then return end
+		if !IsValid(Key.source_ent) then return end
 		
 		umsg.Start( "RcvRDClearAllBeamsOnEnt", Player )
 			--umsg.Entity( Key.source_ent )
