@@ -96,7 +96,7 @@ local function GetNetworkTable( ent, name )
 			NextCleanup	= CurTime() + 30
 			for k, v in pairs( NetworkVars ) do
 				if ( type( k ) ~= "number" and type( k ) ~= "string" ) then
-					if ( !k:IsValid() ) then
+					if ( !IsValid(k) ) then
 						NetworkVars[ k ] = nil
 					end
 				end
@@ -125,8 +125,8 @@ local function SourceAndDestEntValid( source_ent, dest_ent )
 	if (BeamData[ dest_ent ]) and (BeamData[ dest_ent ][ source_ent ]) then
 		RDbeamlib.ClearBeam( dest_ent, source_ent )
 	end
-	if (source_ent) and (source_ent:IsValid()) then
-		if (dest_ent) and (dest_ent:IsValid()) then
+	if IsValid(source_ent) then
+		if IsValid(dest_ent) then
 			return true
 		elseif (BeamData[ source_ent ]) and (BeamData[ source_ent ][ dest_ent ]) then
 			RDbeamlib.ClearBeam( source_ent, dest_ent )
@@ -176,7 +176,7 @@ local function SendNetworkUpdate( VarType, Index, Key, Value, Player )
 		umsg.End()
 		
 	elseif (VarType == "clearallentbeams") then
-		if (!Key.source_ent or !Key.source_ent:IsValid()) then return end
+		if !IsValid(Key.source_ent)) then return end
 		
 		umsg.Start( "RcvRDClearAllBeamsOnEnt", Player )
 			--umsg.Entity( Key.source_ent )
@@ -476,7 +476,7 @@ local function AddNetworkFunctions( name, SetFunction, GetFunction, Default )
 			end
 			GetNetworkTable( IndexKey, name )[Key] = Value
 			
-			if (type(IndexKey) ~= "number") and (IndexKey.RecvBeamNetVar) and (IndexKey:IsValid()) then
+			if (type(IndexKey) ~= "number") and (IndexKey.RecvBeamNetVar) and IsValid(IndexKey) then
 				IndexKey:RecvBeamNetVar( name, Key, Value )
 			end
 			
@@ -659,7 +659,7 @@ meta[ "GetAllResourcesAmountsText" ] = function ( self, GreaterThanOneOnly )
 		--Msg("k= "..k.." ("..type(k)..") v= "..v.."ResNamesPrint[k]= "..tostring(ResNamesPrint[k]).." BeamNetVars.GetNetAmount(v)= "..tostring(BeamNetVars.GetNetAmount(v)).."\n")
 		local amount = BeamNetVars.GetNetAmount(v)
 		if (!GreaterThanOneOnly) or (amount > 0) then
-			table.insert( out, (ResNamesPrint[k] or "")..(amount or 0)..ResUnitsPrint[k] )
+			table.insert( out, (ResNamesPrint[k] or "")..(amount or 0)..(ResUnitsPrint[k] or "") )
 		end
 	end
 	local txt = table.concat(out, "\n")
@@ -1026,7 +1026,7 @@ util.PrecacheSound( "physics/metal/metal_box_impact_soft2.wav" )
 function RDbeamlib.CheckLength( source_ent )
 	if ( BeamData[ source_ent ] ) then
 		for dest_ent, beam_data in pairs( BeamData[ source_ent ] ) do
-			if (dest_ent:IsValid()) then
+			if IsValid(dest_ent) then
 				local length = ( dest_ent:GetPos() - source_ent:GetPos() ):Length()
 				if  ( length > (beam_data.Length or RD_MAX_LINK_LENGTH or 2048) ) then
 					if ( (beam_data.LengthOver or 0) > 4 )
@@ -1358,7 +1358,7 @@ end
 --
 --	Clears a wire beam
 function RDbeamlib.ClearWireBeam( wire_dev, iname )
-	if (!wire_dev or !iname or !WireBeams[wire_dev] or !WireBeams[wire_dev].Inputs or !WireBeams[wire_dev].Inputs[iname] or !wire_dev:IsValid()) then return end
+	if (!IsValid(wire_dev) or !iname or !WireBeams[wire_dev] or !WireBeams[wire_dev].Inputs or !WireBeams[wire_dev].Inputs[iname]) then return end
 	
 	if (SERVER) then
 		--TODO: fir to use ExtraDelayedUpdates
@@ -1575,7 +1575,7 @@ function RDbeamlib.UpdateRenderBounds(source_ent)
 	if (!source_ent) or (type(source_ent) == "number") or (!source_ent:IsValid()) then return end
 	
 	local Drawer = source_ent.Entity:GetNetworkedEntity( "RDbeamlibDrawer" )
-	if ( !Drawer:IsValid() ) then return end
+	if !IsValid( Drawer ) then return end
 	
 	local bbmin = Vector(16,16,16)
 	local bbmax = Vector(-16,-16,-16)
@@ -1583,7 +1583,7 @@ function RDbeamlib.UpdateRenderBounds(source_ent)
 	if (BeamData[ source_ent ]) then
 		
 		for dest_ent, beam_data in pairs( BeamData[ source_ent ] ) do
-			if (dest_ent:IsValid()) then
+			if IsValid(dest_ent) then
 				if (beam_data.start_pos.x < bbmin.x) then bbmin.x = beam_data.start_pos.x end
 				if (beam_data.start_pos.y < bbmin.y) then bbmin.y = beam_data.start_pos.y end
 				if (beam_data.start_pos.z < bbmin.z) then bbmin.z = beam_data.start_pos.z end
@@ -1619,7 +1619,7 @@ function RDbeamlib.UpdateRenderBounds(source_ent)
 				for node_num, node_data in pairs(beam_data.nodes) do --TODO: clean up when node becomes invalid
 					local node_ent	= node_data.ent
 					local node_pos	= node_data.pos
-					if (node_ent and node_ent:IsValid()) then
+					if IsValid(node_ent) then
 						local endpos = source_ent:WorldToLocal( node_ent:LocalToWorld( node_pos ) )
 						if (endpos.x < bbmin.x) then bbmin.x = endpos.x end
 						if (endpos.y < bbmin.y) then bbmin.y = endpos.y end
