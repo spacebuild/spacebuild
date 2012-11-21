@@ -243,6 +243,7 @@ function LS_RegisterEnt( ent, lstype, radius )
 end
 
 function LS_Reg_Veh(ply, ent)
+	if !RD2Version then return end
 	LS_RegisterEnt(ent, "Pod")
 	RD_AddResource(ent, "air", 0)
 	RD_AddResource(ent, "energy", 0)
@@ -272,7 +273,7 @@ function Player_Register( ply )
 end
 
 function LS_Setup()
-	if (SunAngle == nil) then SunAngle = Vector(0,0,-1) end
+	if (type(SunAngle) != "Vector") then SunAngle = Vector(0,0,-1) end
 end
 hook.Add( "InitPostEntity", "LS_Setup", LS_Setup )
 
