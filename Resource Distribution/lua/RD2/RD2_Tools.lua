@@ -106,6 +106,7 @@ if ( SERVER ) then
 		end
 
 		local MakeFunction = function( ply, Ang, Pos, typ, model, Frozen )
+			if !IsValid(ply) then return end
 			if not ply:CheckLimit( ToolName ) then return nil end
 			local ent = RD2_MakeRD2Ent( ply, Ang, Pos, ToolName, typ, model, frozen )
 			if not (ent and ent:IsValid()) then return nil end
