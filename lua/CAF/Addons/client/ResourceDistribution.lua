@@ -217,19 +217,20 @@ umsg.Start("RD_Entity_Data", ply)
 umsg.End()
 ]]
 
-local function AddEntityToCache( um )
+local function AddEntityToCache( nrofbytes )
+    print("RD_Entity_Data #", nrofbytes, " bytes received")
 	local data = {}
 
-	data.entid = um:ReadShort() --Key
-	local up_to_date = um:ReadBool();
+	data.entid = net.ReadShort() --Key
+	local up_to_date = net.ReadBool();
 	if up_to_date then
 		rd_cache:update("entity_"..tostring(data.entid))
 	end
-	data.network = um:ReadShort() --network key
+	data.network = net.ReadShort() --network key
 	
 	data.resources = {}
 	local i = 0;
-	local nr_of_resources = um:ReadShort();
+	local nr_of_resources = net.ReadShort();
 	if (nr_of_resources > 0) then
 		--print("nr_of_sources", nr_of_resources)
 		local resource 
@@ -237,9 +238,9 @@ local function AddEntityToCache( um )
 		local value
 		for i = 1, nr_of_resources do
 			--print(i)
-			resource = um:ReadString()
-			maxvalue = um:ReadLong()
-			value = um:ReadLong()
+			resource = net.ReadString()
+			maxvalue = net.ReadLong()
+			value = net.ReadLong()
 			
 			data.resources[resource] = {value = value, maxvalue = maxvalue}
 		end
@@ -247,7 +248,7 @@ local function AddEntityToCache( um )
 	
 	rd_cache:add("entity_"..tostring(data.entid), data)
 end
-usermessage.Hook("RD_Entity_Data", AddEntityToCache)
+net.Receive("RD_Entity_Data", AddEntityToCache)
 
 --[[
 umsg.Start("RD_Network_Data", ply)
@@ -275,18 +276,19 @@ umsg.Start("RD_Network_Data", ply)
 
 ]]
 
-local function AddNetworkToCache( um )
+local function AddNetworkToCache( nrofbytes )
+    print("RD_Network_Data #", nrofbytes, " bytes received")
 	local data = {}
 	
-	data.netid = um:ReadShort() --network key
-	local up_to_date = um:ReadBool();
+	data.netid = net.ReadShort() --network key
+	local up_to_date = net.ReadBool();
 	if up_to_date then
 		rd_cache:update("network_"..tostring(data.netid))
 	end
 	
 	data.resources = {}
 	local i = 0;
-	local nr_of_resources = um:ReadShort();
+	local nr_of_resources = net.ReadShort();
 	if (nr_of_resources > 0) then
 		--print("nr_of_sources", nr_of_resources)
 		local resource 
@@ -294,28 +296,28 @@ local function AddNetworkToCache( um )
 		local value
 		for i = 1, nr_of_resources do
 			--print(i)
-			resource = um:ReadString()
-			maxvalue = um:ReadLong()
-			value = um:ReadLong()
+			resource = net.ReadString()
+			maxvalue = net.ReadLong()
+			value = net.ReadLong()
 			
 			data.resources[resource] = {value = value, maxvalue = maxvalue}
 		end
 	end
 	
 	data.cons = {}
-	local nr_of_cons = um:ReadShort();
+	local nr_of_cons = net.ReadShort();
 	if (nr_of_cons > 0) then
 		--print("nr_of_cons", nr_of_cons)
 		for i = 1, nr_of_cons do
 			--print(i)
-			con = um:ReadShort()
+			con = net.ReadShort()
 			table.insert(data.cons, con);
 		end
 	end
 	
 	rd_cache:add("network_"..tostring(data.netid), data)
 end
-usermessage.Hook("RD_Network_Data", AddNetworkToCache)
+net.Receive("RD_Network_Data", AddNetworkToCache)
 
 --end local functions
 

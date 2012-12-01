@@ -200,50 +200,61 @@ local function SendEntireNetWorkToClient(ply)
 		end
 	end
 end]]
-
+util.AddNetworkString("RD_Entity_Data")
 local function sendEntityData(ply, entid, rddata)
-	umsg.Start("RD_Entity_Data", ply)
-		umsg.Short(entid) --send key to update
-		umsg.Bool(false) --Update
-		umsg.Short(rddata.network) --send network used in entity
+    net.Start("RD_Entity_Data")
+    net.WriteShort(entid) --send key to update
+    net.WriteBool(false) --Update
+    net.WriteShort(rddata.network) --send network used in entity
 		
 		local nr_of_resources = table.Count(rddata.resources);
-		umsg.Short(nr_of_resources) --How many resources are going to be send?
+    net.WriteShort(nr_of_resources) --How many resources are going to be send?
 		if nr_of_resources > 0 then
 			for l, w in pairs(rddata.resources) do
-				umsg.String(l)
-				umsg.Long(w.maxvalue)
-				umsg.Long(w.value)
+                net.WriteString(l)
+                net.WriteLong(w.maxvalue)
+                net.WriteLong(w.value)
 			end
 		end
-		
-	umsg.End()
+
+    if ply then
+        net.Send(ply)
+        --net.Broadcast()
+    else
+        net.Broadcast()
+    end
 end
 
+util.AddNetworkString("RD_Network_Data")
 local function sendNetworkData(ply, netid, rddata)
-	umsg.Start("RD_Network_Data", ply)
-		umsg.Short(netid) --send key to update
-		umsg.Bool(false) --Update
+    net.Start("RD_Network_Data")
+    net.WriteShort(netid) --send key to update
+    net.WriteBool(false) --Update
 		
 		local nr_of_resources = table.Count(rddata.resources);
-		umsg.Short(nr_of_resources) --How many resources are going to be send?
+    net.WriteShort(nr_of_resources) --How many resources are going to be send?
 		if nr_of_resources > 0 then
 			for l, w in pairs(rddata.resources) do
-				umsg.String(l)
-				umsg.Long(w.maxvalue)
-				umsg.Long(w.value)
+                net.WriteString(l)
+                net.WriteLong(w.maxvalue)
+                net.WriteLong(w.value)
 			end
 		end
 		
 		local nr_of_cons = #rddata.cons;
-		umsg.Short(nr_of_cons) --How many connections are going to be send?
+    net.WriteShort(nr_of_cons) --How many connections are going to be send?
 		if nr_of_cons > 0 then
 			for l, w in pairs(rddata.cons) do
-				umsg.Short(w)
+                net.WriteShort(w)
 			end
 		end
-		
-	umsg.End()
+
+    if ply then
+        net.Send(ply)
+        --net.Broadcast()
+    else
+        net.Broadcast()
+    end
 end
 
 --[[
