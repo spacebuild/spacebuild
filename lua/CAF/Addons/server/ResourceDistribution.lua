@@ -200,20 +200,34 @@ local function SendEntireNetWorkToClient(ply)
 		end
 	end
 end]]
+
+
+local function WriteBool(bool)
+   net.WriteBit(bool)
+end
+
+local function WriteShort(short)
+    return net.WriteInt(short, 2);
+end
+
+local function WriteLong(long)
+    return net.WriteInt(long, 8);
+end
+
 util.AddNetworkString("RD_Entity_Data")
 local function sendEntityData(ply, entid, rddata)
     net.Start("RD_Entity_Data")
-    net.WriteShort(entid) --send key to update
-    net.WriteBool(false) --Update
-    net.WriteShort(rddata.network) --send network used in entity
+    WriteShort(entid) --send key to update
+    WriteBool(false) --Update
+    WriteShort(rddata.network) --send network used in entity
 		
 		local nr_of_resources = table.Count(rddata.resources);
-    net.WriteShort(nr_of_resources) --How many resources are going to be send?
+    WriteShort(nr_of_resources) --How many resources are going to be send?
 		if nr_of_resources > 0 then
 			for l, w in pairs(rddata.resources) do
                 net.WriteString(l)
-                net.WriteLong(w.maxvalue)
-                net.WriteLong(w.value)
+                WriteLong(w.maxvalue)
+                WriteLong(w.value)
 			end
 		end
 
@@ -228,24 +242,24 @@ end
 util.AddNetworkString("RD_Network_Data")
 local function sendNetworkData(ply, netid, rddata)
     net.Start("RD_Network_Data")
-    net.WriteShort(netid) --send key to update
-    net.WriteBool(false) --Update
+    WriteShort(netid) --send key to update
+    WriteBool(false) --Update
 		
 		local nr_of_resources = table.Count(rddata.resources);
-    net.WriteShort(nr_of_resources) --How many resources are going to be send?
+    WriteShort(nr_of_resources) --How many resources are going to be send?
 		if nr_of_resources > 0 then
 			for l, w in pairs(rddata.resources) do
                 net.WriteString(l)
-                net.WriteLong(w.maxvalue)
-                net.WriteLong(w.value)
+                WriteLong(w.maxvalue)
+                WriteLong(w.value)
 			end
 		end
 		
 		local nr_of_cons = #rddata.cons;
-    net.WriteShort(nr_of_cons) --How many connections are going to be send?
+    WriteShort(nr_of_cons) --How many connections are going to be send?
 		if nr_of_cons > 0 then
 			for l, w in pairs(rddata.cons) do
-                net.WriteShort(w)
+                WriteShort(w)
 			end
 		end
 

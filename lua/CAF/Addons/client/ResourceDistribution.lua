@@ -217,6 +217,18 @@ umsg.Start("RD_Entity_Data", ply)
 umsg.End()
 ]]
 
+local function ReadBool()
+   return net.ReadBit() == 1
+end
+
+local function ReadShort()
+   return net.ReadInt(2);
+end
+
+local function ReadLong()
+    return net.ReadInt(8);
+end
+
 local function AddEntityToCache( nrofbytes )
     print("RD_Entity_Data #", nrofbytes, " bytes received")
 	local data = {}
