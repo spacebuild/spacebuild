@@ -233,12 +233,12 @@ local function AddEntityToCache( nrofbytes )
     print("RD_Entity_Data #", nrofbytes, " bytes received")
 	local data = {}
 
-	data.entid = net.ReadShort() --Key
-	local up_to_date = net.ReadBool();
+	data.entid = ReadShort() --Key
+	local up_to_date = ReadBool();
 	if up_to_date then
 		rd_cache:update("entity_"..tostring(data.entid))
 	end
-	data.network = net.ReadShort() --network key
+	data.network = ReadShort() --network key
 	
 	data.resources = {}
 	local i = 0;
@@ -251,8 +251,8 @@ local function AddEntityToCache( nrofbytes )
 		for i = 1, nr_of_resources do
 			--print(i)
 			resource = net.ReadString()
-			maxvalue = net.ReadLong()
-			value = net.ReadLong()
+			maxvalue = ReadLong()
+			value = ReadLong()
 			
 			data.resources[resource] = {value = value, maxvalue = maxvalue}
 		end
@@ -292,8 +292,8 @@ local function AddNetworkToCache( nrofbytes )
     print("RD_Network_Data #", nrofbytes, " bytes received")
 	local data = {}
 	
-	data.netid = net.ReadShort() --network key
-	local up_to_date = net.ReadBool();
+	data.netid = ReadShort() --network key
+	local up_to_date = ReadBool();
 	if up_to_date then
 		rd_cache:update("network_"..tostring(data.netid))
 	end
@@ -309,8 +309,8 @@ local function AddNetworkToCache( nrofbytes )
 		for i = 1, nr_of_resources do
 			--print(i)
 			resource = net.ReadString()
-			maxvalue = net.ReadLong()
-			value = net.ReadLong()
+			maxvalue = ReadLong()
+			value = ReadLong()
 			
 			data.resources[resource] = {value = value, maxvalue = maxvalue}
 		end
@@ -322,7 +322,7 @@ local function AddNetworkToCache( nrofbytes )
 		--print("nr_of_cons", nr_of_cons)
 		for i = 1, nr_of_cons do
 			--print(i)
-			con = net.ReadShort()
+			con = ReadShort()
 			table.insert(data.cons, con);
 		end
 	end
