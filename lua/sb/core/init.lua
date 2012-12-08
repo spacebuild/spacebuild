@@ -10,6 +10,9 @@
 		License: http://creativecommons.org/licenses/by-sa/3.0/
 ]]
 
+require("sbhelper")
+local sbhelper = sbhelper
+
 -- Gmod Specific
 local include = include
 
@@ -18,18 +21,18 @@ local VERSION = 0.1
 
 sb = {} --Define the global SB table
 local sb = sb -- Make it local for a little bit of better performance
-sb.addons = {}
-sb.config = {}
-sb.class = {}
-sb.data = {}
-sb.debug = {}
-sb.gui = {}
-sb.lang = {}
-sb.log = {}
-sb.util = {}
-sb.test = {}
-sb.wrappers = {}
-sb.extensions = {}
+sb.core = {}
+sb.core.config = sbhelper.loadConfig("core")
+sb.core.class = {}
+sb.core.data = {}
+sb.core.debug = {}
+sb.core.gui = {}
+sb.core.lang = {}
+sb.core.log = {}
+sb.core.util = {}
+sb.core.test = {}
+sb.core.wrappers = {}
+sb.core.extensions = {}
 
 function sb.getVersion()
     return VERSION;
@@ -41,7 +44,7 @@ include("sb/core/config.lua");
 include("sb/core/class.lua");
 include("sb/core/debug.lua");
 include("sb/core/util.lua")
-include("sb/core/addons.lua")
+include("sb/core/spacebuild.lua")
 
 ---- Extension System ----
 include("sb/core/extensions.lua")

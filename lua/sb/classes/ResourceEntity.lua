@@ -40,8 +40,7 @@ end
 
 function C:init(entID)
     if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceEntity") end
-    funcRef.init(self)
-    self.entID = entID
+    funcRef.init(self, entID)
     self.network = nil
 end
 
@@ -116,7 +115,7 @@ function C:canLink(container)
 end
 
 function C:getEntity()
-    return self.entID and Entity(self.entID);
+    return self.syncid and Entity(self.syncid);
 end
 
 function C:getNetwork()
@@ -124,25 +123,23 @@ function C:getNetwork()
 end
 
 function C:send(modified, ply, partial)
-    if not partial then
-        net.Start("SBRU")
-        net.WriteString("ResourceEntity")
-        net.WriteShort(self.syncid)
-        net.WriteShort(self.entID)
-    end
-    funcRef.sendSignal(self, modified, ply, true);
-    -- Add specific class code here
-    if not partial then
-        if ply then
-            net.Send(ply)
-            --net.Broadcast()
-        else
-            net.Broadcast()
+    if self.modified > modified then
+        if not partial then
+            net.Start("SBRU")
+            net.WriteShort(self.syncid)
+        end
+        funcRef.sendSignal(self, modified, ply, true);
+        -- Add specific class code here
+        if not partial then
+            if ply then
+                net.Send(ply)
+            else
+                net.Broadcast()
+            end
         end
     end
 end
 
-function C:receive(um)
-    self.entID = net.ReadShort()
-    funcRef.receiveSignal(self, um)
+function C:receive()
+    funcRef.receiveSignal(self)
 end

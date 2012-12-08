@@ -13,7 +13,7 @@ local unpack = unpack
 -- Gmod specific
 local file = file
 -- SB Specific
-local class = sb.class
+local class = sb.core.class
 local classes = {}
 
 function class.create(name, ...)

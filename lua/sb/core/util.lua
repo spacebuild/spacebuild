@@ -1,6 +1,6 @@
 
 
-local util = sb.util;
+local util = sb.core.util;
 
 util.SCOPES = {
     SERVER = "server/",

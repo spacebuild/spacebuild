@@ -13,6 +13,7 @@
 local include = include
 
 include("sb/core/init.lua"); --Initialize the shared code first
+include("sb/core/client/spacebuild.lua")
 
 
 

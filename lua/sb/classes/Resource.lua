@@ -95,9 +95,7 @@ function C:send(modified, ply, partial)
     end
 end
 
-function C:receive(len)
-    --TODO use unique id instead of String!!
-    --self.name = um:ReadString() --Container class has to handle the name!!
+function C:receive()
     if net.ReadBool() then
         self.amount = net.ReadLong()
         self.maxAmount = net.ReadLong()

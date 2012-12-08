@@ -13,7 +13,7 @@
 local AddCSLuaFile = AddCSLuaFile
 
 AddCSLuaFile("sb/core/client/init.lua")
-AddCSLuaFile("sb/core/client/config.lua")
+AddCSLuaFile("sb/core/client/spacebuild.lua")
 
 
 

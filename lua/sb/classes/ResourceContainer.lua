@@ -18,15 +18,13 @@ local net = net
 -- Class specific
 local C = CLASS
 local sb = sb;
-local syncid = 0;
 
 function C:isA(className)
     return className == "ResourceContainer"
 end
 
-function C:init()
+function C:init(syncid)
     self.syncid = syncid;
-    syncid = syncid + 1
     self.resources = {}
     self.modified = CurTime()
 end
@@ -128,28 +126,27 @@ function C:canLink(container)
 end
 
 function C:send(modified, ply, partial)
-    if not partial then
-        net.Start("SBRU")
-        net.WriteString("ResourceContainer")
-        net.WriteShort(self.syncid)
-    end
-    net.WriteShort(table.Count(self.resources))
-    for k, v in pairs(self.resources) do
-        v:send(modified, ply, true)
-    end
-    if not partial then
-        if ply then
-            net.Send(ply)
-            --net.Broadcast()
-        else
-            net.Broadcast()
+    if self.modified > modified then
+        if not partial then
+            net.Start("SBRU")
+            net.WriteShort(self.syncid)
+        end
+        net.WriteShort(table.Count(self.resources))
+        for k, v in pairs(self.resources) do
+            v:send(modified, ply, true)
+        end
+        if not partial then
+            if ply then
+                net.Send(ply)
+                --net.Broadcast()
+            else
+                net.Broadcast()
+            end
         end
     end
 end
 
-function C:receive(len)
-    --self.class = um:ReadString() Clientside update system should handle this!!
-    --self.syncid = um:ReadShort() Clientside update system should handle this!!
+function C:receive()
     local nrRes = net.ReadShort()
     local am
     local name
@@ -158,7 +155,7 @@ function C:receive(len)
         if not self.resources[name] then
             self.resources[name] = sb.class.create("Resource", name);
         end
-        self.resources[name]:receive(len)
+        self.resources[name]:receive()
     end
 end
 

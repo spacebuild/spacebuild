@@ -10,7 +10,7 @@
 		License: http://creativecommons.org/licenses/by-sa/3.0/
 ]]
 
-local u = sb.util
+local u = sb.core.util
 local spawned_entities = {}
 
 local function OnEntitySpawn(ent)

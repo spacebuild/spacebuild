@@ -23,7 +23,7 @@ local pairs = pairs
 local print = print
 local string = string
 
-local util = sb.util
+local util = sb.core.util
 local generated_key
 
 --- Extension Base Table Literal
@@ -104,7 +104,7 @@ local extBase = {
 -- Such as sb.extensions.key = value
 -- @param name The name of the extension, or the name used to store it on the extensions table
 -- @param value The value you wish to store at that key on the table. Usually another table, for extensions.
-function sb.extensions:register(name,value)
+function sb.core.extensions:register(name,value)
     if not self[name] then
         local execPath = debug.getinfo(2).source -- Get the file that called this function, caution uses debug library
         local _,_,folder = string.find(execPath,"sb/extensions/(.-)/") -- Find what the folder is, will be third return from string.find
@@ -121,16 +121,16 @@ end
 --- Getter function, retreive values from the sb.extensions table.
 -- Simply a getter, however normal sb.extensions["key"] or sb.extensions.key should work.
 -- @param name The name of the key to retreive the value of.
-function sb.extensions:get(name)
+function sb.core.extensions:get(name)
     return self[name] or false
 end
 
 
 -- After declaring the setter and getter methods, now make the table read only!
-sb.extensions = util.createReadOnlyTable(sb.extensions)
+sb.core.extensions = util.createReadOnlyTable(sb.extensions)
 
 local basePath = "sb/extensions/"
-local exts = sb.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
+local exts = sb.core.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
 
 --- Extension Loading function
 -- @param scope Which scope you wish to load, server/client/shared

@@ -38,6 +38,34 @@ if sb.config and sb.config.testMode then
 		include("sb/tests/" .. v)
 	end
 	luaunit.run() -- will execute all tests
+
+    local function spawn( ply )
+        sb.registerDevice(ply, sb.RDTYPES.STORAGE)
+        print( ply:GetName().." has been register as a "..ply.rdobject.getClass().." device for testing :p.\n" )
+    end
+
+    if SERVER then
+        hook.Add( "PlayerInitialSpawn", "some_unique_name", function(ply)
+            spawn(ply)
+            ply.rdobject.addResource("testresource", "100000", 0)
+            ply.rdobject.addResource("testresource2", "100000", 0)
+            timer.Simple(1, function()
+                    ply.rdobject.consumeResource("testresource", 100)
+                    ply.rdobject.supplyResource("testresource", 1000)
+
+                    ply.rdobject.supplyResource("testresource2", 1000)
+                    ply.rdobject.consumeResource("testresource2", 500)
+            end);
+        end )
+
+    end
+    if CLIENT then
+        hook.Add( "Initialize", "some_unique_name", function() spawn(LocalPlayer()) end )
+    end
+
+
+
+
 end
 
 properties.Add( "rdmenu",
