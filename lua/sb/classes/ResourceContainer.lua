@@ -18,6 +18,8 @@ local net = net
 -- Class specific
 local C = CLASS
 local sb = sb;
+local class = sb.core.class
+local core = sb.core
 
 function C:isA(className)
     return className == "ResourceContainer"
@@ -46,7 +48,7 @@ function C:addResource(name, maxAmount, amount)
     if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
     local res = self.resources[name];
     if not res then
-        res = sb.class.create("Resource", name, maxAmount, amount);
+        res = class.create("Resource", name, maxAmount, amount);
         self.resources[name] = res
     else
         res:setMaxAmount(res:getMaxAmount() + maxAmount)
@@ -129,9 +131,9 @@ function C:send(modified, ply, partial)
     if self.modified > modified then
         if not partial then
             net.Start("SBRU")
-            net.WriteShort(self.syncid)
+            core.net.writeShort(self.syncid)
         end
-        net.WriteShort(table.Count(self.resources))
+        core.net.writeShort(table.Count(self.resources))
         for k, v in pairs(self.resources) do
             v:send(modified, ply, true)
         end
@@ -147,13 +149,13 @@ function C:send(modified, ply, partial)
 end
 
 function C:receive()
-    local nrRes = net.ReadShort()
+    local nrRes = core.net.readShort()
     local am
     local name
     for am = 1, nrRes do
         name = net.ReadString()
         if not self.resources[name] then
-            self.resources[name] = sb.class.create("Resource", name);
+            self.resources[name] = class.create("Resource", name);
         end
         self.resources[name]:receive()
     end

@@ -33,6 +33,7 @@ sb.core.util = {}
 sb.core.test = {}
 sb.core.wrappers = {}
 sb.core.extensions = {}
+sb.core.net = {}
 
 function sb.getVersion()
     return VERSION;

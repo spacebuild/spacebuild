@@ -30,9 +30,9 @@ if not sb then
 	error("SB CORE: failed loading SB core")
 end
 
-if sb.config and sb.config.testMode then
+if sb.core.config and sb.core.config.testMode then
 	require("luaunit")
-	local fls = sb.wrappers:Find("file","sb/tests/*.lua", "LUA")
+	local fls = sb.core.wrappers:Find("file","sb/tests/*.lua", "LUA")
 	for k, v in ipairs(fls) do
 		print("Running test:", v)
 		include("sb/tests/" .. v)
@@ -41,26 +41,30 @@ if sb.config and sb.config.testMode then
 
     local function spawn( ply )
         sb.registerDevice(ply, sb.RDTYPES.STORAGE)
-        print( ply:GetName().." has been register as a "..ply.rdobject.getClass().." device for testing :p.\n" )
+        Msg( "Player has been registered as a "..ply.rdobject.getClass().." device for testing :p.\n" )
     end
 
     if SERVER then
         hook.Add( "PlayerInitialSpawn", "some_unique_name", function(ply)
             spawn(ply)
-            ply.rdobject.addResource("testresource", "100000", 0)
-            ply.rdobject.addResource("testresource2", "100000", 0)
-            timer.Simple(1, function()
-                    ply.rdobject.consumeResource("testresource", 100)
-                    ply.rdobject.supplyResource("testresource", 1000)
+            ply.rdobject:addResource("testresource", 100000, 0)
+            ply.rdobject:addResource("testresource2", 100000, 0)
+            local test
+            test = function()
+                ply.rdobject:consumeResource("testresource", 100)
+                ply.rdobject:supplyResource("testresource", 1000)
 
-                    ply.rdobject.supplyResource("testresource2", 1000)
-                    ply.rdobject.consumeResource("testresource2", 500)
-            end);
+                ply.rdobject:supplyResource("testresource2", 1000)
+                ply.rdobject:consumeResource("testresource2", 500)
+                timer.Simple(1, test );
+            end
+            timer.Simple(1, test );
         end )
-
+        Msg("SERVER")
     end
     if CLIENT then
         hook.Add( "Initialize", "some_unique_name", function() spawn(LocalPlayer()) end )
+        Msg("CLIENT")
     end
 
 

@@ -19,6 +19,7 @@ local net = net
 -- Class Specific
 local C = CLASS
 local sb = sb;
+local core = sb.core
 
 -- Function Refs
 local funcRef = {
@@ -69,7 +70,7 @@ function C:consumeResource(name, amount)
     if self.network then
         return self.network:consumeResource(name, amount)
     end
-    return funcRef.supplyResource(self, name, amount)
+    return funcRef.consumeResource(self, name, amount)
 end
 
 function C:getResourceAmount(name)
@@ -126,7 +127,7 @@ function C:send(modified, ply, partial)
     if self.modified > modified then
         if not partial then
             net.Start("SBRU")
-            net.WriteShort(self.syncid)
+            core.net.writeShort(self.syncid)
         end
         funcRef.sendSignal(self, modified, ply, true);
         -- Add specific class code here

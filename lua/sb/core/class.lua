@@ -43,6 +43,6 @@ end
 
 function class.exists(name)
     name = tostring(name);
-    return classes[name] ~= nil or #sb.wrappers:Find("file","sb/classes/" .. name .. ".lua", "LUA") == 1 --FUCK YOU GARRY
+    return classes[name] ~= nil or #sb.core.wrappers:Find("file","sb/classes/" .. name .. ".lua", "LUA") == 1 --FUCK YOU GARRY
 end
 

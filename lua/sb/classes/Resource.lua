@@ -17,6 +17,7 @@ local net = net
 -- Class specific
 local C = CLASS
 local sb = sb;
+local core = sb.core
 
 function C:isA(className)
     return className == "Resource"
@@ -87,18 +88,18 @@ function C:send(modified, ply, partial)
     --TODO send unique_ID instead of name
     net.WriteString(self.name)
     if self.modified > modified then
-        net.WriteBool(true)
-        net.WriteLong(self.amount)
-        net.WriteLong(self.maxAmount)
+        core.net.writeBool(true)
+        core.net.writeLong(self.amount)
+        core.net.writeLong(self.maxAmount)
     else
-        net.WriteBool(false) --not modified since last update
+        core.net.writeBool(false) --not modified since last update
     end
 end
 
 function C:receive()
     if net.ReadBool() then
-        self.amount = net.ReadLong()
-        self.maxAmount = net.ReadLong()
+        self.amount = core.net.readLong()
+        self.maxAmount = core.net.readLong()
     end
 end
 

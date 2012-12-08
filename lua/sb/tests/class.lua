@@ -6,7 +6,7 @@
 ---
 
 local print = print;
-local class = sb.class;
+local class = sb.core.class;
 
 TestClasses = {} --class
 function TestClasses:setUp()
@@ -25,15 +25,15 @@ function TestClasses:testClasses()
     assert(obj);
     assertEquals(obj:getName(), "resource_name")
 
-    local network1 = class.create("ResourceNetwork")
-    local network2 = class.create("ResourceNetwork")
-    local network3 = class.create("ResourceNetwork")
-    local ent1 = class.create("ResourceEntity")
-    local ent2 = class.create("ResourceEntity")
-    local ent3 = class.create("ResourceEntity")
-    local ent4 = class.create("ResourceEntity")
-    local ent5 = class.create("ResourceEntity")
-    local ent6 = class.create("ResourceEntity")
+    local network1 = class.create("ResourceNetwork", 1)
+    local network2 = class.create("ResourceNetwork", 2)
+    local network3 = class.create("ResourceNetwork", 3)
+    local ent1 = class.create("ResourceEntity", 10)
+    local ent2 = class.create("ResourceEntity", 11)
+    local ent3 = class.create("ResourceEntity", 12)
+    local ent4 = class.create("ResourceEntity", 13)
+    local ent5 = class.create("ResourceEntity", 14)
+    local ent6 = class.create("ResourceEntity", 15)
 
     --Test entity 1
     ent1:addResource("energy", 10000)
