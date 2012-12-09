@@ -317,7 +317,7 @@ local function AddNetworkToCache( nrofbytes )
 	end
 	
 	data.cons = {}
-	local nr_of_cons = net.ReadShort();
+	local nr_of_cons = ReadShort();
 	if (nr_of_cons > 0) then
 		--print("nr_of_cons", nr_of_cons)
 		for i = 1, nr_of_cons do
