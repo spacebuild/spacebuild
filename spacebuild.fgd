@@ -1,0 +1,10 @@
+@include "base.fgd"
+@include "halflife2.fgd"
+@include "garrysmod.fgd"
+//====== Copyright © 2012, SnakeSVx =======
+
+@SolidClass = simple_planet : "A planet with simple settings."
+[
+
+
+]
