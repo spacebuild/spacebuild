@@ -96,11 +96,11 @@ end
 
 --Always partial!! 
 function C:send(modified, ply, partial)
-    core.net.writeShort(self.resourceInfo:getID())
+    core.net.writeTiny(self.resourceInfo:getID())
     if self.modified > modified then
         core.net.writeBool(true)
-        core.net.writeLong(self.amount)
-        core.net.writeLong(self.maxAmount)
+        core.net.writeAmount(self.amount)
+        core.net.writeAmount(self.maxAmount)
     else
         core.net.writeBool(false) --not modified since last update
     end
@@ -108,8 +108,8 @@ end
 
 function C:receive()
     if core.net.readBool() then
-        self.amount = core.net.readLong()
-        self.maxAmount = core.net.readLong()
+        self.amount = core.net.readAmount()
+        self.maxAmount = core.net.readAmount()
     end
 end
 

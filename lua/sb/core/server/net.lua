@@ -24,9 +24,17 @@ function net.writeBool(bool)
 end
 
 function net.writeShort(short)
-    return corenet.WriteInt(short, 16);
+    return corenet.WriteInt(short, net.TYPES_INT.SHORT.length);
 end
 
 function net.writeLong(long)
-    return corenet.WriteInt(long, 64);
+    return corenet.WriteInt(long, net.TYPES_INT.LONG.length);
+end
+
+function net.writeTiny(tiny)
+    return corenet.WriteInt(tiny, net.TYPES_INT.TINY.length);
+end
+
+function net.writeAmount(amount)
+    return corenet.WriteInt(amount, net.TYPES_INT.INT.length);
 end

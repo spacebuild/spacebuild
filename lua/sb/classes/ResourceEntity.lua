@@ -138,6 +138,12 @@ function C:send(modified, ply, partial)
             net.Start("SBRU")
             core.net.writeShort(self.syncid)
         end
+        if self.network then
+            core.net.writeShort(self.network:getID())
+        else
+            core.net.writeShort(0)
+        end
+
         funcRef.sendSignal(self, modified, ply, true);
         -- Add specific class code here
         if not partial then
@@ -151,5 +157,6 @@ function C:send(modified, ply, partial)
 end
 
 function C:receive()
+    self.network = sb.getDeviceInfo(core.net.readShort())
     funcRef.receiveSignal(self)
 end

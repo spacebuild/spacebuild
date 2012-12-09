@@ -143,7 +143,7 @@ function C:send(modified, ply, partial)
             net.Start("SBRU")
             core.net.writeShort(self.syncid)
         end
-        core.net.writeShort(table.Count(self.resources))
+        core.net.writeTiny(table.Count(self.resources))
         for k, v in pairs(self.resources) do
             v:send(modified, ply, true)
         end
@@ -159,12 +159,12 @@ function C:send(modified, ply, partial)
 end
 
 function C:receive()
-    local nrRes = core.net.readShort()
+    local nrRes = core.net.readTiny()
     local am
     local name
     local id
     for am = 1, nrRes do
-        id = core.net.readShort()
+        id = core.net.readTiny()
         name = sb.getResourceInfoFromID(id):getName()
         if not self.resources[name] then
             self.resources[name] = class.create("Resource", name);

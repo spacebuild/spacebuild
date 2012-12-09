@@ -46,6 +46,10 @@ function sb.registerDevice(ent, rdtype)
    core.device_table[entid] = obj;
 end
 
+function sb.getDeviceInfo(entid)
+    return core.device_table[entid];
+end
+
 local resourceinfo;
 function sb.registerResourceInfo(id, name, displayName, attributes)
     resourceinfo = core.class.create("ResourceInfo", id, name, displayName, attributes)

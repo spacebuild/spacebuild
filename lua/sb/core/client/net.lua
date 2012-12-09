@@ -22,9 +22,17 @@ function net.readBool()
 end
 
 function net.readShort()
-    return corenet.ReadInt(16);
+    return corenet.ReadInt(net.TYPES_INT.SHORT.length);
 end
 
 function net.readLong()
-    return corenet.ReadInt(64);
+    return corenet.ReadInt(net.TYPES_INT.LONG.length);
+end
+
+function net.readTiny()
+    return corenet.ReadInt(net.TYPES_INT.TINY.length)
+end
+
+function net.readAmount()
+    return corenet.ReadInt(net.TYPES_INT.INT.length)
 end

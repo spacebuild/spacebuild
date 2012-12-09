@@ -175,6 +175,7 @@ function C:send(modified, ply, partial)
             net.Start("SBRU")
             core.net.writeShort(self.syncid)
         end
+        --TODO send link info (containers + networks)
         funcRef.sendSignal(self, modified, ply, true);
         -- Add specific class code here
         if not partial then
