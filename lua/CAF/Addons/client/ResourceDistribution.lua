@@ -222,11 +222,11 @@ local function ReadBool()
 end
 
 local function ReadShort()
-   return net.ReadInt(2);
+   return net.ReadInt(16);
 end
 
 local function ReadLong()
-    return net.ReadInt(8);
+    return net.ReadInt(64);
 end
 
 local function AddEntityToCache( nrofbytes )

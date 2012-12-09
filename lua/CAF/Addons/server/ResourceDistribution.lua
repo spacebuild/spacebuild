@@ -207,11 +207,11 @@ local function WriteBool(bool)
 end
 
 local function WriteShort(short)
-    return net.WriteInt(short, 2);
+    return net.WriteInt(short, 16);
 end
 
 local function WriteLong(long)
-    return net.WriteInt(long, 8);
+    return net.WriteInt(long, 64);
 end
 
 util.AddNetworkString("RD_Entity_Data")
