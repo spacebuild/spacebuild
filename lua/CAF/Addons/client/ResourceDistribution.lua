@@ -300,7 +300,7 @@ local function AddNetworkToCache( nrofbytes )
 	
 	data.resources = {}
 	local i = 0;
-	local nr_of_resources = net.ReadShort();
+	local nr_of_resources = ReadShort();
 	if (nr_of_resources > 0) then
 		--print("nr_of_sources", nr_of_resources)
 		local resource 
