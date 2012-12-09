@@ -24,9 +24,9 @@ function net.writeBool(bool)
 end
 
 function net.writeShort(short)
-    return corenet.WriteInt(short, 2);
+    return corenet.WriteInt(short, 16);
 end
 
 function net.writeLong(long)
-    return corenet.WriteInt(long, 8);
+    return corenet.WriteInt(long, 64);
 end

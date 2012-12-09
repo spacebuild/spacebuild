@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb;
 local core = sb.core;
 
-core.resource_tables = {}
+core.device_table = {}
+core.resources_names_table = {}
+core.resources_ids_table = {}
 
 sb.RDTYPES = {
     STORAGE = 1,
@@ -33,7 +35,6 @@ function sb.registerDevice(ent, rdtype)
    if(entid < 1) then -- LocalPlayer bug??
        entid = 1
    end
-   Msg("Registering: " ..tostring(entid))
    if rdtype == sb.RDTYPES.STORAGE or rdtype == sb.RDTYPES.GENERATOR then
        obj = core.class.create("ResourceEntity", entid)
    elseif rdtype == sb.RDTYPES.NETWORK then
@@ -41,11 +42,22 @@ function sb.registerDevice(ent, rdtype)
    else
         error("type is not supported")
    end
-   if SERVER then
-        ent.rdobject = obj;
-        PrintTable(obj)
-        PrintTable(ent.rdobject)
-   end
-   core.resource_tables[entid] = obj;
+   ent.rdobject = obj;
+   core.device_table[entid] = obj;
+end
+
+local resourceinfo;
+function sb.registerResourceInfo(id, name, displayName, attributes)
+    resourceinfo = core.class.create("ResourceInfo", id, name, displayName, attributes)
+    core.resources_names_table[name] = resourceinfo
+    core.resources_ids_table[id] = resourceinfo
+end
+
+function sb.getResourceInfoFromID(id)
+   return core.resources_ids_table[id]
+end
+
+function sb.getResourceInfoFromName(name)
+   return core.resources_names_table[name]
 end
 

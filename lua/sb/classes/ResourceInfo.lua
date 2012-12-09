@@ -23,11 +23,17 @@ local pairs = pairs
 local C = CLASS
 local sb = sb;
 
-function C:init(name, displayName, attributes)
+function C:init(id, name, displayName, attributes)
+    if not id then error(self:getClass() + " requires an id") end
     if not name then error(self:getClass() + " requires a name") end
+    self.id = id
     self.name = name
     self.displayName = displayName or self.name
     self.attributes = attributes or {}
+end
+
+function C:getID()
+   return self.id
 end
 
 function C:getName()

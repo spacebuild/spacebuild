@@ -23,7 +23,7 @@ local function sendData()
     time = CurTime();
     for _, ply in pairs(player.GetAll()) do
         if not ply.lastrdupdate or ply.lastrdupdate + 1 < time then
-            for k, v in pairs(core.resource_tables) do
+            for k, v in pairs(core.device_table) do
                 v:send(ply.lastrdupdate or 0, ply)
                 PrintTable(v);
             end

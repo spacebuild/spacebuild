@@ -41,6 +41,7 @@ function C:init(name, maxAmount, amount)
     self.name = name;
     self.amount = amount;
     self.maxAmount = maxAmount;
+    self.resourceInfo = sb.getResourceInfoFromName(name)
     self.modified = CurTime();
 end
 
@@ -95,8 +96,7 @@ end
 
 --Always partial!! 
 function C:send(modified, ply, partial)
-    --TODO send unique_ID instead of name
-    net.WriteString(self.name)
+    core.net.writeShort(self.resourceInfo:getID())
     if self.modified > modified then
         core.net.writeBool(true)
         core.net.writeLong(self.amount)
@@ -107,7 +107,7 @@ function C:send(modified, ply, partial)
 end
 
 function C:receive()
-    if net.ReadBool() then
+    if core.net.readBool() then
         self.amount = core.net.readLong()
         self.maxAmount = core.net.readLong()
     end

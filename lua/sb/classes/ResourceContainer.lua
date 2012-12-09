@@ -162,8 +162,10 @@ function C:receive()
     local nrRes = core.net.readShort()
     local am
     local name
+    local id
     for am = 1, nrRes do
-        name = net.ReadString()
+        id = core.net.readShort()
+        name = sb.getResourceInfoFromID(id):getName()
         if not self.resources[name] then
             self.resources[name] = class.create("Resource", name);
         end

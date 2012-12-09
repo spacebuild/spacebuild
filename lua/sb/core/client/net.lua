@@ -22,9 +22,9 @@ function net.readBool()
 end
 
 function net.readShort()
-    return corenet.ReadInt(2);
+    return corenet.ReadInt(16);
 end
 
 function net.readLong()
-    return corenet.ReadInt(8);
+    return corenet.ReadInt(64);
 end

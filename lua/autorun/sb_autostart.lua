@@ -50,6 +50,9 @@ if sb.core.config and sb.core.config.testMode then
         Msg( "Player has been registered as a "..ply.rdobject.getClass().." device for testing :p.\n" )
     end
 
+    sb.registerResourceInfo(1, "testresource", "Test Resource")
+    sb.registerResourceInfo(2, "testresource2", "Test Resource 2")
+
     if SERVER then
         hook.Add( "PlayerInitialSpawn", "some_unique_name", function(ply)
             spawn(ply)
