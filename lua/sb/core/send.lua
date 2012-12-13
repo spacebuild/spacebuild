@@ -24,6 +24,7 @@ AddCSLuaFile("includes/modules/sbhelper.lua")
 AddCSLuaFile("includes/modules/luaunit.lua")
 
 --Send core files
+AddCSLuaFile("sb/core/const.lua")
 AddCSLuaFile("sb/core/config.lua")
 AddCSLuaFile("sb/core/init.lua")
 AddCSLuaFile("sb/core/class.lua")

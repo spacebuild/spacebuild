@@ -16,7 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
 
+local const = sb.core.const
 local util = sb.core.util;
+local math = math
 
 util.SCOPES = {
     SERVER = "server/",
@@ -42,5 +44,30 @@ util.mergeTable = function(base,ext)
             end
         end
         return ext
-
 end
+
+util.calculateOxygenRequired = function(pressure)
+    pressure = math.ceil(pressure - const.PRESSURE_SAFE_MAX)
+    if pressure < 0 then
+       pressure = 0
+    end
+    return const.BASE_OXYGEN_USE + pressure
+end
+
+util.calculateEnergyRequired = function(temperature)
+   temperature = math.ceil((const.TEMPERATURE_SAFE_MIN - temperature)/20)
+   if temperature < 0 then
+       temperature = 0
+   end
+   return const.BASE_ENERGY_USE + temperature
+end
+
+util.calculateCoolantRequired = function(temperature)
+    temperature = math.ceil((temperature - const.TEMPERATURE_SAFE_MAX)/20)
+    if temperature < 0 then
+        temperature = 0
+    end
+    return const.BASE_COOLANT_USE + temperature
+end
+
+

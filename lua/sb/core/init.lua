@@ -28,6 +28,7 @@ local VERSION = 0.1
 sb = {} --Define the global SB table
 local sb = sb -- Make it local for a little bit of better performance
 sb.core = {}
+sb.core.const = {}
 sb.core.config = sbhelper.loadConfig("core")
 sb.core.class = {}
 sb.core.data = {}
@@ -46,7 +47,7 @@ function sb.getVersion()
 end
 
 include("sb/core/wrappers.lua");
-
+include("sb/core/const.lua);
 include("sb/core/config.lua");
 include("sb/core/class.lua");
 include("sb/core/debug.lua");
