@@ -95,8 +95,10 @@ if (SERVER) then
 	function meta:Register(typeEnt)
 		if (type(typeEnt) == "string") then
 			if (typeEnt == "NonStorage") then
-			RD.RegisterNonStorageDevice(self)
-			eslif (typeEnt == "
+			    RD.RegisterNonStorageDevice(self)
+            else
+                RD.RegisterDevice(self)
+            end
 		end
 	end
 	
