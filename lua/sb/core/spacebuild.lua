@@ -32,9 +32,6 @@ local obj;
 
 function sb.registerDevice(ent, rdtype)
    local entid = ent:EntIndex()
-   if(entid < 1) then -- LocalPlayer bug??
-       entid = 1
-   end
    if rdtype == sb.RDTYPES.STORAGE or rdtype == sb.RDTYPES.GENERATOR then
        obj = core.class.create("ResourceEntity", entid)
    elseif rdtype == sb.RDTYPES.NETWORK then
@@ -44,6 +41,12 @@ function sb.registerDevice(ent, rdtype)
    end
    ent.rdobject = obj;
    core.device_table[entid] = obj;
+end
+
+function sb.removeDevice(ent)
+    local entid = ent:EntIndex()
+    core.device_table[entid] = nil
+    ent.rdobject = nil
 end
 
 function sb.getDeviceInfo(entid)

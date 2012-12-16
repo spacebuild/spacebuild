@@ -95,7 +95,7 @@ function C:getName()
 end
 
 --Always partial!! 
-function C:send(modified, ply, partial)
+function C:send(modified)
     core.net.writeTiny(self.resourceInfo:getID())
     if self.modified > modified then
         core.net.writeBool(true)

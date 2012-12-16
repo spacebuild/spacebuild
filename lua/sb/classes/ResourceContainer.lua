@@ -137,24 +137,27 @@ function C:canLink(container)
     return false
 end
 
-function C:send(modified, ply, partial)
+function C:getEntity()
+    return self.syncid and Entity(self.syncid);
+end
+
+function C:send(modified, ply)
     if self.modified > modified then
-        if not partial then
-            net.Start("SBRU")
-            core.net.writeShort(self.syncid)
+        net.Start("SBRU")
+        core.net.writeShort(self.syncid)
+        self:_sendContent(modified)
+        if ply then
+            net.Send(ply)
+        else
+            net.Broadcast()
         end
-        core.net.writeTiny(table.Count(self.resources))
-        for k, v in pairs(self.resources) do
-            v:send(modified, ply, true)
-        end
-        if not partial then
-            if ply then
-                net.Send(ply)
-                --net.Broadcast()
-            else
-                net.Broadcast()
-            end
-        end
+    end
+end
+
+function C:_sendContent(modified)
+    core.net.writeTiny(table.Count(self.resources))
+    for _, v in pairs(self.resources) do
+        v:send(modified)
     end
 end
 
@@ -175,4 +178,18 @@ end
 
 function C:getModified()
     return self.modified;
+end
+
+-- Gmod specific stuff
+
+function C:onRestore(ent)
+   --TODO
+end
+
+function C:buildDupeInfo(ent)
+   --TODO
+end
+
+function C:applyDupeInfo(ent, oldent, createdentities)
+   --
 end

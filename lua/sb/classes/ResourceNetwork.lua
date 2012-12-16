@@ -37,7 +37,7 @@ local funcRef = {
 	consumeResource = C.consumeResource,
 	getResourceAmount = C.getResourceAmount,
 	getMaxResourceAmount = C.getMaxResourceAmount,
-	sendSignal = C.send, --Less Ambiguous networking functions
+    sendContent = C._sendContent,
 	receiveSignal = C.receive
 
 }
@@ -162,30 +162,12 @@ function C:unlink(container, dont_unlink)
 end
 
 function C:canLink(container)
-	return container.isA and container:isA("ResourceContainer")
+	return container.isA and (container:isA("ResourceNetwork") or container:isA("ResourceEntity"))
 end
 
-function C:getEntity()
-	return self.syncid and Entity(self.syncid);
-end
-
-function C:send(modified, ply, partial)
-    if self.modified > modified then
-        if not partial then
-            net.Start("SBRU")
-            core.net.writeShort(self.syncid)
-        end
-        --TODO send link info (containers + networks)
-        funcRef.sendSignal(self, modified, ply, true);
-        -- Add specific class code here
-        if not partial then
-            if ply then
-                net.Send(ply)
-            else
-                net.Broadcast()
-            end
-        end
-    end
+function C:_sendContent(modified)
+    --TODO send link info (containers + networks)
+    funcRef.sendContent(self, modified);
 end
 
 function C:receive()
