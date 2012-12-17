@@ -226,7 +226,7 @@ local function ReadShort()
 end
 
 local function ReadLong()
-    return net.ReadInt(64);
+    return net.ReadInt(32);
 end
 
 local function AddEntityToCache( nrofbytes )
