@@ -1,7 +1,6 @@
 AddCSLuaFile( )
 
-ENT.Base = "base_anim"
-ENT.Type = "anim"
+DEFINE_BASECLASS( "base_anim" )
 
 ENT.PrintName		= "Energy Generator"
 ENT.Author			= "SnakeSVx"
@@ -15,10 +14,16 @@ ENT.AdminOnly 		= false
 function ENT:Initialize()
     sb.registerDevice(self, sb.RDTYPES.GENERATOR)
     if SERVER then
+        self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
-        self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
+
+        -- Wake the physics object up. It's time to have fun!
+        local phys = self:GetPhysicsObject()
+        if (phys:IsValid()) then
+            phys:Wake()
+        end
         self.rdobject:addResource("energy", sb.core.net.TYPES_INT.INT.max - 1, 0)
         --self:PhysWake()
     end
@@ -50,9 +55,18 @@ end
 
 if ( CLIENT ) then
 
+    function ENT:BeingLookedAtByLocalPlayer()
+
+        if ( LocalPlayer():GetEyeTrace().Entity ~= self ) then return false end
+        if ( EyePos():Distance( self:GetPos() ) > 256 ) then return false end
+
+        return true
+
+    end
+
     function ENT:Draw()
-        if self.rdobject and self.rdobject:getResource("energy") then
-            AddWorldTip(self:EntIndex(), "Energy Generator "..tostring(self.rdobject:getResource("energy"):getAmount()), 0.5, self:GetPos(), self)
+        if self:BeingLookedAtByLocalPlayer() and self.rdobject then
+            AddWorldTip(self:EntIndex(), "Energy Generator "..tostring(self.rdobject:getResourceAmount("energy")), 0.5, self:GetPos(), self)
         end
         self:DrawModel()
 

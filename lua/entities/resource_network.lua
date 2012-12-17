@@ -2,7 +2,7 @@ AddCSLuaFile( )
 
 DEFINE_BASECLASS( "base_anim" )
 
-ENT.PrintName		= "Water Generator"
+ENT.PrintName		= "Resource Network"
 ENT.Author			= "SnakeSVx"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
@@ -12,7 +12,7 @@ ENT.Spawnable 		= true
 ENT.AdminOnly 		= false
 
 function ENT:Initialize()
-    sb.registerDevice(self, sb.RDTYPES.GENERATOR)
+    sb.registerDevice(self, sb.RDTYPES.NETWORK)
     if SERVER then
         self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
@@ -24,15 +24,13 @@ function ENT:Initialize()
         if (phys:IsValid()) then
             phys:Wake()
         end
-        self.rdobject:addResource("water", sb.core.net.TYPES_INT.INT.max - 1, 0)
-        --self:PhysWake()
     end
 end
 
 function ENT:SpawnFunction(ply, tr)
     if (not tr.HitWorld) then return end
 
-    local ent = ents.Create("resource_generator_water")
+    local ent = ents.Create("resource_network")
     ent:SetPos(tr.HitPos + Vector(0, 0, 50))
     ent:Spawn()
 
@@ -48,7 +46,7 @@ end
 if SERVER then
 
     function ENT:Think()
-       self.rdobject:supplyResource("water", 10);
+
     end
 
 end
@@ -65,8 +63,13 @@ if ( CLIENT ) then
     end
 
     function ENT:Draw()
-        if self:BeingLookedAtByLocalPlayer() and self.rdobject  then
-            AddWorldTip(self:EntIndex(), "Water Generator "..tostring(self.rdobject:getResourceAmount("water")), 0.5, self:GetPos(), self)
+        if self:BeingLookedAtByLocalPlayer() and self.rdobject then
+            local resources = self.rdobject:getResources()
+            local res = "";
+            for _, v in pairs(resources) do
+               res = res ..v:getName().." = "..tostring(v:getAmount()).." "
+            end
+            AddWorldTip(self:EntIndex(), "Resource network "..res, 0.5, self:GetPos(), self)
         end
         self:DrawModel()
 
