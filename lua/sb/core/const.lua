@@ -1,4 +1,4 @@
-local const = sb.core.const;
+local const = sb.core.const
 
 const.TEMPERATURE_SAFE_MIN = 283
 const.TEMPATURE_SAFE_MAX = 308

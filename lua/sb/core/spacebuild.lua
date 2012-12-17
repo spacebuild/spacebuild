@@ -41,6 +41,10 @@ function sb.registerDevice(ent, rdtype)
    end
    ent.rdobject = obj;
    core.device_table[entid] = obj;
+
+    if not ent.rdobject then
+       Msg("Something went wrong registering the device")
+    end
 end
 
 function sb.removeDevice(ent)
@@ -67,4 +71,9 @@ end
 function sb.getResourceInfoFromName(name)
    return core.resources_names_table[name]
 end
+
+
+sb.registerResourceInfo(1, "energy", "Energy", {"ENERGY"})
+sb.registerResourceInfo(2, "oxygen", "Oxygen", {"GAS"})
+sb.registerResourceInfo(3, "water", "Water", {"LIQUID", "COOLANT"})
 

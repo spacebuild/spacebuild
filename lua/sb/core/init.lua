@@ -47,11 +47,12 @@ function sb.getVersion()
 end
 
 include("sb/core/wrappers.lua");
-include("sb/core/const.lua);
+include("sb/core/const.lua");
 include("sb/core/config.lua");
 include("sb/core/class.lua");
 include("sb/core/debug.lua");
 include("sb/core/util.lua")
+include("sb/core/net.lua")
 include("sb/core/spacebuild.lua")
 
 ---- Extension System ----

@@ -32,6 +32,7 @@ AddCSLuaFile("sb/core/debug.lua")
 AddCSLuaFile("sb/core/wrappers.lua")
 AddCSLuaFile("sb/core/extensions.lua")
 AddCSLuaFile("sb/core/spacebuild.lua")
+AddCSLuaFile("sb/core/net.lua")
 AddCSLuaFile("sb/core/util.lua")
 
 --Send classes

@@ -18,9 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local core = sb.core;
 local to_sync;
 net.Receive("SBRU", function(bitsreceived)
-    MsgN("SB4 - RD - #bits: "..tostring(bitsreceived))
+    --MsgN("SB4 - RD - #bits: "..tostring(bitsreceived))
     local syncid = core.net.readShort()
     to_sync = core.device_table[syncid]
     to_sync:receive()
-    PrintTable(to_sync);
+    --PrintTable(to_sync);
 end)

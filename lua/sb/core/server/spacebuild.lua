@@ -25,7 +25,7 @@ local function sendData()
         if not ply.lastrdupdate or ply.lastrdupdate + 1 < time then
             for k, v in pairs(core.device_table) do
                 v:send(ply.lastrdupdate or 0, ply)
-                PrintTable(v);
+                --PrintTable(v);
             end
             ply.lastrdupdate = time
         end
