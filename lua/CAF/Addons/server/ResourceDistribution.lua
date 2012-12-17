@@ -211,7 +211,7 @@ local function WriteShort(short)
 end
 
 local function WriteLong(long)
-    return net.WriteInt(long, 64);
+    return net.WriteInt(long, 32);
 end
 
 util.AddNetworkString("RD_Entity_Data")
