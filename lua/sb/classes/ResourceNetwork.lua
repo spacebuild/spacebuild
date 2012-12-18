@@ -167,9 +167,30 @@ end
 
 function C:_sendContent(modified)
     --TODO send link info (containers + networks)
+    core.net.writeShort(table.Count(self.containers))
+    for k, _ in pairs(self.containers) do
+       core.net.writeShort(k)
+    end
+    core.net.writeShort(table.Count(self.networks))
+    for k, _ in pairs(self.networks) do
+        core.net.writeShort(k)
+    end
     funcRef.sendContent(self, modified);
 end
 
 function C:receive()
+    local nrofcontainers = core.net.readShort()
+    self.containers = {}
+    local am, id
+    for am = 1, nrofcontainers do
+        id = core.net.readShort()
+        self.containers[id] = sb.getDeviceInfo(id)
+    end
+    local nrofnetworks = core.net.readShort()
+    self.networks = {}
+    for am = 1, nrofnetworks do
+        id = core.net.readShort()
+        self.networks[id] = sb.getDeviceInfo(id)
+    end
 	funcRef.receiveSignal(self)
 end
