@@ -142,22 +142,31 @@ function C:link(container, dont_link)
 end
 
 function C:unlink(container, dont_unlink)
-	if not container.isA or not container:isA("ResourceContainer") then error("We can only unlink ResourceContainer (and derivate) classes") end
-	if not dont_unlink then
-		container:unlink(self, true);
-	end
-	if container:isA("ResourceNetwork") then
-		self.networks[container:getID()] = nil
-	else
-		self.containers[container:getID()] = nil
-		local percent, amount = 0, 0
-		for k, v in pairs(container:getResources()) do
-			percent = v:getMaxAmount() / self:getMaxResourceAmount(k)
-			amount = math.Round(self:getResourceAmount(k) * percent)
-			container:supplyResource(k, amount)
-			self:removeResource(k, v:getMaxAmount(), amount)
-		end
-	end
+    if not container then
+       for k, v in pairs(self.containers) do
+          v:unlink(self, true)
+       end
+       for k, v in pairs(self.networks) do
+          v:unlink(self, true)
+       end
+    else
+        if not container.isA or not container:isA("ResourceContainer") then error("We can only unlink ResourceContainer (and derivate) classes") end
+        if not dont_unlink then
+            container:unlink(self, true);
+        end
+        if container:isA("ResourceNetwork") then
+            self.networks[container:getID()] = nil
+        else
+            self.containers[container:getID()] = nil
+            local percent, amount = 0, 0
+            for k, v in pairs(container:getResources()) do
+                percent = v:getMaxAmount() / self:getMaxResourceAmount(k)
+                amount = math.Round(self:getResourceAmount(k) * percent)
+                container:supplyResource(k, amount)
+                self:removeResource(k, v:getMaxAmount(), amount)
+            end
+        end
+    end
 	self.modified = CurTime()
 end
 

@@ -67,7 +67,9 @@ if ( CLIENT ) then
             local resources = self.rdobject:getResources()
             local res = "";
             for _, v in pairs(resources) do
-               res = res ..v:getName().." = "..tostring(self.rdobject:getResourceAmount(v:getName())).." "
+                if self.rdobject:getMaxResourceAmount( v:getName()) > 0 then
+                    res = res ..v:getName().." = "..tostring(self.rdobject:getResourceAmount(v:getName())).." "
+                end
             end
             AddWorldTip(self:EntIndex(), "Resource network "..res, 0.5, self:GetPos(), self)
         end

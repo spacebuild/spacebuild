@@ -2,7 +2,7 @@ AddCSLuaFile( )
 
 DEFINE_BASECLASS( "base_anim" )
 
-ENT.PrintName		= "Water Generator"
+ENT.PrintName		= "Energy storage"
 ENT.Author			= "SnakeSVx"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
@@ -24,7 +24,7 @@ function ENT:Initialize()
         if (phys:IsValid()) then
             phys:Wake()
         end
-        self.rdobject:addResource("water", 0, 0)
+        self.rdobject:addResource("energy", 500, 0)
         --self:PhysWake()
     end
 end
@@ -32,7 +32,7 @@ end
 function ENT:SpawnFunction(ply, tr)
     if (not tr.HitWorld) then return end
 
-    local ent = ents.Create("resource_generator_water")
+    local ent = ents.Create("resource_storage_energy")
     ent:SetPos(tr.HitPos + Vector(0, 0, 50))
     ent:Spawn()
 
@@ -48,7 +48,7 @@ end
 if SERVER then
 
     function ENT:Think()
-       self.rdobject:supplyResource("water", 10);
+
     end
 
 end
@@ -65,8 +65,8 @@ if ( CLIENT ) then
     end
 
     function ENT:Draw()
-        if self:BeingLookedAtByLocalPlayer() and self.rdobject  then
-            AddWorldTip(self:EntIndex(), "Water Generator "..tostring(self.rdobject:getResourceAmount("water")), 0.5, self:GetPos(), self)
+        if self:BeingLookedAtByLocalPlayer() and self.rdobject then
+            AddWorldTip(self:EntIndex(), "Energy storage "..tostring(self.rdobject:getResourceAmount("energy")), 0.5, self:GetPos(), self)
         end
         self:DrawModel()
 

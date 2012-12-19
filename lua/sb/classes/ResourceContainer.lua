@@ -51,6 +51,10 @@ function C:addResources(resources)
     end
 end
 
+function C:containsResource(name)
+   return self.resources[name] ~= nil
+end
+
 function C:addResource(name, maxAmount, amount)
     if not name then error("ResourceContainer:addResource requires a name!") end
     name = tostring(name)
@@ -74,7 +78,7 @@ function C:removeResource(name, maxAmount, amount)
     name = tostring(name)
     if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
     if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
-    if not self.resources[name] then error("ResourceContainer:removeResource couldn't find the resource") end
+    if not self:containsResource(name) then error("ResourceContainer:removeResource couldn't find the resource") end
 
     local res = self.resources[name];
     res:consume(amount)
@@ -88,7 +92,7 @@ end
 local res, ret
 
 function C:supplyResource(name, amount)
-    if not self.resources[name] then error("ResourceContainer:supplyResource: resource " .. tostring(name) .. " not found") end
+    if not self:containsResource(name) then return amount end
     res = self.resources[name]
     ret = res:supply(amount)
     if self.modified < res:getModified() then
@@ -98,7 +102,7 @@ function C:supplyResource(name, amount)
 end
 
 function C:consumeResource(name, amount)
-    if not self.resources[name] then error("ResourceContainer:consumeResource: resource " .. tostring(name) .. " not found") end
+    if not self:containsResource(name) then return amount end
     res = self.resources[name]
     ret = res:consume(amount)
     if self.modified < res:getModified() then
@@ -116,12 +120,12 @@ function C:getResources()
 end
 
 function C:getResourceAmount(name)
-    if not self.resources[name] then return 0 end
+    if not self:containsResource(name) then return 0 end
     return self.resources[name]:getAmount()
 end
 
 function C:getMaxResourceAmount(name)
-    if not self.resources[name] then return 0 end
+    if not self:containsResource(name) then return 0 end
     return self.resources[name]:getMaxAmount()
 end
 

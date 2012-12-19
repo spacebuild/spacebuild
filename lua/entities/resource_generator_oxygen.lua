@@ -24,7 +24,7 @@ function ENT:Initialize()
         if (phys:IsValid()) then
             phys:Wake()
         end
-        self.rdobject:addResource("oxygen", sb.core.net.TYPES_INT.INT.max - 1, 0)
+        self.rdobject:addResource("oxygen",0, 0)
         --self:PhysWake()
     end
 end

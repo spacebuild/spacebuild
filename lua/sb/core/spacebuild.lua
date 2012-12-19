@@ -50,6 +50,7 @@ end
 function sb.removeDevice(ent)
     local entid = ent:EntIndex()
     core.device_table[entid] = nil
+    ent.rdobject:unlink()
     ent.rdobject = nil
 end
 
