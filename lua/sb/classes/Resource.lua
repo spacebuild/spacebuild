@@ -43,6 +43,7 @@ function C:init(name, maxAmount, amount)
     self.maxAmount = maxAmount;
     self.resourceInfo = sb.getResourceInfoFromName(name)
     self.modified = CurTime();
+    self.modifiedMaxAmount = CurTime()
 end
 
 function C:supply(amount)
@@ -82,12 +83,22 @@ function C:setMaxAmount(amount)
     self.maxAmount = amount
     if self.amount > self.maxAmount then
         self.amount = self.maxAmount
+        self.modified = CurTime();
     end
-    self.modified = CurTime();
+    self.modifiedMaxAmount = CurTime()
 end
 
 function C:getAmount()
     return self.amount;
+end
+
+function C:setAmount(amount)
+    if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:setAmount requires a number >= 0") end
+    self.amount = amount
+    if self.amount > self.maxAmount then
+        self.amount = self.maxAmount
+    end
+    self.modified = CurTime();
 end
 
 function C:getName()
@@ -100,6 +111,11 @@ function C:send(modified)
     if self.modified > modified then
         core.net.writeBool(true)
         core.net.writeAmount(self.amount)
+    else
+        core.net.writeBool(false) --not modified since last update
+    end
+    if self.modifiedMaxAmount > modified then
+        core.net.writeBool(true)
         core.net.writeAmount(self.maxAmount)
     else
         core.net.writeBool(false) --not modified since last update
@@ -109,6 +125,8 @@ end
 function C:receive()
     if core.net.readBool() then
         self.amount = core.net.readAmount()
+    end
+    if core.net.readBool() then
         self.maxAmount = core.net.readAmount()
     end
 end

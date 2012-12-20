@@ -17,12 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 local timer = timer
 local core = sb.core;
+local time_to_next_sync = 1
 
 local time = 0;
 local function sendData()
     time = CurTime();
     for _, ply in pairs(player.GetAll()) do
-        if not ply.lastrdupdate or ply.lastrdupdate + 1 < time then
+        if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_sync < time then
+            if ply.ls_suit then
+                ply.ls_suit:send(ply.lastrdupdate or 0)
+            end
             for k, v in pairs(core.device_table) do
                 v:send(ply.lastrdupdate or 0, ply)
                 --PrintTable(v);
@@ -31,4 +35,12 @@ local function sendData()
         end
     end
 end
-hook.Add( "Think", "some_unique_name", sendData )
+hook.Add( "Think", "spacebuild_think", sendData )
+
+local function spawn( ply )
+    if not ply.ls_suit then
+       ply.ls_suit = core.class.create("PlayerSuit", ply)
+    end
+    ply.ls_suit:reset()
+end
+hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )

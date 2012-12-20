@@ -73,8 +73,13 @@ function sb.getResourceInfoFromName(name)
    return core.resources_names_table[name]
 end
 
-
+-- Basic resources
 sb.registerResourceInfo(1, "energy", "Energy", {"ENERGY"})
 sb.registerResourceInfo(2, "oxygen", "Oxygen", {"GAS"})
 sb.registerResourceInfo(3, "water", "Water", {"LIQUID", "COOLANT"})
+-- Suit resources
+sb.registerResourceInfo(4, "temperature", "Temperature", {"SUIT"})
+sb.registerResourceInfo(5, "gravity", "Gravity", {"SUIT"})
+sb.registerResourceInfo(6, "coolant", "Coolant", {"SUIT"})
+-- Other resources
 
