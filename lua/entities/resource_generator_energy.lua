@@ -1,6 +1,6 @@
 AddCSLuaFile( )
 
-DEFINE_BASECLASS( "base_anim" )
+DEFINE_BASECLASS( "base_resource_entity" )
 
 ENT.PrintName		= "Energy Generator"
 ENT.Author			= "SnakeSVx"
@@ -12,7 +12,7 @@ ENT.Spawnable 		= true
 ENT.AdminOnly 		= false
 
 function ENT:Initialize()
-    sb.registerDevice(self, sb.RDTYPES.GENERATOR)
+    BaseClass.Initialize(self)
     if SERVER then
         self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
@@ -40,36 +40,10 @@ function ENT:SpawnFunction(ply, tr)
 end
 
 
-function ENT:OnRemove()
-    sb.removeDevice(self)
-end
-
-
 if SERVER then
 
     function ENT:Think()
        self.rdobject:supplyResource("energy", 10);
-    end
-
-end
-
-if ( CLIENT ) then
-
-    function ENT:BeingLookedAtByLocalPlayer()
-
-        if ( LocalPlayer():GetEyeTrace().Entity ~= self ) then return false end
-        if ( EyePos():Distance( self:GetPos() ) > 256 ) then return false end
-
-        return true
-
-    end
-
-    function ENT:Draw()
-        if self:BeingLookedAtByLocalPlayer() and self.rdobject then
-            AddWorldTip(self:EntIndex(), "Energy Generator "..tostring(self.rdobject:getResourceAmount("energy")), 0.5, self:GetPos(), self)
-        end
-        self:DrawModel()
-
     end
 
 end

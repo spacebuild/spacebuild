@@ -53,6 +53,8 @@ function C:init(entID)
 	self.containers = {}
 	self.networks = {}
 	self.busy = false;
+    self.containersmodified = CurTime()
+    self.networksmodified = CurTime()
 end
 
 -- Are we already using this network (prevent loops when looking up)
@@ -129,11 +131,13 @@ function C:link(container, dont_link)
 	if not container.isA or not container:isA("ResourceContainer") then error("We can only link ResourceContainer (and derivate) classes") end
 	if container:isA("ResourceNetwork") then
 		self.networks[container:getID()] = container
+        self.networksmodified = CurTime()
 	else
 		self.containers[container:getID()] = container
 		for k, v in pairs(container:getResources()) do
 			self:addResource(k, v:getMaxAmount(), v:getAmount())
-		end
+        end
+        self.containersmodified = CurTime()
 	end
 	if not dont_link then
 		container:link(self, true);
@@ -149,6 +153,8 @@ function C:unlink(container, dont_unlink)
        for k, v in pairs(self.networks) do
           v:unlink(self, true)
        end
+       self.networksmodified = CurTime()
+       self.containersmodified = CurTime()
     else
         if not container.isA or not container:isA("ResourceContainer") then error("We can only unlink ResourceContainer (and derivate) classes") end
         if not dont_unlink then
@@ -156,6 +162,7 @@ function C:unlink(container, dont_unlink)
         end
         if container:isA("ResourceNetwork") then
             self.networks[container:getID()] = nil
+            self.networksmodified = CurTime()
         else
             self.containers[container:getID()] = nil
             local percent, amount = 0, 0
@@ -165,6 +172,7 @@ function C:unlink(container, dont_unlink)
                 container:supplyResource(k, amount)
                 self:removeResource(k, v:getMaxAmount(), amount)
             end
+            self.containersmodified = CurTime()
         end
     end
 	self.modified = CurTime()
@@ -175,31 +183,47 @@ function C:canLink(container)
 end
 
 function C:_sendContent(modified)
-    --TODO send link info (containers + networks)
-    core.net.writeShort(table.Count(self.containers))
-    for k, _ in pairs(self.containers) do
-       core.net.writeShort(k)
+    if self.containersmodified > modified then
+        core.net.writeBool(true)
+        core.net.writeShort(table.Count(self.containers))
+        for k, _ in pairs(self.containers) do
+           core.net.writeShort(k)
+        end
+    else
+        core.net.writeBool(false)
     end
-    core.net.writeShort(table.Count(self.networks))
-    for k, _ in pairs(self.networks) do
-        core.net.writeShort(k)
+    if self.networksmodified > modified then
+        core.net.writeBool(true)
+        core.net.writeShort(table.Count(self.networks))
+        for k, _ in pairs(self.networks) do
+            core.net.writeShort(k)
+        end
+    else
+        core.net.writeBool(false)
     end
     funcRef.sendContent(self, modified);
 end
 
 function C:receive()
-    local nrofcontainers = core.net.readShort()
-    self.containers = {}
-    local am, id
-    for am = 1, nrofcontainers do
-        id = core.net.readShort()
-        self.containers[id] = sb.getDeviceInfo(id)
+    local hasContainerUpdate = core.net.readBool()
+    if hasContainerUpdate then
+        local nrofcontainers = core.net.readShort()
+        self.containers = {}
+        local am, id
+        for am = 1, nrofcontainers do
+            id = core.net.readShort()
+            self.containers[id] = sb.getDeviceInfo(id)
+        end
     end
-    local nrofnetworks = core.net.readShort()
-    self.networks = {}
-    for am = 1, nrofnetworks do
-        id = core.net.readShort()
-        self.networks[id] = sb.getDeviceInfo(id)
+    local hasNetworksUpdate = core.net.readBool()
+    if hasNetworksUpdate then
+        local nrofnetworks = core.net.readShort()
+        self.networks = {}
+        local am, id
+        for am = 1, nrofnetworks do
+            id = core.net.readShort()
+            self.networks[id] = sb.getDeviceInfo(id)
+        end
     end
 	funcRef.receiveSignal(self)
 end
