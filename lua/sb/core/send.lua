@@ -41,9 +41,12 @@ AddCSLuaFile("sb/classes/ResourceContainer.lua");
 AddCSLuaFile("sb/classes/ResourceEntity.lua");
 AddCSLuaFile("sb/classes/ResourceInfo.lua");
 AddCSLuaFile("sb/classes/ResourceNetwork.lua");
+AddCSLuaFile("sb/classes/PlayerSuit.lua");
 
 --Send tests
 AddCSLuaFile("sb/tests/class.lua")
+
+
 
 
 

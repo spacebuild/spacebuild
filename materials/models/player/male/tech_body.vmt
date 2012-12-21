@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+$basetexture "Models/player/male/tech_body_diffuse"
+$surfaceprop Metal
+$basemapalphaphongmask 1
+
+$phong 1
+$phongboost 1
+$phongexponent 35
+$phongalbedotint 1
+$phongfresnelranges "[.5 1 3]"
+
+$rimlight 1
+$rimlightexponent 5
+$rimlightboost 15
+}

@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
 -- Add data to be pooled here
-local net_pools = { "SBRU", "ResourceContainer", "ResourceEntity", "ResourceNetwork" };
+local net_pools = { "SBRU", "ResourceContainer", "ResourceEntity", "ResourceNetwork", "SBRPU" };
 for _, v in pairs(net_pools) do
     print("Pooling ", v, " for net library");
     util.AddNetworkString(v)

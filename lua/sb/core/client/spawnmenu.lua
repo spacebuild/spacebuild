@@ -7,9 +7,7 @@
 --
 
 local function SBTab()
-    if usetab:GetBool() then
-        spawnmenu.AddToolTab("Spacebuild", "SB")
-    end
+    spawnmenu.AddToolTab("Spacebuild", "SB")
 end
 
 hook.Add("AddToolMenuTabs", "SBTab", SBTab)

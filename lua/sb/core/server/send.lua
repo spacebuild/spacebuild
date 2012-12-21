@@ -26,6 +26,8 @@ include("sb/core/client/send.lua"); --Send the clientside code
 include("sb/legacy/send.lua")
 include("sb/legacy/client/send.lua")
 
+include("sb/client/resources.lua")
+
 
 
 

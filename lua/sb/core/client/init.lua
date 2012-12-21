@@ -24,7 +24,7 @@ include("sb/core/client/spawnmenu.lua")
 
 -- Legacy Support --
 include("sb/legacy/init.lua")
-include("sb/legacy/server/init.lua")
+include("sb/legacy/client/init.lua")
 
 
 
