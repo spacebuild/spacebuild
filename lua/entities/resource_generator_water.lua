@@ -1,6 +1,6 @@
 AddCSLuaFile( )
 
-DEFINE_BASECLASS( "base_resource_entity" )
+DEFINE_BASECLASS( "base_resource_generator" )
 
 ENT.PrintName		= "Water Generator"
 ENT.Author			= "SnakeSVx"

@@ -25,6 +25,10 @@ include("sb/core/server/pool.lua")
 include("sb/core/server/net.lua")
 include("sb/core/server/spacebuild.lua")
 
+-- Legacy Support --
+include("sb/legacy/init.lua")
+include("sb/legacy/server/init.lua")
+
 
 
 
