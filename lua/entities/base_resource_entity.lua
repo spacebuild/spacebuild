@@ -46,4 +46,52 @@ if ( CLIENT ) then
 
 end
 
+function ENT:RegisterNonStorageDevice()
+    return nil
+end
+
+function ENT:AddResource(resource, maxamount, defaultvalue)
+    return self.rdobject:addResource(resource, maxamount, defaultvalue)
+end
+
+function ENT:ConsumeResource(resource, amount)
+    return self.rdobject:consumeResource(resource, amount)
+end
+
+function ENT:SupplyResource(resource, amount)
+    return self.rdobject:supplyResource(resource, amount)
+end
+
+function ENT:GetResourceAmount(resource)
+    return self.rdobject:getResourceAmount(resource)
+end
+
+function ENT:GetUnitCapacity(resource)
+    return self.rdobject:getUnitCapacity()
+end
+
+function ENT:GetNetworkCapacity(resource)
+    return self.rdobject:getNetworkCapacity()
+end
+
+function ENT:GetEntityTable()
+    return self.rdobject
+end
+
+if SERVER then
+
+    function ENT:OnRestore()
+        self.rdobject:onRestore(self)
+    end
+
+    function ENT:PreEntityCopy()
+        self.rdobject:buildDupeInfo(self)
+    end
+
+    function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
+        self.rdobject:applyDupeInfo(self, Ent, CreatedEntities)
+    end
+
+end
+
 
