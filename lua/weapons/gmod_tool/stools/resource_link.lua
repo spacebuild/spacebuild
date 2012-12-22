@@ -4,10 +4,11 @@
 --dev link stool
 --TOOL			= ToolObj:Create()
 TOOL.Mode		= "resource_link"
-TOOL.Category		= "Resource Distribution"
+TOOL.Category		= "Resource utilities"
 TOOL.Name		= "#Link Tool"
 TOOL.Command		= nil
 TOOL.ConfigName	= ''
+TOOL.Tab = "Spacebuild"
 
 if ( CLIENT ) then
     language.Add( "tool.resource_link.name", "Link Tool" )

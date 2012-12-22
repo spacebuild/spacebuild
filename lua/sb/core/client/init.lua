@@ -22,10 +22,6 @@ include("sb/core/client/net.lua")
 include("sb/core/client/spacebuild.lua")
 include("sb/core/client/spawnmenu.lua")
 
--- Legacy Support --
-include("sb/legacy/init.lua")
-include("sb/legacy/client/init.lua")
-
 
 
 
