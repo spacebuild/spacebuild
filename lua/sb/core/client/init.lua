@@ -21,6 +21,7 @@ include("sb/core/init.lua"); --Initialize the shared code first
 include("sb/core/client/net.lua")
 include("sb/core/client/spacebuild.lua")
 include("sb/core/client/spawnmenu.lua")
+include("sb/core/client/hud.lua")
 
 
 

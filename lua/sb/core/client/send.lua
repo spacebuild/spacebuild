@@ -21,6 +21,7 @@ AddCSLuaFile("sb/core/client/init.lua")
 AddCSLuaFile("sb/core/client/net.lua")
 AddCSLuaFile("sb/core/client/spacebuild.lua")
 AddCSLuaFile("sb/core/client/spawnmenu.lua")
+AddCSLuaFile("sb/core/client/hud.lua")
 
 
 

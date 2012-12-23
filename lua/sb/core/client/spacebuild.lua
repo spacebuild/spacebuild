@@ -28,7 +28,6 @@ end)
 
 net.Receive("SBRPU", function(bitsreceived)
     player_suit:receive()
-    PrintTable(player_suit)
 end)
 
 function sb.getPlayerSuit()

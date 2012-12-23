@@ -30,29 +30,36 @@ function C:init(ply)
 end
 
 function C:reset()
+    self.environment = nil
     self.active = false
     self.oxygen = 0
     self.coolant = 0
     self.energy = 0
-    self.temperature = 0
-    self.gravity = 0
     self.modified = CurTime()
 end
 
+function C:setEnvironment(environment)
+    self.environment = environment
+end
+
+function C:getEnvironment()
+    return self.environment
+end
+
 function C:setActive(active)
-   self.active = active
+    self.active = active
 end
 
 function C:getActive()
-   return self.active
+    return self.active
 end
 
 function C:setOxygen(oxygen)
-   self.oxygen = oxygen
+    self.oxygen = oxygen
 end
 
 function C:getOxygen()
-   return self.oxygen
+    return self.oxygen
 end
 
 function C:setCoolant(coolant)
@@ -60,31 +67,15 @@ function C:setCoolant(coolant)
 end
 
 function C:getCoolant()
-   return self.coolant
+    return self.coolant
 end
 
 function C:setEnergy(energy)
-   self.energy = energy
+    self.energy = energy
 end
 
 function C:getEnergy()
-   return self.energy
-end
-
-function C:setTemperature(temperature)
-    self.temperature = temperature
-end
-
-function C:getTemperature()
-    return self.temperature
-end
-
-function C:setGravity(gravity)
-    self.gravity = gravity
-end
-
-function C:getGravity()
-    return self.gravity
+    return self.energy
 end
 
 function C:send(modified)
@@ -95,8 +86,12 @@ function C:send(modified)
             core.net.writeShort(self.oxygen)
             core.net.writeShort(self.coolant)
             core.net.writeShort(self.energy)
-            core.net.writeShort(self.temperature)
-            core.net.writeShort(self.gravity)
+        end
+        if self.environment then
+            core.net.writeBool(true)
+            core.net.writeShort(self.environment:getID())
+        else
+            core.net.writeBool(false)
         end
         net.Send(self.ply)
     end
@@ -108,7 +103,9 @@ function C:receive()
         self.oxygen = core.net.readShort()
         self.coolant = core.net.readShort()
         self.energy = core.net.readShort()
-        self.temperature = core.net.readShort()
-        self.gravity = core.net.readShort()
+    end
+    local hasenvironment = core.net.readBool()
+    if hasenvironment then
+        self.environment = sb.getEnvironment(core.net.readShort())
     end
 end

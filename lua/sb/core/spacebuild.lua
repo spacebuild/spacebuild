@@ -18,9 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb;
 local core = sb.core;
 
+-- RD
 core.device_table = {}
 core.resources_names_table = {}
 core.resources_ids_table = {}
+
+-- SB
+core.environments = {}
 
 sb.RDTYPES = {
     STORAGE = 1,
@@ -71,6 +75,14 @@ end
 
 function sb.getResourceInfoFromName(name)
    return core.resources_names_table[name]
+end
+
+function sb.addEnvironment(environment)
+   core.environments[environment:getID()] = environment
+end
+
+function sb.getEnvironment(id)
+   return core.environments[id]
 end
 
 -- Basic resources
