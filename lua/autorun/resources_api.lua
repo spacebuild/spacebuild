@@ -5,7 +5,7 @@
 -- Time: 9:03 AM
 -- To change this template use File | Settings | File Templates.
 --
-RS = {}
+RESOURCES = {}
 
 --TODO: Complete Documentation
 --TODO: For Developers: You need to fill this file out with your custom RD replacement/whatever.
