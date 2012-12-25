@@ -82,7 +82,7 @@ end
 if (SERVER) then
 	
 	
-	function RS:Link(ent,ent1)
+	function RESOURCES:Link(ent,ent1)
 		RD.Link(ent,ent1)
 	end
 	
