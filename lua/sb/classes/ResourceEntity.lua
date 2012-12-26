@@ -98,10 +98,16 @@ end
 
 function C:link(container, dont_link)
     if not container then return end
+    if container == self.network then return end
     if not container.isA or not container:isA("ResourceContainer") then error("We can only link ResourceContainer (and derivate) classes") end
     if not container:isA("ResourceNetwork") then
         error("ResourceEntity: We only support links between entities and networks atm!")
     end
+    -- Unlink from the old network
+    if self.network then
+       self.network:unlink(self)
+    end
+    -- Link to the new
     self.network = container;
     if not dont_link then
         container:link(self, true);

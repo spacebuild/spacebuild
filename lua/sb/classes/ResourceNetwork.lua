@@ -128,11 +128,13 @@ function C:getMaxResourceAmount(name, visited)
 end
 
 function C:link(container, dont_link)
-	if not container.isA or not container:isA("ResourceContainer") then error("We can only link ResourceContainer (and derivate) classes") end
+	if not self:canLink(container) then return end
 	if container:isA("ResourceNetwork") then
+        if self.networks[container:getID()] then return end
 		self.networks[container:getID()] = container
         self.networksmodified = CurTime()
-	else
+    else
+        if self.containers[container:getID()] then return end
 		self.containers[container:getID()] = container
 		for k, v in pairs(container:getResources()) do
 			self:addResource(k, v:getMaxAmount(), v:getAmount())
@@ -156,14 +158,16 @@ function C:unlink(container, dont_unlink)
        self.networksmodified = CurTime()
        self.containersmodified = CurTime()
     else
-        if not container.isA or not container:isA("ResourceContainer") then error("We can only unlink ResourceContainer (and derivate) classes") end
+        if not self:canLink(container) then return end
         if not dont_unlink then
             container:unlink(self, true);
         end
         if container:isA("ResourceNetwork") then
+            if not self.networks[container:getID()] then return end
             self.networks[container:getID()] = nil
             self.networksmodified = CurTime()
         else
+            if not self.containers[container:getID()] then return end
             self.containers[container:getID()] = nil
             local percent, amount = 0, 0
             for k, v in pairs(container:getResources()) do
