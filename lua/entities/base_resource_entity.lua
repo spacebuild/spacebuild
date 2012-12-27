@@ -92,6 +92,7 @@ if SERVER then
     function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
         if (self.EntityMods) and (self.EntityMods.SB4_RESOURCE_INFO) then
             self.rdobject:applyDupeInfo(self.EntityMods.SB4_RESOURCE_INFO, self, CreatedEntities)
+            self.EntityMods.SB4_RESOURCE_INFO = nil -- Remove the data
         end
     end
 
