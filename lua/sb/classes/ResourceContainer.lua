@@ -72,6 +72,7 @@ function C:addResource(name, maxAmount, amount)
     if self.modified < res:getModified() then
         self.modified = res:getModified()
     end
+    return res
 end
 
 function C:removeResource(name, maxAmount, amount)
@@ -197,4 +198,26 @@ end
 
 function C:applyDupeInfo(ent, oldent, createdentities)
    --
+end
+
+-- Saving/loading
+
+function C:onSave()
+    local ret = {
+       syncid = self.syncid,
+       resources = {}
+    }
+    for k, v in pairs(self.resources) do
+       ret.resources[k] = v:onSave()
+    end
+    return ret;
+end
+
+function C:onLoad(data)
+    self.syncid = data.syncid
+    local res
+    for k, v in pairs(data.resources) do
+       res = self:addResource(name, 0, 0)
+       res:onLoad(v)
+    end
 end

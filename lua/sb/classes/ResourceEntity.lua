@@ -41,7 +41,9 @@ local funcRef = {
     getResourceAmount = C.getResourceAmount,
     getMaxResourceAmount = C.getMaxResourceAmount,
     sendContent = C._sendContent,
-    receiveSignal = C.receive
+    receiveSignal = C.receive,
+    onSave = C.onSave,
+    onLoad = C.onLoad
 }
 
 function C:isA(className)
@@ -148,4 +150,35 @@ end
 function C:receive()
     self.network = sb.getDeviceInfo(core.net.readShort())
     funcRef.receiveSignal(self)
+end
+
+-- Gmod specific stuff
+
+function C:onRestore(ent)
+    --TODO
+end
+
+function C:buildDupeInfo(ent)
+    --TODO
+end
+
+function C:applyDupeInfo(ent, oldent, createdentities)
+    --
+end
+
+-- Saving/loading
+
+function C:onSave()
+   return {
+       network = self.network:getID(),
+       base = funcRef.onSave(self)
+   }
+end
+
+function C:onLoad(data)
+    funcRef.onLoad(self, data)
+    local ent = self
+    timer.Simple(0.1, function()
+       ent.network = sb.getDeviceInfo(data.network)
+    end)
 end

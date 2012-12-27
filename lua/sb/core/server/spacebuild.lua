@@ -51,8 +51,28 @@ hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )
 
 -- Spacebuild
 
+local sun = core.class.create("SunEnvironment", nil)
+
+local function addSun(data)
+    MsgN("Spawn Sun")
+    --PrintTable(data)
+    sun = core.class.create("SunEnvironment", data.ent, data)
+    PrintTable(sun)
+end
+
+local function addLegacyEnvironment(data)
+    --MsgN("Spawn Legacy Environment")
+    --PrintTable(data)
+end
+
+function sb.getSun()
+   return sun
+end
+
+
+
 local environment_data = {}
-local environment_classes = { "env_sun", "logic_case" }
+local environment_classes = { env_sun = addSun, logic_case = addLegacyEnvironment }
 
 local function getKey(key)
     if key == "Case01" then
@@ -92,17 +112,21 @@ local function getKey(key)
     end
 end
 
+local function SpawnEnvironments()
+   for k, v in pairs(environment_data) do
+       environment_classes[v["classname"]](v)
+   end
+end
+
 local function Register_Environments_Data()
     MsgN("Registering environment info")
-    --Load the planets/stars/bloom/color/... data. The actual creation of the environments will be handled by the "engine"
     local entities;
     local data
     local values
-    for k, v in pairs(environment_classes) do
-        entities = ents.FindByClass(v)
+    for k, _ in pairs(environment_classes) do
+        entities = ents.FindByClass(k)
         for _, ent in ipairs(entities) do
-            data = {}
-            data["_environment_class"] = v;
+            data = {ent = ent}
             values = ent:GetKeyValues()
             for key, value in pairs(values) do
                 data[getKey(key)] = value
@@ -110,7 +134,30 @@ local function Register_Environments_Data()
             table.insert(environment_data, data)
         end
     end
-    PrintTable(environment_data)
+    SpawnEnvironments()
+end
+hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
+
+local function MySaveFunction( save )
+    local device_infos = {}
+    for k, v in pairs(core.device_table) do
+       device_infos[k] = v:onSave()
+    end
+    local active_environment_data = {}
+    -- TODO
+    local sb4_save_table = {
+        device_infos = device_infos,
+        environment_data = environment_data,
+        active_environment_data = active_environment_data
+    }
+    saverestore.WriteTable( sb4_save_table, save )
 end
 
-hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
+local function MyRestoreFunction( restore )
+    MsgN("Table restore")
+    local sb4_save_table = saverestore.ReadTable( restore )
+    PrintTable(sb4_save_table)
+end
+
+saverestore.AddSaveHook( "sb4_save_hook", MySaveFunction )
+saverestore.AddRestoreHook( "sb4_load_hook", MyRestoreFunction )

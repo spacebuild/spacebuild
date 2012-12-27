@@ -81,6 +81,7 @@ end
 if SERVER then
 
     function ENT:OnRestore()
+        MsgN("Entity restore")
         self.rdobject:onRestore(self)
     end
 

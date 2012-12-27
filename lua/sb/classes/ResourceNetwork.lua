@@ -38,8 +38,9 @@ local funcRef = {
 	getResourceAmount = C.getResourceAmount,
 	getMaxResourceAmount = C.getMaxResourceAmount,
     sendContent = C._sendContent,
-	receiveSignal = C.receive
-
+	receiveSignal = C.receive,
+    onSave = C.onSave,
+    onLoad = C.onLoad
 }
 
 function C:isA(className)
@@ -230,4 +231,48 @@ function C:receive()
         end
     end
 	funcRef.receiveSignal(self)
+end
+
+-- Gmod specific stuff
+
+function C:onRestore(ent)
+    --TODO
+end
+
+function C:buildDupeInfo(ent)
+    --TODO
+end
+
+function C:applyDupeInfo(ent, oldent, createdentities)
+    --
+end
+
+-- Saving/loading
+
+function C:onSave()
+    local ret = {
+        networks = {},
+        containers = {},
+        base = funcRef.onSave(self)
+    }
+    for k, v in pairs(self.networks) do
+       table.insert(ret.networks, k)
+    end
+    for k, v in pairs(self.containers) do
+        table.insert(ret.containers, k)
+    end
+    return ret;
+end
+
+function C:onLoad(data)
+    funcRef.onLoad(self, data)
+    local ent = self
+    timer.Simple(0.1, function()
+        for k, v in pairs(data.networks) do
+          ent.networks[v] = sb.getDeviceInfo(v)
+        end
+        for k, v in pairs(data.containers) do
+            ent.containers[v] = sb.getDeviceInfo(v)
+        end
+    end)
 end

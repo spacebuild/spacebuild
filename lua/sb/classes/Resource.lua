@@ -134,3 +134,35 @@ end
 function C:getModified()
     return self.modified;
 end
+
+-- Gmod specific stuff
+
+function C:onRestore(ent)
+    --TODO
+end
+
+function C:buildDupeInfo(ent)
+    --TODO
+end
+
+function C:applyDupeInfo(ent, oldent, createdentities)
+    --
+end
+
+-- Saving/loading
+function C:onSave()
+   return {
+        name = self.name,
+        amount = self.amount,
+        maxAmount = self.maxAmount
+   }
+end
+
+function C:onLoad(data)
+    self.name = data.name;
+    self.amount = data.amount;
+    self.maxAmount = data.maxAmount;
+    self.resourceInfo = sb.getResourceInfoFromName(data.name)
+    self.modified = CurTime();
+    self.modifiedMaxAmount = CurTime()
+end

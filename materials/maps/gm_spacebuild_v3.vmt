@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture"		"maps/gm_spacebuild_v3"
+	"$ignorez"		1
+	"$vertexcolor" 		1
+	"$vertexalpha" 		1
+}
