@@ -25,6 +25,7 @@ function ENT:Initialize()
             phys:Wake()
         end
         self.rdobject:addResource("energy", 0, 0)
+        self.energygen = 8
         --self:PhysWake()
     end
 end
@@ -42,8 +43,23 @@ end
 
 if SERVER then
 
+    function ENT:getRate()
+
+        local sunAngle = Vector(0,0,-1)
+        local up = self:GetAngles():Up()
+        local n = sunAngle:DotProduct(up*-1)
+
+        if n >=0 then
+            return self.energygen * n
+        else return 0 end
+
+
+    end
+
     function ENT:Think()
-       self.rdobject:supplyResource("energy", 10);
+        self.rdobject:supplyResource("energy", self:getRate() or 0 )
+        self:NextThink( CurTime() + 1 )
+        return true
     end
 
 end

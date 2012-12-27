@@ -107,7 +107,7 @@ local extBase = {
 }
 
 --- Registering Extensions. Responsible for assigning values and keys on the extensions table.
--- Such as sb.extensions.key = value
+-- Such as sb.core.extensions.key = value
 -- @param name The name of the extension, or the name used to store it on the extensions table
 -- @param value The value you wish to store at that key on the table. Usually another table, for extensions.
 function sb.core.extensions:register(name,value)
@@ -124,8 +124,8 @@ function sb.core.extensions:register(name,value)
     end
 end
 
---- Getter function, retreive values from the sb.extensions table.
--- Simply a getter, however normal sb.extensions["key"] or sb.extensions.key should work.
+--- Getter function, retreive values from the sb.core.extensions table.
+-- Simply a getter, however normal sb.core.extensions["key"] or sb.core.extensions.key should work.
 -- @param name The name of the key to retreive the value of.
 function sb.core.extensions:get(name)
     return self[name] or false
@@ -133,7 +133,7 @@ end
 
 
 -- After declaring the setter and getter methods, now make the table read only!
-sb.core.extensions = util.createReadOnlyTable(sb.extensions)
+sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
 
 local basePath = "sb/extensions/"
 local exts = sb.core.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
@@ -147,7 +147,7 @@ local exts = sb.core.wrappers:Find("dir","sb/extensions/*","LUA") -- table for s
 local function loadExts(scope,send)
 
     for k,v in pairs(exts) do
-        for i,j in ipairs(sb.wrappers:Find("file",basePath.. v.. "/autorun/".. scope.. "*", "LUA")) do
+        for i,j in ipairs(sb.core.wrappers:Find("file",basePath.. v.. "/autorun/".. scope.. "*", "LUA")) do
             if send then
                 AddCSLuaFile(basePath.. v.. "/autorun/".. scope..j)
             else
