@@ -22,7 +22,7 @@ local include = include
 include("sb/core/send.lua") --Send the shared code
 include("sb/core/client/send.lua"); --Send the clientside code
 
-include("sb/client/resources.lua")
+include("sb/core/client/resources.lua")
 
 
 

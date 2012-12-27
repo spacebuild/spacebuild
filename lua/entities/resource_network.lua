@@ -3,7 +3,7 @@ AddCSLuaFile( )
 DEFINE_BASECLASS( "base_resource_network" )
 
 ENT.PrintName		= "Resource Network"
-ENT.Author			= "SnakeSVx"
+ENT.Author			= "SnakeSVx & Radon"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""
@@ -26,6 +26,51 @@ function ENT:Initialize()
         end
     end
 end
+
+if SERVER then
+
+    function ENT:updateConnections(c)
+
+        local self = c or self
+        self:EmitSound( Sound( "/common/warning.wav" ) )
+        self._synctimestamp = CurTime()
+        self.constraints = constraint.GetAllConstrainedEntities( self )
+
+        for k, v in pairs(self.constraints or {}) do
+            if v.rdobject and v.rdobject:canLink(self.rdobject) then
+                v.rdobject:link(self.rdobject)
+            end
+        end
+
+    end
+
+
+    function ENT:Use()
+
+        if self.active ~= 1 then
+            self.active = 1
+            MsgN("Activated Node")
+            self:updateConnections()
+        end
+
+    end
+
+
+
+    function ENT:Think()
+
+        --Not using NextThink as some more resource processing may need to be done every Think
+        if self.active and (CurTime() > self._synctimestamp + 3) then
+            self:updateConnections()
+        end
+
+
+    end
+
+
+
+end
+
 
 function ENT:SpawnFunction(ply, tr)
     if (not tr.HitWorld) then return end
