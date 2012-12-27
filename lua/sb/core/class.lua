@@ -24,6 +24,7 @@ local unpack = unpack
 -- Gmod specific
 local file = file
 -- SB Specific
+local sb = sb
 local class = sb.core.class
 local classes = {}
 

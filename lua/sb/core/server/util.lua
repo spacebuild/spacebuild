@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-
+local sb = sb
 local u = sb.core.util
 local spawned_entities = {}
 
@@ -24,7 +24,6 @@ local function OnEntitySpawn(ent)
         table.insert(spawned_entities, ent)
     end
 end
-
 hook.Add("OnEntitySpawn", "SB_OnEntitySpawn", OnEntitySpawn)
 
 function u.getSpawnedEntities()

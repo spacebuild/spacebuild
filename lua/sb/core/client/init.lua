@@ -15,10 +15,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
+local sb = sb
 local include = include
 
 include("sb/core/init.lua"); --Initialize the shared code first
-include("sb/core/client/net.lua")
 include("sb/core/client/spacebuild.lua")
 include("sb/core/client/spawnmenu.lua")
 include("sb/core/client/hud.lua")

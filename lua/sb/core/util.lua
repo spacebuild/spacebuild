@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-
+local sb = sb
 local const = sb.core.const
 local util = sb.core.util;
 local math = math

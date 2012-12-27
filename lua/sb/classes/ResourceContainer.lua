@@ -39,6 +39,7 @@ function C:init(syncid)
     self.syncid = syncid;
     self.resources = {}
     self.modified = CurTime()
+    self.start_sync_after = CurTime() + 1
 end
 
 function C:getID()
@@ -146,7 +147,7 @@ function C:getEntity()
 end
 
 function C:send(modified, ply)
-    if self.modified > modified then
+    if modified > self.start_sync_after and self.modified > modified then
         net.Start("SBRU")
         core.net.writeShort(self.syncid)
         self:_sendContent(modified)

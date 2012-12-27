@@ -1,3 +1,4 @@
+local sb = sb
 local const = sb.core.const
 
 const.TEMPERATURE_SAFE_MIN = 283

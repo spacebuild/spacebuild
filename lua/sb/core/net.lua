@@ -1,3 +1,4 @@
+local sb = sb
 local net = sb.core.net
 
 net.TYPES_INT = {
@@ -27,3 +28,45 @@ net.TYPES_INT = {
         umax = 7257594037927936
     }
 }
+
+-- Write
+function net.writeBool(bool)
+    corenet.WriteBit(bool)
+end
+
+function net.writeShort(short)
+    return corenet.WriteInt(short, net.TYPES_INT.SHORT.length);
+end
+
+function net.writeLong(long)
+    return corenet.WriteInt(long, net.TYPES_INT.LONG.length);
+end
+
+function net.writeTiny(tiny)
+    return corenet.WriteInt(tiny, net.TYPES_INT.TINY.length);
+end
+
+function net.writeAmount(amount)
+    return corenet.WriteUInt(amount, net.TYPES_INT.INT.length);
+end
+
+-- Read
+function net.readBool()
+    return corenet.ReadBit() == 1
+end
+
+function net.readShort()
+    return corenet.ReadInt(net.TYPES_INT.SHORT.length);
+end
+
+function net.readLong()
+    return corenet.ReadInt(net.TYPES_INT.LONG.length);
+end
+
+function net.readTiny()
+    return corenet.ReadInt(net.TYPES_INT.TINY.length)
+end
+
+function net.readAmount()
+    return corenet.ReadUInt(net.TYPES_INT.INT.length)
+end

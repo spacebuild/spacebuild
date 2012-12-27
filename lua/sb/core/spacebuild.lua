@@ -85,8 +85,18 @@ function sb.getEnvironment(id)
    return core.environments[id]
 end
 
+function sb.isValidRDEntity(ent)
+   return ent.rdobject ~= nil
+end
+
+function sb.canLink(ent1, ent2)
+    return sb.isValidRDEntity(ent1) and sb.isValidRDEntity(ent2) and ent1.rdobject:canLink(ent2.rdobject)
+end
+
 -- Basic resources
 sb.registerResourceInfo(1, "energy", "Energy", {"ENERGY"})
 sb.registerResourceInfo(2, "oxygen", "Oxygen", {"GAS"})
 sb.registerResourceInfo(3, "water", "Water", {"LIQUID", "COOLANT"})
+
+
 

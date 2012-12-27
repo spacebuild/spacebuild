@@ -26,6 +26,7 @@ local unpack = unpack
 -- Gmod specific
 local file = file
 -- SB Specific
+local sb = sb
 local addon = sb.addons
 
 local list = {

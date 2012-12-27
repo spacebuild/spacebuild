@@ -5,6 +5,7 @@
 -- Time: 23:38
 -- To change this template use File | Settings | File Templates.
 --
+local sb = sb
 local resource = resource
 
 resource.AddFile( "models/player/samzanemesis/MarineMedic.mdl" )

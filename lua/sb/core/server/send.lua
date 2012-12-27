@@ -19,10 +19,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --Gmod specific
 local include = include
 
+local sb = sb
+
 include("sb/core/send.lua") --Send the shared code
 include("sb/core/client/send.lua"); --Send the clientside code
 
-include("sb/client/resources.lua")
+-- Resources
+include("sb/core/client/resources.lua")
 
 
 

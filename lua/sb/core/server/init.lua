@@ -19,10 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --Gmod specific
 local include = include
 
+local sb = sb
+
 include("sb/core/init.lua") --Initialize the shared code first
 include("sb/core/server/util.lua")
 include("sb/core/server/pool.lua")
-include("sb/core/server/net.lua")
 include("sb/core/server/spacebuild.lua")
 
 
