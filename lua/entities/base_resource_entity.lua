@@ -86,11 +86,13 @@ if SERVER then
     end
 
     function ENT:PreEntityCopy()
-        self.rdobject:buildDupeInfo(self)
+        duplicator.StoreEntityModifier( self, "SB4_RESOURCE_INFO", self.rdobject:buildDupeInfo(self))
     end
 
     function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
-        self.rdobject:applyDupeInfo(self, Ent, CreatedEntities)
+        if (self.EntityMods) and (self.EntityMods.SB4_RESOURCE_INFO) then
+            self.rdobject:applyDupeInfo(self.EntityMods.SB4_RESOURCE_INFO, self, CreatedEntities)
+        end
     end
 
 end

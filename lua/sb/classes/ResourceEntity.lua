@@ -43,7 +43,8 @@ local funcRef = {
     sendContent = C._sendContent,
     receiveSignal = C.receive,
     onSave = C.onSave,
-    onLoad = C.onLoad
+    onLoad = C.onLoad,
+    applyDupeInfo = C.applyDupeInfo
 }
 
 function C:isA(className)
@@ -158,12 +159,10 @@ function C:onRestore(ent)
     --TODO
 end
 
-function C:buildDupeInfo(ent)
-    --TODO
-end
 
-function C:applyDupeInfo(ent, oldent, createdentities)
-    --
+function C:applyDupeInfo(data, newent, CreatedEntities)
+    funcRef.applyDupeInfo(self, data, newent, CreatedEntities)
+    self.network = sb.getDeviceInfo(CreatedEntities[data.network]:EntIndex())
 end
 
 -- Saving/loading

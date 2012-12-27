@@ -193,11 +193,17 @@ function C:onRestore(ent)
 end
 
 function C:buildDupeInfo(ent)
-   --TODO
+   return self:onSave()
 end
 
-function C:applyDupeInfo(ent, oldent, createdentities)
-   --
+function C:applyDupeInfo(data, newent, CreatedEntities)
+    local res
+    for _, v in pairs(data.resources) do
+        res = self:addResource(v.name, 0, 0)
+        res:onLoad(v)
+    end
+    self.modified = CurTime()
+    self.start_sync_after = CurTime() + 1
 end
 
 -- Saving/loading
@@ -217,7 +223,7 @@ function C:onLoad(data)
     self.syncid = data.syncid
     local res
     for k, v in pairs(data.resources) do
-       res = self:addResource(name, 0, 0)
+       res = self:addResource(v.name, 0, 0)
        res:onLoad(v)
     end
 end
