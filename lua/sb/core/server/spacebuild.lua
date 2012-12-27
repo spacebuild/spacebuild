@@ -38,7 +38,7 @@ end
 hook.Add( "Think", "spacebuild_think", sendData )
 
 local function spawn( ply )
-    if not ply.ls_suit then
+    if not ply.ls_suit or not ply.ls_suit.reset then
        ply.ls_suit = core.class.create("PlayerSuit", ply)
     end
     ply.ls_suit:reset()
@@ -57,7 +57,7 @@ local function addSun(data)
     MsgN("Spawn Sun")
     --PrintTable(data)
     sun = core.class.create("SunEnvironment", data.ent, data)
-    PrintTable(sun)
+    --PrintTable(sun)
 end
 
 local function addLegacyEnvironment(data)
@@ -139,6 +139,7 @@ end
 hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
 
 local function MySaveFunction( save )
+    MsgN("Table Save")
     local device_infos = {}
     for k, v in pairs(core.device_table) do
        device_infos[k] = v:onSave()

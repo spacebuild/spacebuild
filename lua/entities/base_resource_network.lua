@@ -14,3 +14,10 @@ ENT.AdminOnly 		= false
 function ENT:Initialize()
     sb.registerDevice(self, sb.RDTYPES.NETWORK)
 end
+
+if SERVER then
+    function ENT:OnRestore()
+        sb.registerDevice(self, sb.RDTYPES.NETWORK)
+        self.rdobject:onRestore(self)
+    end
+end

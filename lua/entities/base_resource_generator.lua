@@ -29,3 +29,10 @@ if ( CLIENT ) then
 
     end
 end
+
+if SERVER then
+    function ENT:OnRestore()
+        sb.registerDevice(self, sb.RDTYPES.GENERATOR)
+        self.rdobject:onRestore(self)
+    end
+end

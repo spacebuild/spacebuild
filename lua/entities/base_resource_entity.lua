@@ -81,7 +81,7 @@ end
 if SERVER then
 
     function ENT:OnRestore()
-        MsgN("Entity restore")
+        sb.registerDevice(self, sb.RDTYPES.STORAGE)
         self.rdobject:onRestore(self)
     end
 

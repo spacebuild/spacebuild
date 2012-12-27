@@ -1,5 +1,7 @@
 local sb = sb
+local corenet = net
 local net = sb.core.net
+
 
 net.TYPES_INT = {
     -- Default types
