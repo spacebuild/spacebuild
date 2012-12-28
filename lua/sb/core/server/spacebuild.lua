@@ -56,13 +56,40 @@ local sun = core.class.create("SunEnvironment", nil)
 local function addSun(data)
     MsgN("Spawn Sun")
     --PrintTable(data)
+    --TODO spawn sunEntity
+    local ent = data.ent
     sun = core.class.create("SunEnvironment", data.ent, data)
     --PrintTable(sun)
 end
 
+local function spawnEnvironmentEnt(name, pos, angles)
+    local ent = ents.Create(name)
+    ent:SetModel("models/props_lab/huladoll.mdl")
+    ent:SetAngles(angles)
+    ent:SetPos(pos)
+    ent:Spawn()
+    return ent
+end
+
 local function addLegacyEnvironment(data)
-    --MsgN("Spawn Legacy Environment")
-    --PrintTable(data)
+    if data[1] == "planet" or data[1] == "planet2" or data[1] == "star" or data[1] == "star2" then
+        local ent = spawnEnvironmentEnt("LegacyPlanet", data.ent:GetPos(), data.ent:GetAngles())
+        local environment = core.class.create("LegacyPlanet", ent:EntIndex(), data)
+        ent.envobject = environment
+        sb.addEnvironment(environment)
+        --MsgN("Adding Legacy Planet")
+        --PrintTable(environment)
+    elseif data[1] == "planet_color" then
+        local colorinfo = core.class.create("LegacyColorInfo", data)
+        sb.addEnvironmentColor(colorinfo)
+        --MsgN("Adding Legacy Color Info")
+        --PrintTable(colorinfo)
+    elseif data[1] == "planet_bloom" then
+        local bloominfo =  core.class.create("LegacyBloomInfo", data)
+        sb.addEnvironmentBloom(bloominfo)
+        --MsgN("Adding Legacy Bloom Info")
+        --PrintTable(bloominfo)
+    end
 end
 
 function sb.getSun()

@@ -23,10 +23,73 @@ function C:isA(className)
     return className == "BaseEnvironment"
 end
 
-function C:init(ent, data)
-    self.ent = ent
+function C:init(entid, data)
+    self.entid = entid
     self.data = data
+
+    self.temperature = 0
+    self.gravity = 0
+    self.atmosphere = 0
+
     self.resources = {}
+    self.attributes = {}
+
     self.modified = CurTime()
     self.start_sync_after = CurTime() + 1
 end
+
+function C:getID()
+   return self.entid
+end
+
+function C:getEntity()
+   return self.entid and Entity(self.entid) or nil
+end
+
+function C:getTemperature(ent)
+   return self.temperature
+end
+
+function C:getGravity()
+   return self.gravity
+end
+
+function C:getAtmosphere()
+   return self.atmosphere
+end
+
+function C:getPressure()
+   return self:getGravity() * self:getAtmosphere()
+end
+
+function C:getVolume()
+   return 0
+end
+
+-- Resource stuff
+
+function C:getResourceAmount(resource)
+   return (self.resources[resource] and self.resources[resource]:getAmount()) or 0
+end
+
+function C:getResourcePercentage(resource)
+   local am = self:getResourceAmount(resource)
+    local max = self:getMaxAmountOfResources()
+    if max > 0 then
+        return math.Round((min/max) * 10000)/100 --round to 2 decimals after the ,
+    end
+    return 0
+end
+
+function C:getMaxAmountOfResources()
+   return self:getVolume() * self:getAtmosphere() * 5
+end
+
+function C:convertResource(from, to, amount)
+    -- TODO
+end
+
+
+
+
+

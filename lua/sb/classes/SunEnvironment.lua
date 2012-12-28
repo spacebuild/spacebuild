@@ -38,8 +38,9 @@ function C:isA(className)
     return funcRef.isA(self, className) or className == "SunEnvironment"
 end
 
-function C:init(ent, data)
-    funcRef.init(self, ent, data)
+function C:init(entid, data)
+    funcRef.init(self, entid, data)
+    local ent = self:getEntity()
     if ent then
         local target = data["target"]
         if string.len(target) > 0 then

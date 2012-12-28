@@ -12,12 +12,12 @@ ENT.Spawnable 		= false
 ENT.AdminOnly 		= false
 
 function ENT:Initialize()
-    sb.addEnvironment(self)
+    --sb.addEnvironment(self)
 end
 
 
 function ENT:OnRemove()
-    sb.removeEnvironment(self)
+    sb.removeEnvironment(self.envobject)
 end
 
 function ENT:OnRestore()

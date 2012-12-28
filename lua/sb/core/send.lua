@@ -44,6 +44,9 @@ AddCSLuaFile("sb/classes/ResourceNetwork.lua");
 AddCSLuaFile("sb/classes/PlayerSuit.lua");
 AddCSLuaFile("sb/classes/BaseEnvironment.lua");
 AddCSLuaFile("sb/classes/SunEnvironment.lua");
+AddCSLuaFile("sb/classes/LegacyBloomInfo.lua");
+AddCSLuaFile("sb/classes/LegacyColorInfo.lua");
+AddCSLuaFile("sb/classes/LegacyPlanet.lua");
 
 --Send tests
 AddCSLuaFile("sb/tests/class.lua")

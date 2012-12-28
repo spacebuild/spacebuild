@@ -25,6 +25,8 @@ core.resources_ids_table = {}
 
 -- SB
 core.environments = {}
+core.color_tables = {} -- Legacy only?
+core.bloom_tables = {} -- Legacy only?
 
 sb.RDTYPES = {
     STORAGE = 1,
@@ -78,12 +80,28 @@ function sb.getResourceInfoFromName(name)
    return core.resources_names_table[name]
 end
 
-function sb.addEnvironment(ent)
-   core.environments[ent:EntIndex()] = ent
+function sb.addEnvironment(environment)
+   core.environments[environment:getID()] = environment
 end
 
-function sb.removeEnvironment(ent)
-    core.environments[ent:EntIndex()] = nil
+function sb.removeEnvironment(environment)
+    core.environments[environment:getID()] = nil
+end
+
+function sb.addEnvironmentColor(env_color)
+   core.color_tables[env_color:getID()] = env_color
+end
+
+function sb.getEnvironmentColor(id)
+    return core.color_tables[id]
+end
+
+function sb.addEnvironmentBloom(env_bloom)
+   core.bloom_tables[env_bloom:getID()] = env_bloom
+end
+
+function sb.getEnvironmentBloom(id)
+   return core.bloom_tables[id]
 end
 
 function sb.getEnvironment(id)
@@ -102,6 +120,10 @@ end
 sb.registerResourceInfo(1, "energy", "Energy", {"ENERGY"})
 sb.registerResourceInfo(2, "oxygen", "Oxygen", {"GAS"})
 sb.registerResourceInfo(3, "water", "Water", {"LIQUID", "COOLANT"})
+sb.registerResourceInfo(4, "hydrogen", "Hydrogen", {"GAS", "FLAMABLE"})
+sb.registerResourceInfo(5, "nitrogen", "Nitrogen", {"GAS", "COOLANT"})
+sb.registerResourceInfo(6, "co2", "Carbon Dioxide", {"GAS"})
+
 
 
 
