@@ -36,6 +36,9 @@ local function sendData()
                     w:send(ply.lastrdupdate or 0, ply)
                 end
             end
+            for _, v in pairs(core.environments) do
+                v:send(ply.lastrdupdate or 0, ply)
+            end
             ply.lastrdupdate = time
         end
     end

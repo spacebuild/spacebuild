@@ -30,6 +30,18 @@ net.Receive("SBRPU", function(bitsreceived)
     player_suit:receive()
 end)
 
+net.Receive("SBEU", function(bitsreceived)
+    local class = net.ReadString()
+    local id = core.net.readShort()
+    local environment_object = sb.getEnvironment(id);
+    if not environment_object then
+        environment_object = core.class.create(class)
+        environment_object:setID(id)
+        sb.addEnvironment(environment_object)
+    end
+    environment_object:receive()
+end)
+
 net.Receive("SBMU", function(bitsreceived)
     local type = core.net.readTiny()
     local class = net.ReadString()

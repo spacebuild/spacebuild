@@ -42,6 +42,10 @@ function C:getID()
    return self.entid
 end
 
+function C:setID(id)
+   self.entid = id
+end
+
 function C:getEntity()
    return self.entid and Entity(self.entid) or nil
 end
@@ -87,6 +91,30 @@ end
 
 function C:convertResource(from, to, amount)
     -- TODO
+end
+
+-- Sync stuff
+
+function C:send(modified, ply)
+    if self.modified > modified then
+        net.Start("SBEU")
+        net.WriteString(self:getClass())
+        core.net.writeShort(self.entid)
+        self:_sendContent(modified)
+        if ply then
+            net.Send(ply)
+        else
+            net.Broadcast()
+        end
+    end
+end
+
+function C:_sendContent(modified)
+    -- nothing needed here
+end
+
+function C:receive()
+    -- nothing needed here
 end
 
 

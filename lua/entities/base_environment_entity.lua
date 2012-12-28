@@ -17,7 +17,7 @@ end
 
 
 function ENT:OnRemove()
-    sb.removeEnvironment(self.envobject)
+    sb.removeEnvironmentFromEntity(self)
 end
 
 function ENT:OnRestore()

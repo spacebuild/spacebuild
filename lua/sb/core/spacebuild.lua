@@ -89,6 +89,15 @@ function sb.removeEnvironment(environment)
     core.environments[environment:getID()] = nil
 end
 
+function sb.removeEnvironmentFromEntity(ent)
+    core.environments[ent:EntIndex()] = nil
+end
+
+
+function sb.getEnvironment(id)
+    return core.environments[id]
+end
+
 function sb.addEnvironmentColor(env_color)
     core.mod_tables.color[env_color:getID()] = env_color
 end
@@ -103,10 +112,6 @@ end
 
 function sb.getEnvironmentBloom(id)
    return core.mod_tables.bloom[id]
-end
-
-function sb.getEnvironment(id)
-   return core.environments[id]
 end
 
 function sb.isValidRDEntity(ent)

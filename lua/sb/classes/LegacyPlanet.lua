@@ -38,53 +38,55 @@ end
 function C:init(entid, data)
     funcRef.init(self, entid, data)
     self.name = "Planet "..tostring(entid)
-    if data[1] == "planet" then
-        self.radius = tonumber(data[2])
-        self.gravity = tonumber(data[3])
-        self.atmosphere = tonumber(data[4])
-        self.temperature = tonumber(data[5])
-        self.hightemperature = tonumber(data[6])
-        if string.len(data[7]) > 0 then
-           self.color_id = data[7]
-        end
-        if string.len(data[8]) > 0 then
-            self.bloom_id = data[8]
-        end
-        local flags = tonumber(data[16])
-        -- TODO
+    if data then
+        if data[1] == "planet" then
+            self.radius = tonumber(data[2])
+            self.gravity = tonumber(data[3])
+            self.atmosphere = tonumber(data[4])
+            self.temperature = tonumber(data[5])
+            self.hightemperature = tonumber(data[6])
+            if string.len(data[7]) > 0 then
+               self.color_id = data[7]
+            end
+            if string.len(data[8]) > 0 then
+                self.bloom_id = data[8]
+            end
+            local flags = tonumber(data[16])
+            -- TODO
 
-    elseif data[1] == "planet2" then
-        self.radius = tonumber(data[2])
-        self.gravity = tonumber(data[3])
-        self.atmosphere = tonumber(data[4])
-        -- Ignore data[5] (pressure)
-        self.temperature = tonumber(data[5])
-        self.hightemperature = tonumber(data[7])
-        local flags = tonumber(data[8])
-        --TODO
-        local oxygenpercentage = tonumber(data[9])
-        local co2percentage = tonumber(data[10])
-        local nitrogenpercentage = tonumber(data[11])
-        local hydrogenpercentage = tonumber(data[12])
-        -- TODO
-        self.name = (string.len(data[13]) > 0 and data[13]) or self.name
-        if string.len(data[15]) > 0 then
-            self.color_id = data[15]
+        elseif data[1] == "planet2" then
+            self.radius = tonumber(data[2])
+            self.gravity = tonumber(data[3])
+            self.atmosphere = tonumber(data[4])
+            -- Ignore data[5] (pressure)
+            self.temperature = tonumber(data[5])
+            self.hightemperature = tonumber(data[7])
+            local flags = tonumber(data[8])
+            --TODO
+            local oxygenpercentage = tonumber(data[9])
+            local co2percentage = tonumber(data[10])
+            local nitrogenpercentage = tonumber(data[11])
+            local hydrogenpercentage = tonumber(data[12])
+            -- TODO
+            self.name = (string.len(data[13]) > 0 and data[13]) or self.name
+            if string.len(data[15]) > 0 then
+                self.color_id = data[15]
+            end
+            if string.len(data[16]) > 0 then
+                self.bloom_id = data[16]
+            end
+        elseif data[1] == "star" then
+            self.radius = 512
+            self.gravity = 0
+            self.atmosphere = 0
+            self.temperature = 10000
+            self.hightemperature = 10000
+        elseif data[1] == "star2" then
+            self.radius = tonumber(data[2])
+            self.temperature = tonumber(data[3])
+            self.hightemperature = tonumber(data[5])
+            self.name = (string.len(data[6]) > 0 and data[6]) or self.name
         end
-        if string.len(data[16]) > 0 then
-            self.bloom_id = data[16]
-        end
-    elseif data[1] == "star" then
-        self.radius = 512
-        self.gravity = 0
-        self.atmosphere = 0
-        self.temperature = 10000
-        self.hightemperature = 10000
-    elseif data[1] == "star2" then
-        self.radius = tonumber(data[2])
-        self.temperature = tonumber(data[3])
-        self.hightemperature = tonumber(data[5])
-        self.name = (string.len(data[6]) > 0 and data[6]) or self.name
     end
 end
 
@@ -95,6 +97,32 @@ end
 function C:getTemperature(ent)
     --TODO
     return self.temperature
+end
+
+function C:_sendContent(modified)
+    net.WriteString(self.name)
+    if self.color_id then
+        core.net.writeBool(true)
+        net.WriteString(self.color_id)
+    else
+       core.net.writeBool(false)
+    end
+    if self.bloom_id then
+        core.net.writeBool(true)
+        net.WriteString(self.bloom_id)
+    else
+        core.net.writeBool(false)
+    end
+end
+
+function C:receive()
+    self.name = net.ReadString()
+    if core.net.readBool() then
+       self.color_id = net.ReadString()
+    end
+    if core.net.readBool() then
+        self.bloom_id = net.ReadString()
+    end
 end
 
 
