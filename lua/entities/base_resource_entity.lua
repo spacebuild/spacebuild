@@ -46,10 +46,6 @@ if ( CLIENT ) then
 
 end
 
-function ENT:RegisterNonStorageDevice()
-    return nil
-end
-
 function ENT:AddResource(resource, maxamount, defaultvalue)
     return self.rdobject:addResource(resource, maxamount, defaultvalue)
 end
@@ -66,16 +62,9 @@ function ENT:GetResourceAmount(resource)
     return self.rdobject:getResourceAmount(resource)
 end
 
-function ENT:GetUnitCapacity(resource)
-    return self.rdobject:getUnitCapacity()
-end
 
-function ENT:GetNetworkCapacity(resource)
-    return self.rdobject:getNetworkCapacity()
-end
-
-function ENT:GetEntityTable()
-    return self.rdobject
+function ENT:GetMaxResourceAmount(resource)
+   return self.rdobject:getMaxResourceAmount(resource)
 end
 
 function ENT:OnRestore()

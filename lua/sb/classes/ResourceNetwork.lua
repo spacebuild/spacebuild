@@ -234,7 +234,7 @@ function C:receive()
 	funcRef.receiveSignal(self)
 end
 
--- Gmod specific stuff
+-- Start Save/Load functions
 
 function C:applyDupeInfo(data, newent, CreatedEntities)
     --funcRef.applyDupeInfo(self, data, newent, CreatedEntities) -- Don't restore resource info, this will happen by relinking below
@@ -245,8 +245,6 @@ function C:applyDupeInfo(data, newent, CreatedEntities)
         self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
     end
 end
-
--- Saving/loading
 
 function C:onLoad(data)
     funcRef.onLoad(self, data)
@@ -260,3 +258,5 @@ function C:onLoad(data)
         end
     end)
 end
+
+-- End Save/Load functions

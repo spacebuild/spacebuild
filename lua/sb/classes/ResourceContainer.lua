@@ -192,7 +192,7 @@ function C:getModified()
     return self.modified;
 end
 
--- Gmod specific stuff
+-- Start Save/Load functions
 
 function C:onRestore(ent)
     self:onLoad(ent.oldrdobject)
@@ -210,7 +210,7 @@ function C:applyDupeInfo(data, newent, CreatedEntities)
     self.start_sync_after = CurTime() + 1
 end
 
--- Saving/loading
+
 
 function C:onSave()
     return self
@@ -224,3 +224,5 @@ function C:onLoad(data)
        res:onLoad(v)
     end
 end
+
+-- End Save/Load functions

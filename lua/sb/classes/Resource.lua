@@ -135,21 +135,8 @@ function C:getModified()
     return self.modified;
 end
 
--- Gmod specific stuff
+-- Start Save/Load functions
 
-function C:onRestore(ent)
-    --TODO
-end
-
-function C:buildDupeInfo(ent)
-    --TODO
-end
-
-function C:applyDupeInfo(ent, oldent, createdentities)
-    --
-end
-
--- Saving/loading
 function C:onSave()
   return self
 end
@@ -162,3 +149,5 @@ function C:onLoad(data)
     self.modified = CurTime();
     self.modifiedMaxAmount = CurTime()
 end
+
+-- End Save/Load functions

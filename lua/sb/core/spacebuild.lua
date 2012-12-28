@@ -78,8 +78,12 @@ function sb.getResourceInfoFromName(name)
    return core.resources_names_table[name]
 end
 
-function sb.addEnvironment(environment)
-   core.environments[environment:getID()] = environment
+function sb.addEnvironment(ent)
+   core.environments[ent:EntIndex()] = ent
+end
+
+function sb.removeEnvironment(ent)
+    core.environments[ent:EntIndex()] = nil
 end
 
 function sb.getEnvironment(id)

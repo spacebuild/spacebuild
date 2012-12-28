@@ -153,7 +153,7 @@ function C:receive()
     funcRef.receiveSignal(self)
 end
 
--- Saving/loading
+-- Start Save/Load functions
 
 function C:onLoad(data)
     funcRef.onLoad(self, data)
@@ -162,3 +162,5 @@ function C:onLoad(data)
        ent.network = sb.getDeviceInfo(data.network.syncid)
     end)
 end
+
+-- End Save/Load functions
