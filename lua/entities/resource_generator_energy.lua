@@ -3,7 +3,7 @@ AddCSLuaFile( )
 DEFINE_BASECLASS( "base_resource_generator" )
 
 ENT.PrintName		= "Energy Generator"
-ENT.Author			= "SnakeSVx"
+ENT.Author			= "SnakeSVx & Radon"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""
@@ -26,7 +26,6 @@ function ENT:Initialize()
         end
         self.rdobject:addResource("energy", 0, 0)
         self.energygen = 8
-        --self:PhysWake()
     end
 end
 
@@ -45,8 +44,17 @@ if SERVER then
 
     function ENT:getRate()
 
-        local sunAngle = Vector(0,0,-1)
         local up = self:GetAngles():Up()
+
+        local sun = sb.getSun() or nil
+
+        local sunAngle = Vector(0,0,-1)
+
+        if sun ~= nil then
+            sunAngle = (self:GetPos()-sun:getSunPosition())   -- DO NOT ADD :Normalize() BECOMES NIL!
+            sunAngle = sunAngle / sunAngle:Length() --Normalising doesn't work normally for some reason, hack implemented.
+        end
+
         local n = sunAngle:DotProduct(up*-1)
 
         if n >=0 then
