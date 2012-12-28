@@ -78,19 +78,20 @@ function ENT:GetEntityTable()
     return self.rdobject
 end
 
+function ENT:OnRestore()
+    self.oldrdobject = self.rdobject
+    self:Initialize()
+    self.rdobject:onRestore(self)
+end
+
 if SERVER then
 
-    function ENT:OnRestore()
-        sb.registerDevice(self, sb.RDTYPES.STORAGE)
-        self.rdobject:onRestore(self)
-    end
-
     function ENT:PreEntityCopy()
-        duplicator.StoreEntityModifier( self, "SB4_RESOURCE_INFO", self.rdobject:buildDupeInfo(self))
+        duplicator.StoreEntityModifier( self, "SB4_RESOURCE_INFO", self.rdobject:onSave())
     end
 
     function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
-        if (self.EntityMods) and (self.EntityMods.SB4_RESOURCE_INFO) then
+        if self.EntityMods and self.EntityMods.SB4_RESOURCE_INFO then
             self.rdobject:applyDupeInfo(self.EntityMods.SB4_RESOURCE_INFO, self, CreatedEntities)
             self.EntityMods.SB4_RESOURCE_INFO = nil -- Remove the data
         end

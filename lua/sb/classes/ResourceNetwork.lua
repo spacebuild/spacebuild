@@ -236,46 +236,27 @@ end
 
 -- Gmod specific stuff
 
-function C:onRestore(ent)
-    --TODO
-end
-
 function C:applyDupeInfo(data, newent, CreatedEntities)
-    funcRef.applyDupeInfo(self, data, newent, CreatedEntities)
+    --funcRef.applyDupeInfo(self, data, newent, CreatedEntities) -- Don't restore resource info, this will happen by relinking below
     for k, v in pairs(data.networks) do
-        ent.networks[v] = sb.getDeviceInfo(CreatedEntities[v]:EntIndex())
+        self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
     end
     for k, v in pairs(data.containers) do
-        ent.containers[v] = sb.getDeviceInfo(CreatedEntities[v]:EntIndex())
+        self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
     end
 end
 
 -- Saving/loading
-
-function C:onSave()
-    local ret = {
-        networks = {},
-        containers = {},
-        base = funcRef.onSave(self)
-    }
-    for k, v in pairs(self.networks) do
-       table.insert(ret.networks, k)
-    end
-    for k, v in pairs(self.containers) do
-        table.insert(ret.containers, k)
-    end
-    return ret;
-end
 
 function C:onLoad(data)
     funcRef.onLoad(self, data)
     local ent = self
     timer.Simple(0.1, function()
         for k, v in pairs(data.networks) do
-          ent.networks[v] = sb.getDeviceInfo(v)
+          ent.networks[v] = sb.getDeviceInfo(k)
         end
         for k, v in pairs(data.containers) do
-            ent.containers[v] = sb.getDeviceInfo(v)
+            ent.containers[v] = sb.getDeviceInfo(k)
         end
     end)
 end

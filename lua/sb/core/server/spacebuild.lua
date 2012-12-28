@@ -137,28 +137,3 @@ local function Register_Environments_Data()
     SpawnEnvironments()
 end
 hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
-
-local function MySaveFunction( save )
-    MsgN("Table Save")
-    local device_infos = {}
-    for k, v in pairs(core.device_table) do
-       device_infos[k] = v:onSave()
-    end
-    local active_environment_data = {}
-    -- TODO
-    local sb4_save_table = {
-        device_infos = device_infos,
-        environment_data = environment_data,
-        active_environment_data = active_environment_data
-    }
-    saverestore.WriteTable( sb4_save_table, save )
-end
-
-local function MyRestoreFunction( restore )
-    MsgN("Table restore")
-    local sb4_save_table = saverestore.ReadTable( restore )
-    PrintTable(sb4_save_table)
-end
-
-saverestore.AddSaveHook( "sb4_save_hook", MySaveFunction )
-saverestore.AddRestoreHook( "sb4_load_hook", MyRestoreFunction )

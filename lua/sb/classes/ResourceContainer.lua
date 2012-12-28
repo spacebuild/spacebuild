@@ -148,14 +148,20 @@ function C:getEntity()
 end
 
 function C:send(modified, ply)
-    if modified > self.start_sync_after and self.modified > modified then
-        net.Start("SBRU")
-        core.net.writeShort(self.syncid)
-        self:_sendContent(modified)
-        if ply then
-            net.Send(ply)
-        else
-            net.Broadcast()
+    if modified > self.start_sync_after then
+        if self.start_sync_after > 0 then
+            modified = 0
+            self.start_sync_after = 0
+        end
+        if self.modified > modified then
+            net.Start("SBRU")
+            core.net.writeShort(self.syncid)
+            self:_sendContent(modified)
+            if ply then
+                net.Send(ply)
+            else
+                net.Broadcast()
+            end
         end
     end
 end
@@ -189,11 +195,8 @@ end
 -- Gmod specific stuff
 
 function C:onRestore(ent)
-   --TODO
-end
-
-function C:buildDupeInfo(ent)
-   return self:onSave()
+    self:onLoad(ent.oldrdobject)
+    ent.oldrdobject = nil
 end
 
 function C:applyDupeInfo(data, newent, CreatedEntities)
@@ -201,6 +204,7 @@ function C:applyDupeInfo(data, newent, CreatedEntities)
     for _, v in pairs(data.resources) do
         res = self:addResource(v.name, 0, 0)
         res:onLoad(v)
+        res:setAmount(0)
     end
     self.modified = CurTime()
     self.start_sync_after = CurTime() + 1
@@ -209,21 +213,14 @@ end
 -- Saving/loading
 
 function C:onSave()
-    local ret = {
-       syncid = self.syncid,
-       resources = {}
-    }
-    for k, v in pairs(self.resources) do
-       ret.resources[k] = v:onSave()
-    end
-    return ret;
+    return self
 end
 
 function C:onLoad(data)
     self.syncid = data.syncid
     local res
     for k, v in pairs(data.resources) do
-       res = self:addResource(v.name, 0, 0)
+       res = self:addResource(v.name)
        res:onLoad(v)
     end
 end

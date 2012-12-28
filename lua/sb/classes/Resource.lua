@@ -151,18 +151,14 @@ end
 
 -- Saving/loading
 function C:onSave()
-   return {
-        name = self.name,
-        amount = self.amount,
-        maxAmount = self.maxAmount
-   }
+  return self
 end
 
 function C:onLoad(data)
     self.name = data.name;
     self.amount = data.amount;
     self.maxAmount = data.maxAmount;
-    self.resourceInfo = sb.getResourceInfoFromName(data.name)
+    self.resourceInfo = sb.getResourceInfoFromName(self.name)
     self.modified = CurTime();
     self.modifiedMaxAmount = CurTime()
 end
