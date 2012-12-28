@@ -52,9 +52,7 @@ if SERVER then
         local sunAngle = Vector(0,0,-1)
 
         if sun ~= nil then
-            print("SUN EXISTS FUCKER!")
-            print("Slef:"..tostring(self:GetPos()))
-            print("Sun:"..tostring(sun:getSunPosition()))
+            --Removed Vulgar Messages, Sam  
 
             sunAngle = (self:GetPos()-sun:getSunPosition())   -- DO NOT ADD :Normalize() BECOMES NIL!
             sunAngle = sunAngle / sunAngle:Length() --Normalising doesn't work normally for some reason, hack implemented.
