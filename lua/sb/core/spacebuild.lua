@@ -25,8 +25,9 @@ core.resources_ids_table = {}
 
 -- SB
 core.environments = {}
-core.color_tables = {} -- Legacy only?
-core.bloom_tables = {} -- Legacy only?
+core.mod_tables = {}
+core.mod_tables.color = {}
+core.mod_tables.bloom = {}
 
 sb.RDTYPES = {
     STORAGE = 1,
@@ -89,19 +90,19 @@ function sb.removeEnvironment(environment)
 end
 
 function sb.addEnvironmentColor(env_color)
-   core.color_tables[env_color:getID()] = env_color
+    core.mod_tables.color[env_color:getID()] = env_color
 end
 
 function sb.getEnvironmentColor(id)
-    return core.color_tables[id]
+    return core.mod_tables.color[id]
 end
 
 function sb.addEnvironmentBloom(env_bloom)
-   core.bloom_tables[env_bloom:getID()] = env_bloom
+    core.mod_tables.bloom[env_bloom:getID()] = env_bloom
 end
 
 function sb.getEnvironmentBloom(id)
-   return core.bloom_tables[id]
+   return core.mod_tables.bloom[id]
 end
 
 function sb.getEnvironment(id)

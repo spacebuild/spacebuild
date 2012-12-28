@@ -31,6 +31,11 @@ local function sendData()
             for k, v in pairs(core.device_table) do
                 v:send(ply.lastrdupdate or 0, ply)
             end
+            for _, v in pairs(core.mod_tables) do
+                for _, w in pairs(v) do
+                    w:send(ply.lastrdupdate or 0, ply)
+                end
+            end
             ply.lastrdupdate = time
         end
     end
@@ -44,10 +49,6 @@ local function spawn( ply )
     ply.ls_suit:reset()
 end
 hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )
-
-
-
-
 
 -- Spacebuild
 
@@ -77,18 +78,12 @@ local function addLegacyEnvironment(data)
         local environment = core.class.create("LegacyPlanet", ent:EntIndex(), data)
         ent.envobject = environment
         sb.addEnvironment(environment)
-        --MsgN("Adding Legacy Planet")
-        --PrintTable(environment)
     elseif data[1] == "planet_color" then
         local colorinfo = core.class.create("LegacyColorInfo", data)
         sb.addEnvironmentColor(colorinfo)
-        --MsgN("Adding Legacy Color Info")
-        --PrintTable(colorinfo)
     elseif data[1] == "planet_bloom" then
         local bloominfo =  core.class.create("LegacyBloomInfo", data)
         sb.addEnvironmentBloom(bloominfo)
-        --MsgN("Adding Legacy Bloom Info")
-        --PrintTable(bloominfo)
     end
 end
 

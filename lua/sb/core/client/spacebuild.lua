@@ -30,6 +30,32 @@ net.Receive("SBRPU", function(bitsreceived)
     player_suit:receive()
 end)
 
+net.Receive("SBMU", function(bitsreceived)
+    local type = core.net.readTiny()
+    local class = net.ReadString()
+    local id = net.ReadString()
+    local mod_object = nil;
+    if type == 1 then
+        mod_object = sb.getEnvironmentColor(mod_object)
+    elseif type == 2 then
+        mod_object = sb.getEnvironmentBloom(mod_object)
+    else
+        error("invalid mod sync type")
+    end
+    if not mod_object then
+       mod_object = core.class.create(class)
+       mod_object:setID(id)
+       if type == 1 then
+           sb.addEnvironmentColor(mod_object)
+       elseif type == 2 then
+           sb.addEnvironmentBloom(mod_object)
+       else
+           error("invalid mod sync type")
+       end
+    end
+    mod_object:receive()
+end)
+
 function sb.getPlayerSuit()
    return player_suit
 end
