@@ -45,8 +45,24 @@ if SERVER then
 
     function ENT:getRate()
 
-        local sunAngle = Vector(0,0,-1)
         local up = self:GetAngles():Up()
+
+        local sun = sb.getSun() or nil
+
+        local sunAngle = Vector(0,0,-1)
+
+        if sun ~= nil then
+            print("SUN EXISTS FUCKER!")
+            print("Slef:"..tostring(self:GetPos()))
+            print("Sun:"..tostring(sun:getSunPosition()))
+
+            sunAngle = (self:GetPos()-sun:getSunPosition())   -- DO NOT ADD :Normalize() BECOMES NIL!
+            sunAngle = sunAngle / sunAngle:Length() --Normalising doesn't work normally for some reason, hack implemented.
+            print(tostring(sunAngle))
+        end
+
+        print(type(sunAngle))
+
         local n = sunAngle:DotProduct(up*-1)
 
         if n >=0 then
