@@ -14,7 +14,7 @@ ENT.AdminOnly 		= false
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
-        self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
+        self:SetModel("models/blackfire/sb4test/screen.mdl")--"models/hunter/blocks/cube1x1x1.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)

@@ -23,7 +23,7 @@ local math = math
 util.SCOPES = {
     SERVER = "server/",
     CLIENT = "client/",
-    SHARED = ""
+    SHARED = "shared/"
 }
 
 util.createReadOnlyTable = function(t)
