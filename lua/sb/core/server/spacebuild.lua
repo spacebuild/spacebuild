@@ -62,7 +62,7 @@ local function addSun(data)
     --PrintTable(data)
     --TODO spawn sunEntity
     local ent = data.ent
-    sun = core.class.create("SunEnvironment", data.ent, data)
+    sun = core.class.create("SunEnvironment", ent:EntIndex(), data)
     --PrintTable(sun)
 end
 

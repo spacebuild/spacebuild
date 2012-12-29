@@ -31,14 +31,14 @@ local funcRef = {
     onLoad = C.onLoad
 }
 
-local DEFAULT_SUN_ANGLE = Vector(0,0,-1)
+--local DEFAULT_SUN_ANGLE = Vector(0,0,-1)
 local DEFAULT_SUN_POSITION = Vector(0, 0, 0)
 
 function C:isA(className)
     return funcRef.isA(self, className) or className == "SunEnvironment"
 end
 
-function C:init(entid, data)
+--[[function C:init(entid, data)
     funcRef.init(self, entid, data)
     local ent = self:getEntity()
     if ent then
@@ -66,13 +66,9 @@ function C:init(entid, data)
         self.sunAngle = DEFAULT_SUN_ANGLE
         self.sunPos = DEFAULT_SUN_POSITION
     end
-end
+end]]
 
-function C:getSunAngle()
-   return self.sunAngle
-end
-
-function C:getSunPosition()
-   return self.sunPos
+function C:getPos()
+   return (self:getEntity() and self:getEntity():GetPos()) or DEFAULT_SUN_POSITION
 end
 

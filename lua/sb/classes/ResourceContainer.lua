@@ -148,7 +148,7 @@ function C:getEntity()
 end
 
 function C:send(modified, ply)
-    if modified > self.start_sync_after then
+    if modified >= self.start_sync_after then
         if self.start_sync_after > 0 then
             modified = 0
             self.start_sync_after = 0

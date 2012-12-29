@@ -36,7 +36,6 @@ function C:reset()
     self.coolant = 0
     self.energy = 0
     self.modified = CurTime()
-    self.start_sync_after = CurTime() + 1
 end
 
 function C:setEnvironment(environment)
@@ -80,7 +79,7 @@ function C:getEnergy()
 end
 
 function C:send(modified)
-    if modified > self.start_sync_after and self.modified > modified then
+    if self.modified > modified then
         net.Start("SBRPU")
         core.net.writeBool(self.active)
         if self.active then
