@@ -74,6 +74,14 @@ function C:consume(amount)
     return to_little
 end
 
+function C:getResourceInfo()
+   return self.resourceInfo
+end
+
+function C:getDisplayName()
+   return self:getResourceInfo():getDisplayName()
+end
+
 function C:getMaxAmount()
     return self.maxAmount
 end
