@@ -112,17 +112,36 @@ local extBase = {
 -- @param value The value you wish to store at that key on the table. Usually another table, for extensions.
 function sb.core.extensions:register(name,value)
     if not self[name] then
-        local execPath = debug.getinfo(2).source -- Get the file that called this function, caution uses debug library
-        local _,_,folder = string.find(execPath,"sb/extensions/(.-)/") -- Find what the folder is, will be third return from string.find
+        --local execPath = debug.getinfo(2).source -- Get the file that called this function, caution uses debug library
+        --local _,_,folder = string.find(execPath,"sb/extensions/(.-)/") -- Find what the folder is, will be third return from string.find
 
 
-        value.basePath = "sb/extensions/"..folder.."/" -- Restructure the basePath. Add trailing /
+        --value.basePath = "sb/extensions/"..folder.."/" -- Restructure the basePath. Add trailing /
+
+        value.basePath = self:getBasePath(debug.getinfo(2).source)
+
         value = util.mergeTable(extBase,value) -- Make value table inherit from extensions base.
         rawset(self,name,value) -- Set the key and value using rawset as writing metamethod has been disabled.
     else
         print("That key already exists in the table") -- To stop duplicate entries, or overrides.
     end
 end
+
+
+--- Getting your basePath from an extension without registering.
+-- So you can get your basePath for use in shared includes.
+
+function sb.core.extensions:getBasePath(source)
+
+    local execPath = source or debug.getinfo(2).source
+    local _,_,folder = string.find(execPath,"sb/extensions/(.-)/") -- Find what the folder is, will be third return from string.find
+
+    local basePath = "sb/extensions/"..folder.."/"
+
+    return basePath
+
+end
+
 
 --- Getter function, retreive values from the sb.core.extensions table.
 -- Simply a getter, however normal sb.core.extensions["key"] or sb.core.extensions.key should work.

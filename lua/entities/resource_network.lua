@@ -14,7 +14,7 @@ ENT.AdminOnly 		= false
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
-        self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
+        self:SetModel("models/blackfire/sb4test/screen.mdl")--"models/hunter/blocks/cube1x1x1.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
@@ -37,7 +37,7 @@ if SERVER then
         self.constraints = constraint.GetAllConstrainedEntities( self )
 
         for k, v in pairs(self.constraints or {}) do
-            if v.rdobject and v.rdobject:canLink(self.rdobject) then
+            if v ~= self and v.rdobject and v.rdobject:canLink(self.rdobject) and v.rdobject.network ~= self.rdobject then
                 v.rdobject:link(self.rdobject)
             end
         end
@@ -47,9 +47,8 @@ if SERVER then
 
     function ENT:Use()
 
-        if self.active ~= 1 then
-            self.active = 1
-            MsgN("Activated Node")
+        if not self.active then
+            self.active = true
             self:updateConnections()
         end
 
@@ -60,7 +59,7 @@ if SERVER then
     function ENT:Think()
 
         --Not using NextThink as some more resource processing may need to be done every Think
-        if self.active and (CurTime() > self._synctimestamp + 3) then
+        if self.active and (CurTime() > self._synctimestamp + 5) then  --sync every 5 seconds ish
             self:updateConnections()
         end
 

@@ -11,6 +11,8 @@ ENT.Instructions	= ""
 ENT.Spawnable 		= true
 ENT.AdminOnly 		= false
 
+local sb = sb
+
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
@@ -26,6 +28,7 @@ function ENT:Initialize()
         end
         self.rdobject:addResource("energy", 0, 0)
         self.energygen = 8
+        self.active = true
     end
 end
 
@@ -39,25 +42,57 @@ function ENT:SpawnFunction(ply, tr)
     return ent
 end
 
+function ENT:SetActive() --disable use, lol
+end
 
 if SERVER then
+
+    function ENT:getBlocked(up,sun)
+
+        local trace = {}
+        local util = util
+        local up = up or self:GetAngles():Up() or nil
+        local sun = sun or sb.getSun() or nil
+
+        if up == nil or sun == nil then return true end
+
+        if sun ~= nil then
+            trace = util.QuickTrace(sun:getSunPosition(), self:GetPos()-sun:getSunPosition(), nil ) -- Don't filter
+            if trace.Hit and trace.Entity == self then
+                return false
+            else
+                return true
+            end
+        else
+            local sunAngle = Vector(0,0,-1)
+
+            local n = sunAngle:DotProduct(up*-1)
+            if n > 0 then
+                return true
+            end
+        end
+
+        return false
+
+
+    end
+
 
     function ENT:getRate()
 
         local up = self:GetAngles():Up()
-
         local sun = sb.getSun() or nil
 
         local sunAngle = Vector(0,0,-1)
 
         if sun ~= nil then
             sunAngle = (self:GetPos()-sun:getSunPosition())   -- DO NOT ADD :Normalize() BECOMES NIL!
-            sunAngle = sunAngle / sunAngle:Length() --Normalising doesn't work normally for some reason, hack implemented.
+            sunAngle:Normalize() --Normalising doesn't work normally for some reason, hack implemented.
         end
 
         local n = sunAngle:DotProduct(up*-1)
 
-        if n >=0 then
+        if n >=0 and not self:getBlocked(up,sun) then
             return self.energygen * n
         else return 0 end
 
@@ -65,7 +100,17 @@ if SERVER then
     end
 
     function ENT:Think()
-        self.rdobject:supplyResource("energy", self:getRate() or 0 )
+
+        if self:WaterLevel() > 0 then
+            self.active = false
+        else
+            self.active = true
+        end
+
+        if self.active then
+            self.rdobject:supplyResource("energy", self:getRate() or 0 )
+        end
+
         self:NextThink( CurTime() + 1 )
         return true
     end
