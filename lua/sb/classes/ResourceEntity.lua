@@ -132,7 +132,7 @@ function C:unlink(container, dont_unlink)
 end
 
 function C:canLink(container)
-    return container.isA and container:isA("ResourceNetwork")
+    return self ~= container and self:getNetwork() == nil and container.isA and container:isA("ResourceNetwork")
 end
 
 function C:getNetwork()

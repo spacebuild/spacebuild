@@ -35,6 +35,7 @@ function C:reset()
     self.oxygen = 0
     self.coolant = 0
     self.energy = 0
+    self.temperature = 293
     self.modified = CurTime()
 end
 
@@ -83,6 +84,14 @@ function C:getEnergy()
     return self.energy
 end
 
+function C:setTemperature(temperature)
+   self.temperature = temperature
+end
+
+function C:getTemperature()
+   return self.temperature
+end
+
 function C:send(modified)
     if self.modified > modified then
         net.Start("SBRPU")
@@ -91,6 +100,7 @@ function C:send(modified)
             core.net.writeShort(self.oxygen)
             core.net.writeShort(self.coolant)
             core.net.writeShort(self.energy)
+            core.net.writeShort(self.temperature)
         end
         if self.environment then
             core.net.writeBool(true)
@@ -108,6 +118,7 @@ function C:receive()
         self.oxygen = core.net.readShort()
         self.coolant = core.net.readShort()
         self.energy = core.net.readShort()
+        self.temperature = core.net.readShort()
     end
     local hasenvironment = core.net.readBool()
     if hasenvironment then

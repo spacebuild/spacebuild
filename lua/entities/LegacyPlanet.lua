@@ -36,7 +36,7 @@ if SERVER then
 
     function ENT:InitEnvironment()
        if not self.envobject then error("Environment Object not found!") end
-       local env = self.envobject -- LegacyPlanet
+       local env = self.envobject
        self:PhysicsInitSphere(env:getRadius())
        self:SetCollisionBounds(Vector(-env:getRadius(),-env:getRadius(),-env:getRadius()),Vector(env:getRadius(),env:getRadius(),env:getRadius()))
        self:SetTrigger( true )
