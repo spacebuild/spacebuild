@@ -27,23 +27,20 @@ function C:init(data)
     if data then
         self.data = data
         if string.len(data[2]) > 0 then
-            local case2 = data[2]
-            self.Col_r = tonumber(string.Left(case2, string.find(case2," ") - 1))
-            case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
-            self.Col_g = tonumber(string.Left(case2, string.find(case2," ") - 1))
-            case2 = string.Right(case2, (string.len(case2) - string.find(case2," ")))
-            self.Col_b = tonumber(case2)
+            local case2 = Vector(data[2])
+            self.Col_r = case2.x
+            self.Col_g = case2.y
+            self.Col_b = case2.z
         end
         if string.len(data[3]) > 0 then
-            local case3 = data[3]
-            self.SizeX = tonumber(string.Left(case3, string.find(case3," ") - 1))
-            case3 = string.Right(case3, (string.len(case3) - string.find(case3," ")))
-            self.SizeY = tonumber(case3)
+            local case3 = string.Explode(" ", data[3])
+            self.SizeX = case3[1]
+            self.SizeY = case3[2]
         end
-        self.passes = data[4] and tonumber(data[4]) or nil
-        self.darken = data[5] and tonumber(data[5]) or nil
-        self.multiply = data[6] and tonumber(data[6]) or nil
-        self.color = data[7] and tonumber(data[7]) or nil
+        self.passes = tonumber(data[4])
+        self.darken = tonumber(data[5])
+        self.multiply = tonumber(data[6])
+        self.color = tonumber(data[7])
         self.id = data[16]
     end
     self.modified = CurTime()
@@ -55,6 +52,11 @@ end
 
 function C:setID(id)
     self.id = id
+end
+
+function C:render()
+    if( not render.SupportsPixelShaders_2_0() ) then return; end -- Don't try if bloom is not supported
+    DrawBloom( self.darken, self.multiply, self.SizeX, self.SizeY, self.passes, self.color, self.Col_r, self.Col_g, self.Col_b );
 end
 
 function C:send(modified, ply)
@@ -73,15 +75,15 @@ function C:send(modified, ply)
 end
 
 function C:_sendContent(modified)
-    net.WriteFloat(self.Col_r or -1)
-    net.WriteFloat(self.Col_g or -1)
-    net.WriteFloat(self.Col_b or -1)
-    net.WriteFloat(self.SizeX or -1)
-    net.WriteFloat(self.SizeY or -1)
-    net.WriteFloat(self.passes or -1)
-    net.WriteFloat(self.darken or -1)
-    net.WriteFloat(self.multiply or -1)
-    net.WriteFloat(self.color or -1)
+    net.WriteFloat(self.Col_r or 0)
+    net.WriteFloat(self.Col_g or 0)
+    net.WriteFloat(self.Col_b or 0)
+    net.WriteFloat(self.SizeX or 0)
+    net.WriteFloat(self.SizeY or 0)
+    net.WriteFloat(self.passes or 0)
+    net.WriteFloat(self.darken or 0)
+    net.WriteFloat(self.multiply or 0)
+    net.WriteFloat(self.color or 0)
 end
 
 function C:receive()

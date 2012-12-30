@@ -23,6 +23,7 @@ net.TYPES_INT = {
         max = 2147483647,
         umax = 4294967295
     },
+    -- TODO LONG seems to mess up!!!
     LONG = {
         length = 8 * 8,
         min =  -36028797018963968,
@@ -30,6 +31,15 @@ net.TYPES_INT = {
         umax = 7257594037927936
     }
 }
+
+net.TYPES_INT.AMOUNT = net.TYPES_INT.INT -- Send amounts as long
+
+-- util
+
+-- Returns the MAX amount that can be using the net library!!!
+function net.getMaxAmount()
+    return net.TYPES_INT.AMOUNT.max
+end
 
 -- Write
 function net.writeBool(bool)
@@ -49,7 +59,10 @@ function net.writeTiny(tiny)
 end
 
 function net.writeAmount(amount)
-    return corenet.WriteUInt(amount, net.TYPES_INT.INT.length);
+    if amount > net.getMaxAmount() then
+        amount = net.getMaxAmount()  --Prevent syncing more then is allowed!!
+    end
+    return corenet.WriteUInt(amount, net.TYPES_INT.AMOUNT.length);
 end
 
 -- Read
@@ -70,5 +83,5 @@ function net.readTiny()
 end
 
 function net.readAmount()
-    return corenet.ReadUInt(net.TYPES_INT.INT.length)
+    return corenet.ReadUInt(net.TYPES_INT.AMOUNT.length)
 end

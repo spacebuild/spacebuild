@@ -18,28 +18,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb
 local timer = timer
 local core = sb.core;
-local time_to_next_sync = 1
+local time_to_next_rd_sync = 1
+local time_to_next_ls_sync = 0.5
+local time_to_next_sb_sync = 3
 
 local time = 0;
 local function sendData()
     time = CurTime();
     for _, ply in pairs(player.GetAll()) do
-        if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_sync < time then
+        --LS
+        if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
             if ply.ls_suit then
-                ply.ls_suit:send(ply.lastrdupdate or 0)
+                ply.ls_suit:send(ply.lastlsupdate or 0)
+                ply.lastlsupdate = time
             end
+        end
+        -- RD
+        if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
             for k, v in pairs(core.device_table) do
                 v:send(ply.lastrdupdate or 0, ply)
             end
+            ply.lastrdupdate = time
+        end
+        -- SB
+        if not ply.lastsbupdate or ply.lastsbupdate + time_to_next_sb_sync < time then
+            for k, v in pairs(core.device_table) do
+                v:send(ply.lastsbupdate or 0, ply)
+            end
             for _, v in pairs(core.mod_tables) do
                 for _, w in pairs(v) do
-                    w:send(ply.lastrdupdate or 0, ply)
+                    w:send(ply.lastsbupdate or 0, ply)
                 end
             end
             for _, v in pairs(core.environments) do
-                v:send(ply.lastrdupdate or 0, ply)
+                v:send(ply.lastsbupdate or 0, ply)
             end
-            ply.lastrdupdate = time
+            ply.lastsbupdate = time
         end
     end
 end

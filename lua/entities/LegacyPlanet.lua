@@ -29,8 +29,6 @@ function ENT:Initialize()
             phys:Wake()
         end
         self:SetNotSolid( true )
-
-        self:SetColor(Color(255,255,255,0)) --Make invisisble
     end
 end
 
@@ -65,6 +63,12 @@ if SERVER then
        self.envobject:updateEntities()
     end
 
+end
+
+if CLIENT then
+    function ENT:Draw()
+        -- Don't draw anything
+    end
 end
 
 -- Start don't allow tools and stuff

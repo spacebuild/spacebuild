@@ -27,7 +27,12 @@ net.Receive("SBRU", function(bitsreceived)
 end)
 
 net.Receive("SBRPU", function(bitsreceived)
-    player_suit:receive()
+    local suit = sb.getPlayerSuit()
+    local env = suit:getEnvironment()
+    suit:receive()
+    if suit:getEnvironment() ~= env and suit:getEnvironment():hasName() then
+        chat.AddText( Color( 255,255,255 ), "Entering ", Color( 100,255,100 ), suit:getEnvironment():getName() )
+    end
 end)
 
 net.Receive("SBEU", function(bitsreceived)
@@ -71,3 +76,14 @@ end)
 function sb.getPlayerSuit()
    return player_suit
 end
+
+local function RenderEffects()
+    if not LocalPlayer():Alive() then return end
+    if not sb.getPlayerSuit() or not sb.getPlayerSuit():getEnvironment() then return end
+    local bloom = sb.getPlayerSuit():getEnvironment():getEnvironmentBloom()
+    local color = sb.getPlayerSuit():getEnvironment():getEnvironmentColor()
+
+    if color then color:render() end
+    if bloom then bloom:render() end
+end
+hook.Add("RenderScreenspaceEffects","SBRenderEnvironmentEffects", RenderEffects)
