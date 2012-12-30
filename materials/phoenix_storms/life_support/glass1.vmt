@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/glass1"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ 1 1 1 ]"
+	"$envmapcontrast" 1
+	"$envmapsaturation" 1
+	"$translucent" 1
+//	"$alpha" 0.65
+	"$model" 1
+	"$nocull" 1
+}
+
+

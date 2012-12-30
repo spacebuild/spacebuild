@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/black_border"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ .45 .45 .5 ]"
+	"$envmapcontrast" 1.2
+	"$envmapsaturation" 0
+	"$model" 1
+}
+
+

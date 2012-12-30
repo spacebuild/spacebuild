@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+
+	 $model "1"
+	 $basetexture "blackfire/sb4test/CornerDiffuseMap"
+	 $translucent "1"
+	 $alpha "0.2"
+}
