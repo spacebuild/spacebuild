@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/panel_small_back"
+	"$bumpmap" "phoenix_storms/life_support/panel_small_back_normal"
+//	"$normalmapalphaenvmapmask" "1"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$basetextureenvmapmask" 1
+	"$envmapcontrast" 1
+	"$envmapsaturation" 0.2
+	"$envmaptint" "[ .05 .05 .05 ]"
+	"$phong" "1" 
+	"$phongboost" "0.35" 
+	"$phongfresnelranges" "[ 1 5 15]"
+	"$phongexponent" "20"
+	"$model" 1
+}
+
+

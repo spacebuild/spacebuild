@@ -16,7 +16,8 @@ local sb = sb
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
-        self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
+        --self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
+        self:SetModel("models/props_phx/life_support/panel_medium.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
@@ -57,7 +58,7 @@ if SERVER then
         if up == nil or sun == nil then return true end
 
         if sun ~= nil then
-            trace = util.QuickTrace(sun:getSunPosition(), self:GetPos()-sun:getSunPosition(), nil ) -- Don't filter
+            trace = util.QuickTrace(sun:getPos(), self:GetPos()-sun:getPos(), nil ) -- Don't filter
             if trace.Hit and trace.Entity == self then
                 return false
             else
@@ -77,7 +78,6 @@ if SERVER then
 
     end
 
-
     function ENT:getRate()
 
         local up = self:GetAngles():Up()
@@ -86,14 +86,14 @@ if SERVER then
         local sunAngle = Vector(0,0,-1)
 
         if sun ~= nil then
-            sunAngle = (self:GetPos()-sun:getSunPosition())   -- DO NOT ADD :Normalize() BECOMES NIL!
+            sunAngle = (self:GetPos()-sun:getPos())   -- DO NOT ADD :Normalize() BECOMES NIL!
             sunAngle:Normalize() --Normalising doesn't work normally for some reason, hack implemented.
         end
 
         local n = sunAngle:DotProduct(up*-1)
 
         if n >=0 and not self:getBlocked(up,sun) then
-            return self.energygen * n
+            return math.Round(self.energygen * n)
         else return 0 end
 
 

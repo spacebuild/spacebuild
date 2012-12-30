@@ -1,0 +1,7 @@
+"vertexlitgeneric"
+{
+	"$basetexture" 	"ce_ls3additional/resource_cache/tube"
+	"$bumpmap" 	"ce_ls3additional/resource_cache/tube_bump"
+	"$surfaceprop" 	"plastic"
+	"$model" 	"1"
+}

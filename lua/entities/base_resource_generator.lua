@@ -11,6 +11,7 @@ ENT.Instructions	= ""
 ENT.Spawnable 		= false
 ENT.AdminOnly 		= false
 
+
 function ENT:Initialize()
     sb.registerDevice(self, sb.RDTYPES.GENERATOR)
 end
@@ -28,6 +29,32 @@ if ( CLIENT ) then
         self:DrawModel()
 
     end
+end
+
+function ENT:turnOn(newself)
+    self = newself or self
+    if not self.active then
+        self.active = true
+    end
+end
+
+function ENT:turnOff(newself)
+    self = newself or self
+    if self.active then
+        self.active = false
+    end
+end
+
+function ENT:toggle(newself)
+    newself = newself or self
+    self.active = not self.active
+
+    if self.active then
+        self:turnOn()
+    else
+        self:turnOff()
+    end
+
 end
 
 function ENT:OnRestore()
