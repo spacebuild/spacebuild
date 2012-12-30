@@ -87,7 +87,12 @@ function C:init(entid, data)
             self.hightemperature = tonumber(data[5])
             self.name = (string.len(data[6]) > 0 and data[6]) or self.name
         end
+        self.entities = {}
     end
+end
+
+function C:getRadius()
+   return self.radius
 end
 
 function C:getVolume()
@@ -97,6 +102,56 @@ end
 function C:getTemperature(ent)
     --TODO
     return self.temperature
+end
+
+function C:addEntity(ent)
+    MsgN(tostring(ent).." started touching environment "..tostring(self:getID()))
+    self.entities[ent:EntIndex()] = ent
+end
+
+function C:removeEntity(ent)
+    MsgN(tostring(ent).." ended touching environment "..tostring(self:getID()))
+    if self.entities[ent:EntIndex()] then
+        self:setEnvironmentOnEntity(ent, sb.getSpace())
+        self.entities[ent:EntIndex()] = nil
+    end
+end
+
+function C:hasEntity(ent)
+   return self.entities[ent:EntIndex()] ~= nil
+end
+
+function C:getEntities()
+   return self.entities
+end
+
+function C:setEnvironmentOnEntity(ent, environment)
+   if ent.environment ~= environment then
+       ent.environment = environment
+       environment:updateEnvironmentOnEntity(ent)
+       if ent.ls_suit then
+           ent.ls_suit:setEnvironment(environment)
+       end
+   end
+end
+
+function C:updateEntities()
+   -- PhysicInitSphere doesn't create a real sphere, but a box, so we have to do a more accurate check here
+   local envent = self:getEntity()
+   for k, ent in pairs(self.entities) do
+      if ent:GetPos():Distance(envent:GetPos()) < self.radius then
+          if ent.environment ~= self then
+              MsgN(tostring(ent).." entered environment "..tostring(self:getID()))
+              self:setEnvironmentOnEntity(ent, self)
+          end
+      else
+          if ent.environment ~= sb.getSpace() then
+              MsgN(tostring(ent).." left environment "..tostring(self:getID()))
+              self:setEnvironmentOnEntity(ent, sb.getSpace())
+          end
+
+      end
+   end
 end
 
 function C:_sendContent(modified)

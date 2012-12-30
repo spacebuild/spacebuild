@@ -40,6 +40,7 @@ end
 
 function C:setEnvironment(environment)
     self.environment = environment
+    self.modified = CurTime()
 end
 
 function C:getEnvironment()
@@ -48,6 +49,7 @@ end
 
 function C:setActive(active)
     self.active = active
+    self.modified = CurTime()
 end
 
 function C:getActive()
@@ -56,6 +58,7 @@ end
 
 function C:setOxygen(oxygen)
     self.oxygen = oxygen
+    self.modified = CurTime()
 end
 
 function C:getOxygen()
@@ -64,6 +67,7 @@ end
 
 function C:setCoolant(coolant)
     self.coolant = coolant
+    self.modified = CurTime()
 end
 
 function C:getCoolant()
@@ -72,6 +76,7 @@ end
 
 function C:setEnergy(energy)
     self.energy = energy
+    self.modified = CurTime()
 end
 
 function C:getEnergy()

@@ -47,6 +47,7 @@ AddCSLuaFile("sb/classes/SunEnvironment.lua");
 AddCSLuaFile("sb/classes/LegacyBloomInfo.lua");
 AddCSLuaFile("sb/classes/LegacyColorInfo.lua");
 AddCSLuaFile("sb/classes/LegacyPlanet.lua");
+AddCSLuaFile("sb/classes/SpaceEnvironment.lua");
 
 --Send tests
 AddCSLuaFile("sb/tests/class.lua")

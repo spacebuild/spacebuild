@@ -93,6 +93,36 @@ function C:convertResource(from, to, amount)
     -- TODO
 end
 
+-- Environment checking
+
+function C:updateEnvironmentOnEntities() --TODO call this when certain things get updated (gravity, ...)
+    for k, v in pairs(self.entities) do
+        self:updateEnvironmentOnEntity(v)
+    end
+end
+
+function C:updateEnvironmentOnEntity(ent)
+    if ent.environment == self then
+        MsgN("Updating gravity and drag on player")
+        local phys = ent:GetPhysicsObject()
+        if self.gravity <= 0 then
+            ent:SetGravity( 0.00001 ) -- if gravity is 0, put gravity to 0.00001
+        else
+            ent:SetGravity( self.gravity ) -- if gravity is 0, put gravity to 0.00001
+        end
+        if self.gravity  > 0.01 then
+            phys:EnableGravity(true)
+        else
+            phys:EnableGravity(false)
+        end
+        if self:getPressure() > 0.1 then
+            phys:EnableDrag( true )
+        else
+            phys:EnableDrag( false )
+        end
+    end
+end
+
 -- Sync stuff
 
 function C:send(modified, ply)

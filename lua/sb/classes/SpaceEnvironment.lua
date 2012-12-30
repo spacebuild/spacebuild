@@ -1,0 +1,46 @@
+--
+-- Created by IntelliJ IDEA.
+-- User: Stijn
+-- Date: 27/12/12
+-- Time: 23:30
+-- To change this template use File | Settings | File Templates.
+--
+
+include("sb/classes/BaseEnvironment.lua")
+
+-- Lua Specific
+local type = type
+
+-- Gmod specific
+local Entity = Entity
+local CurTime = CurTime
+local net = net
+
+-- Class Specific
+local C = CLASS
+local sb = sb;
+local core = sb.core
+
+-- Function Refs
+local funcRef = {
+    isA = C.isA,
+    init = C.init,
+    sendContent = C._sendContent,
+    receiveSignal = C.receive,
+    onSave = C.onSave,
+    onLoad = C.onLoad
+}
+
+function C:isA(className)
+    return funcRef.isA(self, className) or className == "SpaceEnvironment"
+end
+
+function C:init()
+    funcRef.init(self, -1)
+    self.temperature = 14 -- in K
+end
+
+function C:getEntity()
+    return nil
+end
+

@@ -68,7 +68,6 @@ end
 
 local function spawnEnvironmentEnt(name, pos, angles)
     local ent = ents.Create(name)
-    ent:SetModel("models/props_lab/huladoll.mdl")
     ent:SetAngles(angles)
     ent:SetPos(pos)
     ent:Spawn()
@@ -81,6 +80,7 @@ local function addLegacyEnvironment(data)
         local environment = core.class.create("LegacyPlanet", ent:EntIndex(), data)
         ent.envobject = environment
         sb.addEnvironment(environment)
+        ent:InitEnvironment()
     elseif data[1] == "planet_color" then
         local colorinfo = core.class.create("LegacyColorInfo", data)
         sb.addEnvironmentColor(colorinfo)
@@ -162,3 +162,14 @@ local function Register_Environments_Data()
     SpawnEnvironments()
 end
 hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
+
+
+local invalidclasses= {}
+invalidclasses["func_door"] = true
+
+function sb.isValidSBEntity(ent)
+   return  not ent:IsWorld()
+           and ent:GetPhysicsObject():IsValid()  -- only valid physics
+           and not ent.NoGrav -- ignore entities that mentioned they want to be ignored
+           and not invalidclasses[ent:GetClass()]  -- ignore certain types of entities
+end

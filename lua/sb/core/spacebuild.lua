@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb;
 local core = sb.core;
 
+local space = core.class.create("SpaceEnvironment")
+
 -- RD
 core.device_table = {}
 core.resources_names_table = {}
@@ -95,7 +97,14 @@ end
 
 
 function sb.getEnvironment(id)
+    if id == -1 then
+       return sb.getSpace()
+    end
     return core.environments[id]
+end
+
+function sb.getSpace()
+   return space
 end
 
 function sb.addEnvironmentColor(env_color)
