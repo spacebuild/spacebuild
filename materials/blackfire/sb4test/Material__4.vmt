@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
 	 $model "1"
-	 $color2 "[0 0 0]"
+	 $color2 "[255 0 0]"
 }

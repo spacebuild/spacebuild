@@ -11,11 +11,40 @@ ENT.Instructions	= ""
 ENT.Spawnable 		= true
 ENT.AdminOnly 		= false
 
+function ENT:Draw()
+
+	self:DrawModel()
+	local Vector = Vector
+	local cam = cam
+	local surface = surface
+	local pos = self:GetPos()
+	local pos = Vector(pos.x, pos.y, pos.z)
+	local angle = self:GetAngles()
+	cam.Start3D2D(pos,angle,1)
+		surface.SetDrawColor(0,0,0,255)
+		surface.DrawRect( 0, 0, 100, 100 )
+
+	--[[
+		surface.SetDrawColor(155,155,155,255)
+		surface.DrawRect( textStartPos, 0, -5, 675 )
+		surface.DrawRect( textStartPos, 0, 1250, -5 )
+		surface.DrawRect( textStartPos, 675, 1250, -5 )
+		surface.DrawRect( textStartPos+1250, 0, 5, 675 )  ]]--
+	--Stop rendering
+	cam.End3D2D()
+
+
+
+end
+
+
 function ENT:Initialize()
     BaseClass.Initialize(self)
-    if SERVER then
+
         self:SetModel("models/blackfire/sb4test/screen.mdl")--"models/hunter/blocks/cube1x1x1.mdl")
-        self:PhysicsInit(SOLID_VPHYSICS)
+
+	if SERVER then
+		self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
         self.Entity:SetUseType(SIMPLE_USE)
@@ -30,6 +59,7 @@ function ENT:Initialize()
         local cam = cam
         local surface = surface
         local pos = self:GetPos()
+			local pos = pos - Vector(18,-10.5,2)
         local angle = self:GetAngles()
         local textStartPos = -12
         cam.Start3D2D(pos,angle,0.05)
