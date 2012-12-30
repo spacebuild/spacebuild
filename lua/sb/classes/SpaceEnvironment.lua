@@ -44,3 +44,11 @@ function C:getEntity()
     return nil
 end
 
+function C:hasName()
+    return true
+end
+
+function C:getName()
+    return "Space"
+end
+

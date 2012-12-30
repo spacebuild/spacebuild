@@ -163,7 +163,6 @@ end
 
 function C:updateEnvironmentOnEntity(ent)
     if ent.environment == self then
-        MsgN("Updating gravity and drag on player")
         local phys = ent:GetPhysicsObject()
         if self.gravity <= 0 then
             ent:SetGravity( 0.00001 ) -- if gravity is 0, put gravity to 0.00001

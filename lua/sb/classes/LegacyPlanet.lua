@@ -204,12 +204,10 @@ function C:getName()
 end
 
 function C:addEntity(ent)
-    MsgN(tostring(ent).." started touching environment "..tostring(self:getID()))
     self.entities[ent:EntIndex()] = ent
 end
 
 function C:removeEntity(ent)
-    MsgN(tostring(ent).." ended touching environment "..tostring(self:getID()))
     if self.entities[ent:EntIndex()] then
         self:setEnvironmentOnEntity(ent, sb.getSpace())
         self.entities[ent:EntIndex()] = nil
@@ -226,11 +224,13 @@ end
 
 function C:setEnvironmentOnEntity(ent, environment)
    if ent.environment ~= environment then
+       sb.callOnLeaveEnvironmentHook(ent.environment, ent)
        ent.environment = environment
        environment:updateEnvironmentOnEntity(ent)
        if ent.ls_suit then
            ent.ls_suit:setEnvironment(environment)
        end
+       sb.callOnEnterEnvironmentHook(self, ent)
    end
 end
 
@@ -240,12 +240,10 @@ function C:updateEntities()
    for k, ent in pairs(self.entities) do
       if ent:GetPos():Distance(envent:GetPos()) < self.radius then
           if ent.environment ~= self then
-              MsgN(tostring(ent).." entered environment "..tostring(self:getID()))
               self:setEnvironmentOnEntity(ent, self)
           end
       else
           if ent.environment ~= sb.getSpace() then
-              MsgN(tostring(ent).." left environment "..tostring(self:getID()))
               self:setEnvironmentOnEntity(ent, sb.getSpace())
           end
 

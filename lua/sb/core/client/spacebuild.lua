@@ -30,8 +30,9 @@ net.Receive("SBRPU", function(bitsreceived)
     local suit = sb.getPlayerSuit()
     local env = suit:getEnvironment()
     suit:receive()
-    if suit:getEnvironment() ~= env and suit:getEnvironment():hasName() then
-        chat.AddText( Color( 255,255,255 ), "Entering ", Color( 100,255,100 ), suit:getEnvironment():getName() )
+    if suit:getEnvironment() ~= env then
+        sb.callOnLeaveEnvironmentHook(env, nil)
+        sb.callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
     end
 end)
 
@@ -87,3 +88,16 @@ local function RenderEffects()
     if bloom then bloom:render() end
 end
 hook.Add("RenderScreenspaceEffects","SBRenderEnvironmentEffects", RenderEffects)
+
+
+sb.addOnEnterEnvironmentHook("SB_EnterMessage", function(environment)
+    if environment:hasName() then
+        chat.AddText( Color( 255,255,255 ), "Entering ", Color( 100,255,100 ), environment:getName() )
+    end
+end)
+
+sb.addOnLeaveEnvironmentHook("SB_LeaveMessage", function(environment)
+    if environment:hasName() then
+        chat.AddText( Color( 255,255,255 ), "Leaving ", Color( 100,255,100 ), environment:getName() )
+    end
+end)

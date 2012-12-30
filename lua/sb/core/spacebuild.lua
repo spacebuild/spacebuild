@@ -30,6 +30,9 @@ core.environments = {}
 core.mod_tables = {}
 core.mod_tables.color = {}
 core.mod_tables.bloom = {}
+core.sb_hooks = {}
+core.sb_hooks.onEnter = {}
+core.sb_hooks.onLeave = {}
 
 sb.RDTYPES = {
     STORAGE = 1,
@@ -129,6 +132,38 @@ end
 
 function sb.canLink(ent1, ent2)
     return sb.isValidRDEntity(ent1) and sb.isValidRDEntity(ent2) and ent1.rdobject:canLink(ent2.rdobject)
+end
+
+function sb.addOnEnterEnvironmentHook(name, func)
+   core.sb_hooks.onEnter[name] = func
+end
+
+function sb.removeOnEnterEnvironmentHook(name)
+   core.sb_hooks.onEnter[name] = nil
+end
+
+function sb.addOnLeaveEnvironmentHook(name, func)
+    core.sb_hooks.onLeave[name] = func
+end
+
+function sb.removeOnLeaveEnvironmentHook(name)
+    core.sb_hooks.onLeave[name] = nil
+end
+
+function sb.callOnEnterEnvironmentHook(environment, ent)
+   if environment then
+       for k, v in pairs(core.sb_hooks.onEnter) do
+          v(environment, ply)
+       end
+   end
+end
+
+function sb.callOnLeaveEnvironmentHook(environment, ent)
+    if environment then
+        for k, v in pairs(core.sb_hooks.onLeave) do
+            v(environment, ply)
+        end
+    end
 end
 
 -- Basic resources
