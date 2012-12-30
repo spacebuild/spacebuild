@@ -182,8 +182,9 @@ local invalidclasses= {}
 invalidclasses["func_door"] = true
 
 function sb.isValidSBEntity(ent)
-   return  not ent:IsWorld()
-           and ent:GetPhysicsObject():IsValid()  -- only valid physics
+   return  IsValid(ent)
+           and not ent:IsWorld()
+           and IsValid(ent:GetPhysicsObject())  -- only valid physics
            and not ent.NoGrav -- ignore entities that mentioned they want to be ignored
            and not invalidclasses[ent:GetClass()]  -- ignore certain types of entities
 end

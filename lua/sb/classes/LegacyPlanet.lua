@@ -238,7 +238,7 @@ function C:updateEntities()
    -- PhysicInitSphere doesn't create a real sphere, but a box, so we have to do a more accurate check here
    local envent = self:getEntity()
    for k, ent in pairs(self.entities) do
-      if isValid(ent) and ent:GetPos():Distance(envent:GetPos()) < self.radius then
+      if sb.isValidSBEntity(ent) and ent:GetPos():Distance(envent:GetPos()) < self.radius then
           if ent.environment ~= self then
               self:setEnvironmentOnEntity(ent, self)
           end

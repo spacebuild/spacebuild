@@ -164,20 +164,22 @@ end
 function C:updateEnvironmentOnEntity(ent)
     if ent.environment == self then
         local phys = ent:GetPhysicsObject()
-        if self.gravity <= 0 then
-            ent:SetGravity( 0.00001 ) -- if gravity is 0, put gravity to 0.00001
-        else
-            ent:SetGravity( self.gravity ) -- if gravity is 0, put gravity to 0.00001
-        end
-        if self.gravity  > 0.01 then
-            phys:EnableGravity(true)
-        else
-            phys:EnableGravity(false)
-        end
-        if self:getPressure() > 0.1 then
-            phys:EnableDrag( true )
-        else
-            phys:EnableDrag( false )
+        if IsValid(phys) then -- the physobject can become NULL somehow :s
+            if self.gravity <= 0 then
+                ent:SetGravity( 0.00001 ) -- if gravity is 0, put gravity to 0.00001
+            else
+                ent:SetGravity( self.gravity ) -- if gravity is 0, put gravity to 0.00001
+            end
+            if self.gravity  > 0.01 then
+                phys:EnableGravity(true)
+            else
+                phys:EnableGravity(false)
+            end
+            if self:getPressure() > 0.1 then
+                phys:EnableDrag( true )
+            else
+                phys:EnableDrag( false )
+            end
         end
     end
 end
