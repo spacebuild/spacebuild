@@ -14,7 +14,7 @@ ENT.AdminOnly 		= false
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
-        self:SetModel("models/props_phx/life_support/gen_water.mdl")
+
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
@@ -103,6 +103,7 @@ function ENT:SpawnFunction(ply, tr)
 
     local ent = ents.Create("resource_generator_water")
     ent:SetPos(tr.HitPos + Vector(0, 0, 50))
+    ent:SetModel("models/props_phx/life_support/gen_water.mdl")
     ent:Spawn()
 
     return ent

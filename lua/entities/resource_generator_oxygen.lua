@@ -14,7 +14,6 @@ ENT.AdminOnly 		= false
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
-        self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
@@ -34,6 +33,7 @@ function ENT:SpawnFunction(ply, tr)
 
     local ent = ents.Create("resource_generator_oxygen")
     ent:SetPos(tr.HitPos + Vector(0, 0, 50))
+    ent:SetModel("models/hunter/blocks/cube1x1x1.mdl")
     ent:Spawn()
 
     return ent

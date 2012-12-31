@@ -8,7 +8,7 @@ ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""
 
-ENT.Spawnable 		= true
+ENT.Spawnable 		= false
 ENT.AdminOnly 		= false
 
 local sb = sb
@@ -16,8 +16,6 @@ local sb = sb
 function ENT:Initialize()
     BaseClass.Initialize(self)
     if SERVER then
-        --self:SetModel("models/hunter/blocks/cube1x1x1.mdl")
-        self:SetModel("models/props_phx/life_support/panel_medium.mdl")
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
@@ -38,6 +36,7 @@ function ENT:SpawnFunction(ply, tr)
 
     local ent = ents.Create("resource_generator_energy")
     ent:SetPos(tr.HitPos + Vector(0, 0, 50))
+    ent:SetModel("models/props_phx/life_support/panel_medium.mdl")
     ent:Spawn()
 
     return ent

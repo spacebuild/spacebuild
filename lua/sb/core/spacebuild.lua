@@ -33,6 +33,7 @@ core.mod_tables.bloom = {}
 core.sb_hooks = {}
 core.sb_hooks.onEnter = {}
 core.sb_hooks.onLeave = {}
+core.sb_hooks.onToolCreated = {}
 
 sb.RDTYPES = {
     STORAGE = 1,
@@ -166,6 +167,19 @@ function sb.callOnLeaveEnvironmentHook(environment, ent)
     end
 end
 
+function sb.addOnToolCreatedHook(toolname, func )
+    if not core.sb_hooks.onToolCreated[toolname] then core.sb_hooks.onToolCreated[toolname] = {} end
+   table.insert(core.sb_hooks.onToolCreated[toolname], func)
+end
+
+function sb.callOnToolCreatedHook(toolname, tool)
+   if core.sb_hooks.onToolCreated[toolname] then
+       for k, v in pairs(core.sb_hooks.onToolCreated[toolname]) do
+          v(tool)
+       end
+   end
+end
+
 -- Basic resources
 sb.registerResourceInfo(1, "energy", "Energy", {"ENERGY"})
 sb.registerResourceInfo(2, "oxygen", "Oxygen", {"GAS"})
@@ -173,6 +187,64 @@ sb.registerResourceInfo(3, "water", "Water", {"LIQUID", "COOLANT"})
 sb.registerResourceInfo(4, "hydrogen", "Hydrogen", {"GAS", "FLAMABLE"})
 sb.registerResourceInfo(5, "nitrogen", "Nitrogen", {"GAS", "COOLANT"})
 sb.registerResourceInfo(6, "co2", "Carbon Dioxide", {"GAS"})
+
+
+--[[
+    Register hooks
+]]
+
+sb.addOnToolCreatedHook("sb4_generators", function(tool)
+    local generators = {
+        {
+            Name  = "Test Solar Panel",
+            Model = "models/props_phx/life_support/panel_medium.mdl",
+            EntityClass = "resource_generator_energy",
+            EntityDescription = "Solar panel used for testing"
+        },
+        {
+            Name  = "Test Oxygen generator",
+            Model = "models/hunter/blocks/cube1x1x1.mdl",
+            EntityClass = "resource_generator_oxygen",
+            EntityDescription = "Oxygen generator used for testing"
+        },
+        {
+            Name  = "Test Water Pump",
+            Model = "models/props_phx/life_support/gen_water.mdl",
+            EntityClass = "resource_generator_water",
+            EntityDescription = "Water pump used for testing"
+        }
+
+    }
+    tool:AddRDEntities(generators, "Generators")
+
+    local storages = {
+        {
+            Name  = "Test Energy Storage",
+            Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+            EntityClass = "resource_storage_energy",
+            EntityDescription = "Test energy storage device"
+        },
+        {
+            Name  = "Test Oxygen generator",
+            Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+            EntityClass = "resource_storage_oxygen",
+            EntityDescription = "Test oxygen storage device"
+        },
+        {
+            Name  = "Test Water Storage",
+            Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+            EntityClass = "resource_storage_water",
+            EntityDescription = "Test water storage device"
+        },
+        {
+            Name  = "Test Blackhole Storage",
+            Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+            EntityClass = "resource_storage_blackhole",
+            EntityDescription = "Test energy/oxygen/water storage device"
+        }
+    }
+    tool:AddRDEntities(storages, "Storage")
+end)
 
 
 
