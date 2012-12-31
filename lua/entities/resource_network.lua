@@ -17,17 +17,26 @@ function ENT:Draw()
 	local Vector = Vector
 	local cam = cam
 	local surface = surface
-	local pos = self:GetPos()
-	local pos = Vector(pos.x, pos.y, pos.z)
+	local pos = self:LocalToWorld(Vector(-7.120728,4.200194,-1.212406))
+	--DebugMessage(tostring(pos))
 	local angle = self:GetAngles()
-	cam.Start3D2D(pos,angle,1)
+	cam.Start3D2D(pos,angle,0.05) -- Fiddle with 1 quite a bit
+		--Draw the baseframe:
 		surface.SetDrawColor(0,0,0,255)
-		surface.DrawRect( 0, 0, 100, 100 )
+		surface.DrawRect( 0, 0, 285, 167 )  -- 167 seems to be the apprioximate height of the ipad at its current stage of dev
 
-	--[[
+
+		--Sample Text
 		surface.SetDrawColor(155,155,155,255)
-		surface.DrawRect( textStartPos, 0, -5, 675 )
-		surface.DrawRect( textStartPos, 0, 1250, -5 )
+		surface.SetFont("DermaDefault") --For custom fonts: http://wiki.garrysmod.com/page/Talk:Libraries/surface/SetFont and surface.CreateFont (see wikik or sb4_ls_spawner
+		surface.SetTextPos( 100, 100 ) -- As the func name. Set's the pos for all DrawTexts coming up:
+	    surface.SetTextColor( Color(255,0,0) )
+		surface.DrawText( "IT\"S GERRY!" )    --For some reason this doesn't work. I think it's a size iissue and creating a custom font for a sample code seems pointless.
+
+		--Enjoy the surface library Radon!
+
+	      --[[
+	    surface.DrawRect( textStartPos, 0, 1250, -5 )
 		surface.DrawRect( textStartPos, 675, 1250, -5 )
 		surface.DrawRect( textStartPos+1250, 0, 5, 675 )  ]]--
 	--Stop rendering
@@ -55,25 +64,7 @@ function ENT:Initialize()
             phys:Wake()
         end
     end
-    if CLIENT then
-        local cam = cam
-        local surface = surface
-        local pos = self:GetPos()
-			local pos = pos - Vector(18,-10.5,2)
-        local angle = self:GetAngles()
-        local textStartPos = -12
-        cam.Start3D2D(pos,angle,0.05)
-            surface.SetDrawColor(0,0,0,255)
-            surface.DrawRect( textStartPos, 0, 1250, 675 )
 
-            surface.SetDrawColor(155,155,155,255)
-            surface.DrawRect( textStartPos, 0, -5, 675 )
-            surface.DrawRect( textStartPos, 0, 1250, -5 )
-            surface.DrawRect( textStartPos, 675, 1250, -5 )
-            surface.DrawRect( textStartPos+1250, 0, 5, 675 )
-        --Stop rendering
-        cam.End3D2D()
-    end
 end
 
 if SERVER then
