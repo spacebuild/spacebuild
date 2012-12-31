@@ -100,26 +100,17 @@ function C:getMaxResourceAmount(name, visited)
 end
 
 function C:link(container, dont_link)
-    if not container then return end
-    if container == self.network then return end
-    if not container.isA or not container:isA("ResourceContainer") then error("We can only link ResourceContainer (and derivate) classes") end
-    if not container:isA("ResourceNetwork") then
-        error("ResourceEntity: We only support links between entities and networks atm!")
-    end
-    -- Unlink from the old network
-    if self.network then
-       self.network:unlink(self)
-    end
-    -- Link to the new
-    self.network = container;
+    if not self:canLink(container) then return end
     if not dont_link then
         container:link(self, true);
     end
+    -- Link to the new
+    self.network = container;
     self.modified = CurTime()
 end
 
 function C:unlink(container, dont_unlink)
-    if not self.network then return end
+    if not self.network then return end -- no network, so no reason to unlink anything
     if not container then
         self.network:unlink(self, true)
     elseif self.network == container then
@@ -132,7 +123,7 @@ function C:unlink(container, dont_unlink)
 end
 
 function C:canLink(container)
-    return self ~= container and self:getNetwork() == nil and container.isA and container:isA("ResourceNetwork")
+    return container ~= nil and self ~= container and self:getNetwork() == nil and container.isA and container:isA("ResourceNetwork")
 end
 
 function C:getNetwork()

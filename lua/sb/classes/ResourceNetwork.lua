@@ -185,7 +185,7 @@ function C:unlink(container, dont_unlink)
 end
 
 function C:canLink(container)
-	return self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and container:getNetwork() == nil ))
+	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and container:getNetwork() == nil ))
 end
 
 function C:_sendContent(modified)
