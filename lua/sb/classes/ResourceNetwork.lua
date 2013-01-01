@@ -54,7 +54,8 @@ function C:init(entID)
 	funcRef.init(self, entID)
 	self.containers = {}
 	self.networks = {}
-	self.busy = false;
+	self.busy = false
+    self.canCheckConstraints = true
     self.containersmodified = CurTime()
     self.networksmodified = CurTime()
 end
@@ -187,6 +188,19 @@ end
 function C:canLink(container)
 	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and container:getNetwork() == nil ))
 end
+
+function C:canCheck()
+    return self.canCheckConstraints
+end
+
+function C:disableCheck()
+    self.canCheckConstraints = false
+end
+
+function C:enableCheck()
+    self.canCheckConstraints = true
+end
+
 
 function C:_sendContent(modified)
     if self.containersmodified > modified then
