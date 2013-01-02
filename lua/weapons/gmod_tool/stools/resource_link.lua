@@ -78,7 +78,7 @@ function TOOL:RightClick( trace )
     --if client exit
     if ( CLIENT ) then return true end
     -- If there's no physics object then we can't constraint it!
-    if ( SERVER and !util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone ) ) then return false end
+    if ( SERVER and not util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone ) ) then return false end
 
     --how many objects stored
     local iNum = self:NumObjects() + 1
