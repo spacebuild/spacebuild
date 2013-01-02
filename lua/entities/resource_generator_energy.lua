@@ -8,7 +8,7 @@ ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""
 
-ENT.Spawnable 		= false
+ENT.Spawnable 		= true
 ENT.AdminOnly 		= false
 
 local sb = sb
