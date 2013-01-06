@@ -118,11 +118,11 @@ local result = {
     testHasFailure = false,
 }
 function result:displayClassName()
-    print('>>>>>>>>> ' .. self.currentClassName)
+    print('------ Class Name: ' .. self.currentClassName)
 end
 
 function result:displayTestName()
-    print(">>> " .. self.currentTestName)
+    print("--- Test: " .. self.currentTestName)
 end
 
 function result:displayFailure(errorMsg)
@@ -136,7 +136,7 @@ end
 
 function result:displayOneFailedTest(failure)
     testName, errorMsg = unpack(failure)
-    print(">>> " .. testName .. " failed")
+    print("--- Test: " .. testName .. " failed")
     print(errorMsg)
 end
 

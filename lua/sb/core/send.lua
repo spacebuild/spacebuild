@@ -51,6 +51,7 @@ AddCSLuaFile("sb/classes/SpaceEnvironment.lua");
 
 --Send tests
 AddCSLuaFile("sb/tests/class.lua")
+AddCSLuaFile("sb/tests/quaternion.lua")
 
 
 
