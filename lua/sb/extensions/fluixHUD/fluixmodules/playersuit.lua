@@ -6,3 +6,4 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+fluix.modules.playerSuit = { Enabled = true }
