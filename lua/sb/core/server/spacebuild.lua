@@ -23,12 +23,13 @@ local time_to_next_ls_sync = 0.5
 local time_to_next_sb_sync = 3
 
 local time = 0;
-local function sendData()
+local function sbThink()
     time = CurTime();
     for _, ply in pairs(player.GetAll()) do
         --LS
         if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
             if ply.ls_suit then
+                ply.ls_suit:processEnvironment()
                 ply.ls_suit:send(ply.lastlsupdate or 0)
                 ply.lastlsupdate = time
             end
@@ -57,7 +58,7 @@ local function sendData()
         end
     end
 end
-hook.Add( "Think", "spacebuild_think", sendData )
+hook.Add( "Think", "spacebuild_think", sbThink)
 
 local function spawn( ply )
     if not ply.ls_suit or not ply.ls_suit.reset then
@@ -178,13 +179,17 @@ end
 hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
 
 
-local invalidclasses= {}
-invalidclasses["func_door"] = true
+local ignoredClasses= {}
+ignoredClasses["func_door"] = true
 
 function sb.isValidSBEntity(ent)
    return  IsValid(ent)
            and not ent:IsWorld()
            and IsValid(ent:GetPhysicsObject())  -- only valid physics
            and not ent.NoGrav -- ignore entities that mentioned they want to be ignored
-           and not invalidclasses[ent:GetClass()]  -- ignore certain types of entities
+           and not ignoredClasses[ent:GetClass()]  -- ignore certain types of entities
+end
+
+function sb.registerIgnoredEntityClass(class)
+   ignoredClasses[class] = true
 end

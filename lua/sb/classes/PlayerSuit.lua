@@ -57,6 +57,10 @@ function C:getActive()
     return self.active
 end
 
+function C:isActive()
+    return self:getActive()
+end
+
 function C:setOxygen(oxygen)
     self.oxygen = oxygen
     self.modified = CurTime()
@@ -90,6 +94,18 @@ end
 
 function C:getTemperature()
    return self.temperature
+end
+
+function C:processEnvironment()
+   if self:isActive() then
+       if sb.isSBMap() then
+           local env = self:getEnvironment()
+           local oxygenrequired = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
+
+       end
+   else
+
+   end
 end
 
 function C:send(modified)

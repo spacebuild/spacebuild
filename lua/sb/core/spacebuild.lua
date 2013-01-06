@@ -107,6 +107,10 @@ function sb.getEnvironment(id)
     return core.environments[id]
 end
 
+function sb.onSBMap()
+   return table.Count(core.environments) > 0
+end
+
 function sb.getSpace()
    return space
 end

@@ -5,20 +5,20 @@
 -- Time: 02:03
 -- To change this template use File | Settings | File Templates.
 --
-
-
-TestQuats = {} --class
 local print = print
 local pairs = pairs
 local ipairs = ipairs
 
+TestQuats = {} --class
+
+
 local checkComponents = function (q,data)
     local n = 0
-    for k, v in ipairs({q.w,q,i,q.j,q.k}) do
+    for k, v in ipairs({q.w,q.i,q.j,q.k}) do
         if data[k] == v then n = n + 1 end
     end
-    if n >= 4 then return true
-    end
+    if n >= 4 then return true end
+    return false
 end
 
 -- Any test functions should start with test :/
@@ -28,9 +28,6 @@ function TestQuats:setUp()
     -- tests can share initialisations
 
     require("quaternion")
-    local print = print
-    local pairs = pairs
-    local ipairs = ipairs
 
 
 end
@@ -58,16 +55,18 @@ end
 function TestQuats:testUnm()
     -- Checks if unary minus does infact work :D
     local q = quaternion.create(2,3,5,7) -- Primes hehe
-    local q = -q
+    local nq = -q
     assert(q)
-    assertEquals( checkComponents(-q,{-2,-3,-5,-7}), true)
+    assert(nq)
+    assertEquals( checkComponents(nq,{-2,-3,-5,-7}), true)
+    assertEquals( checkComponents(-nq,{q.w,q.i,q.j,q.k}), true)
 end
 
 function TestQuats:testToString()
     -- See if printing would work
     local q = quaternion.create(1,3,3,7) -- L337
     assert(q)
-    assertEquals( tostring(q), "(1+3i+3j+7k)")
+    assertEquals( tostring(q), "(1.000000+3.000000i+3.000000j+7.000000k)")
 end
 
 function TestQuats:testScalarMult()

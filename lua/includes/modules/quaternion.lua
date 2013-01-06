@@ -16,6 +16,9 @@ local setmetatable = setmetatable
 local type = type
 local string = string
 
+local ipairs = ipairs
+local pcall = pcall
+
 local sin = math.sin
 local cos = math.cos
 local acos = math.acos
@@ -26,6 +29,8 @@ local deg = math.deg
 
 local nlog = math.log
 local exp = math.exp
+
+local print = MsgN
 
 module("quaternion")  -- Define as a module after getting all the variable from global namespace that we need.
 
@@ -50,10 +55,10 @@ local setmetatable = setmetatable
 
 local newQuat = function( w, i, j, k )     --Generic Builder
     local args = {w,i,j,k}
-    local status, err, q = pcall( function()
+    local status, err = pcall( function()
 
         for k,v in ipairs(args) do
-            if type(v) ~= "number" then error({msg = "One of the arguements was not a number"})end
+            if type(v) ~= "number" then error("One of the arguements was not a number") end
         end
 
         local q = setmetatable({},quat) --inherit quat methods and metamethods
@@ -61,15 +66,14 @@ local newQuat = function( w, i, j, k )     --Generic Builder
         q.i = i or 0
         q.j = j or 0
         q.k = k or 0
-
         return q
 
     end )
 
     if status == false and err then
-        print(err.msg)
-    elseif status == true and not err and q then
-        return q
+        print(err)
+    elseif status == true and err then
+        return err
     end
 
 end
@@ -87,15 +91,16 @@ end
 
 -- Unary Minus
 function quat:__unm()
+    print("calling unm")
     return newQuat(-self.w,-self.i,-self.j,-self.k)
 end
 
 function quat:__tostring()
-    return string.format("(%f+%fi+%fj+%fk)",self.r,self.i,self.j,self.k)
+    return string.format("(%f+%fi+%fj+%fk)",self.w,self.i,self.j,self.k)
 end
 
 -- Multiplying q1 with q2 applies the rotation q2 to q1
-function quat:__mul(q1,q2)
+function quat.__mul(q1,q2)
 
     if type(q1) == "number" then
         return newQuat(
@@ -127,7 +132,7 @@ function quat:__mul(q1,q2)
 
 end
 
-function quat:__div(q1,q2)          -- FINE I added it ok?
+function quat.__div(q1,q2)          -- FINE I added it ok?
 
     if type(q1) == "number" then
         return newQuat(
