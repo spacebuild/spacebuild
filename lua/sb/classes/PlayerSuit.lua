@@ -23,6 +23,7 @@ local net = net
 local C = CLASS
 local sb = sb;
 local core = sb.core
+local const = sb.core.const
 
 function C:init(ply)
     self.ply = ply
@@ -96,12 +97,19 @@ function C:getTemperature()
    return self.temperature
 end
 
+local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp
+
 function C:processEnvironment()
    if self:isActive() then
-       if sb.isSBMap() then
-           local env = self:getEnvironment()
-           local oxygenrequired = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
+       env = self:getEnvironment()
+       req_oxygen = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
+       if sb.isSBMap() and env then
+          env_temperature =  env:getTemperature(self.ply);
+          suit_temp = self:getTemperature()
+          if suit_temp ~= env_temperature then
+              --const.SUIT_THERMAL_CONDUCTIVITY
 
+          end
        end
    else
 

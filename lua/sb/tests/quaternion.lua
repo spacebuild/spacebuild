@@ -5,6 +5,9 @@
 -- Time: 02:03
 -- To change this template use File | Settings | File Templates.
 --
+
+AddCSLuaFile()
+
 local print = print
 local pairs = pairs
 local ipairs = ipairs
