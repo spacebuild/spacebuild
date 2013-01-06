@@ -39,8 +39,8 @@ end
 if sb.core.config and sb.core.config.testMode then
 	require("luaunit")
 	local fls = sb.core.wrappers:Find("file","sb/tests/*.lua", "LUA")
-	for k, v in ipairs(fls) do
-		print("Running test:", v)
+	for _, v in ipairs(fls) do
+		MsgN("Running test:", v)
 		include("sb/tests/" .. v)
 	end
 	luaunit.run() -- will execute all tests

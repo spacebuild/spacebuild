@@ -52,7 +52,7 @@ net.Receive("SBMU", function(bitsreceived)
     local type = core.net.readTiny()
     local class = net.ReadString()
     local id = net.ReadString()
-    local mod_object = nil
+    local mod_object
     if type == 1 then
         mod_object = sb.getEnvironmentColor(mod_object)
     elseif type == 2 then

@@ -27,7 +27,7 @@ local file, sb = file, sb
 function sb.core.wrappers:Find(typeof,...)
 
 	local typeof = typeof
-	local files, dirs = {}
+	local files, dirs = {}, {}
 
 	files, dirs = file.Find(...)
 

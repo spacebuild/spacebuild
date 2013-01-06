@@ -49,7 +49,7 @@ end
 --========================================Draw text for an indicator================================================
 function fluix.DrawText( PosX, PosY, Size, text, text_color, font_type )
     PosX, PosY = PosX * math.Clamp(fluix.Smooth+0.4,0,1), PosY --* fluix.Smooth
-    Size = Size --* fluix.Smooth
+    --Size = Size * fluix.Smooth
 
     if not font_type then surface.SetFont( "HudHintTextSmall" )
     else surface.SetFont( font_type ) end
@@ -131,7 +131,7 @@ function fluix.RenderLoop( )
 
         if fluix.Init == false and LocalPlayer():Alive() then
         local function hidehud(name)
-            for k, v in pairs { "CHudHealth",  "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo" } do
+            for _, v in pairs { "CHudHealth",  "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo" } do
                 if name == v then return false end;
             end
         end

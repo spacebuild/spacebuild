@@ -167,7 +167,7 @@ function TOOL:LeftClick(trace)
 
 	undo.Create( "Undo Generators" )
 	undo.AddEntity( ent)
-	undo.AddEntity( const )
+	--undo.AddEntity( const )
 	undo.SetPlayer( ply )
 	undo.Finish()
 	ply:AddCleanup( "Generators", ent )
