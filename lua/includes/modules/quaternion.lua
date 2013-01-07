@@ -54,11 +54,15 @@ local math = math
 local setmetatable = setmetatable
 
 local newQuat = function( w, i, j, k )     --Generic Builder
-    local args = {w,i,j,k}
+
     local status, err = pcall( function()
 
-        for k,v in ipairs(args) do
-            if type(v) ~= "number" then error("One of the arguements was not a number") end
+        if type(i) == "Vector" then
+            i,j,k = i.x,i.y,i.z
+        else
+            for k,v in ipairs({w,i,j,k}) do
+                if type(v) ~= "number" then error("One of the arguements was not a number") end
+            end
         end
 
         local q = setmetatable({},quat) --inherit quat methods and metamethods
@@ -80,10 +84,6 @@ end
 
 -- Constructor
 function create(w, i, j, k)
-    for k,v in ipairs({w,i,j,k}) do
-        if type(v) ~= "number" then return false end
-    end
-
     return newQuat(w,i,j,k)
 end
 
@@ -208,7 +208,7 @@ end
 
 function quat:fromEuler(p,y,r) -- should make a quat from a euler angle. Just make a zero quat, (0,0,0,0) then run this on it with your angles.
 
-    local q1= toRadians(p)
+    local p = toRadians(p)
     local y = toRadians(y)
     local r = toRadians(r)
 

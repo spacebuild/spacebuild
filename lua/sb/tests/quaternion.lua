@@ -45,6 +45,14 @@ function TestQuats:testZeroQaut()
     assertEquals( checkComponents(q,{0,0,0,0}), true )
 end
 
+function TestQuats:testScalarVectorQuatCreation()
+    -- Test if we can make a quat from a scalar and a gmod vector
+    local q = quaternion.create(10,Vector(5,6,7))
+    assert(q)
+    assertEquals( checkComponents(q,{10,5,6,7}), true )
+end
+
+
 function TestQuats:testNil()
     -- Nil Test, checks to see if nil will break the constructor
     local q = quaternion.create(nil,nil,nil,nil) -- LOL
@@ -88,7 +96,7 @@ function TestQuats:testQuatMult()
 
     -- Test both ways as quaternion multiplication is non-commutative
     local result = q*e
-    local testData1 = {-82,22,6,22}
+    local testData1 = {-82,22,6,22 }
     assertEquals( checkComponents(result,testData1), true)
 
     local result = e*q
@@ -100,19 +108,19 @@ end
 function TestQuats:testQuatAddSub()
     -- See if we can add or sub a number to a scalar and quats ofc
     local q = quaternion.create(1,2,3,4)
-    local q = q+5
-    assertEquals( checkComponents(q,{6,7,8,9}), true)
+    local result = q+5
+    assertEquals( checkComponents(result,{6,2,3,4}), true)
 
-    local q = q-5
+    local q = result-5
     assertEquals( checkComponents(q,{1,2,3,4}), true)
 
-    local q = 5-q
-    assertEquals( checkComponents(q,{4,2,3,4}), true)
+    local result = 5-q
+    assertEquals( checkComponents(result,{4,2,3,4}), true)
 
     local q = quaternion.create(4,5,6,7)
     local e = quaternion.create(3,4,5,6)
     local result = q+e
-    assertEquals( checkComponents(result,{7,9,11,13}))
+    assertEquals( checkComponents(result,{7,9,11,13}), true)
 
     local result = q-e
     assertEquals( checkComponents(result,{1,1,1,1}), true)
