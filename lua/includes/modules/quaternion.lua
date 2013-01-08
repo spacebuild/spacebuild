@@ -140,10 +140,10 @@ function quat.__mul(q1,q2)
             -- Multiplication is done by splitting a Quat into it's scalar and vector, then multiplying separately.
 
             -- Which results in this utter mess :P
-            (q1.w * q2.w) - (q1.i * q2.i) - (q1.j * q2.j) - (q1.j * q2.k), --w
-            (q1.w * q2.i) + (q1.i * q2.w) + (q1.j * q2.k) - (q1.j * q2.j), --i
-            (q1.w * q2.j) + (q1.j * q2.w) + (q1.j * q2.i) - (q1.i * q2.k), --j
-            (q1.w * q2.k) + (q1.j * q2.w) + (q1.i * q2.j) - (q1.j * q2.i)  --k
+            (q1.w * q2.w) - (q1.i * q2.i) - (q1.j * q2.j) - (q1.k * q2.k), --w
+            (q1.w * q2.i) + (q1.i * q2.w) + (q1.j * q2.k) - (q1.k * q2.j), --i
+            (q1.w * q2.j) + (q1.j * q2.w) + (q1.k * q2.i) - (q1.i * q2.k), --j
+            (q1.w * q2.k) + (q1.k * q2.w) + (q1.i * q2.j) - (q1.j * q2.i)  --k
 
 
         )
@@ -162,19 +162,13 @@ function quat.__div(q1,q2)          -- FINE I added it ok?
     elseif type(q2) == "number" then
         return newQuat(
 
-            q1.w/q2, q1.i/q2, g1.j/q2, g1.k/q2
+            q1.w/q2, q1.i/q2, q1.j/q2, q1.k/q2
 
         )
     elseif q1.type == "quaternion" and q2.type == "quaternion" then -- Yay Quat division, my fav
 
-        local l = q1:getNormSq()
+        return q1*q2:conj()
 
-        return newQuat(
-            ( q1.w * q2.w + q1.i * q2.i + q1.i * q2.j + q1.i * q2.k)/l,
-            (-q1.w * q2.i + q1.i * q2.w - q1.i * q2.k + q1.i * q2.j)/l,
-            (-q1.w * q2.j + q1.i * q2.w - q1.i * q2.i + q1.i * q2.k)/l,
-            (-q1.w * q2.k + q1.i * q2.w - q1.i * q2.j + q1.i * q2.i)/l
-        )
     end
 end
 
@@ -202,7 +196,7 @@ function quat:normalise() --Standard
     self.j = self.j/mag
     self.k = self.k/mag
 
-    return true
+    return self
 
 end
 
