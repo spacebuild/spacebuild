@@ -18,7 +18,8 @@ TestQuats = {} --class
 local checkComponents = function (q,data)
     local n = 0
     for k, v in ipairs({q.w,q.i,q.j,q.k}) do
-        if data[k] == v then n = n + 1 end
+        -- The 0.0000005 is a tolerance range for floating point issues.
+        if data[k] == v or ( data[k] + 0.0000005 > v and data[k] - 0.0000005 < v )then n = n + 1 end
     end
     if n >= 4 then return true end
     return false
@@ -29,10 +30,7 @@ end
 function TestQuats:setUp()
     -- this function is run before each test, so that multiple
     -- tests can share initialisations
-
     require("quaternion")
-
-
 end
 
 function TestQuats:tearDown()
@@ -47,6 +45,14 @@ function TestQuats:testZeroQaut()
     assert(q)
     assertEquals( checkComponents(q,{0,0,0,0}), true )
 end
+
+function TestQuats:testScalarVectorQuatCreation()
+    -- Test if we can make a quat from a scalar and a gmod vector
+    local q = quaternion.create(10,Vector(5,6,7))
+    assert(q)
+    assertEquals( checkComponents(q,{10,5,6,7}), true )
+end
+
 
 function TestQuats:testNil()
     -- Nil Test, checks to see if nil will break the constructor
@@ -77,10 +83,13 @@ function TestQuats:testScalarMult()
     local q = quaternion.create(3,5,8,13)
     assert(q)
     local q = 5*q
+    assert(q)
     assertEquals( checkComponents(q,{15,25,40,65}), true)
 
     local q = quaternion.create(3,5,8,13)
+    assert(q)
     local q = q*5
+    assert(q)
     assertEquals( checkComponents(q,{15,25,40,65}), true)
 end
 
@@ -89,13 +98,18 @@ function TestQuats:testQuatMult()
     local q = quaternion.create(2,4,6,8)
     local e = quaternion.create(1,3,5,7)
 
+    assert(q)
+    assert(e)
+
     -- Test both ways as quaternion multiplication is non-commutative
     local result = q*e
-    local testData1 = {-82,22,6,22}
+    assert(result)
+    local testData1 = {-96.000000,12.000000,12.000000,24.000000}
     assertEquals( checkComponents(result,testData1), true)
 
     local result = e*q
-    local testData2 = {-80,20,12,16 }
+    assert(result)
+    local testData2 = {-96.000000,8.000000,20.000000,20.000000}
     assertEquals( checkComponents(result, testData2), true)
 
 end
@@ -103,38 +117,73 @@ end
 function TestQuats:testQuatAddSub()
     -- See if we can add or sub a number to a scalar and quats ofc
     local q = quaternion.create(1,2,3,4)
-    local q = q+5
-    assertEquals( checkComponents(q,{6,7,8,9}), true)
+    assert(q)
+    local result = q+5
+    assertEquals( checkComponents(result,{6,2,3,4}), true)
 
-    local q = q-5
+    local q = result-5
+    assert(q)
     assertEquals( checkComponents(q,{1,2,3,4}), true)
 
-    local q = 5-q
-    assertEquals( checkComponents(q,{4,2,3,4}), true)
+    local result = 5-q
+    assert(result)
+    assertEquals( checkComponents(result,{4,2,3,4}), true)
 
     local q = quaternion.create(4,5,6,7)
     local e = quaternion.create(3,4,5,6)
+    assert(q)
+    assert(e)
     local result = q+e
-    assertEquals( checkComponents(result,{7,9,11,13}))
+    assert(result)
+    assertEquals( checkComponents(result,{7,9,11,13}), true)
 
     local result = q-e
+    assert(result)
     assertEquals( checkComponents(result,{1,1,1,1}), true)
 
     local result = e-q
+    assert(result)
     assertEquals( checkComponents(result,{-1,-1,-1,-1}), true)
 
 end
 
 function TestQuats:testQuatDiv()
     -- See if we can divide number by quat, quat by number, and quat by quat.
+    local q = quaternion.create(3,6,9,12)
+    local e = quaternion.create(3,3,3,3)
+
+    assert(q)
+    assert(e)
+    local testObj = q*e:conj() -- as q.q^-1 =1 therefore 1/q = q^-1. Thus q/e = q.1/e = q.e^-1
+    assert(testObj)
+    assertEquals( checkComponents(q/e,{90.000000,18.000000,0.000000,36.000000}), true)
 
 end
+
+function TestQuats:testNormalise()
+    -- Normalise and test if correct
+    local q = quaternion.create(5,9,16,29)
+    assert(q)
+    local result = q:normalise()
+    assert(result)
+    assertEquals( checkComponents(result,{0.144157,0.259483,0.461304,0.836113}), true)
+
+end
+
 
 function TestQuats:testQuatComplexConjugate()
     -- Check if we invert correctly
     -- Since we invert the vector and not the scalar be careful
     local q = quaternion.create(5,6,7,8)
-    assertEquals( checkComponents(q:conj(),{5,-6,-7,-8}) or checkComponents(q:conj(),{-5,6,7,8}), true)
+    assert(q)
+    assertEquals( checkComponents(q:conj(),{5,-6,-7,-8}), true)
+
+    local q2 = q:conj()
+    assert(q2)
+    q:normalise()
+    q2:normalise()
+    assertEquals( checkComponents(q*q2,{1.000000,0.000000,0.000000,0.000000}), true)
+
 end
 
 

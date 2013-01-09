@@ -54,11 +54,15 @@ local math = math
 local setmetatable = setmetatable
 
 local newQuat = function( w, i, j, k )     --Generic Builder
-    local args = {w,i,j,k}
+
     local status, err = pcall( function()
 
-        for k,v in ipairs(args) do
-            if type(v) ~= "number" then error("One of the arguements was not a number") end
+        if type(i) == "Vector" then
+            i,j,k = i.x,i.y,i.z
+        else
+            for k,v in ipairs({w,i,j,k}) do
+                if type(v) ~= "number" then error("One of the arguements was not a number") end
+            end
         end
 
         local q = setmetatable({},quat) --inherit quat methods and metamethods
@@ -80,10 +84,6 @@ end
 
 -- Constructor
 function create(w, i, j, k)
-    for k,v in ipairs({w,i,j,k}) do
-        if type(v) ~= "number" then return false end
-    end
-
     return newQuat(w,i,j,k)
 end
 
@@ -140,10 +140,10 @@ function quat.__mul(q1,q2)
             -- Multiplication is done by splitting a Quat into it's scalar and vector, then multiplying separately.
 
             -- Which results in this utter mess :P
-            (q1.w * q2.w) - (q1.i * q2.i) - (q1.j * q2.j) - (q1.j * q2.k), --w
-            (q1.w * q2.i) + (q1.i * q2.w) + (q1.j * q2.k) - (q1.j * q2.j), --i
-            (q1.w * q2.j) + (q1.j * q2.w) + (q1.j * q2.i) - (q1.i * q2.k), --j
-            (q1.w * q2.k) + (q1.j * q2.w) + (q1.i * q2.j) - (q1.j * q2.i)  --k
+            (q1.w * q2.w) - (q1.i * q2.i) - (q1.j * q2.j) - (q1.k * q2.k), --w
+            (q1.w * q2.i) + (q1.i * q2.w) + (q1.j * q2.k) - (q1.k * q2.j), --i
+            (q1.w * q2.j) + (q1.j * q2.w) + (q1.k * q2.i) - (q1.i * q2.k), --j
+            (q1.w * q2.k) + (q1.k * q2.w) + (q1.i * q2.j) - (q1.j * q2.i)  --k
 
 
         )
@@ -162,19 +162,13 @@ function quat.__div(q1,q2)          -- FINE I added it ok?
     elseif type(q2) == "number" then
         return newQuat(
 
-            q1.w/q2, q1.i/q2, g1.j/q2, g1.k/q2
+            q1.w/q2, q1.i/q2, q1.j/q2, q1.k/q2
 
         )
     elseif q1.type == "quaternion" and q2.type == "quaternion" then -- Yay Quat division, my fav
 
-        local l = q1:getNormSq()
+        return q1*q2:conj()
 
-        return newQuat(
-            ( q1.w * q2.w + q1.i * q2.i + q1.i * q2.j + q1.i * q2.k)/l,
-            (-q1.w * q2.i + q1.i * q2.w - q1.i * q2.k + q1.i * q2.j)/l,
-            (-q1.w * q2.j + q1.i * q2.w - q1.i * q2.i + q1.i * q2.k)/l,
-            (-q1.w * q2.k + q1.i * q2.w - q1.i * q2.j + q1.i * q2.i)/l
-        )
     end
 end
 
@@ -202,13 +196,13 @@ function quat:normalise() --Standard
     self.j = self.j/mag
     self.k = self.k/mag
 
-    return true
+    return self
 
 end
 
 function quat:fromEuler(p,y,r) -- should make a quat from a euler angle. Just make a zero quat, (0,0,0,0) then run this on it with your angles.
 
-    local q1= toRadians(p)
+    local p = toRadians(p)
     local y = toRadians(y)
     local r = toRadians(r)
 
