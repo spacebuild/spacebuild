@@ -103,7 +103,7 @@ function C:getResourcePercentage(resource)
    local am = self:getResourceAmount(resource)
     local max = self:getMaxAmountOfResources()
     if max > 0 then
-        return math.Round((min/max) * 10000)/100 --round to 2 decimals after the ,
+        return math.Round((am/max) * 10000)/100 --round to 2 decimals after the ,
     end
     return 0
 end
@@ -151,6 +151,10 @@ function C:convertResource(from, to, amount)
         not_enough = amount
     end
     return not_enough
+end
+
+function C:hasEnoughOxygen()
+   return self:getResourcePercentage("oxygen") > 5
 end
 
 -- Environment checking

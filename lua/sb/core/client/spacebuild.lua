@@ -34,7 +34,6 @@ net.Receive("SBRPU", function(bitsreceived)
         sb.callOnLeaveEnvironmentHook(env, nil)
         sb.callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
     end
-    PrintTable(suit)
 end)
 
 net.Receive("SBEU", function(bitsreceived)

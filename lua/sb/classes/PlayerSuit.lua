@@ -92,6 +92,7 @@ end
 
 function C:setTemperature(temperature)
    self.temperature = temperature
+   self.modified = CurTime()
 end
 
 function C:getTemperature()
@@ -104,13 +105,15 @@ end
 
 function C:setBreath(breath)
     self.breath = breath
+    self.modified = CurTime()
 end
 
 local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
 
 function C:processEnvironment()
+   env = self:getEnvironment()
    if self:isActive() then
-       env = self:getEnvironment()
+
        req_oxygen = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
        if sb.onSBMap() and env then
            env_temperature =  env:getTemperature(self.ply);
@@ -132,50 +135,77 @@ function C:processEnvironment()
                self:setEnergy(self:getEnergy() - req_energy)
                used_energy = true
            elseif self:getEnergy() > 0 then
-               self:TakeDamage( (req_energy - self:getEnergy()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self.ply:TakeDamage( (req_energy - self:getEnergy()) * sb.core.const.BASE_LS_DAMAGE , 0 )
                self:setEnergy(0)
                used_energy = true
            else
-               self:TakeDamage( req_energy * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self.ply:TakeDamage( req_energy * sb.core.const.BASE_LS_DAMAGE , 0 )
            end
        end
        if req_coolant > 0 then
            if self:getCoolant() >= req_coolant then
                self:setCoolant(self:getCoolant() - req_coolant)
            elseif self:getCoolant() > 0 then
-               self:TakeDamage( (req_coolant - self:getCoolant()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self.ply:TakeDamage( (req_coolant - self:getCoolant()) * sb.core.const.BASE_LS_DAMAGE , 0 )
                self:setCoolant(0)
            else
-               self:TakeDamage( req_coolant * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self.ply:TakeDamage( req_coolant * sb.core.const.BASE_LS_DAMAGE , 0 )
            end
        end
        if req_oxygen > 0 then
            if self:getOxygen() >= req_oxygen then
                self:setOxygen(self:getOxygen() - req_oxygen)
+               if self:getBreath() <= 100 - req_oxygen then
+                   self:setBreath(self:getBreath() + req_oxygen)
+               elseif self:getBreath() < 100 then
+                   self:setBreath(100)
+               end
            elseif self:getOxygen() > 0 then
-               self:TakeDamage( (req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self.ply:TakeDamage( (req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               if self:getBreath() <= 100 - (req_oxygen - self:getOxygen()) then
+                   self:setBreath(self:getBreath() + (req_oxygen - self:getOxygen()))
+               elseif self:getBreath() < 100 then
+                   self:setBreath(100)
+               end
                self:setOxygen(0)
            else
-               self:TakeDamage( req_oxygen * sb.core.const.BASE_LS_DAMAGE , 0 )
+               if self:getBreath() >= req_oxygen then
+                   self:setBreath(self:getBreath() - req_oxygen)
+               elseif self:getBreath() > 0 then
+                   self:setBreath(0)
+               else
+                   self:TakeDamage( req_oxygen * sb.core.const.BASE_LS_DAMAGE , 0 )
+               end
            end
        end
        if self:getOxygen() < 100 and used_energy then
            self.ply:EmitSound( "common/warning.wav" )
        end
    else
-      if self.ply:WaterLevel()  == 3 then
+      if self.ply:WaterLevel()  == 3 or (sb.onSBMap() and env and not env:hasEnoughOxygen()) then
          if self:getBreath() >=5 then
              self:setBreath(self:getBreath() - 5)
          elseif self:getBreath() > 0 then
             self:setBreath(0)
          else
-             self:TakeDamage( sb.core.const.BASE_LS_DAMAGE , 0 )
+             self.ply:TakeDamage( sb.core.const.BASE_LS_DAMAGE , 0 )
          end
       else
           if self:getBreath() <= 95 then
               self:setBreath(self:getBreath() + 5)
           elseif self:getBreath() < 100 then
               self:setBreath(100)
+          end
+      end
+      if sb.onSBMap() and env then
+          env_temperature =  env:getTemperature(self.ply);
+          req_energy = sb.core.util.calculateEnergyRequired(env_temperature) - const.BASE_ENERGY_USE
+          req_coolant = sb.core.util.calculateCoolantRequired(env_temperature) - const.BASE_COOLANT_USE
+          if req_energy > 0 then
+              self.ply:TakeDamage( req_energy * sb.core.const.BASE_LS_DAMAGE , 0 )
+          end
+          if req_coolant > 0 then
+              self.ply:TakeDamage( req_coolant * sb.core.const.BASE_LS_DAMAGE , 0 )
           end
       end
    end
@@ -185,6 +215,7 @@ function C:send(modified)
     if self.modified > modified then
         net.Start("SBRPU")
         core.net.writeBool(self.active)
+        core.net.writeTiny(self.breath)
         if self.active then
             core.net.writeShort(self.oxygen)
             core.net.writeShort(self.coolant)
@@ -202,6 +233,7 @@ function C:send(modified)
 end
 
 function C:receive()
+    self.breath = core.net.readTiny()
     self.active = core.net.readBool()
     if self.active then
         self.oxygen = core.net.readShort()

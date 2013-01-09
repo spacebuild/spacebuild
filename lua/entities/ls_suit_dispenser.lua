@@ -2,8 +2,8 @@ AddCSLuaFile( )
 
 DEFINE_BASECLASS( "base_resource_generator" )
 
-ENT.PrintName		= "Energy Generator"
-ENT.Author			= "SnakeSVx & Radon"
+ENT.PrintName		= "LS Suit Dispenser"
+ENT.Author			= "SnakeSVx"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""
