@@ -87,6 +87,19 @@ function sb.getResourceInfoFromName(name)
    return core.resources_names_table[name]
 end
 
+local coolant_resources
+function sb.getRegisteredCoolants()
+    if coolant_resources == nil then
+        coolant_resources = {}
+        for k, v in pairs(core.resources_names_table) do
+           if v:hasAttribute("COOLANT") then
+              table.insert(coolant_resources , v:getName())
+           end
+        end
+    end
+    return coolant_resources
+end
+
 function sb.addEnvironment(environment)
    core.environments[environment:getID()] = environment
 end

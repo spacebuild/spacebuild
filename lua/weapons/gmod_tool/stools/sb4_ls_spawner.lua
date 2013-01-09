@@ -134,9 +134,9 @@ function TOOL:LeftClick(trace)
 	local ply = self:GetOwner()
 	local Ang = trace.HitNormal:Angle()
 	Ang.pitch = Ang.pitch + 90
-	DebugMessage("Freeze: "..freeze)
-	DebugMessage("Weld: "..weld)
-	DebugMessage("WorldWeld"..world)
+	MsgN("Freeze: "..freeze)
+	MsgN("Weld: "..weld)
+	MsgN("WorldWeld"..world)
 
 	local ent = ents.Create(class)
 	ent:SetModel(model)
@@ -146,22 +146,22 @@ function TOOL:LeftClick(trace)
 	--ent:SetModel(model) --Don't set the model again, it messes up physics
 	--ent:PhysWake()
 	local phys = ent:GetPhysicsObject()
-	DebugMessage("IsValid: "..tostring(trace.Entity:IsValid())	)
+	MsgN("IsValid: "..tostring(trace.Entity:IsValid())	)
 	if (tonumber(weld) == 1 ) then
 		if (tonumber(world) == 1 ) then
 			local const = constraint.Weld(ent, trace.Entity,0, trace.PhysicsBone, 0, true )
 			--Weld to props and World
 		elseif (trace.Entity:IsValid() == true) then
-			DebugMessage("IsValid: "..tostring(trace.Entity:IsValid())	)
-			DebugMessage("Welding to Props Not world" )
+			MsgN("IsValid: "..tostring(trace.Entity:IsValid())	)
+			MsgN("Welding to Props Not world" )
 			local const = constraint.Weld(ent, trace.Entity,0, trace.PhysicsBone, 0, true )
 			--Weld to props but not to world
 		end
 	end
-	DebugMessage("Freeze " .. freeze)
+	MsgN("Freeze " .. freeze)
 
 	if ( tonumber(freeze) == 1 ) then
-		DebugMessage("Freezing")
+		MsgN("Freezing")
 		phys:EnableMotion( false );
 	end
 
@@ -282,7 +282,7 @@ function TOOL.BuildCPanel(panel)
 			grid:SetRowHeight( 64 )
 			PrintTable(v)
 			for i,j in pairs(generators[k]) do
-				DebugMessage( j.Model )
+				MsgN( j.Model )
 				local icon = vgui.Create( "SpawnIcon", panel )
 				icon:SetModel( j.Model )
 				icon:SetToolTip( j.EntityDescription )
@@ -293,7 +293,7 @@ function TOOL.BuildCPanel(panel)
 				--TODO: Fill this out.
 					RunConsoleCommand( "sb4_ls_spawner_model", j.Model )
 					RunConsoleCommand( "sb4_ls_spawner_class", j.EntityClass )
-					DebugMessage("SpawnIcon Pressed")
+					MsgN("SpawnIcon Pressed")
 					RunConsoleCommand( "sb4_ls_spawner_description", j.EntityDescription )
 					BigIcon:SetModel( j.Model )
 					Title:SetFont("WorkshopLarge")
@@ -322,7 +322,7 @@ function TOOL.BuildCPanel(panel)
 			grid:SetColWide( 64 )
 			grid:SetRowHeight( 64 )
 			for i,j in pairs(generators[k]) do
-				DebugMessage( j.Model )
+				MsgN( j.Model )
 				local icon = vgui.Create( "SpawnIcon", panel )
 				icon:SetModel( j.Model )
 				icon:SetToolTip( j.EntityDescription )
@@ -333,7 +333,7 @@ function TOOL.BuildCPanel(panel)
 				--TODO: Fill this out.
 					RunConsoleCommand( "sb4_ls_spawner_model", j.Model )
 					RunConsoleCommand( "sb4_ls_spawner_class", j.EntityClass )
-					DebugMessage("SpawnIcon Pressed")
+					MsgN("SpawnIcon Pressed")
 					RunConsoleCommand( "sb4_ls_spawner_description", j.EntityDescription )
 					BigIcon:SetModel( j.Model )
 					Title:SetText( j.Name )
@@ -354,7 +354,7 @@ function TOOL.BuildCPanel(panel)
 
 	InfoFrame:SetParent(panel)
 	InfoFrame:SetSize( panel:GetWide() - 10, 400 )
-	DebugMessage("Width: "..panel:GetWide() - 10)
+	MsgN("Width: "..panel:GetWide() - 10)
 	InfoFrame:DockMargin( 10 , 2, 10 , 2 )
 	InfoFrame:Dock( TOP )
 

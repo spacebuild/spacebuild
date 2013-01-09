@@ -34,6 +34,7 @@ function C:reset()
     self.environment = nil
     self.active = false
     self.oxygen = 0
+    self.breath = 100
     self.coolant = 0
     self.energy = 0
     self.temperature = 293
@@ -97,22 +98,86 @@ function C:getTemperature()
    return self.temperature
 end
 
-local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp
+function C:getBreath()
+   return self.breath
+end
+
+function C:setBreath(breath)
+    self.breath = breath
+end
+
+local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
 
 function C:processEnvironment()
    if self:isActive() then
        env = self:getEnvironment()
        req_oxygen = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
-       if sb.isSBMap() and env then
-          env_temperature =  env:getTemperature(self.ply);
-          suit_temp = self:getTemperature()
-          if suit_temp ~= env_temperature then
-              --const.SUIT_THERMAL_CONDUCTIVITY
-
-          end
+       if sb.onSBMap() and env then
+           env_temperature =  env:getTemperature(self.ply);
+           suit_temp = self:getTemperature()
+           if suit_temp ~= env_temperature then
+               diff_temp = env_temperature - suit_temp
+               diff_temp = math.floor(diff_temp * const.SUIT_THERMAL_CONDUCTIVITY)
+               suit_temp = suit_temp + diff_temp
+               self:setTemperature(suit_temp)
+           end
+           req_energy = sb.core.util.calculateEnergyRequired(suit_temp)
+           req_coolant = sb.core.util.calculateCoolantRequired(suit_temp)
+       else
+           req_energy = sb.core.util.calculateEnergyRequired(const.TEMPERATURE_SAFE_MIN)
+           req_coolant = 0 --sb.core.util.calculateCoolantRequired(const.TEMPERATURE_SAFE_MAX)
+       end
+       if req_energy > 0 then
+           if self:getEnergy() >= req_energy then
+               self:setEnergy(self:getEnergy() - req_energy)
+               used_energy = true
+           elseif self:getEnergy() > 0 then
+               self:TakeDamage( (req_energy - self:getEnergy()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self:setEnergy(0)
+               used_energy = true
+           else
+               self:TakeDamage( req_energy * sb.core.const.BASE_LS_DAMAGE , 0 )
+           end
+       end
+       if req_coolant > 0 then
+           if self:getCoolant() >= req_coolant then
+               self:setCoolant(self:getCoolant() - req_coolant)
+           elseif self:getCoolant() > 0 then
+               self:TakeDamage( (req_coolant - self:getCoolant()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self:setCoolant(0)
+           else
+               self:TakeDamage( req_coolant * sb.core.const.BASE_LS_DAMAGE , 0 )
+           end
+       end
+       if req_oxygen > 0 then
+           if self:getOxygen() >= req_oxygen then
+               self:setOxygen(self:getOxygen() - req_oxygen)
+           elseif self:getOxygen() > 0 then
+               self:TakeDamage( (req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE , 0 )
+               self:setOxygen(0)
+           else
+               self:TakeDamage( req_oxygen * sb.core.const.BASE_LS_DAMAGE , 0 )
+           end
+       end
+       if self:getOxygen() < 100 and used_energy then
+           self.ply:EmitSound( "common/warning.wav" )
        end
    else
-
+      if self.ply:WaterLevel()  == 3 then
+         if self:getBreath() >=5 then
+             self:setBreath(self:getBreath() - 5)
+         elseif self:getBreath() > 0 then
+            self:setBreath(0)
+         else
+             self:TakeDamage( sb.core.const.BASE_LS_DAMAGE , 0 )
+         end
+      else
+          if self:getBreath() <= 95 then
+              self:setBreath(self:getBreath() + 5)
+          elseif self:getBreath() < 100 then
+              self:setBreath(100)
+          end
+      end
    end
 end
 

@@ -13,3 +13,5 @@ const.AMOUNTOFDEGREES_DIVIDER = 20
 -- http://www.roymech.co.uk/Related/Thermos/Thermos_HeatTransfer.html
 const.SUIT_THERMAL_CONDUCTIVITY = 0.25  -- used in the formula to calculate temperature changess (Nylon 6)
 
+const.BASE_LS_DAMAGE = 2
+
