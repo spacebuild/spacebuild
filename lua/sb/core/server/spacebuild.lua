@@ -19,42 +19,60 @@ local sb = sb
 local timer = timer
 local core = sb.core;
 local time_to_next_rd_sync = 1
-local time_to_next_ls_sync = 0.5
+local time_to_next_ls_sync = 0.2
+local time_to_next_ls_env = 1
 local time_to_next_sb_sync = 3
 
 local time = 0;
 local function sbThink()
     time = CurTime();
     for _, ply in pairs(player.GetAll()) do
-        --LS
-        if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
-            if ply.ls_suit then
-                ply.ls_suit:processEnvironment()
-                ply.ls_suit:send(ply.lastlsupdate or 0)
-                ply.lastlsupdate = time
-            end
-        end
         -- RD
         if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
-            for k, v in pairs(core.device_table) do
-                v:send(ply.lastrdupdate or 0, ply)
+            if ply.lastrdupdate then
+                for k, v in pairs(core.device_table) do
+                    v:send(ply.lastrdupdate, ply)
+                end
+                ply.lastrdupdate = time
+            else
+                ply.lastrdupdate = 0
             end
-            ply.lastrdupdate = time
         end
         -- SB
         if not ply.lastsbupdate or ply.lastsbupdate + time_to_next_sb_sync < time then
-            for k, v in pairs(core.device_table) do
-                v:send(ply.lastsbupdate or 0, ply)
+            if ply.lastsbupdate then
+                for k, v in pairs(core.device_table) do
+                    v:send(ply.lastsbupdate, ply)
+                end
+                for _, v in pairs(core.mod_tables) do
+                    for _, w in pairs(v) do
+                        w:send(ply.lastsbupdate, ply)
+                    end
+                end
+                for _, v in pairs(core.environments) do
+                    v:send(ply.lastsbupdate, ply)
+                end
+                ply.lastsbupdate = time
+            else
+                ply.lastsbupdate = 0
             end
-            for _, v in pairs(core.mod_tables) do
-                for _, w in pairs(v) do
-                    w:send(ply.lastsbupdate or 0, ply)
+        end
+        --LS
+        if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
+            if ply.ls_suit then
+                ply.ls_suit:processEnvironment()
+                ply.lastlsEnvupdate = time
+            end
+        end
+        if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
+            if ply.ls_suit then
+                if ply.lastlsupdate then
+                    ply.ls_suit:send(ply.lastlsupdate)
+                    ply.lastlsupdate = time
+                else
+                    ply.lastlsupdate = 0
                 end
             end
-            for _, v in pairs(core.environments) do
-                v:send(ply.lastsbupdate or 0, ply)
-            end
-            ply.lastsbupdate = time
         end
     end
 end

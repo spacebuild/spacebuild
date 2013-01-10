@@ -23,7 +23,8 @@ local sbhelper = sbhelper
 local include = include
 
 -- SB specific
-local VERSION = 0.1
+local VERSION = 4.00
+local VERSION_AS_STRING = "4.0.0b1"
 
 sb = {} --Define the global SB table
 local sb = sb -- Make it local for a little bit of better performance
@@ -44,6 +45,10 @@ sb.core.net = {}
 
 function sb.getVersion()
     return VERSION;
+end
+
+function sb.getVersionAsString()
+    return VERSION_AS_STRING;
 end
 
 include("sb/core/wrappers.lua");

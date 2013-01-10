@@ -28,6 +28,7 @@ local const = sb.core.const
 function C:init(ply)
     self.ply = ply
     self:reset()
+    self.firstSync = true
 end
 
 function C:reset()
@@ -35,6 +36,7 @@ function C:reset()
     self.active = false
     self.oxygen = 0
     self.breath = 100
+    self.maxbreath = 100
     self.coolant = 0
     self.energy = 0
     self.temperature = 293
@@ -108,6 +110,10 @@ function C:setBreath(breath)
     self.modified = CurTime()
 end
 
+function C:getMaxBreath()
+   return self.maxbreath;
+end
+
 local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
 
 function C:processEnvironment()
@@ -155,17 +161,17 @@ function C:processEnvironment()
        if req_oxygen > 0 then
            if self:getOxygen() >= req_oxygen then
                self:setOxygen(self:getOxygen() - req_oxygen)
-               if self:getBreath() <= 100 - req_oxygen then
+               if self:getBreath() <= self:getMaxBreath() - req_oxygen then
                    self:setBreath(self:getBreath() + req_oxygen)
-               elseif self:getBreath() < 100 then
-                   self:setBreath(100)
+               elseif self:getBreath() < self:getMaxBreath() then
+                   self:setBreath(self:getMaxBreath())
                end
            elseif self:getOxygen() > 0 then
                self.ply:TakeDamage( (req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE , 0 )
-               if self:getBreath() <= 100 - (req_oxygen - self:getOxygen()) then
+               if self:getBreath() <= self:getMaxBreath() - (req_oxygen - self:getOxygen()) then
                    self:setBreath(self:getBreath() + (req_oxygen - self:getOxygen()))
-               elseif self:getBreath() < 100 then
-                   self:setBreath(100)
+               elseif self:getBreath() < self:getMaxBreath() then
+                   self:setBreath(self:getMaxBreath())
                end
                self:setOxygen(0)
            else
@@ -174,7 +180,8 @@ function C:processEnvironment()
                elseif self:getBreath() > 0 then
                    self:setBreath(0)
                else
-                   self:TakeDamage( req_oxygen * sb.core.const.BASE_LS_DAMAGE , 0 )
+                   self.ply:EmitSound( "Player.DrownStart"  )
+                   self.ply:TakeDamage( req_oxygen * sb.core.const.BASE_LS_DAMAGE , 0 )
                end
            end
        end
@@ -188,13 +195,14 @@ function C:processEnvironment()
          elseif self:getBreath() > 0 then
             self:setBreath(0)
          else
+             self.ply:EmitSound( "Player.DrownStart"  )
              self.ply:TakeDamage( sb.core.const.BASE_LS_DAMAGE , 0 )
          end
       else
-          if self:getBreath() <= 95 then
+          if self:getBreath() <= self:getMaxBreath() - 5 then
               self:setBreath(self:getBreath() + 5)
-          elseif self:getBreath() < 100 then
-              self:setBreath(100)
+          elseif self:getBreath() < self:getMaxBreath() then
+              self:setBreath(self:getMaxBreath())
           end
       end
       if sb.onSBMap() and env then
@@ -213,6 +221,7 @@ end
 
 function C:send(modified)
     if self.modified > modified then
+        self.firstSync = false
         net.Start("SBRPU")
         core.net.writeBool(self.active)
         core.net.writeTiny(self.breath)

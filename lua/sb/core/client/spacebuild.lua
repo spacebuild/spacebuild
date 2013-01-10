@@ -89,6 +89,13 @@ local function RenderEffects()
 end
 hook.Add("RenderScreenspaceEffects","SBRenderEnvironmentEffects", RenderEffects)
 
+local function InitGame()
+    chat.AddText( Color( 255,255,255 ), "Welcome to ", Color( 100,255,100 ), "Spacebuild " .. sb.getVersionAsString() )
+    chat.AddText( Color( 255,255,255 ), "Visit ", Color( 100,255,100 ), "http://www.snakesvx.net/", Color( 255,255,255 ), " to dicuss spacebuild or introduce yourself." )
+    chat.AddText( Color( 255,255,255 ), "Visit ", Color( 100,255,100 ), "https://github.com/SnakeSVx/spacebuild", Color( 255,255,255 ), " for the latest version or to report bugs." )
+end
+hook.Add("Initialize","SBClientInit", InitGame)
+
 
 sb.addOnEnterEnvironmentHook("SB_EnterMessage", function(environment)
     if environment:hasName() then
@@ -96,8 +103,8 @@ sb.addOnEnterEnvironmentHook("SB_EnterMessage", function(environment)
     end
 end)
 
-sb.addOnLeaveEnvironmentHook("SB_LeaveMessage", function(environment)
+--[[sb.addOnLeaveEnvironmentHook("SB_LeaveMessage", function(environment)
     if environment:hasName() then
         chat.AddText( Color( 255,255,255 ), "Leaving ", Color( 100,255,100 ), environment:getName() )
     end
-end)
+end)]]

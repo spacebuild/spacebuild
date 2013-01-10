@@ -94,7 +94,7 @@ function TOOL:AddRDEntities( entTables,type )
         }
         highest = highest + 1
     end
-    PrintTable(generators)
+    --PrintTable(generators)
 end
 
 
