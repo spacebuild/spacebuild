@@ -1,5 +1,6 @@
 fluix.modules.BottomPanel = { Enabled = true }
 fluix.PlayerHealth, fluix.HealthS, fluix.PlayerArmor, fluix.ArmorS = 0, 0, 0, 0
+fluix.BreathS = 0
 fluix.Ammo1, fluix.Ammo1S, fluix.Ammo1Total, fluix.Ammo1Max, fluix.Ammo2 = 0, 0, 0, 0, 0
 fluix.Weapon = LocalPlayer()
 fluix.WeaponTable = { }
@@ -8,6 +9,8 @@ fluix.WeaponS = 0
 
 --========================================Draw a bar indicator======================================================
 local drawBarIndicator = function ( PosX, PosY, SizeX, SizeY, Value, Max, bg_color, value_color )
+    value_color = Color(value_color.r, value_color.g, value_color.b, value_color.a)
+    bg_color = Color(bg_color.r, bg_color.g, bg_color.b, bg_color.a)
     PosX, PosY = PosX * math.Clamp(fluix.Smooth+0.4,0,1), PosY --* fluix.Smooth
     SizeX, SizeY = SizeX * math.Clamp(fluix.Smooth+0.4,0,1), SizeY --* fluix.Smooth
     Value = Value * fluix.Smooth2
@@ -39,7 +42,9 @@ end
 
 --======================================== Display Ammo ======================================================
 
+
 local drawAmmo = function (PosX,PosY,SizeX,SizeY, bg_color, value_color)
+
 
     drawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.Ammo1S * fluix.WeaponS, 0, fluix.Ammo1Max ), fluix.Ammo1Max, bg_color, value_color )
 
@@ -53,48 +58,75 @@ local drawAmmo = function (PosX,PosY,SizeX,SizeY, bg_color, value_color)
 
 end
 
+local drawBreath = function(PosX, PosY, SizeX, SizeY)
+    rawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.Ammo1S * fluix.WeaponS, 0, fluix.Ammo1Max ), fluix.Ammo1Max, bg_color, value_color )
+
+end
+
 
 --=================================================================================================================
 
+local white, orange, red, bg = Color( 255, 255, 255, 240 ), Color( 255, 127, 36, 240 ), Color( 205, 51, 51, 240 ), Color( 50,50,50,220)
+local SizeX, SizeY, SizeY2, PosX, PosY, value_color, bg_color
 function fluix.modules.BottomPanel.Run( )
-	local SizeX, SizeY = 200, 48
-    local SizeY2 = SizeY + SizeY/4 -- Height of 1 section.
-    local PosX, PosY = 16, (ScrH() - SizeY2*2) - 20
+	SizeX, SizeY = 200, 48
+    SizeY2 = SizeY + SizeY/4 -- Height of 1 section.
+    PosX, PosY = 16, (ScrH() - SizeY2*3) - 20
 
 	--Check if player is alive.
 	if LocalPlayer():Alive() then
 		fluix.PlayerHealth = LocalPlayer():Health()
 		fluix.PlayerArmor = LocalPlayer():Armor()
-	end
-	
-	
-	--Draw Health bar.
+    end
+
+
+    -- Draw Breath bar
+
+    local suit = sb.getPlayerSuit()
+    if suit then
+        fluix.BreathS = fluix.Smoother( suit:getBreath(), fluix.BreathS, 0.15 )
+        if suit:getBreath() > 30 then
+            value_color = white
+        elseif suit:getBreath() > 15 then
+            value_color = orange
+        else
+            value_color = red
+        end
+        bg_color = bg
+        drawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.BreathS, 0, 100 ), 100, bg_color, value_color )
+
+        SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
+        fluix.DrawText( PosX, PosY + SizeY, SizeX, string.format( "Breath: %i%s", math.Round( fluix.BreathS ) * fluix.Smooth2, "%" ), value_color )
+    end
+
+    --Draw Health bar.
 	fluix.HealthS = fluix.Smoother( fluix.PlayerHealth, fluix.HealthS, 0.15 )
 
-    local SizeY = SizeY2
+    SizeY = SizeY2
+    PosY = PosY + SizeY
 
-    local value_color = Color( 255, 255, 255, 240 )
-    local bg_color = Color( 50,50,50,220)
+    value_color = white
+    bg_color = bg
 	drawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.HealthS, 0, 100 ), 100, bg_color, value_color )
 
-    local SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
+    SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
 	fluix.DrawText( PosX, PosY + SizeY, SizeX, string.format( "Health: %i%s", math.Round( fluix.HealthS ) * fluix.Smooth2, "%" ), value_color )
 
-    local SizeY = SizeY2 -- Restore variable to height of health bar for next armour section.
+    SizeY = SizeY2 -- Restore variable to height of health bar for next armour section.
 
 	--Draw Armor bar.
 	PosY = PosY + SizeY
 	fluix.ArmorS = fluix.Smoother( fluix.PlayerArmor, fluix.ArmorS, 0.15 )
 
-    local value_color = Color( 255, 255, 255, 240 )
-    local bg_color = Color( 50,50,50,220)
+    value_color = white
+    bg_color = bg
 	drawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.ArmorS, 0, 100 ), 100, bg_color, value_color )
 
-    local SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
+    SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
 	fluix.DrawText( PosX, PosY + SizeY, SizeX, string.format( "Armor: %i%s", math.Round( fluix.ArmorS ) * fluix.Smooth2, "%" ), value_color )
 	
 	
-	
+
 	--Draw primary ammo bar.
 	PosX, PosY = ScrW() - 216, ScrH() - 144 --Absolute values as SizeX varies with ammo, and can't be calculated previously.
 	
@@ -142,8 +174,8 @@ function fluix.modules.BottomPanel.Run( )
 	--Shows the ammo bar.
 	if fluix.WeaponS > 0 then
 		SizeX = SizeX * fluix.WeaponS --THIS IS A BLOODY SMOOTHER
-        local value_color = Color( 255, 255, 255, 240 )
-        local bg_color = Color( 50,50,50,220)
+        value_color = white
+        bg_color = bg
 
         value_color.a = value_color.a * fluix.WeaponS
         bg_color.a = value_color.a * fluix.WeaponS

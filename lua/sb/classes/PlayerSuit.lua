@@ -242,8 +242,8 @@ function C:send(modified)
 end
 
 function C:receive()
-    self.breath = core.net.readTiny()
     self.active = core.net.readBool()
+    self.breath = core.net.readTiny()
     if self.active then
         self.oxygen = core.net.readShort()
         self.coolant = core.net.readShort()
