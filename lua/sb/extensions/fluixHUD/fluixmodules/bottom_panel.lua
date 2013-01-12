@@ -1,8 +1,8 @@
 local class = sb.core.class
-
+local fluix = fluix
 fluix.modules.BottomPanel = { Enabled = true }
 fluix.PlayerHealth, fluix.HealthS, fluix.PlayerArmor, fluix.ArmorS = 0, 0, 0, 0
-fluix.BreathS = 0
+fluix.BreathS, fluix.MaxBreathS = 0, 100
 fluix.Ammo1, fluix.Ammo1S, fluix.Ammo1Total, fluix.Ammo1Max, fluix.Ammo2 = 0, 0, 0, 0, 0
 fluix.Weapon = LocalPlayer()
 fluix.WeaponTable = { }
@@ -60,11 +60,6 @@ local drawAmmo = function (PosX,PosY,SizeX,SizeY, bg_color, value_color)
 
 end
 
-local drawBreath = function(PosX, PosY, SizeX, SizeY)
-    rawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.Ammo1S * fluix.WeaponS, 0, fluix.Ammo1Max ), fluix.Ammo1Max, bg_color, value_color )
-
-end
-
 local function CopyColor(color)
    return Color(color.r, color.g, color.b, color.a)
 end
@@ -72,56 +67,80 @@ end
 
 --=================================================================================================================
 
+local function getBreath(component)
+    return fluix.BreathS
+end
+
+local function getMaxBreath(component)
+    return fluix.MaxBreathS
+end
+
 local white, orange, red, bg = Color( 255, 255, 255, 240 ), Color( 255, 127, 36, 240 ), Color( 205, 51, 51, 240 ), Color( 50,50,50,220)
-local SizeX, SizeY, SizeY2, PosX, PosY, value_color, bg_color, breathBar
-function fluix.modules.BottomPanel.Run( )
-	SizeX, SizeY = 200, 48
-    SizeY2 = SizeY + SizeY/4 -- Height of 1 section.
-    PosX, PosY = 16, (ScrH() - SizeY2*3) - 20
-
-	--Check if player is alive.
-	if LocalPlayer():Alive() then
-		fluix.PlayerHealth = LocalPlayer():Health()
-		fluix.PlayerArmor = LocalPlayer():Armor()
+local function getColorBasedOnValue(component, value)
+    if value > 30 then
+        return  white
+    elseif value > 15 then
+        return orange
     end
+    return red
+end
 
+local function getColorWhite()
+   return white
+end
 
-    -- Draw Breath bar
+local function getHealth()
+   return fluix.HealthS
+end
 
-    local suit = sb.getPlayerSuit()
+local function getMaxHealth()
+   return 100
+end
+
+local function getArmor()
+   return fluix.ArmorS
+end
+
+local function getMaxArmor()
+   return 100
+end
+
+local suit, hudPanel
+function fluix.modules.BottomPanel.Run( )
+    --Check if player is alive.
+    if LocalPlayer():Alive() then
+        fluix.PlayerHealth = LocalPlayer():Health()
+        fluix.PlayerArmor = LocalPlayer():Armor()
+    end
+    suit = sb.getPlayerSuit()
+
+    -- Calculate breath
+
     if suit then
         fluix.BreathS = fluix.Smoother( suit:getBreath(), fluix.BreathS, 0.15 )
-        if not breathBar then
-           breathBar = class.create("HudBarIndicator", PosX, PosY, SizeX, SizeY2, "Breath", function() return fluix.BreathS end, function()  if suit:getBreath() > 30 then return  white elseif suit:getBreath() > 15 then return orange else return red  end  end, function() return suit:getMaxBreath() end)
-        end
-        breathBar:render()
+        fluix.MaxBreathS = suit:getMaxBreath()
     end
 
-    --Draw Health bar.
-	fluix.HealthS = fluix.Smoother( fluix.PlayerHealth, fluix.HealthS, 0.15 )
+    --Calculate Health.
+    fluix.HealthS = fluix.Smoother( fluix.PlayerHealth, fluix.HealthS, 0.15 )
 
-    SizeY = SizeY2
-    PosY = PosY + SizeY
+    --Calculate Armor.
+    fluix.ArmorS = fluix.Smoother( fluix.PlayerArmor, fluix.ArmorS, 0.15 )
 
-    value_color = CopyColor(white)
-    bg_color = bg
-	drawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.HealthS, 0, 100 ), 100, bg_color, value_color )
+    if not hudPanel then
+       hudPanel = class.create("HudPanel", 16, (ScrH() - 72*3) - 20, false);
+       hudPanel:addChild(class.create("HudBarIndicator", 0, 0, hudPanel, 200, 72, "Breath: %i%s", getBreath, getColorBasedOnValue, getMaxBreath))
+       hudPanel:addChild(class.create("HudBarIndicator", 0, 72, hudPanel, 200, 72, "Health: %i%s", getHealth, getColorWhite, getMaxHealth ))
+       hudPanel:addChild(class.create("HudBarIndicator", 0, 72 * 2, hudPanel, 200, 72, "Armor: %i%s", getArmor, getColorWhite, getMaxArmor ))
+    end
+    hudPanel:render()
 
-    SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
-	fluix.DrawText( PosX, PosY + SizeY, SizeX, string.format( "Health: %i%s", math.Round( fluix.HealthS ) * fluix.Smooth2, "%" ), value_color )
 
-    SizeY = SizeY2 -- Restore variable to height of health bar for next armour section.
+	local SizeX, SizeY = 200, 48
+    local SizeY2 = SizeY + SizeY/4 -- Height of 1 section.
+    local PosX, PosY = 16, (ScrH() - SizeY2*3) - 20
 
-	--Draw Armor bar.
-	PosY = PosY + SizeY
-	fluix.ArmorS = fluix.Smoother( fluix.PlayerArmor, fluix.ArmorS, 0.15 )
 
-    value_color = CopyColor(white)
-    bg_color = bg
-	drawBarIndicator( PosX, PosY, SizeX, SizeY, math.Clamp( fluix.ArmorS, 0, 100 ), 100, bg_color, value_color )
-
-    SizeY = SizeY - SizeY/8 -- Place text in middle of this new gap
-	fluix.DrawText( PosX, PosY + SizeY, SizeX, string.format( "Armor: %i%s", math.Round( fluix.ArmorS ) * fluix.Smooth2, "%" ), value_color )
 	
 	
 
@@ -172,13 +191,8 @@ function fluix.modules.BottomPanel.Run( )
 	--Shows the ammo bar.
 	if fluix.WeaponS > 0 then
 		SizeX = SizeX * fluix.WeaponS --THIS IS A BLOODY SMOOTHER
-        value_color =  CopyColor(white)
-        bg_color = bg
 
-        value_color.a = value_color.a * fluix.WeaponS
-        bg_color.a = value_color.a * fluix.WeaponS
-
-        drawAmmo(PosX,PosY,SizeX,SizeY,bg_color,value_color)
+        drawAmmo(PosX,PosY,SizeX,SizeY,CopyColor(bg),CopyColor(white))
 
 	end
 	

@@ -51,6 +51,7 @@ AddCSLuaFile("sb/classes/LegacyPlanet.lua");
 AddCSLuaFile("sb/classes/SpaceEnvironment.lua");
 AddCSLuaFile("sb/classes/HudComponent.lua")
 AddCSLuaFile("sb/classes/HudBarIndicator.lua")
+AddCSLuaFile("sb/classes/HudPanel.lua")
 
 
 

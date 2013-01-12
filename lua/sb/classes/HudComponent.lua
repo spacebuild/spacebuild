@@ -13,12 +13,43 @@ function C:isA(className)
     return className == "HudComponent"
 end
 
-function C:init(x, y)
+function C:init(x, y, parent)
     self.x = x
     self.y = y
     self.FrameDelay = 0
     self.value = 0
     self.smooth = 0.15
+    self.parent = parent
+end
+
+function C:getParent()
+   return self.parent
+end
+
+function C:setParent(parent)
+   self.parent = parent
+end
+
+function C:getX()
+   if self.parent then
+      return self.parent:getX() + self.x
+   end
+   return self.x
+end
+
+function C:setX(x)
+   self.x = x
+end
+
+function C:getY()
+    if self.parent then
+       return self.parent:getY() + self.y
+    end
+    return self.y
+end
+
+function C:setY(y)
+    self.y = y
 end
 
 function C:render()
@@ -30,10 +61,7 @@ function C:smoothValue(newValue)
 end
 
 function C:getPlayer()
-   if not self.ply then
-     self.ply = LocalPlayer()
-   end
-   return self.ply
+   return LocalPlayer()
 end
 
 function C:copyColor(color)
@@ -52,5 +80,4 @@ function C:DrawText( x, y, width, text, text_color, font_type )
     surface.SetTextColor( text_color )
     surface.SetTextPos( x, y )
     surface.DrawText( text )
-
 end
