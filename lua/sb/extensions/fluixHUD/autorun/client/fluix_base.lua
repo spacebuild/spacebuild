@@ -3,9 +3,9 @@ include(sb.core.extensions:getBasePath().."autorun/shared/functions.lua")
 
 fluix = fluix or {}
 
-PrintTable(fluix)
+--PrintTable(fluix)
 
-MsgN("USING DEBUG, STANDBY"..debug.getinfo(1).source)
+--MsgN("USING DEBUG, STANDBY"..debug.getinfo(1).source)
 
 fluix.Smooth, fluix.Smooth2, fluix.FrameDelay, fluix.Imported, fluix.Init = 0, 0, 0, false, false
 local pi = 3.14159265--358979323863

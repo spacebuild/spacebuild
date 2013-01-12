@@ -49,6 +49,8 @@ AddCSLuaFile("sb/classes/LegacyBloomInfo.lua");
 AddCSLuaFile("sb/classes/LegacyColorInfo.lua");
 AddCSLuaFile("sb/classes/LegacyPlanet.lua");
 AddCSLuaFile("sb/classes/SpaceEnvironment.lua");
+AddCSLuaFile("sb/classes/HudComponent.lua")
+AddCSLuaFile("sb/classes/HudBarIndicator.lua")
 
 
 
