@@ -16,10 +16,28 @@ end
 function C:init(x, y)
     self.x = x
     self.y = y
+    self.FrameDelay = 0
+    self.value = 0
+    self.smooth = 0.15
 end
 
 function C:render()
+    self.FrameDelay = math.Clamp( FrameTime(), 0.0001, 10 )
+end
 
+function C:smoothValue(newValue)
+   self.value = self.value + ( newValue - self.value ) * self.FrameDelay / self.smooth
+end
+
+function C:getPlayer()
+   if not self.ply then
+     self.ply = LocalPlayer()
+   end
+   return self.ply
+end
+
+function C:copyColor(color)
+    return Color(color.r, color.g, color.b, color.a)
 end
 
 function C:DrawText( x, y, width, text, text_color, font_type )

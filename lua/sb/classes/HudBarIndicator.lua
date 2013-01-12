@@ -27,11 +27,13 @@ function C:init(x, y, width, height, name, valueLambda, colorLambda, maxValueLam
     self.getMaxValue = maxValueLambda or function() return 100 end
 end
 
-local value_color, bg_color, value, maxvalue
+local oldRender, value_color, bg_color, maxvalue = C.render
 function C:render()
+    oldRender(self)
+    if not self:getPlayer():Alive() then return end
     value_color = self:getColor()
     bg_color = Color( 50,50,50,220)
-    value = self:getValue()
+    self:smoothValue(self:getValue())
     maxvalue = self:getMaxValue()
 
     surface.SetDrawColor( value_color )           -- Outline of Background of the bar
@@ -41,7 +43,7 @@ function C:render()
     surface.DrawRect( self.x + self.width * 0.05, self.y  + self.height * 0.2, self.width * 0.9, self.height * 0.4 )
 
     surface.SetDrawColor( value_color )          --Value of Bar
-    surface.DrawRect( self.x + self.width * 0.05, self.y  + self.height * 0.2, self.width * ( value / maxvalue ) * 0.9, self.height * 0.4 )
+    surface.DrawRect( self.x + self.width * 0.05, self.y  + self.height * 0.2, self.width * ( self.value / maxvalue ) * 0.9, self.height * 0.4 )
 
-    self:DrawText( self.x, self.y + (self.height - self.height/8), self.width, string.format( "Breath: %i%s", math.Round( value ), "%" ), value_color )
+    self:DrawText( self.x, self.y + (self.height - self.height/8), self.width, string.format( "Breath: %i%s", math.Round( self.value ), "%" ), value_color )
 end

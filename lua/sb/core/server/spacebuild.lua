@@ -65,7 +65,7 @@ local function sbThink()
             end
         end
         if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
-            if ply.ls_suit then
+            if ply.ls_suit and ply:Alive() then
                 if ply.lastlsupdate then
                     ply.ls_suit:send(ply.lastlsupdate)
                     ply.lastlsupdate = time

@@ -92,7 +92,7 @@ function fluix.modules.BottomPanel.Run( )
     if suit then
         fluix.BreathS = fluix.Smoother( suit:getBreath(), fluix.BreathS, 0.15 )
         if not breathBar then
-           breathBar = class.create("HudBarIndicator", PosX, PosY, SizeX, SizeY, "Breath", function() return fluix.BreathS end, function()  if suit:getBreath() > 30 then return  CopyColor(white) elseif suit:getBreath() > 15 then return CopyColor(orange) else return CopyColor(red)  end  end, function() return suit:getMaxBreath() end)
+           breathBar = class.create("HudBarIndicator", PosX, PosY, SizeX, SizeY2, "Breath", function() return fluix.BreathS end, function()  if suit:getBreath() > 30 then return  white elseif suit:getBreath() > 15 then return orange else return red  end  end, function() return suit:getMaxBreath() end)
         end
         breathBar:render()
     end

@@ -117,6 +117,7 @@ end
 local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
 
 function C:processEnvironment()
+    if not self.ply:Alive() then return end
    env = self:getEnvironment()
    if self:isActive() then
 
