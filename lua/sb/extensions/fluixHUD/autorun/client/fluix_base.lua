@@ -124,7 +124,7 @@ function fluix.RenderLoop( )
 
         for k, v in pairs( fluix.modules ) do
             if v.Enabled and v.Enabled == true then
-            v:Run()
+                v:Run()
             end
         end
 

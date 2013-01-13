@@ -30,9 +30,10 @@ function C:render()
     oldRender(self)
     if not self:getPlayer():Alive() then return end
     self:smoothValue(self:getValue())
-    value_color = self:getColor(self.value)
-    bg_color = Color( 50,50,50,220)
     maxvalue = self:getMaxValue()
+    value_color = self:getColor(self.value, maxvalue)
+    bg_color = Color( 50,50,50,220)
+
 
     surface.SetDrawColor( value_color )           -- Outline of Background of the bar
     surface.DrawOutlinedRect( self:getX() + self.width * 0.05, self:getY() + self.height * 0.2, self.width * 0.9, self.height * 0.4 )

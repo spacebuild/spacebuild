@@ -10,3 +10,4 @@ local sb = sb
 
 include(sb.core.extensions:getBasePath().."fluixmodules/bottom_panel.lua")
 include(sb.core.extensions:getBasePath().."fluixmodules/top_panel.lua")
+include(sb.core.extensions:getBasePath().."fluixmodules/playersuit.lua")
