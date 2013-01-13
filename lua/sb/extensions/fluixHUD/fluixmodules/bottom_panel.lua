@@ -105,8 +105,39 @@ local function getMaxArmor()
    return 100
 end
 
-local suit, hudPanel
+local function getAmmo()
+    return fluix.Ammo1
+end
+
+local function getMaxAmmo()
+    return fluix.Ammo1Max
+end
+
+local suit, hudLeftBottomPanel, hudBottomRightPanel
 function fluix.modules.BottomPanel.Run( )
+    -- Define Hud Components
+    if not hudLeftBottomPanel then
+        hudLeftBottomPanel = class.create("HudPanel", 16, (ScrH() - 72*3) - 20, false);
+        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 0, 200, 72, "Breath: %i%s", getBreath, getColorBasedOnValue, getMaxBreath))
+        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 72, 200, 72, "Health: %i%s", getHealth, getColorWhite, getMaxHealth ))
+        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 72 * 2, 200, 72, "Armor: %i%s", getArmor, getColorWhite, getMaxArmor ))
+    end
+    if not hudBottomRightPanel then
+        hudBottomRightPanel = class.create("HudPanel", ScrW() - 216, ScrH() - 144, false)
+        local indicator = class.create("HudBarIndicator", 0, 0, 200, 48, nil, getAmmo, getColorWhite, getMaxAmmo)
+        local oldRender = indicator.render
+        function indicator:render()
+            if fluix.WeaponS <= 0 then return end
+            oldRender(self)
+            self:DrawText( self:getX(), self:getY() + (self.height - self.height/8), self.width, string.format( "Ammo: %i Total: %i", self.value , fluix.Ammo1Total ), self:getColor() )
+            fluix.DrawText( self:getX(), self:getY() + self.height + self.height * 0.5, self.width, string.Right( string.format( "Alt: %i", fluix.Ammo2 ), self.width / 12 ), self:getColor(), "Default" )
+        end
+        hudBottomRightPanel:addChild(indicator)
+    end
+
+    -- Calculate values
+
+
     --Check if player is alive.
     if LocalPlayer():Alive() then
         fluix.PlayerHealth = LocalPlayer():Health()
@@ -127,26 +158,6 @@ function fluix.modules.BottomPanel.Run( )
     --Calculate Armor.
     fluix.ArmorS = fluix.Smoother( fluix.PlayerArmor, fluix.ArmorS, 0.15 )
 
-    if not hudPanel then
-       hudPanel = class.create("HudPanel", 16, (ScrH() - 72*3) - 20, false);
-       hudPanel:addChild(class.create("HudBarIndicator", 0, 0, hudPanel, 200, 72, "Breath: %i%s", getBreath, getColorBasedOnValue, getMaxBreath))
-       hudPanel:addChild(class.create("HudBarIndicator", 0, 72, hudPanel, 200, 72, "Health: %i%s", getHealth, getColorWhite, getMaxHealth ))
-       hudPanel:addChild(class.create("HudBarIndicator", 0, 72 * 2, hudPanel, 200, 72, "Armor: %i%s", getArmor, getColorWhite, getMaxArmor ))
-    end
-    hudPanel:render()
-
-
-	local SizeX, SizeY = 200, 48
-    local SizeY2 = SizeY + SizeY/4 -- Height of 1 section.
-    local PosX, PosY = 16, (ScrH() - SizeY2*3) - 20
-
-
-	
-	
-
-	--Draw primary ammo bar.
-	PosX, PosY = ScrW() - 216, ScrH() - 144 --Absolute values as SizeX varies with ammo, and can't be calculated previously.
-	
 	--Check if the weapon is valid.
 	fluix.Weapon = LocalPlayer():GetActiveWeapon()
 	fluix.Ammo1Total = fluix.Weapon:IsValid() and LocalPlayer():GetAmmoCount( fluix.Weapon:GetPrimaryAmmoType() ) or 0
@@ -174,9 +185,7 @@ function fluix.modules.BottomPanel.Run( )
 	elseif fluix.Weapon:IsValid() and ( fluix.Weapon:Clip1() > 0 or fluix.Ammo1Total > 0 ) then
 		fluix.Ammo1S = 0.15
 	end
-	
-	
-	
+
 	--Controller for showing the ammo bar.
 	if ( fluix.Ammo1Total > 0 or fluix.Ammo1S > 0.1 ) and fluix.WeaponS < 1 and fluix.Smooth >= 1 then
 		fluix.WeaponS = fluix.Smoother( 1.1, fluix.WeaponS, 0.15 )
@@ -186,14 +195,10 @@ function fluix.modules.BottomPanel.Run( )
 		fluix.WeaponS = 1
 	elseif fluix.WeaponS < 0 then
 		fluix.WeaponS = 0
-	end
-	
-	--Shows the ammo bar.
-	if fluix.WeaponS > 0 then
-		SizeX = SizeX * fluix.WeaponS --THIS IS A BLOODY SMOOTHER
+    end
 
-        drawAmmo(PosX,PosY,SizeX,SizeY,CopyColor(bg),CopyColor(white))
-
-	end
+    -- Render Hud Components
+    hudLeftBottomPanel:render()
+    hudBottomRightPanel:render()
 	
 end

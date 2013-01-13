@@ -15,8 +15,8 @@ function C:isA(className)
 end
 
 local oldInit = C.init
-function C:init(x, y, parent, width, height, format_string, valueLambda, colorLambda, maxValueLambda)
-    oldInit(self, x, y, parent)
+function C:init(x, y, width, height, format_string, valueLambda, colorLambda, maxValueLambda)
+    oldInit(self, x, y)
     self.width = width
     self.height = height
     self.getValue = valueLambda

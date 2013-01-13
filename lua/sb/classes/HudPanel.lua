@@ -16,8 +16,8 @@ function C:isA(className)
 end
 
 local oldInit = C.init
-function C:init(x, y, parent, drawPanel, width, height, backgroundColor)
-    oldInit(self, x, y, parent)
+function C:init(x, y, drawPanel, width, height, backgroundColor)
+    oldInit(self, x, y)
     self.children = {}
     self.drawPanel = drawPanel
     self.width = width

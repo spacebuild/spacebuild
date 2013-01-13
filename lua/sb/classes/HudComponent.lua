@@ -13,13 +13,13 @@ function C:isA(className)
     return className == "HudComponent"
 end
 
-function C:init(x, y, parent)
+function C:init(x, y)
     self.x = x
     self.y = y
     self.FrameDelay = 0
     self.value = 0
     self.smooth = 0.15
-    self.parent = parent
+    self.parent = nil
 end
 
 function C:getParent()
