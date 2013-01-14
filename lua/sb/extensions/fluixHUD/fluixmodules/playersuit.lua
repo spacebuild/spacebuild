@@ -10,7 +10,21 @@ local const = sb.core.const
 local fluix = fluix
 fluix.modules.playerSuit = { Enabled = true }
 
-local suitPanel, environmentPanel, suit
+local scrW, scrH, width, height, suitPanel, environmentPanel, suit = ScrW(), ScrH()
+if scrW > 1650 then
+    width  = 200
+elseif scrW > 1024 then
+    width = 150
+else
+    width = 100
+end
+
+if scrH > 800 then
+   height = 48
+else
+    height = 32
+end
+
 
 local white, orange, red, green, percent = Color( 255, 255, 255, 240 ), Color( 255, 127, 36, 240 ), Color( 205, 51, 51, 240), Color(51, 205, 51, 240)
 local function getColorBasedOnValue(component, value, maxvalue)
@@ -33,12 +47,12 @@ local function getColorBasedOnTemperature(component, value, maxvalue)
 end
 
 suitPanel = class.create("HudPanel", 16, 16, false);
-suitPanel:addChild(class.create("HudBarIndicator", 0, 0, 200, 48, "Oxygen: %i units", function() return suit:getOxygen() end, getColorBasedOnValue, function() return 2000 end))
-suitPanel:addChild(class.create("HudBarIndicator", 0, 48, 200, 48, "Coolant: %i units", function() return suit:getCoolant() end, getColorBasedOnValue,  function() return 2000 end))
-suitPanel:addChild(class.create("HudBarIndicator", 0, 96, 200, 48, "Energy: %i units", function() return suit:getEnergy() end, getColorBasedOnValue,  function() return 2000 end))
-suitPanel:addChild(class.create("HudBarIndicator", 0, 144, 200, 48, "Temperature: %iK", function() return suit:getTemperature() end, getColorBasedOnTemperature,  function() return 1000 end))
+suitPanel:addChild(class.create("HudBarIndicator", 0, 0, width, height, "Oxygen: %i units", function() return suit:getOxygen() end, getColorBasedOnValue, function() return 2000 end))
+suitPanel:addChild(class.create("HudBarIndicator", 0, height, width, height, "Coolant: %i units", function() return suit:getCoolant() end, getColorBasedOnValue,  function() return 2000 end))
+suitPanel:addChild(class.create("HudBarIndicator", 0, height * 2, width, height, "Energy: %i units", function() return suit:getEnergy() end, getColorBasedOnValue,  function() return 2000 end))
+suitPanel:addChild(class.create("HudBarIndicator", 0, height * 3, width, height, "Temperature: %iK", function() return suit:getTemperature() end, getColorBasedOnTemperature,  function() return 1000 end))
 
-environmentPanel = class.create("HudPanel", ScrW() - 216, 16, false);
+environmentPanel = class.create("HudPanel", scrW - (height + 16) , 16, false);
 
 
 function fluix.modules.playerSuit.Run()

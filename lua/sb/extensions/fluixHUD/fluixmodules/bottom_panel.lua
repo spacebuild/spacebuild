@@ -10,6 +10,23 @@ fluix.WeaponS = 0
 
 --=================================================================================================================
 
+local scrW, scrH, width, height = ScrW(), ScrH()
+if scrW > 1650 then
+    width  = 200
+elseif scrW > 1024 then
+    width = 150
+else
+    width = 100
+end
+
+if scrH > 900 then
+    height = 72
+elseif scrH > 750 then
+    height = 48
+else
+    height = 32
+end
+
 local function getBreath(component)
     return fluix.BreathS
 end
@@ -60,14 +77,14 @@ local suit, hudLeftBottomPanel, hudBottomRightPanel
 function fluix.modules.BottomPanel.Run( )
     -- Define Hud Components
     if not hudLeftBottomPanel then
-        hudLeftBottomPanel = class.create("HudPanel", 16, (ScrH() - 72*3) - 20, false);
-        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 0, 200, 72, "Breath: %i%s", getBreath, getColorBasedOnValue, getMaxBreath))
-        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 72, 200, 72, "Health: %i%s", getHealth, getColorWhite, getMaxHealth ))
-        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 72 * 2, 200, 72, "Armor: %i%s", getArmor, getColorWhite, getMaxArmor ))
+        hudLeftBottomPanel = class.create("HudPanel", 16, (scrH - height*3) - 20, false);
+        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, 0, width, height, "Breath: %i%s", getBreath, getColorBasedOnValue, getMaxBreath))
+        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, height, width, height, "Health: %i%s", getHealth, getColorWhite, getMaxHealth ))
+        hudLeftBottomPanel:addChild(class.create("HudBarIndicator", 0, height * 2, width, height, "Armor: %i%s", getArmor, getColorWhite, getMaxArmor ))
     end
     if not hudBottomRightPanel then
-        hudBottomRightPanel = class.create("HudPanel", ScrW() - 216, ScrH() - 144, false)
-        local indicator = class.create("HudBarIndicator", 0, 0, 200, 48, nil, getAmmo, getColorWhite, getMaxAmmo)
+        hudBottomRightPanel = class.create("HudPanel", scrW - (width + 16), scrH - (((height / 2) * 3) + 16), false)
+        local indicator = class.create("HudBarIndicator", 0, 0, width, height / 2, nil, getAmmo, getColorWhite, getMaxAmmo)
         local oldRender = indicator.render
         function indicator:render()
             if fluix.WeaponS <= 0 then return end
