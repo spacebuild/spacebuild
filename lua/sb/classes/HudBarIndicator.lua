@@ -15,35 +15,65 @@ function C:isA(className)
 end
 
 local oldInit = C.init
-function C:init(x, y, width, height, format_string, valueLambda, colorLambda, maxValueLambda)
-    oldInit(self, x, y)
-    self.width = width
-    self.height = height
-    self.getValue = valueLambda
-    self.getColor = colorLambda
-    self.format_string = format_string
-    self.getMaxValue = maxValueLambda or function() return 100 end
+function C:init(x, y, width, height, value, maxvalue, color, bgcolor)
+    oldInit(self, x, y, width, height)
+    self.value = value
+    self.maxvalue = maxvalue
+    self.color = color
+    self.backgroundColor = bgcolor
 end
 
-local oldRender, value_color, bg_color, maxvalue = C.render
+function C:getValue()
+   return self.value
+end
+
+function C:setValue(value)
+   self.value = value
+end
+
+function C:getMaxValue()
+    return self.maxvalue
+end
+
+function C:setMaxValue(maxvalue)
+    self.maxvalue = maxvalue
+end
+
+function C:getColor()
+   return self.color
+end
+
+function C:setColor(color)
+   self.color = color
+end
+
+function C:getBackgroundColor()
+   return self.backgroundColor
+end
+
+function C:setBackgroundColor(backgroundColor)
+   self.backgroundColor = backgroundColor
+end
+
+local oldRender, color = C.render
 function C:render()
     oldRender(self)
-    if not self:getPlayer():Alive() then return end
-    self:smoothValue(self:getValue())
-    maxvalue = self:getMaxValue()
-    value_color = self:getColor(self.value, maxvalue)
-    bg_color = Color( 50,50,50,220)
+    --if not self:getPlayer():Alive() then return end
+    --self:smoothValue(self:getValue())
+    --maxvalue = self:getMaxValue()
+    --value_color = self:getColor(self.value, maxvalue)
+    --bg_color = Color( 50,50,50,220)
+     color = self:getColor()
 
+    surface.SetDrawColor( color )           -- Outline of Background of the bar
+    surface.DrawOutlinedRect( self:getX(), self:getY(), self:getWidth(), self:getHeigth() )
 
-    surface.SetDrawColor( value_color )           -- Outline of Background of the bar
-    surface.DrawOutlinedRect( self:getX() + self.width * 0.05, self:getY() + self.height * 0.2, self.width * 0.9, self.height * 0.4 )
+    surface.SetDrawColor( self:getBackgroundColor() )        -- Background of Bar
+    surface.DrawRect( self:getX(), self:getY() , self:getWidth() , self:getHeigth() )
 
-    surface.SetDrawColor( bg_color )        -- Background of Bar
-    surface.DrawRect( self:getX() + self.width * 0.05, self:getY()  + self.height * 0.2, self.width * 0.9, self.height * 0.4 )
-
-    surface.SetDrawColor( value_color )          --Value of Bar
-    surface.DrawRect( self:getX() + self.width * 0.05, self:getY()  + self.height * 0.2, self.width * ( self.value / maxvalue ) * 0.9, self.height * 0.4 )
-    if self.format_string then
+    surface.SetDrawColor( color )          --Value of Bar
+    surface.DrawRect( self:getX() , self:getY() , self.width * ( self:getValue() / self:getMaxValue() ), self:getHeigth())
+    --[[if self.format_string then
         self:DrawText( self:getX(), self:getY() + (self.height - self.height/8), self.width, string.format( self.format_string, math.Round( self.value ), "%" ), value_color )
-    end
+    end]]
 end

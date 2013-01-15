@@ -55,7 +55,7 @@ util.calculateOxygenRequired = function(pressure)
 end
 
 util.calculateEnergyRequired = function(temperature)
-   temperature = math.ceil((const.TEMPERATURE_SAFE_MIN - temperature)/20)
+   temperature = math.ceil((const.TEMPERATURE_SAFE_MIN - temperature)/const.AMOUNTOFDEGREES_DIVIDER)
    if temperature < 0 then
        temperature = 0
    end
@@ -63,7 +63,7 @@ util.calculateEnergyRequired = function(temperature)
 end
 
 util.calculateCoolantRequired = function(temperature)
-    temperature = math.ceil((temperature - const.TEMPERATURE_SAFE_MAX)/20)
+    temperature = math.ceil((temperature - const.TEMPERATURE_SAFE_MAX)/const.AMOUNTOFDEGREES_DIVIDER)
     if temperature < 0 then
         temperature = 0
     end

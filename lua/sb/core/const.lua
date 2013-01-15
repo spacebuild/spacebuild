@@ -9,7 +9,7 @@ const.BASE_OXYGEN_USE = 1
 const.BASE_ENERGY_USE = 1
 const.BASE_COOLANT_USE = 0
 
-const.AMOUNTOFDEGREES_DIVIDER = 20
+const.AMOUNTOFDEGREES_DIVIDER = 40
 -- http://www.roymech.co.uk/Related/Thermos/Thermos_HeatTransfer.html
 const.SUIT_THERMAL_CONDUCTIVITY = 0.25  -- used in the formula to calculate temperature changess (Nylon 6)
 

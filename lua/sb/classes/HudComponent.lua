@@ -13,12 +13,14 @@ function C:isA(className)
     return className == "HudComponent"
 end
 
-function C:init(x, y)
+function C:init(x, y, width, height)
     self.x = x
     self.y = y
-    self.FrameDelay = 0
-    self.value = 0
-    self.smooth = 0.15
+    self.width = width or 0
+    self.height = height or 0
+    --self.FrameDelay = 0
+    --self.value = 0
+    --self.smooth = 0.15
     self.parent = nil
 end
 
@@ -52,13 +54,29 @@ function C:setY(y)
     self.y = y
 end
 
-function C:render()
-    self.FrameDelay = math.Clamp( FrameTime(), 0.0001, 10 )
+function C:getHeight()
+   return self.height
 end
 
-function C:smoothValue(newValue)
-   self.value = self.value + ( newValue - self.value ) * self.FrameDelay / self.smooth
+function C:setHeight(height)
+   self.height = height
 end
+
+function C:getWidth()
+   return self.width
+end
+
+function C:setWidth(width)
+   self.width = width
+end
+
+function C:render()
+    --self.FrameDelay = math.Clamp( FrameTime(), 0.0001, 10 )
+end
+
+--[[function C:smoothValue(newValue)
+   self.value = self.value + ( newValue - self.value ) * self.FrameDelay / self.smooth
+end  ]]
 
 function C:getPlayer()
    return LocalPlayer()
@@ -68,7 +86,7 @@ function C:copyColor(color)
     return Color(color.r, color.g, color.b, color.a)
 end
 
-function C:DrawText( x, y, width, text, text_color, font_type )
+--[[function C:DrawText( x, y, width, text, text_color, font_type )
     if not font_type then surface.SetFont( "HudHintTextSmall" )
     else surface.SetFont( font_type ) end
 
@@ -80,4 +98,4 @@ function C:DrawText( x, y, width, text, text_color, font_type )
     surface.SetTextColor( text_color )
     surface.SetTextPos( x, y )
     surface.DrawText( text )
-end
+end ]]
