@@ -20,6 +20,10 @@ local function import(send)
                 AddCSLuaFile(fluix.basePath.."fluixmodules/"..v)
         end
     end
+    AddCSLuaFile(fluix.basePath.."classes/HudComponent.lua")
+    AddCSLuaFile(fluix.basePath.."classes/HudBarIndicator.lua")
+    AddCSLuaFile(fluix.basePath.."classes/HudPanel.lua")
+
 end
 
 if SERVER then

@@ -28,7 +28,8 @@ local net = net
 -- Class specific
 local C = CLASS
 local sb = sb;
-local class = sb.core.class
+require("class")
+local class = class
 local core = sb.core
 
 function C:isA(className)
@@ -63,7 +64,7 @@ function C:addResource(name, maxAmount, amount)
     if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
     local res = self.resources[name];
     if not res then
-        res = class.create("Resource", name, maxAmount, amount);
+        res = class.new("Resource", name, maxAmount, amount);
         self.resources[name] = res
     else
         res:setMaxAmount(res:getMaxAmount() + maxAmount)
@@ -182,7 +183,7 @@ function C:receive()
         id = core.net.readTiny()
         name = sb.getResourceInfoFromID(id):getName()
         if not self.resources[name] then
-            self.resources[name] = class.create("Resource", name);
+            self.resources[name] = class.new("Resource", name);
         end
         self.resources[name]:receive()
     end

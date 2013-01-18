@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include("sb/classes/HudComponent.lua")
+include(fluix.basePath.."classes/HudComponent.lua")
 local C = CLASS
 local surface = surface
 

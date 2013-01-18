@@ -23,6 +23,7 @@ AddCSLuaFile("includes/modules/Json.lua")
 AddCSLuaFile("includes/modules/sbhelper.lua")
 AddCSLuaFile("includes/modules/luaunit.lua")
 AddCSLuaFile("includes/modules/quaternion.lua")
+AddCSLuaFile("includes/modules/class.lua")
 
 --Send core files
 AddCSLuaFile("sb/core/const.lua")
@@ -49,10 +50,6 @@ AddCSLuaFile("sb/classes/LegacyBloomInfo.lua");
 AddCSLuaFile("sb/classes/LegacyColorInfo.lua");
 AddCSLuaFile("sb/classes/LegacyPlanet.lua");
 AddCSLuaFile("sb/classes/SpaceEnvironment.lua");
-AddCSLuaFile("sb/classes/HudComponent.lua")
-AddCSLuaFile("sb/classes/HudBarIndicator.lua")
-AddCSLuaFile("sb/classes/HudPanel.lua")
-
 
 
 

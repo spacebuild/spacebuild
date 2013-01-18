@@ -27,6 +27,16 @@ local file = file
 local sb = sb
 local class = sb.core.class
 local classes = {}
+local classes_folder = {"sb/classes/" }
+
+local function getClassFolder(name)
+    for k, v in pairs(classes_folder) do
+        if #file.Find(v .. name .. ".lua", "LUA") == 1 then
+            return v
+        end
+    end
+    return false
+end
 
 function class.create(name, ...)
     name = tostring(name);
@@ -37,7 +47,7 @@ function class.create(name, ...)
         CLASS = {}
         CLASS.__index = CLASS
         local c = CLASS
-        include("sb/classes/" .. name .. ".lua");
+        include(getClassFolder(name) .. name .. ".lua");
         CLASS = nil
         function c:getClass()
             return name;
@@ -53,8 +63,15 @@ function class.create(name, ...)
     return classes[name](unpack({ ... }))
 end
 
+
+
 function class.exists(name)
     name = tostring(name);
-    return classes[name] ~= nil or #sb.core.wrappers:Find("file","sb/classes/" .. name .. ".lua", "LUA") == 1 --FUCK YOU GARRY
+    return classes[name] ~= nil or getClassFolder(name) ~= false--FUCK YOU GARRY
+end
+
+function class.registerClassPath(path)
+    table.insert(classes_folder, path)
+    PrintTable(classes_folder)
 end
 

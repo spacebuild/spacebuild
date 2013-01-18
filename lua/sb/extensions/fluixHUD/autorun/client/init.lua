@@ -8,6 +8,8 @@
 
 local sb = sb
 
+sb.core.class.registerClassPath(sb.core.extensions:getBasePath().."classes/")
+
 include(sb.core.extensions:getBasePath().."fluixmodules/bottom_panel.lua")
 include(sb.core.extensions:getBasePath().."fluixmodules/top_panel.lua")
 include(sb.core.extensions:getBasePath().."fluixmodules/playersuit.lua")
