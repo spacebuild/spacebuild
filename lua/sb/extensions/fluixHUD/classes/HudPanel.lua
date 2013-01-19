@@ -18,6 +18,10 @@ end
 local oldInit = C.init
 function C:init(x, y, width, height, backgroundColor, autosize)
     oldInit(self, x, y, width, height)
+    self.base_width = width
+    self.base_height = height
+    self.base_x = x
+    self.base_y = y
     self.children = {}
     self.backgroundColor = backgroundColor
     self.autosize = true
@@ -27,19 +31,24 @@ function C:getAutoSize()
    return self.autosize
 end
 
+function C:calculateSize()
+    if self.autosize then
+        self:setWidth(self.base_width)
+        self:setHeight(self.base_height)
+        for k, v in pairs(self.children) do
+            if v:getWidth() > self:getWidth() then
+                self:setWidth(v:getWidth())
+            end
+            self:setHeight(self:getHeight() + v:getHeight())
+        end
+        self:setX(self.base_x - math.ceil(self:getWidth() / 2) )
+        self:setY(self.base_y - math.ceil(self:getHeight() / 2) )
+    end
+end
+
 function C:setAutoSize(autosize)
    self.autosize = autosize
-   if self.autosize then
-       self:setY(self:getY() - self:getHeight())
-       self:setWidth(0)
-       self:setHeight(0)
-       for k, v in pairs(self.children) do
-           if v:getWidth() > self:getWidth() then
-               self:setWidth(v:getWidth())
-           end
-       end
-       self:setY(self:getY() + self:getHeight())
-   end
+   self:calculateSize()
 end
 
 function C:getBackgroundColor()
@@ -67,22 +76,17 @@ function C:addChild(component)
         if component:getParent() then
             component:getParent():removeChild(component)
         end
-        if self.autosize then
-           self:setHeigth(self:getHeight() + component:getHeight())
-           self:setY(self:getY() + component:getHeight())
-        end
         component:setParent(self)
+        self:calculateSize()
     end
 end
 
 function C:removeChild(component)
    for k, v in pairs(self.children) do
       if v == component then
-          if self.autosize then
-              self:setHeigth(self:getHeight() - component:getHeight())
-              self:setY(self:getY() - component:getHeight())
-          end
-          return table.remove(k) == component
+          table.remove(k)
+          self:calculateSize()
+          return true
       end
    end
    return false

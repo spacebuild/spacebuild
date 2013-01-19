@@ -18,9 +18,6 @@ function C:init(x, y, width, height)
     self.y = y
     self.width = width or 0
     self.height = height or 0
-    --self.FrameDelay = 0
-    --self.value = 0
-    --self.smooth = 0.15
     self.parent = nil
 end
 
@@ -71,12 +68,8 @@ function C:setWidth(width)
 end
 
 function C:render()
-    --self.FrameDelay = math.Clamp( FrameTime(), 0.0001, 10 )
-end
 
---[[function C:smoothValue(newValue)
-   self.value = self.value + ( newValue - self.value ) * self.FrameDelay / self.smooth
-end  ]]
+end
 
 function C:getPlayer()
    return LocalPlayer()
@@ -86,16 +79,3 @@ function C:copyColor(color)
     return Color(color.r, color.g, color.b, color.a)
 end
 
---[[function C:DrawText( x, y, width, text, text_color, font_type )
-    if not font_type then surface.SetFont( "HudHintTextSmall" )
-    else surface.SetFont( font_type ) end
-
-    local Width, _ = surface.GetTextSize( text or " " )
-    local Height, _ = surface.GetTextSize( "W" )
-    x = x + width * 0.5 - ( Width or 8 ) * 0.5
-    y = y - ( Height or 8 )
-
-    surface.SetTextColor( text_color )
-    surface.SetTextPos( x, y )
-    surface.DrawText( text )
-end ]]
