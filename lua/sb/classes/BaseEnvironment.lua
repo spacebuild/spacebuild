@@ -111,11 +111,7 @@ function C:getResourcePercentage(resource)
 end
 
 function C:getMaxAmountOfResources()
-    local max = self:getVolume() * self:getAtmosphere()
-    if max > core.net.getMaxAmount() then
-       max = core.net.getMaxAmount()
-    end
-    return max
+    return self:getVolume() * self:getAtmosphere()
 end
 
 function C:getUnusedResourceAmountInEnvironment()

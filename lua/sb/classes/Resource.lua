@@ -88,10 +88,6 @@ end
 
 function C:setMaxAmount(amount)
     if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:setMaxamount requires a number >= 0") end
-    if amount > core.net.getMaxAmount() then
-        amount = net.getMaxAmount()
-        ErrorNoHalt("NET AMOUNT LIMIT REACHED: "..tostring(core.net.getMaxAmount()))
-    end
     if self.maxAmount ~= amount then
         self.maxAmount = amount
         if self.amount > self.maxAmount then

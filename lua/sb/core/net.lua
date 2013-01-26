@@ -34,35 +34,34 @@ net.TYPES_INT = {
 
 net.TYPES_INT.AMOUNT = net.TYPES_INT.INT -- Send amounts as long
 
--- util
-
--- Returns the MAX amount that can be using the net library!!!
-function net.getMaxAmount()
-    return net.TYPES_INT.AMOUNT.max
-end
-
 -- Write
 function net.writeBool(bool)
     corenet.WriteBit(bool)
 end
 
 function net.writeShort(short)
-    return corenet.WriteInt(short, net.TYPES_INT.SHORT.length);
+    corenet.WriteInt(short, net.TYPES_INT.SHORT.length);
 end
 
 function net.writeLong(long)
-    return corenet.WriteInt(long, net.TYPES_INT.LONG.length);
+    corenet.WriteInt(long, net.TYPES_INT.LONG.length);
 end
 
 function net.writeTiny(tiny)
-    return corenet.WriteInt(tiny, net.TYPES_INT.TINY.length);
+    corenet.WriteInt(tiny, net.TYPES_INT.TINY.length);
 end
 
 function net.writeAmount(amount)
-    if amount > net.getMaxAmount() then
-        amount = net.getMaxAmount()  --Prevent syncing more then is allowed!!
+    local mul = 0;
+    if amount > net.TYPES_INT.AMOUNT.max then
+        net.writeBool(true)
+        mul = math.floor(amount/net.TYPES_INT.AMOUNT.max)
+        net.writeTiny(mul)
+        amount = amount - (mul * net.TYPES_INT.AMOUNT.max)   --Prevent syncing more then is allowed!!
+    else
+        net.writeBool(false)
     end
-    return corenet.WriteUInt(amount, net.TYPES_INT.AMOUNT.length);
+    corenet.WriteUInt(amount, net.TYPES_INT.AMOUNT.length);
 end
 
 -- Read
@@ -83,5 +82,9 @@ function net.readTiny()
 end
 
 function net.readAmount()
-    return corenet.ReadUInt(net.TYPES_INT.AMOUNT.length)
+    local base = 0;
+    if net.readBool() then
+        base = net.readTiny() * net.TYPES_INT.AMOUNT.max
+    end
+    return base + corenet.ReadUInt(net.TYPES_INT.AMOUNT.length)
 end
