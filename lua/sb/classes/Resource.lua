@@ -22,7 +22,8 @@ local type = type
 
 -- Gmod specific
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 -- Class specific
 local C = CLASS
 local sb = sb;
@@ -117,27 +118,27 @@ end
 
 --Always partial!! 
 function C:send(modified)
-    core.net.writeTiny(self.resourceInfo:getID())
+    net.writeTiny(self.resourceInfo:getID())
     if self.modified > modified then
-        core.net.writeBool(true)
-        core.net.writeAmount(self.amount)
+        net.writeBool(true)
+        net.writeAmount(self.amount)
     else
-        core.net.writeBool(false) --not modified since last update
+        net.writeBool(false) --not modified since last update
     end
     if self.modifiedMaxAmount > modified then
-        core.net.writeBool(true)
-        core.net.writeAmount(self.maxAmount)
+        net.writeBool(true)
+        net.writeAmount(self.maxAmount)
     else
-        core.net.writeBool(false) --not modified since last update
+        net.writeBool(false) --not modified since last update
     end
 end
 
 function C:receive()
-    if core.net.readBool() then
-        self.amount = core.net.readAmount()
+    if net.readBool() then
+        self.amount = net.readAmount()
     end
-    if core.net.readBool() then
-        self.maxAmount = core.net.readAmount()
+    if net.readBool() then
+        self.maxAmount = net.readAmount()
     end
 end
 

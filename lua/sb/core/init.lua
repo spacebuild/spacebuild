@@ -40,7 +40,6 @@ sb.core.util = {}
 sb.core.test = {}
 sb.core.wrappers = {}
 sb.core.extensions = {}
-sb.core.net = {}
 
 function sb.getVersion()
     return VERSION;
@@ -55,7 +54,6 @@ include("sb/core/const.lua");
 include("sb/core/config.lua");
 include("sb/core/debug.lua");
 include("sb/core/util.lua")
-include("sb/core/net.lua")
 include("sb/core/spacebuild.lua")
 
 ---- Extension System ----

@@ -15,6 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
+require("sbnet")
+local net = sbnet
+
 local sb = sb
 local core = sb.core;
 local to_sync;
@@ -24,7 +27,7 @@ local class = class
 local player_suit = class.new("PlayerSuit")
 
 net.Receive("SBRU", function(bitsreceived)
-    local syncid = core.net.readShort()
+    local syncid = net.readShort()
     to_sync = core.device_table[syncid]
     to_sync:receive()
 end)
@@ -41,7 +44,7 @@ end)
 
 net.Receive("SBEU", function(bitsreceived)
     local class_name = net.ReadString()
-    local id = core.net.readShort()
+    local id = net.readShort()
     local environment_object = sb.getEnvironment(id);
     if not environment_object then
         environment_object = class.new(class_name)
@@ -52,7 +55,7 @@ net.Receive("SBEU", function(bitsreceived)
 end)
 
 net.Receive("SBMU", function(bitsreceived)
-    local type = core.net.readTiny()
+    local type = net.readTiny()
     local class_name = net.ReadString()
     local id = net.ReadString()
     local mod_object

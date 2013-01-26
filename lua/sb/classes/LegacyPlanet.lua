@@ -14,7 +14,8 @@ local type = type
 -- Gmod specific
 local Entity = Entity
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 
 -- Class Specific
 local C = CLASS
@@ -255,26 +256,26 @@ function C:_sendContent(modified)
     funcRef.sendContent(self, modified)
     net.WriteString(self.name)
     if self.color_id then
-        core.net.writeBool(true)
+        net.writeBool(true)
         net.WriteString(self.color_id)
     else
-       core.net.writeBool(false)
+       net.writeBool(false)
     end
     if self.bloom_id then
-        core.net.writeBool(true)
+        net.writeBool(true)
         net.WriteString(self.bloom_id)
     else
-        core.net.writeBool(false)
+        net.writeBool(false)
     end
 end
 
 function C:receive()
     funcRef.receiveSignal(self)
     self.name = net.ReadString()
-    if core.net.readBool() then
+    if net.readBool() then
        self.color_id = net.ReadString()
     end
-    if core.net.readBool() then
+    if net.readBool() then
         self.bloom_id = net.ReadString()
     end
 end

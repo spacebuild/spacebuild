@@ -24,6 +24,8 @@ AddCSLuaFile("includes/modules/sbhelper.lua")
 AddCSLuaFile("includes/modules/luaunit.lua")
 AddCSLuaFile("includes/modules/quaternion.lua")
 AddCSLuaFile("includes/modules/class.lua")
+AddCSLuaFile("includes/modules/sbnet.lua")
+AddCSLuaFile("includes/modules/sbfile.lua")
 
 --Send core files
 AddCSLuaFile("sb/core/const.lua")
@@ -33,7 +35,6 @@ AddCSLuaFile("sb/core/debug.lua")
 AddCSLuaFile("sb/core/wrappers.lua")
 AddCSLuaFile("sb/core/extensions.lua")
 AddCSLuaFile("sb/core/spacebuild.lua")
-AddCSLuaFile("sb/core/net.lua")
 AddCSLuaFile("sb/core/util.lua")
 
 --Send classes

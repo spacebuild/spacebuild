@@ -13,7 +13,8 @@ local type = type
 
 -- Gmod specific
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 -- Class specific
 local C = CLASS
 local sb = sb;
@@ -74,7 +75,7 @@ end
 function C:send(modified, ply)
     if self.modified > modified then
         net.Start("SBMU")
-        core.net.writeTiny(1)
+        net.writeTiny(1)
         net.WriteString(self:getClass())
         net.WriteString(self.id)
         self:_sendContent(modified)
@@ -88,20 +89,20 @@ end
 
 function C:_sendContent(modified)
     if self.addColor then
-        core.net.writeBool(true)
+        net.writeBool(true)
         net.WriteFloat(self.addColor.r)
         net.WriteFloat(self.addColor.g)
         net.WriteFloat(self.addColor.b)
     else
-        core.net.writeBool(false)
+        net.writeBool(false)
     end
     if self.mulColor then
-        core.net.writeBool(true)
+        net.writeBool(true)
         net.WriteFloat(self.mulColor.r or -1)
         net.WriteFloat(self.mulColor.g or -1)
         net.WriteFloat(self.mulColor.b or -1)
     else
-        core.net.writeBool(false)
+        net.writeBool(false)
     end
     net.WriteFloat(self.brightness)
     net.WriteFloat(self.contrast)
@@ -111,7 +112,7 @@ end
 function C:receive()
     self.addColor = self.addColor or {}
     self.mulColor = self.mulColor or {}
-    if core.net.readBool() then
+    if net.readBool() then
         self.addColor.r = net.ReadFloat()
         self.addColor.g = net.ReadFloat()
         self.addColor.b = net.ReadFloat()
@@ -120,7 +121,7 @@ function C:receive()
         self.addColor.g = 0
         self.addColor.b = 0
     end
-    if core.net.readBool() then
+    if net.readBool() then
         self.mulColor.r = net.ReadFloat()
         self.mulColor.g = net.ReadFloat()
         self.mulColor.b = net.ReadFloat()

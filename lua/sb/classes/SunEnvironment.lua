@@ -14,7 +14,8 @@ local type = type
 -- Gmod specific
 local Entity = Entity
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 
 -- Class Specific
 local C = CLASS

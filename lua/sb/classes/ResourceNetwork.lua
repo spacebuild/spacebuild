@@ -24,7 +24,8 @@ local math      = math
 -- Gmod specific
 local Entity    = Entity
 local CurTime   = CurTime
-local net       = net
+require("sbnet")
+local net  = sbnet
 -- Class Specific
 local C         = CLASS
 local sb        = sb;
@@ -204,44 +205,44 @@ end
 
 function C:_sendContent(modified)
     if self.containersmodified > modified then
-        core.net.writeBool(true)
-        core.net.writeShort(table.Count(self.containers))
+        net.writeBool(true)
+        net.writeShort(table.Count(self.containers))
         for k, _ in pairs(self.containers) do
-           core.net.writeShort(k)
+           net.writeShort(k)
         end
     else
-        core.net.writeBool(false)
+        net.writeBool(false)
     end
     if self.networksmodified > modified then
-        core.net.writeBool(true)
-        core.net.writeShort(table.Count(self.networks))
+        net.writeBool(true)
+        net.writeShort(table.Count(self.networks))
         for k, _ in pairs(self.networks) do
-            core.net.writeShort(k)
+            net.writeShort(k)
         end
     else
-        core.net.writeBool(false)
+        net.writeBool(false)
     end
     funcRef.sendContent(self, modified);
 end
 
 function C:receive()
-    local hasContainerUpdate = core.net.readBool()
+    local hasContainerUpdate = net.readBool()
     if hasContainerUpdate then
-        local nrofcontainers = core.net.readShort()
+        local nrofcontainers = net.readShort()
         self.containers = {}
         local am, id
         for am = 1, nrofcontainers do
-            id = core.net.readShort()
+            id = net.readShort()
             self.containers[id] = sb.getDeviceInfo(id)
         end
     end
-    local hasNetworksUpdate = core.net.readBool()
+    local hasNetworksUpdate = net.readBool()
     if hasNetworksUpdate then
-        local nrofnetworks = core.net.readShort()
+        local nrofnetworks = net.readShort()
         self.networks = {}
         local am, id
         for am = 1, nrofnetworks do
-            id = core.net.readShort()
+            id = net.readShort()
             self.networks[id] = sb.getDeviceInfo(id)
         end
     end

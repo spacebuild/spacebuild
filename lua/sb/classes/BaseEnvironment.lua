@@ -13,7 +13,8 @@ local type = type
 
 -- Gmod specific
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 -- Class specific
 local C = CLASS
 local sb = sb;
@@ -197,7 +198,7 @@ function C:send(modified, ply)
         if self.modified > modified then
             net.Start("SBEU")
             net.WriteString(self:getClass())
-            core.net.writeShort(self.entid)
+            net.writeShort(self.entid)
             self:_sendContent(modified)
             if ply then
                 net.Send(ply)
@@ -209,36 +210,36 @@ function C:send(modified, ply)
 end
 
 function C:_sendContent(modified)
-    core.net.writeShort(self.temperature)
+    net.writeShort(self.temperature)
     net.WriteFloat(self.gravity)
     net.WriteFloat(self.atmosphere)
-    core.net.writeTiny(table.Count(self.resources))
+    net.writeTiny(table.Count(self.resources))
     for k, v in pairs(self.resources) do
        v:send(modified)
     end
-    core.net.writeTiny(#self.attributes)
+    net.writeTiny(#self.attributes)
     for k, v in pairs(self.attributes) do
        net.WriteString(v)
     end
 end
 
 function C:receive()
-    self.temperature = core.net.readShort()
+    self.temperature = net.readShort()
     self.gravity = net.ReadFloat()
     self.temperature = net.ReadFloat()
-    local nrRes = core.net.readTiny()
+    local nrRes = net.readTiny()
     local am
     local name
     local id
     for am = 1, nrRes do
-        id = core.net.readTiny()
+        id = net.readTiny()
         name = sb.getResourceInfoFromID(id):getName()
         if not self.resources[name] then
             self.resources[name] = class.new("Resource", name);
         end
         self.resources[name]:receive()
     end
-    local nrAttributes = core.net.readTiny()
+    local nrAttributes = net.readTiny()
     for am = 1, nrAttributes do
        self:addAttribute(net.ReadString())
     end

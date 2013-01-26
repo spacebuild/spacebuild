@@ -23,7 +23,8 @@ local table = table
 
 -- Gmod Specific
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 
 -- Class specific
 local C = CLASS
@@ -156,7 +157,7 @@ function C:send(modified, ply)
         end
         if self.modified > modified then
             net.Start("SBRU")
-            core.net.writeShort(self.syncid)
+            net.writeShort(self.syncid)
             self:_sendContent(modified)
             if ply then
                 net.Send(ply)
@@ -168,19 +169,19 @@ function C:send(modified, ply)
 end
 
 function C:_sendContent(modified)
-    core.net.writeTiny(table.Count(self.resources))
+    net.writeTiny(table.Count(self.resources))
     for _, v in pairs(self.resources) do
         v:send(modified)
     end
 end
 
 function C:receive()
-    local nrRes = core.net.readTiny()
+    local nrRes = net.readTiny()
     local am
     local name
     local id
     for am = 1, nrRes do
-        id = core.net.readTiny()
+        id = net.readTiny()
         name = sb.getResourceInfoFromID(id):getName()
         if not self.resources[name] then
             self.resources[name] = class.new("Resource", name);

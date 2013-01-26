@@ -23,7 +23,8 @@ local type = type
 -- Gmod specific
 local Entity = Entity
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 
 -- Class Specific
 local C = CLASS
@@ -132,15 +133,15 @@ end
 
 function C:_sendContent(modified)
         if self.network then
-            core.net.writeShort(self.network:getID())
+            net.writeShort(self.network:getID())
         else
-            core.net.writeShort(0)
+            net.writeShort(0)
         end
         funcRef.sendContent(self, modified);
 end
 
 function C:receive()
-    self.network = sb.getDeviceInfo(core.net.readShort())
+    self.network = sb.getDeviceInfo(net.readShort())
     funcRef.receiveSignal(self)
 end
 

@@ -13,7 +13,8 @@ local type = type
 
 -- Gmod specific
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 -- Class specific
 local C = CLASS
 local sb = sb;
@@ -62,7 +63,7 @@ end
 function C:send(modified, ply)
     if self.modified > modified then
         net.Start("SBMU")
-        core.net.writeTiny(2)
+        net.writeTiny(2)
         net.WriteString(self:getClass())
         net.WriteString(self.id)
         self:_sendContent(modified)

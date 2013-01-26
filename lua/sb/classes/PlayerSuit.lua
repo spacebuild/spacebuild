@@ -17,7 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Gmod specific
 local CurTime = CurTime
-local net = net
+require("sbnet")
+local net = sbnet
 
 -- Class Specific
 local C = CLASS
@@ -224,35 +225,35 @@ function C:send(modified)
     if self.modified > modified then
         self.firstSync = false
         net.Start("SBRPU")
-        core.net.writeBool(self.active)
-        core.net.writeTiny(self.breath)
+        net.writeBool(self.active)
+        net.writeTiny(self.breath)
         if self.active then
-            core.net.writeShort(self.oxygen)
-            core.net.writeShort(self.coolant)
-            core.net.writeShort(self.energy)
-            core.net.writeShort(self.temperature)
+            net.writeShort(self.oxygen)
+            net.writeShort(self.coolant)
+            net.writeShort(self.energy)
+            net.writeShort(self.temperature)
         end
         if self.environment then
-            core.net.writeBool(true)
-            core.net.writeShort(self.environment:getID())
+            net.writeBool(true)
+            net.writeShort(self.environment:getID())
         else
-            core.net.writeBool(false)
+            net.writeBool(false)
         end
         net.Send(self.ply)
     end
 end
 
 function C:receive()
-    self.active = core.net.readBool()
-    self.breath = core.net.readTiny()
+    self.active = net.readBool()
+    self.breath = net.readTiny()
     if self.active then
-        self.oxygen = core.net.readShort()
-        self.coolant = core.net.readShort()
-        self.energy = core.net.readShort()
-        self.temperature = core.net.readShort()
+        self.oxygen = net.readShort()
+        self.coolant = net.readShort()
+        self.energy = net.readShort()
+        self.temperature = net.readShort()
     end
-    local hasenvironment = core.net.readBool()
+    local hasenvironment = net.readBool()
     if hasenvironment then
-        self.environment = sb.getEnvironment(core.net.readShort())
+        self.environment = sb.getEnvironment(net.readShort())
     end
 end
