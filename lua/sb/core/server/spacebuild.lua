@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb
 local timer = timer
 local core = sb.core;
+require("class")
+local class = class
 local time_to_next_rd_sync = 1
 local time_to_next_ls_sync = 0.2
 local time_to_next_ls_env = 1
@@ -80,7 +82,7 @@ hook.Add( "Think", "spacebuild_think", sbThink)
 
 local function spawn( ply )
     if not ply.ls_suit or not ply.ls_suit.reset then
-       ply.ls_suit = core.class.create("PlayerSuit", ply)
+       ply.ls_suit = class.new("PlayerSuit", ply)
     end
     ply.ls_suit:reset()
 end
@@ -88,14 +90,14 @@ hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )
 
 -- Spacebuild
 
-local sun = core.class.create("SunEnvironment", nil)
+local sun = class.new("SunEnvironment", nil)
 
 local function addSun(data)
     MsgN("Spawn Sun")
     --PrintTable(data)
     --TODO spawn sunEntity
     local ent = data.ent
-    sun = core.class.create("SunEnvironment", ent:EntIndex(), data)
+    sun = class.new("SunEnvironment", ent:EntIndex(), data)
     --PrintTable(sun)
 end
 
@@ -110,15 +112,15 @@ end
 local function addLegacyEnvironment(data)
     if data[1] == "planet" or data[1] == "planet2" or data[1] == "star" or data[1] == "star2" then
         local ent = spawnEnvironmentEnt("LegacyPlanet", data.ent:GetPos(), data.ent:GetAngles())
-        local environment = core.class.create("LegacyPlanet", ent:EntIndex(), data)
+        local environment = class.new("LegacyPlanet", ent:EntIndex(), data)
         ent.envobject = environment
         sb.addEnvironment(environment)
         ent:InitEnvironment()
     elseif data[1] == "planet_color" then
-        local colorinfo = core.class.create("LegacyColorInfo", data)
+        local colorinfo = class.new("LegacyColorInfo", data)
         sb.addEnvironmentColor(colorinfo)
     elseif data[1] == "planet_bloom" then
-        local bloominfo =  core.class.create("LegacyBloomInfo", data)
+        local bloominfo =  class.new("LegacyBloomInfo", data)
         sb.addEnvironmentBloom(bloominfo)
     end
 end

@@ -1,4 +1,5 @@
-local class = sb.core.class
+require("class")
+local class = class
 local fluix = fluix
 fluix.modules.BottomPanel = { Enabled = true }
 fluix.Ammo1, fluix.Ammo1S, fluix.Ammo1Total, fluix.Ammo1Max, fluix.Ammo2 = 0, 0, 0, 0, 0
@@ -30,17 +31,17 @@ local suit, hudLeftBottomPanel, hudBottomRightPanel, breatBar, healthBar, armorB
 function fluix.modules.BottomPanel.Run( )
     -- Define Hud Components
     if not hudLeftBottomPanel then
-        hudLeftBottomPanel = class.create("BottomLeftPanel", 16, scrH - 20, 0, 0, false, true)
-        breatBar = class.create("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Breath: %i%s")
-        healthBar = class.create("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Health: %i%s")
-        armorBar = class.create("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Armor: %i%s")
+        hudLeftBottomPanel = class.new("BottomLeftPanel", 16, scrH - 20, 0, 0, false, true)
+        breatBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Breath: %i%s")
+        healthBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Health: %i%s")
+        armorBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Armor: %i%s")
         hudLeftBottomPanel:addChild(breatBar)
         hudLeftBottomPanel:addChild(healthBar)
         hudLeftBottomPanel:addChild(armorBar)
     end
     if not hudBottomRightPanel then
-        hudBottomRightPanel = class.create("BottomRightPanel", scrW -  16, scrH - 16, 0, 0, false, true)
-        ammoBar = class.create("HudBarTextIndicator", 0, 0, width, height / 2, 0, 100, white, bg, false)
+        hudBottomRightPanel = class.new("BottomRightPanel", scrW -  16, scrH - 16, 0, 0, false, true)
+        ammoBar = class.new("HudBarTextIndicator", 0, 0, width, height / 2, 0, 100, white, bg, false)
         local oldRender = ammoBar.render
         function ammoBar:render()
             if fluix.WeaponS <= 0 then return end

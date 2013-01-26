@@ -2,12 +2,13 @@
 local tostring = tostring
 local error = error
 local setmetatable = setmetatable
-local unpack = unpack
 local pairs = pairs
+local table = table
 
 -- GMOD
 local include = include
 local file = file
+local MsgN = MsgN
 
 local PrintTable = PrintTable
 
@@ -45,14 +46,13 @@ function exists(name)
     return loadedclasses[name] or getClassFolder(name) ~= false
 end
 
-local class
-function new(name, ...)
+function new(name, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)
     name = tostring(name);
     if not loadedclasses[name] then
         if not exists(name) then
             error("Class " .. name .. " not found");
         end
-        class = {}
+        local class = {}
         class.__index = class
         initClass(class)
         openClass(name);
@@ -60,14 +60,14 @@ function new(name, ...)
         function class:getClass()
             return name;
         end
-        loadedclasses[name] = function(...)
+        loadedclasses[name] = function(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)
             local tmp = {}
             setmetatable(tmp, class)
-            tmp:init(unpack({ ... }))
+            tmp:init(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)
             return tmp
         end
     end
-    return loadedclasses[name](unpack({ ... }))
+    return loadedclasses[name](a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)
 end
 
 function registerClassPath(path)

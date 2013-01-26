@@ -17,6 +17,8 @@ local net = net
 -- Class specific
 local C = CLASS
 local sb = sb;
+require("class")
+local class = class
 local core = sb.core
 
 function C:isA(className)
@@ -128,7 +130,7 @@ function C:convertResource(from, to, amount)
     local res_to = self.resources[to]
     local not_enough = 0
     if not res_to then
-        res_to = core.class.create("Resource", to, self:getMaxAmountOfResources(), 0);
+        res_to = class.new("Resource", to, self:getMaxAmountOfResources(), 0);
         self.resources[to] = res_to
     end
     if not from then
@@ -236,7 +238,7 @@ function C:receive()
         id = core.net.readTiny()
         name = sb.getResourceInfoFromID(id):getName()
         if not self.resources[name] then
-            self.resources[name] = core.class.create("Resource", name);
+            self.resources[name] = class.new("Resource", name);
         end
         self.resources[name]:receive()
     end

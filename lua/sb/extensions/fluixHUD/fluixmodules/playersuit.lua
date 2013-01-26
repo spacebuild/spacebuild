@@ -5,7 +5,8 @@
 -- Time: 02:53
 -- To change this template use File | Settings | File Templates.
 --
-local class = sb.core.class
+require("class")
+local class = class
 local const = sb.core.const
 local fluix = fluix
 fluix.modules.playerSuit = { Enabled = true }
@@ -46,13 +47,13 @@ local function getColorBasedOnTemperature(component, value, maxvalue)
     return red
 end
 
-suitPanel = class.create("HudPanel", 16, 16,0, 0, false);
---suitPanel:addChild(class.create("HudBarIndicator", 0, 0, width, height, "Oxygen: %i units", function() return suit:getOxygen() end, getColorBasedOnValue, function() return 2000 end))
---suitPanel:addChild(class.create("HudBarIndicator", 0, height, width, height, "Coolant: %i units", function() return suit:getCoolant() end, getColorBasedOnValue,  function() return 2000 end))
---suitPanel:addChild(class.create("HudBarIndicator", 0, height * 2, width, height, "Energy: %i units", function() return suit:getEnergy() end, getColorBasedOnValue,  function() return 2000 end))
---suitPanel:addChild(class.create("HudBarIndicator", 0, height * 3, width, height, "Temperature: %iK", function() return suit:getTemperature() end, getColorBasedOnTemperature,  function() return 1000 end))
+suitPanel = class.new("HudPanel", 16, 16,0, 0, false);
+--suitPanel:addChild(class.new("HudBarIndicator", 0, 0, width, height, "Oxygen: %i units", function() return suit:getOxygen() end, getColorBasedOnValue, function() return 2000 end))
+--suitPanel:addChild(class.new("HudBarIndicator", 0, height, width, height, "Coolant: %i units", function() return suit:getCoolant() end, getColorBasedOnValue,  function() return 2000 end))
+--suitPanel:addChild(class.new("HudBarIndicator", 0, height * 2, width, height, "Energy: %i units", function() return suit:getEnergy() end, getColorBasedOnValue,  function() return 2000 end))
+--suitPanel:addChild(class.new("HudBarIndicator", 0, height * 3, width, height, "Temperature: %iK", function() return suit:getTemperature() end, getColorBasedOnTemperature,  function() return 1000 end))
 
-environmentPanel = class.create("HudPanel", scrW - (height + 16) , 16, false);
+environmentPanel = class.new("HudPanel", scrW - (height + 16) , 16, false);
 
 
 function fluix.modules.playerSuit.Run()

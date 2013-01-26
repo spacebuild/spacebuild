@@ -31,7 +31,6 @@ local sb = sb -- Make it local for a little bit of better performance
 sb.core = {}
 sb.core.const = {}
 sb.core.config = sbhelper.loadConfig("core")
-sb.core.class = {}
 sb.core.data = {}
 sb.core.debug = {}
 sb.core.gui = {}
@@ -54,7 +53,6 @@ end
 include("sb/core/wrappers.lua");
 include("sb/core/const.lua");
 include("sb/core/config.lua");
-include("sb/core/class.lua");
 include("sb/core/debug.lua");
 include("sb/core/util.lua")
 include("sb/core/net.lua")

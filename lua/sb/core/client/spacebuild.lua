@@ -18,7 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb
 local core = sb.core;
 local to_sync;
-local player_suit = core.class.create("PlayerSuit")
+require("class")
+local class = class
+
+local player_suit = class.new("PlayerSuit")
 
 net.Receive("SBRU", function(bitsreceived)
     local syncid = core.net.readShort()
@@ -37,11 +40,11 @@ net.Receive("SBRPU", function(bitsreceived)
 end)
 
 net.Receive("SBEU", function(bitsreceived)
-    local class = net.ReadString()
+    local class_name = net.ReadString()
     local id = core.net.readShort()
     local environment_object = sb.getEnvironment(id);
     if not environment_object then
-        environment_object = core.class.create(class)
+        environment_object = class.new(class_name)
         environment_object:setID(id)
         sb.addEnvironment(environment_object)
     end
@@ -50,7 +53,7 @@ end)
 
 net.Receive("SBMU", function(bitsreceived)
     local type = core.net.readTiny()
-    local class = net.ReadString()
+    local class_name = net.ReadString()
     local id = net.ReadString()
     local mod_object
     if type == 1 then
@@ -61,7 +64,7 @@ net.Receive("SBMU", function(bitsreceived)
         error("invalid mod sync type")
     end
     if not mod_object then
-       mod_object = core.class.create(class)
+       mod_object = class.new(class_name)
        mod_object:setID(id)
        if type == 1 then
            sb.addEnvironmentColor(mod_object)

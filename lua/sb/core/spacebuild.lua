@@ -18,7 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb;
 local core = sb.core;
 
-local space = core.class.create("SpaceEnvironment")
+require("class")
+local class = class
+
+local space = class.new("SpaceEnvironment")
 
 -- RD
 core.device_table = {}
@@ -46,9 +49,9 @@ local obj;
 function sb.registerDevice(ent, rdtype)
    local entid = ent:EntIndex()
    if rdtype == sb.RDTYPES.STORAGE or rdtype == sb.RDTYPES.GENERATOR then
-       obj = core.class.create("ResourceEntity", entid)
+       obj = class.new("ResourceEntity", entid)
    elseif rdtype == sb.RDTYPES.NETWORK then
-       obj = core.class.create("ResourceNetwork", entid)
+       obj = class.new("ResourceNetwork", entid)
    else
         error("type is not supported")
    end
@@ -74,7 +77,7 @@ end
 
 local resourceinfo;
 function sb.registerResourceInfo(id, name, displayName, attributes)
-    resourceinfo = core.class.create("ResourceInfo", id, name, displayName, attributes)
+    resourceinfo = class.new("ResourceInfo", id, name, displayName, attributes)
     core.resources_names_table[name] = resourceinfo
     core.resources_ids_table[id] = resourceinfo
 end

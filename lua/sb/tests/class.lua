@@ -19,7 +19,8 @@ AddCSLuaFile()
 
 
 local print = print;
-local class = sb.core.class;
+require("class")
+local class = class
 
 TestClasses = {} --class
 function TestClasses:setUp()
@@ -34,19 +35,19 @@ function TestClasses:tearDown()
 end
 
 function TestClasses:testClasses()
-    local obj = class.create("Resource", "resource_name")
+    local obj = class.new("Resource", "resource_name")
     assert(obj);
     assertEquals(obj:getName(), "resource_name")
 
-    local network1 = class.create("ResourceNetwork", 1)
-    local network2 = class.create("ResourceNetwork", 2)
-    local network3 = class.create("ResourceNetwork", 3)
-    local ent1 = class.create("ResourceEntity", 10)
-    local ent2 = class.create("ResourceEntity", 11)
-    local ent3 = class.create("ResourceEntity", 12)
-    local ent4 = class.create("ResourceEntity", 13)
-    local ent5 = class.create("ResourceEntity", 14)
-    local ent6 = class.create("ResourceEntity", 15)
+    local network1 = class.new("ResourceNetwork", 1)
+    local network2 = class.new("ResourceNetwork", 2)
+    local network3 = class.new("ResourceNetwork", 3)
+    local ent1 = class.new("ResourceEntity", 10)
+    local ent2 = class.new("ResourceEntity", 11)
+    local ent3 = class.new("ResourceEntity", 12)
+    local ent4 = class.new("ResourceEntity", 13)
+    local ent5 = class.new("ResourceEntity", 14)
+    local ent6 = class.new("ResourceEntity", 15)
 
     --Test entity 1
     ent1:addResource("energy", 10000)
