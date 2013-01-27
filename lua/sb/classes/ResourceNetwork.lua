@@ -186,6 +186,14 @@ function C:unlink(container, dont_unlink)
 	self.modified = CurTime()
 end
 
+function C:getConnectedNetworks()
+   return self.networks
+end
+
+function C:getConnectedEntities()
+   return self.containers
+end
+
 function C:canLink(container)
 	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and container:getNetwork() == nil ))
 end
