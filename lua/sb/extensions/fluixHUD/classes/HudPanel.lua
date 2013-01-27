@@ -24,7 +24,7 @@ function C:init(x, y, width, height, backgroundColor, autosize)
     self.base_y = y
     self.children = {}
     self.backgroundColor = backgroundColor
-    self.autosize = true
+    self.autosize = autosize
 end
 
 function C:getAutoSize()
