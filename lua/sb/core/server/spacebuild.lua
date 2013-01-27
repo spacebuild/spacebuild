@@ -201,6 +201,7 @@ hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
 
 local ignoredClasses= {}
 ignoredClasses["func_door"] = true
+ignoredClasses["prop_combine_ball"] = true
 
 function sb.isValidSBEntity(ent)
    return  IsValid(ent)
