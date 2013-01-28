@@ -20,6 +20,9 @@ local timer = timer
 local core = sb.core;
 require("class")
 local class = class
+require("sbnet")
+local net = sbnet
+
 local time_to_next_rd_sync = 1
 local time_to_next_ls_sync = 0.2
 local time_to_next_ls_env = 1
@@ -79,6 +82,13 @@ local function sbThink()
     end
 end
 hook.Add( "Think", "spacebuild_think", sbThink)
+
+local to_sync
+net.Receive("SBRU", function(bitsreceived, ply)
+    local syncid = net.readShort()
+    to_sync = core.device_table[syncid]
+    to_sync:send(0, ply) -- Send fully to client on request :)
+end)
 
 local function spawn( ply )
     if not ply.ls_suit or not ply.ls_suit.reset then

@@ -21,6 +21,7 @@ local net = sbnet
 local sb = sb
 local core = sb.core;
 local to_sync;
+
 require("class")
 local class = class
 
@@ -29,6 +30,9 @@ local player_suit = class.new("PlayerSuit")
 net.Receive("SBRU", function(bitsreceived)
     local syncid = net.readShort()
     to_sync = core.device_table[syncid]
+    if not to_sync then
+        core.missing_devices[syncid] = true
+    end
     to_sync:receive()
 end)
 

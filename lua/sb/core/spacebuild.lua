@@ -21,12 +21,16 @@ local core = sb.core;
 require("class")
 local class = class
 
+require("sbnet")
+local net = sbnet
+
 local space = class.new("SpaceEnvironment")
 
 -- RD
 core.device_table = {}
 core.resources_names_table = {}
 core.resources_ids_table = {}
+core.missing_devices = {}
 
 -- SB
 core.environments = {}
@@ -60,7 +64,14 @@ function sb.registerDevice(ent, rdtype)
    core.device_table[entid] = obj;
 
     if not ent.rdobject then
-       Msg("Something went wrong registering the device")
+       MsgN("Something went wrong registering the device")
+    end
+    --TODO mss naar client/spacebuild.lua verhuizen?
+    if CLIENT and core.missing_devices[entid] then
+        core.missing_devices[entid] = nil
+        net.Start("SBRU")
+        net.writeShort(entid)
+        net.SendToServer()
     end
 end
 
