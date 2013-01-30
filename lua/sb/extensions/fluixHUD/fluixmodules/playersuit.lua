@@ -77,7 +77,7 @@ function fluix.modules.playerSuit.Run()
     if suit:getEnvironment() then
         local x = scrW - (200 + 16)
         local env = suit:getEnvironment()
-        PrintTable(env)
+        --PrintTable(env)
         draw.RoundedBox( 1, x, 16, 150, 100, bg )
         draw.SimpleText( "Environment information", "HudHintTextSmall",  x + 16, 32, white)
         draw.SimpleText( string.format( "Temperature: %i K", math.Round( env:getTemperature() )), "HudHintTextSmall",  x+16, 48, white)
