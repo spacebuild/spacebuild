@@ -79,6 +79,7 @@ function C:addChild(component)
         component:setParent(self)
         self:calculateSize()
     end
+    return self
 end
 
 function C:removeChild(component)
