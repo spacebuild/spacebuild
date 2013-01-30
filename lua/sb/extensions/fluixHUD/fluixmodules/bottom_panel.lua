@@ -19,37 +19,47 @@ else
 end
 
 if scrH > 900 then
-    height = 72
+    height = 36
 elseif scrH > 750 then
-    height = 48
+    height = 24
 else
-    height = 32
+    height = 16
 end
 
 local white, orange, red, bg = Color( 255, 255, 255, 240 ), Color( 255, 127, 36, 240 ), Color( 205, 51, 51, 240 ), Color( 50,50,50,220)
-local suit, hudLeftBottomPanel, hudBottomRightPanel, breatBar, healthBar, armorBar, ammoBar
+local suit, hudLeftBottomPanel, hudBottomRightPanel, breathBar, healthBar, armorBar, ammoBar, altBar
 function fluix.modules.BottomPanel.Run( )
     -- Define Hud Components
     if not hudLeftBottomPanel then
-        hudLeftBottomPanel = class.new("BottomLeftPanel", 16, scrH - 20, 0, 0, false, true)
-        breatBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Breath: %i%s")
+        hudLeftBottomPanel = class.new("BottomLeftPanel", 16, scrH - 20, 0, 0, false, true) -- Parent housing/stack, (ClassName,x,y,w,h,valColor,bgColor,string)
+        breathBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Breath: %i%s")
         healthBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Health: %i%s")
         armorBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Armor: %i%s")
-        hudLeftBottomPanel:addChild(breatBar)
-        hudLeftBottomPanel:addChild(healthBar)
-        hudLeftBottomPanel:addChild(armorBar)
+        hudLeftBottomPanel:addChild(breathBar):addChild(healthBar):addChild(armorBar)
     end
     if not hudBottomRightPanel then
-        hudBottomRightPanel = class.new("BottomRightPanel", scrW -  16, scrH - 16, 0, 0, false, true)
-        ammoBar = class.new("HudBarTextIndicator", 0, 0, width, height / 2, 0, 100, white, bg, false)
+        hudBottomRightPanel = class.new("BottomRightPanel", scrW -  16, scrH - 20, 0, 0, false, true)
+        ammoBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, false)
+        altBar = class.new("TextElement", 0, 0, width, height, white, "Alt: %i")
+
         local oldRender = ammoBar.render
         function ammoBar:render()
             if fluix.WeaponS <= 0 then return end
             oldRender(self)
-            self:DrawText( self:getX(), self:getY() + (self.height - self.height/8), self.width, string.format( "Ammo: %i Total: %i", self.value , fluix.Ammo1Total ), self:getColor() )
-            fluix.DrawText( self:getX(), self:getY() + self.height + self.height * 0.5, self.width, string.Right( string.format( "Alt: %i", fluix.Ammo2 ), self.width / 12 ), self:getColor(), "Default" )
+            self:DrawText( self:getX(), self:getY() + (self:getHeight() - self:getHeight()/8), self.width, string.format( "Ammo: %i Total: %i", self.value , fluix.Ammo1Total ), self:getColor() )
+            --fluix.DrawText( self:getX(), self:getY() + self:getHeight() + (self:getHeight() - self:getHeight()/8), self.width, string.Right( string.format( "Alt: %i", fluix.Ammo2 ), self.width / 12 ), self:getColor(), "Default" )
         end
-        hudBottomRightPanel:addChild(ammoBar)
+
+        local oldRender = altBar.render
+        function altBar:render()
+            if fluix.WeaponS <= 0 then return end
+            self:setY( self:getHeight() * 15/8 )
+            self:setText( string.Right( string.format( "Alt: %i", fluix.Ammo2 ), self:getWidth() / 12 ) )
+            oldRender(self)
+        end
+
+
+        hudBottomRightPanel:addChild(ammoBar):addChild(altBar)
     end
 
     -- Calculate values
@@ -65,8 +75,8 @@ function fluix.modules.BottomPanel.Run( )
     -- Calculate breath
 
     if suit then
-        breatBar:setValue(fluix.Smoother( suit:getBreath(), breatBar:getValue(), 0.15 ))
-        breatBar:setMaxValue( suit:getMaxBreath())
+        breathBar:setValue(fluix.Smoother( suit:getBreath(), breathBar:getValue(), 0.15 ))
+        breathBar:setMaxValue( suit:getMaxBreath())
     end
 
     --Calculate Health.

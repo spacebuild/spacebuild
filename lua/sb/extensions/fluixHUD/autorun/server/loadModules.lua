@@ -27,6 +27,7 @@ local function import(send)
     AddCSLuaFile(fluix.basePath.."classes/BottomLeftPanel.lua")
     AddCSLuaFile(fluix.basePath.."classes/BottomRightPanel.lua")
     AddCSLuaFile(fluix.basePath.."classes/TopLeftPanel.lua")
+    AddCSLuaFile(fluix.basePath.."classes/TextElement.lua")
 
 end
 
