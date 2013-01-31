@@ -152,7 +152,7 @@ end
 
 
 -- After declaring the setter and getter methods, now make the table read only!
-sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
+--sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
 
 local basePath = "sb/extensions/"
 local exts = sb.core.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
@@ -184,4 +184,17 @@ if SERVER then
 else
     loadExts(util.SCOPES.CLIENT)
     loadExts(util.SCOPES.SHARED)
+end
+
+
+--Start of Sam Code:
+--If something stuffs up blame me
+if CLIENT then
+	local selfClient = LocalPlayer()
+	if selfClient:IsAdmin() then
+		--Load Externals for Server,Shared and Client
+		
+
+
+
 end
