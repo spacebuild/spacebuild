@@ -38,7 +38,6 @@ function C:init(entid, data)
     self.attributes = {}
 
     self.modified = CurTime()
-    self.start_sync_after = CurTime() + 1
 end
 
 function C:addAttribute(attribute)
@@ -190,21 +189,15 @@ end
 -- Sync stuff
 
 function C:send(modified, ply)
-    if modified >= self.start_sync_after then
-        if self.start_sync_after > 0 then
-            modified = 0
-            self.start_sync_after = 0
-        end
-        if self.modified > modified then
-            net.Start("SBEU")
-            net.WriteString(self:getClass())
-            net.writeShort(self.entid)
-            self:_sendContent(modified)
-            if ply then
-                net.Send(ply)
-            else
-                net.Broadcast()
-            end
+    if self.modified > modified then
+        net.Start("SBEU")
+        net.WriteString(self:getClass())
+        net.writeShort(self.entid)
+        self:_sendContent(modified)
+        if ply then
+            net.Send(ply)
+        else
+            net.Broadcast()
         end
     end
 end

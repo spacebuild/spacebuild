@@ -41,7 +41,6 @@ function C:init(syncid)
     self.syncid = syncid;
     self.resources = {}
     self.modified = CurTime()
-    self.start_sync_after = CurTime() + 1
 end
 
 function C:getID()
@@ -150,20 +149,14 @@ function C:getEntity()
 end
 
 function C:send(modified, ply)
-    if modified >= self.start_sync_after then
-        if self.start_sync_after > 0 then
-            modified = 0
-            self.start_sync_after = 0
-        end
-        if self.modified > modified then
-            net.Start("SBRU")
-            net.writeShort(self.syncid)
-            self:_sendContent(modified)
-            if ply then
-                net.Send(ply)
-            else
-                net.Broadcast()
-            end
+    if self.modified > modified then
+        net.Start("SBRU")
+        net.writeShort(self.syncid)
+        self:_sendContent(modified)
+        if ply then
+            net.Send(ply)
+        else
+            net.Broadcast()
         end
     end
 end
@@ -209,7 +202,6 @@ function C:applyDupeInfo(data, newent, CreatedEntities)
         res:setAmount(0)
     end
     self.modified = CurTime()
-    self.start_sync_after = CurTime() + 1
 end
 
 
