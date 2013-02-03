@@ -22,9 +22,15 @@ local spawned_entities = {}
 local function OnEntitySpawn(ent)
     if not table.HasValue(spawned_entities, ent) then
         table.insert(spawned_entities, ent)
+        timer.Simple(0.1, function()
+            if not ent.environment and sb.isValidSBEntity(ent)  then
+                ent.environment = sb.getSpace()
+                sb.getSpace():updateEnvironmentOnEntity(ent)
+            end
+        end)
     end
 end
-hook.Add("OnEntitySpawn", "SB_OnEntitySpawn", OnEntitySpawn)
+hook.Add("OnEntityCreated", "SB_OnEntitySpawn", OnEntitySpawn)
 
 function u.getSpawnedEntities()
     return spawned_entities;

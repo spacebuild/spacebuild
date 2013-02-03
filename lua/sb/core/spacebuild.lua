@@ -275,6 +275,17 @@ sb.addOnToolCreatedHook("sb4_generators", function(tool)
         }
     }
     tool:AddRDEntities(storages, "Storage")
+
+    local networks = {
+
+
+    }
+    tool:AddRDEntities(networks, "Resource Nodes")
+
+    local ls_devices = {
+
+    }
+    tool:AddRDEntities(ls_devices, "Life Support")
 end)
 
 

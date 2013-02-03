@@ -34,32 +34,28 @@ local function sbThink()
     for _, ply in pairs(player.GetAll()) do
         -- RD
         if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
-            if ply.lastrdupdate then
-                for k, v in pairs(core.device_table) do
-                    v:send(ply.lastrdupdate, ply)
-                end
-                ply.lastrdupdate = time
-            else
-                ply.lastrdupdate = 0
+            for k, v in pairs(core.device_table) do
+                v:send(ply.lastrdupdate or 0, ply)
             end
+            ply.lastrdupdate = time
         end
         -- SB
         if not ply.lastsbupdate or ply.lastsbupdate + time_to_next_sb_sync < time then
             if ply.lastsbupdate then
                 for k, v in pairs(core.device_table) do
-                    v:send(ply.lastsbupdate, ply)
+                    v:send(ply.lastsbupdate or 0, ply)
                 end
                 for _, v in pairs(core.mod_tables) do
                     for _, w in pairs(v) do
-                        w:send(ply.lastsbupdate, ply)
+                        w:send(ply.lastsbupdate or 0, ply)
                     end
                 end
                 for _, v in pairs(core.environments) do
-                    v:send(ply.lastsbupdate, ply)
+                    v:send(ply.lastsbupdate or 0, ply)
                 end
                 ply.lastsbupdate = time
             else
-                ply.lastsbupdate = 0
+                ply.lastsbupdate =  (-time_to_next_sb_sync)
             end
         end
         --LS
@@ -70,13 +66,9 @@ local function sbThink()
             end
         end
         if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
-            if ply.ls_suit and ply:Alive() then
-                if ply.lastlsupdate then
-                    ply.ls_suit:send(ply.lastlsupdate)
-                    ply.lastlsupdate = time
-                else
-                    ply.lastlsupdate = 0
-                end
+            if ply.ls_suit --[[and ply:Alive()]] then
+                ply.ls_suit:send(ply.lastlsupdate or 0)
+                ply.lastlsupdate = time
             end
         end
     end
