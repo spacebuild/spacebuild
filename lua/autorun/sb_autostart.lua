@@ -15,16 +15,23 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+
+
 local gmod_version_required = 145;
 if ( VERSION < gmod_version_required ) then
 	error("SB CORE: Your gmod is out of date: found version ", VERSION, "required ", gmod_version_required)
 end
+local shouldRun = true
+if (not string.StartWith(game.GetMap,"sb_") or game.GetMap == "gm_spacebuild_v3") then
+	shouldRun = false
+end
 
-if SERVER then
+
+if (SERVER and shouldRun) then
 	AddCSLuaFile("autorun/sb_autostart.lua")
     include("sb/core/server/send.lua")
 	include("sb/core/server/init.lua")
-else
+elseif (CLIENT and shouldRun)
 	include("sb/core/client/init.lua")
 end
 
