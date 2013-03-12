@@ -3,7 +3,7 @@ AddCSLuaFile( )
 DEFINE_BASECLASS( "base_resource_entity" )
 
 ENT.PrintName		= "Base Resource Network"
-ENT.Author			= "SnakeSVx"
+ENT.Author			= "SnakeSVx & Radon"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""
@@ -27,6 +27,15 @@ function ENT:Initialize()
             phys:Wake()
         end
     end
+
+    if CLIENT then
+
+        self.oldResourceValues = {}
+        self.ResourceValues = {}
+        self._synctimestamp2 = CurTime()
+
+    end
+
 end
 
 function ENT:OnRestore()
@@ -35,14 +44,12 @@ function ENT:OnRestore()
     self.rdobject:onRestore(self)
 end
 
-
-
 if SERVER then
 
     function ENT:updateConnections(c)
 
         local self = c or self
-        self:EmitSound( Sound( "/common/warning.wav" ) )
+        self:EmitSound( Sound( "/common/warning.wav" ),90)
         self._synctimestamp = CurTime()
         self.constraints = constraint.GetAllConstrainedEntities( self )
 
@@ -56,14 +63,12 @@ if SERVER then
 
     function ENT:Use()
 
-        if not self.active then
+        if not self.active then -- One time only trigger to begin device syncing
             self.active = true
             self:updateConnections()
         end
 
     end
-
-
 
     function ENT:Think()
 
@@ -93,6 +98,45 @@ if CLIENT then
         surface.DrawText( text )    --For some reason this doesn't work. I think it's a size iissue and creating a custom font for a sample code seems pointless.
     end
 
+    function ENT:updateOldValues()
+        for k, v in pairs(self:getResources()) do
+            self.oldResourceValues[k] = v.value   --Populate the old values
+        end
+    end
+
+    function ENT:getOldValues()
+        return self.oldResourceValues
+    end
+
+    function ENT:getResources()
+        return self.ResourceValues
+    end
+
+    function ENT:updateResources()
+        local old = self:getOldValues()
+        for k, v in pairs(self.rdobject:getResources()) do
+            self.ResourceValues[k] = {value = self.rdobject:getResourceAmount(k), maxvalue = self.rdobject:getMaxResourceAmount(k) }
+            self.ResourceValues[k].delta = self.ResourceValues[k].value - (old[k] or 0)
+        end
+    end
+
+
+    function ENT:Think() -- Clientside think
+
+        if (CurTime() > self._synctimestamp2 + 2) then
+            self.ResourceValues = {}
+            self:updateResources()
+
+            self.oldResourceValues = {}
+            self:updateOldValues()
+
+            self._synctimestamp2 = CurTime()
+        end
+
+
+    end
+
+
 
     function ENT:Draw()
         --[[
@@ -108,6 +152,7 @@ if CLIENT then
          ]]
 
         self:DrawModel()
+
         if self.hud then
             local pos = self:LocalToWorld(self.hud.vector)
             local angle = self:GetAngles()
@@ -135,27 +180,58 @@ if CLIENT then
                 drawText("Resource name", 5, 35)
                 drawText("Amount", 205, 35)
                 drawText("Max Amount", 330, 35)
-                drawText("Note", 460, 35)
-                local y, value, maxvalue = 35
-                for k, v in pairs(self.rdobject:getResources()) do
+                drawText("Delta",430,35)
+                drawText("Note", 530, 35)
+                local y, value, maxvalue = 35,35,35 -- One to One please
+
+                for k, v in pairs(self:getResources()) do
+
                     y = y + 15
-                    value = self.rdobject:getResourceAmount(k)
-                    maxvalue = self.rdobject:getMaxResourceAmount(k)
-                    drawText(k, 5, y)
+
+                    value = v.value
+                    maxvalue = v.maxvalue
+
+                    drawText(k:gsub("^%l", string.upper), 5, y)
                     drawText(tostring(value), 205, y)
                     drawText(tostring(maxvalue), 330, y)
-                    if (value / maxvalue) > 0.3 then
-                        drawText("safe", 460, y, colors.green)
-                    elseif (value/maxvalue) > 0.1 then
-                        drawText("warning", 460, y, colors.orange)
-                    else
-                        drawText("low on resource", 460, y, colors.red)
+
+                    --  Delta
+                    drawText(tostring(v.delta) ,430 ,y)  --some reason the self:getDelta call isn't working and it's halting
+
+                    -- Cleaned up note column
+
+                    local str,color = "Low on resource", colors.red
+                    local pcnt = value/maxvalue
+
+                    if (v.delta > 0) then
+
+                        str,color = "Safe",colors.green
+
+                    elseif (v.delta == 0) then
+                        if pcnt > 0.8 then
+                            str,color = "Safe",colors.green
+                        elseif pcnt > 0.3 then
+                            str,color = "Caution",colors.yellow
+                        elseif pcnt > 0.1 then
+                            str,color = "Warning",colors.orange
+                        end
+
+                    elseif (v.delta < 0) then
+                        if pcnt > 0.3 then
+                            str,color = "Warning",colors.red
+                        elseif pcnt > 0.1 then
+                            str,color = "DANGER",colors.red
+                        end
+
                     end
+
+                    drawText(tostring(str), 530, y, color)
 
                 end
                 --Stop rendering
             end)
             cam.End3D2D()
+            self:updateOldValues() -- Update the values to the curr ones
         end
 
 

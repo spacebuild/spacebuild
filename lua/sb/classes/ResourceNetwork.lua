@@ -162,7 +162,7 @@ function C:unlink(container, dont_unlink)
        self.networksmodified = CurTime()
        self.containersmodified = CurTime()
     else
-        if not self:canLink(container) then return end
+        if not self:canLink(container, true) then return end
         if not dont_unlink then
             container:unlink(self, true);
         end
@@ -194,8 +194,8 @@ function C:getConnectedEntities()
    return self.containers
 end
 
-function C:canLink(container)
-	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and container:getNetwork() == nil ))
+function C:canLink(container, checkforSelf)
+	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and (container:getNetwork() == nil or ( checkforSelf and container:getNetwork() == self ))))
 end
 
 function C:canCheck()

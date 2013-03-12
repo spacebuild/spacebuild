@@ -33,7 +33,7 @@ net.Receive("SBRU", function(bitsreceived)
     if not to_sync then
         core.missing_devices[syncid] = true
     end
-    to_sync:receive()
+    if to_sync then to_sync:receive() end
 end)
 
 net.Receive("SBRPU", function(bitsreceived)

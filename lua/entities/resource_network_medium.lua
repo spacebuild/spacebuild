@@ -27,7 +27,7 @@ ENT.Spawnable 		= true
 ENT.AdminOnly 		= false
 
 ENT.hud = {
-    vector = Vector(-65,35,5.18),
+    vector = Vector(-65,35,5.28),
     scale = 0.2
 }
 
