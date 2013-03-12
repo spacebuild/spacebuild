@@ -44,7 +44,7 @@ local extBase = {
         self.version = 1
         self.name = "Base Extension"
         self.config = config or {}
-
+		
     end;
 
     isActive = function(self)
@@ -185,3 +185,63 @@ else
     loadExts(util.SCOPES.CLIENT)
     loadExts(util.SCOPES.SHARED)
 end
+
+
+
+if (CLIENT) then
+	--This will contain all the Extension Panels
+	--TODO: Talk to Radon about using the unique IDs instead of incrementally inserting them. This would allow extensions to change their own panel.
+	
+	local ExtsPnls = {}
+	
+	function DrawExtensionsMenu( panel ) 
+		local exts = 1;
+		for k,v in pairs(sb.core.extensions) do
+			if (v:getName()) then
+				
+				index = table.insert(ExtsPnls,{})
+				
+				--Create the base panel
+				ExtsPnls[index][1] = vgui.Create( "DPanel",panel )
+				ExtsPnls[index][1]:SetPos( 10, (exts * 100) + (10 * (exts - 1))) --TODO: Play around with the spacing (<10 perhaps)
+				ExtsPnls[index][1]:SetSize( panel.GetWidth - 20, 100  ) --TODO: Play around with value 100
+				--Increments the amount of Extensions so we know where to place the next Panel
+				exts = exts + 1
+				
+				--Create the Title Text in the panel
+				ExtsPnls[index][2] = vgui.Create( "DLabel",ExtsPnls[index][1])
+				ExtsPnls[index][2]:SetPos( 5, 5 ) --TODO: Play around with these values 
+				--ExtsPnls[index][2]:SetFont() TODO: Create a font for title
+				ExtsPnls[index][2]:SetText(v:GetName())
+				ExtsPnls[index][2]:SizeToContents() -- TODO: Check this function isn't deprecated
+				
+				
+				--Create the description Text in the panel
+				ExtsPnls[index][3] = vgui.Create( "DLabel",ExtsPnls[index][1])
+				ExtsPnls[index][3]:SetPos( 5, 10) --TODO: Play with Values, Possibly indent
+				ExtsPnls[index][3]:SetFont( ) --TODO: Create a font for description
+				ExtsPnls[index][3]:SetText(v:GetDesc()) --TODO: Create or find the the equivalent function
+				ExtsPnls[index][3]:SizeToContents() 
+				
+				--Create the options button
+				
+				
+				--Create the disable button 
+				
+				--If the Extension is disabled colour the button red
+				
+				--Else if the extension is enabled colour the button green
+				
+
+			end	
+	end
+	
+	spawnmenu.AddToolMenuOption( "SB", "Options", "Extensions", "","",DrawExtensionsMenu,{})
+
+
+
+
+end
+
+
+
