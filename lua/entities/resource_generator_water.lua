@@ -3,7 +3,7 @@ AddCSLuaFile( )
 DEFINE_BASECLASS( "base_resource_generator" )
 
 ENT.PrintName		= "Water Generator"
-ENT.Author			= "SnakeSVx"
+ENT.Author			= "SnakeSVx & Radon"
 ENT.Contact			= ""
 ENT.Purpose			= "Testing"
 ENT.Instructions	= ""

@@ -26,15 +26,16 @@ function ENT:Initialize()
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
+        self.Entity:SetUseType( SIMPLE_USE )
 
         -- Wake the physics object up. It's time to have fun!
         local phys = self:GetPhysicsObject()
         if (phys:IsValid()) then
             phys:Wake()
         end
-        self.rdobject:addResource("energy", 50000, 0)
-        self.rdobject:addResource("oxygen", 50000, 0)
-        self.rdobject:addResource("water", 50000, 0)
+        self.rdobject:addResource("energy", 50000, 50000)
+        self.rdobject:addResource("oxygen", 50000, 50000)
+        self.rdobject:addResource("water", 50000, 50000)
     end
 end
 
@@ -51,13 +52,12 @@ end
 
 if SERVER then
 
-    function ENT:vent()
+    function ENT:ventResources()
 
-        if self.vent then
-            local obj = self.rdobject
+        if self.vent == true then
 
-            for k,v in ipairs(obj:getResources()) do
-                obj:consumeResource(k,10)
+            for k, v in pairs(self.rdobject:getResources()) do
+                self.rdobject:consumeResource(k,1000)
             end
         end
 
@@ -66,11 +66,9 @@ if SERVER then
 
     function ENT:Use()
 
-        if not self.vent then
-            self.vent = true
-        else
-            self.vent = false
-        end
+        self.vent = not self.vent
+        self:EmitSound( Sound( "/common/warning.wav" ) )
+
 
 
     end
@@ -79,11 +77,11 @@ if SERVER then
 
     function ENT:Think()
 
-        if self.vent then
-            self:vent()
-        else
-            self:NextThink(CurTime() + 1)
+        if self.vent == true then
+            self:ventResources()
         end
+
+        self:NextThink(CurTime() + 2)
 
 
     end
