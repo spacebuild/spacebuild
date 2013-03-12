@@ -25,197 +25,13 @@ local function CreateNetTable(netid)
 	index.resources = {}
 	index.cons = {}
 end
---[[
-umsg.Start("RD_AddNet")
-		umsg.Short(netid)
-	umsg.End()
-]]
---[[local function AddNet( um )
-	local netid = um:ReadShort()
-	if netid > 0 then
-		CreateNetTable(netid)
-	end
-end
-usermessage.Hook("RD_AddNet", AddNet)]]
-
---[[
-umsg.Start("RD_AddResoureToNet")
-		umsg.Short(netid)
-		umsg.String(resource)
-		umsg.Long(maxvalue)
-		umsg.Long(value)
-	umsg.End()
-]]
-
---[[local function AddResoureToNet( um )
-	local netid = um:ReadShort()
-	local resource = um:ReadString()
-	local maxvalue = um:ReadLong()
-	local value = um:ReadLong()
-	if not table.HasValue(resources, resource) then
-		table.insert(resources, resource)
-	end
-	if netid > 0 then
-		if not nettable[netid] then
-			CreateNetTable(netid)
-		end
-		nettable[netid].resources[resource] = {}
-		nettable[netid].resources[resource].maxvalue = maxvalue
-		nettable[netid].resources[resource].value = value
-	end
-end
-usermessage.Hook("RD_AddResoureToNet", AddResoureToNet)]]
-
---[[
-
---Needed?
-umsg.Start("RD_AddConToNet")
-		umsg.Short(netid)
-		umsg.Short(entid)
-	umsg.End()
-]]
-
---[[local function AddConToNet(um)
-	local netid = um:ReadShort()
-	local conid = um:ReadShort()
-	if netid > 0 then
-		if not nettable[netid] then
-			CreateNetTable(netid)
-		end
-		table.insert(nettable[netid].cons, conid)
-	end
-end
-usermessage.Hook("RD_AddConToNet", AddConToNet)]]
-
---[[
-umsg.Start("RD_RemoveNetCons")
-		umsg.Short(netid)
-	umsg.End()
-]]
-
---[[local function RemoveConsFromNet( um)
-	local netid = um:ReadShort()
-	if netid > 0 then
-		if not nettable[netid] then
-			CreateNetTable(netid)
-		end
-		nettable[netid].cons = {}
-	end
-end
-usermessage.Hook("RD_RemoveNetCons", RemoveConsFromNet)]]
---[[
-umsg.Start("RD_RemoveNet")
-		umsg.Short(netid)
-	umsg.End()
-]]
-
---[[local function RemoveNet( um)
-	local netid = um:ReadShort()
-	if netid > 0 then
-		nettable[netid] = nil
-	end
-end
-usermessage.Hook("RD_RemoveNet", RemoveNet)]]
-
----------ent_table functions
---[[
-umsg.Start("RD_AddEnt")
-		umsg.Short(entid)
-	umsg.End()
-]]
-
---[[local function CreateEntTable(entid)
-	ent_table[entid] = {}
-	ent_table[entid].network = 0
-	ent_table[entid].resources = {}
-end
-
-local function AddEnt( um )
-	local entid = um:ReadShort()
-	CreateEntTable(entid)
-end
-usermessage.Hook("RD_AddEnt", AddEnt)]]
-
-
---[[
-umsg.Start("RD_AddResoureToEnt")
-		umsg.Short(entid)
-		umsg.String(resource)
-		umsg.Long(maxvalue)
-		umsg.Long(value)
-	umsg.End()
-]]
-
---[[local function AddResourceToEnt( um )
-	local entid = um:ReadShort()
-	local resource = um:ReadString()
-	local maxvalue = um:ReadLong()
-	local value = um:ReadLong()
-	if not ent_table[entid] then
-		CreateEntTable(entid)
-	end
-	ent_table[entid].resources[resource] = {}
-	ent_table[entid].resources[resource].maxvalue = maxvalue
-	ent_table[entid].resources[resource].value = value
-end
-usermessage.Hook("RD_AddResoureToEnt", AddResourceToEnt)]]
-
---[[
-umsg.Start("RD_ChangeNetOnEnt")
-		umsg.Short(entid)
-		umsg.Short(netid)
-	umsg.End()
-]]
---[[local function ChangeNetOnEnt( um )
-	local entid = um:ReadShort()
-	local netid = um:ReadShort()
-	if not ent_table[entid] then
-		CreateEntTable(entid)
-	end
-	ent_table[entid].network = netid
-end
-usermessage.Hook("RD_ChangeNetOnEnt", ChangeNetOnEnt)]]
-
---[[
-umsg.Start("RD_RemoveEnt")
-		umsg.Short(entid)
-	umsg.End()
-]]
---[[local function RemoveEnt( um )
-	local entid = um:ReadShort()
-	ent_table[entid] = nil
-end
-usermessage.Hook("RD_RemoveEnt", RemoveEnt)]]
 
 ------ nettable and ent_table
---[[
-umsg.Start("RD_ClearNets")
-	umsg.End()
-]]
 local function ClearNets( um )
-	--nettable = {}
-	--ent_table = {}
 	rd_cache:clear();
 end
 usermessage.Hook("RD_ClearNets", ClearNets)
 
---[[
-umsg.Start("RD_Entity_Data", ply)
-	umsg.Short(entid) --send key to update
-	umsg.Short(rddata.network) --send network used in entity
-	
-	local nr_of_resources = table.Count(rddata.resources);
-	umsg.Short(nr_of_resources) --How many resources are going to be send?
-	if nr_of_resources > 0 then
-		for l, w in pairs(rddata.resources) do
-			umsg.String(l)
-			umsg.Long(w.maxvalue)
-			umsg.Long(w.value)
-		end
-	end
-	
-umsg.End()
-]]
 
 local function ReadBool()
    return net.ReadBit() == 1
@@ -234,15 +50,11 @@ local function AddEntityToCache( nrofbytes )
 	local data = {}
 
 	data.entid = ReadShort() --Key
-	local up_to_date = ReadBool();
-	if up_to_date then
-		rd_cache:update("entity_"..tostring(data.entid))
-	end
 	data.network = ReadShort() --network key
 	
 	data.resources = {}
 	local i = 0;
-	local nr_of_resources = ReadShort();
+	local nr_of_resources = ReadShort(); --Amount of resources
 	if (nr_of_resources > 0) then
 		--print("nr_of_sources", nr_of_resources)
 		local resource 
@@ -250,10 +62,9 @@ local function AddEntityToCache( nrofbytes )
 		local value
 		for i = 1, nr_of_resources do
 			--print(i)
-			resource = net.ReadString()
-			maxvalue = ReadLong()
-			value = ReadLong()
-			
+			resource = net.ReadString() --res name
+			maxvalue = ReadLong()  -- res amount
+			value = ReadLong()  -- res maxamount
 			data.resources[resource] = {value = value, maxvalue = maxvalue}
 		end
 	end
@@ -262,45 +73,15 @@ local function AddEntityToCache( nrofbytes )
 end
 net.Receive("RD_Entity_Data", AddEntityToCache)
 
---[[
-umsg.Start("RD_Network_Data", ply)
-		umsg.Short(netid) --send key to update
-		
-		local nr_of_resources = table.Count(rddata.resources);
-		umsg.Short(nr_of_resources) --How many resources are going to be send?
-		if nr_of_resources > 0 then
-			for l, w in pairs(rddata.resources) do
-				umsg.String(l)
-				umsg.Long(w.maxvalue)
-				umsg.Long(w.value)
-			end
-		end
-		
-		local nr_of_cons = table.Count(rddata.cons);
-		umsg.Short(nr_of_cons) --How many connections are going to be send?
-		if nr_of_cons > 0 then
-			for l, w in pairs(rddata.cons) do
-				umsg.Short(w)
-			end
-		end
-		
-	umsg.End()
-
-]]
-
 local function AddNetworkToCache( nrofbytes )
     print("RD_Network_Data #", nrofbytes, " bytes received")
 	local data = {}
 	
 	data.netid = ReadShort() --network key
-	local up_to_date = ReadBool();
-	if up_to_date then
-		rd_cache:update("network_"..tostring(data.netid))
-	end
 	
 	data.resources = {}
 	local i = 0;
-	local nr_of_resources = ReadShort();
+	local nr_of_resources = ReadShort(); -- amount of resources
 	if (nr_of_resources > 0) then
 		--print("nr_of_sources", nr_of_resources)
 		local resource 
@@ -308,21 +89,21 @@ local function AddNetworkToCache( nrofbytes )
 		local value
 		for i = 1, nr_of_resources do
 			--print(i)
-			resource = net.ReadString()
-			maxvalue = ReadLong()
-			value = ReadLong()
+			resource = net.ReadString() --res name
+			maxvalue = ReadLong()  -- res amount
+			value = ReadLong()  -- res maxamount
 			
 			data.resources[resource] = {value = value, maxvalue = maxvalue}
 		end
 	end
 	
 	data.cons = {}
-	local nr_of_cons = ReadShort();
+	local nr_of_cons = ReadShort(); -- amount of conts
 	if (nr_of_cons > 0) then
 		--print("nr_of_cons", nr_of_cons)
 		for i = 1, nr_of_cons do
 			--print(i)
-			con = ReadShort()
+			con = ReadShort()  -- connection key
 			table.insert(data.cons, con);
 		end
 	end
