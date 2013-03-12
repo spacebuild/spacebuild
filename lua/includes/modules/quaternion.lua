@@ -250,17 +250,17 @@ function quat:toAngle()
         return {toDegrees(attitude),toDegrees(heading),toDegrees(bank)}
 
     elseif (test < -0.499) then-- singularity at south pole
-        local heading = -2 * atan2(q1.x,q1.w);
-        local attitude = - Math.PI/2;
-        local bank = 0;
+        local heading = -2 * atan2(q.x,q.w)
+        local attitude = - math.pi/2
+        local bank = 0
         return {toDegrees(attitude),toDegrees(heading),toDegrees(bank)}
     else
 
-        local sqx = q.i*q.i;
-        local sqy = q.j*q.j;
-        local sqz = q.k*q.k;
-        local heading = atan2(2*q.j*q.w-2*q.i*q.k , 1 - 2*sqy - 2*sqz);
-        local attitude = asin(2*test);
+        local sqx = q.i*q.i
+        local sqy = q.j*q.j
+        local sqz = q.k*q.k
+        local heading = atan2(2*q.j*q.w-2*q.i*q.k , 1 - 2*sqy - 2*sqz)
+        local attitude = asin(2*test)
         local  bank = atan2(2*q.i*q.w-2*q.j*q.k , 1 - 2*sqx - 2*sqz)
 
         return {toDegrees(attitude),toDegrees(heading),toDegrees(bank)}
@@ -269,7 +269,7 @@ function quat:toAngle()
 
 end
 
-function quat:dot(q2)
+--[[function quat:dot(q2)
     local q1 = {self.w, self.i,self.j,self.k}
     local ret = 0
     for i = 1, #q1 do
@@ -277,11 +277,15 @@ function quat:dot(q2)
     end
     return ret
 
+end ]]
+
+function quat:dot(q2)
+    return self.i * q2.i + self.j * q2.j + self.k * q2.k + self.w * q2.w
 end
 
 --=============== Linear Interpolation Bitches!!! ==============--
 
-function quat:lerp(q1,q2,smoothJazz)
+function lerp(q1,q2,smoothJazz)
 
     local smoothJazz = math.Clamp(smoothJazz,0,1) -- Don't even think about using a percentage outside these bounds.
     return (q1 + smoothJazz*(q2 - q1)) --Standard lerp here, unsure how those quat operations will go though :/ Least scalar mult is covered
@@ -290,9 +294,9 @@ end
 
 --=============== Normalised Linear Interpolation Bitches!!! ==============--
 
-function quat:nlerp(q1,q2,smoothJazz)   -- This just normalises the return of lerp, is non-constant velocity, less intensive than slerp.
+nlerp = function(q1,q2,smoothJazz)   -- This just normalises the return of lerp, is non-constant velocity, less intensive than slerp.
 
-    local qr = self:lerp(q1,q2,smoothJazz)
+    local qr = lerp(q1,q2,smoothJazz)
     local qrn = qr:normalise()
     return qrn
 
@@ -303,16 +307,18 @@ end
 
 --=============== Spherical Linear Interpolation Bitches!!! ==============--
 
-function quat:slerp(q1,q2,smoothJazz)
+function slerp(q1,q2,smoothJazz)
 
     -- Protip: If they aren't unit vectors by this point, you should just leave
-
     if not q1.type or not q2.type or q1.type ~= "quaternion" or q2.type ~= "quaternion" or type(smoothJazz) ~= "number" then return false end
+
+    local q1 = q1:normalise()
+    local q2 = q2:normalise()
 
     local dotProd = q1:dot(q2) --Snazzy dot product. think dot(start,end)
 
     if dotProd > 0.9995 then -- Too close for my liking, we'll just lerp these :P
-        self:lerp(q1,q2,smoothJazz)
+        lerp(q1,q2,smoothJazz)
     else
         math.Clamp(dotProd,-1,1) -- Clamp to within bounds of acos()
         local omega = acos(dotProd) -- we might get away with just plonking this in the line below as omega isn't really needed.

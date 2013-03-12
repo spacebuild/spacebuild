@@ -40,6 +40,7 @@ end
 function C:init(syncid)
     self.syncid = syncid;
     self.resources = {}
+    self.delta = 0
     self.modified = CurTime()
 end
 
@@ -220,3 +221,15 @@ function C:onLoad(data)
 end
 
 -- End Save/Load functions
+
+function C:getDelta()
+    return self.delta
+end
+
+function C:setDeleta(data)
+    self.delta = data
+end
+
+function C:calcDelta(resource)
+    local blah
+end
