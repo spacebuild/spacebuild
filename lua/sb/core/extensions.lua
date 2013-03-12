@@ -152,7 +152,7 @@ end
 
 
 -- After declaring the setter and getter methods, now make the table read only!
-sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
+--sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
 
 local basePath = "sb/extensions/"
 local exts = sb.core.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
@@ -237,11 +237,4 @@ if (CLIENT) then
 	end
 	
 	spawnmenu.AddToolMenuOption( "SB", "Options", "Extensions", "","",DrawExtensionsMenu,{})
-
-
-
-
 end
-
-
-
