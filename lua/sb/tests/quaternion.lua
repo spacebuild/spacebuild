@@ -41,9 +41,9 @@ end
 
 function TestQuats:testZeroQaut()
     -- Zero Quat check
-    local q = quaternion.create(0,0,0,0) --Hopefully a new zero quaternion
+    local q = quaternion.create(1,0,0,0) --Hopefully a new zero quaternion
     assert(q)
-    assertEquals( checkComponents(q,{0,0,0,0}), true )
+    assertEquals( checkComponents(q,{1,0,0,0}), true )
 end
 
 function TestQuats:testScalarVectorQuatCreation()
@@ -185,6 +185,66 @@ function TestQuats:testQuatComplexConjugate()
     assertEquals( checkComponents(q*q2,{1.000000,0.000000,0.000000,0.000000}), true)
 
 end
+
+function TestQuats:testQuatfromEuler()
+    -- Check if we can correctly covert from Euler angles to Quaternions :D
+    local q = quaternion.create(1,0,0,0)
+
+    q:fromEuler(90,0,0)
+    assertEquals( checkComponents(q,{0.707107,0.000000,0.707107,0.000000}), true)
+
+    q:fromEuler(0,90,0)
+    assertEquals( checkComponents(q,{0.707107,0.000000,0.000000,0.707107}), true)
+
+    q:fromEuler(0,0,90)
+    assertEquals( checkComponents(q,{0.707107,0.707107,0.000000,0.000000}), true)
+
+    q:fromEuler(-38,147,-9005)  --Inprecision seems to be a bitch here :/ different online calculators conflict, in sign and magnitude, and my answers also differ.
+    assertEquals( checkComponents(q,{-0.281902,-0.300150,0.1319228898994782,-0.9016856793017153}), true)
+
+
+
+end
+
+function TestQuats:testQuattoVec()
+
+    local q = quaternion.create(1,0,0,0)
+    local qv = q:toVec()
+    assertEquals( type(qv), "table")
+    assertEquals( qv[1], 0)
+    assertEquals( qv[2], 0)
+    assertEquals( qv[3], 0)
+
+    local q = quaternion.create(1,5,7,9)
+    local qv = q:toVec()
+    assertEquals( type(qv), "table")
+    assertEquals( qv[1], 5)
+    assertEquals( qv[2], 7)
+    assertEquals( qv[3], 9)
+
+
+end
+
+function TestQuats:testQuattoAng()
+
+    local function checkWithin(var,value,tol)
+
+        if var >= value-tol and var <= value+tol then return true
+        else return false end
+
+    end
+
+
+    local q = quaternion.create(5,9,16,29):normalise()
+    local qa = q:toAngle()
+    assertEquals( type(qa), "table")
+    assertEquals( checkWithin(qa[1],28.715809154701,0.0000005), true )
+    assertEquals( checkWithin(qa[2],-159.93337875619,0.0000005), true )
+    assertEquals( checkWithin(qa[3],-127.41296933957,0.0000005), true )
+
+end
+
+
 
 
 
