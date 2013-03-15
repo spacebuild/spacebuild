@@ -20,6 +20,9 @@ local C = CLASS
 local sb = sb;
 local core = sb.core
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return className == "LegacyColorInfo"
 end
@@ -72,6 +75,10 @@ function C:render()
     DrawColorModify( cmod )
 end
 
+--- Sync function to send data to the client from the server
+-- @param modified timestamp the client received information about this environment last
+-- @param ply the client to send this information to; if nil send to all clients
+--
 function C:send(modified, ply)
     if self.modified > modified then
         net.Start("SBMU")
@@ -87,6 +94,9 @@ function C:send(modified, ply)
     end
 end
 
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
 function C:_sendContent(modified)
     if self.addColor then
         net.writeBool(true)
@@ -109,6 +119,8 @@ function C:_sendContent(modified)
     net.WriteFloat(self.color)
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     self.addColor = self.addColor or {}
     self.mulColor = self.mulColor or {}

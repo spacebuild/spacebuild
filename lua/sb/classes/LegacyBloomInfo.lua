@@ -20,6 +20,9 @@ local C = CLASS
 local sb = sb;
 local core = sb.core
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return className == "LegacyBloomInfo"
 end
@@ -60,6 +63,10 @@ function C:render()
     DrawBloom( self.darken, self.multiply, self.SizeX, self.SizeY, self.passes, self.color, self.Col_r, self.Col_g, self.Col_b );
 end
 
+--- Sync function to send data to the client from the server
+-- @param modified timestamp the client received information about this environment last
+-- @param ply the client to send this information to; if nil send to all clients
+--
 function C:send(modified, ply)
     if self.modified > modified then
         net.Start("SBMU")
@@ -75,6 +82,9 @@ function C:send(modified, ply)
     end
 end
 
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
 function C:_sendContent(modified)
     net.WriteFloat(self.Col_r or 0)
     net.WriteFloat(self.Col_g or 0)
@@ -87,6 +97,8 @@ function C:_sendContent(modified)
     net.WriteFloat(self.color or 0)
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     self.Col_r = net.ReadFloat()
     self.Col_g = net.ReadFloat()

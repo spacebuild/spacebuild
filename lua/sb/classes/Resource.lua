@@ -29,7 +29,9 @@ local C = CLASS
 local sb = sb;
 local core = sb.core
 
-
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return className == "Resource"
 end
@@ -116,7 +118,9 @@ function C:getName()
     return self.name;
 end
 
---Always partial!! 
+--- Sync function to send data to the client from the server
+-- @param modified timestamp the client received information about this environment last
+--
 function C:send(modified)
     net.writeTiny(self.resourceInfo:getID())
     if self.modified > modified then
@@ -133,6 +137,8 @@ function C:send(modified)
     end
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     if net.readBool() then
         self.amount = net.readAmount()

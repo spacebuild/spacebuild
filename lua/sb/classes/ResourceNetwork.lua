@@ -45,6 +45,9 @@ local funcRef = {
     applyDupeInfo = C.applyDupeInfo
 }
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
 	return funcRef.isA(self, className) or className == "ResourceNetwork"
 end
@@ -210,7 +213,9 @@ function C:enableCheck()
     self.canCheckConstraints = true
 end
 
-
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
 function C:_sendContent(modified)
     if self.containersmodified > modified then
         net.writeBool(true)
@@ -233,6 +238,8 @@ function C:_sendContent(modified)
     funcRef.sendContent(self, modified);
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     local hasContainerUpdate = net.readBool()
     if hasContainerUpdate then

@@ -32,6 +32,9 @@ local funcRef = {
     onLoad = C.onLoad
 }
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return funcRef.isA(self, className) or className == "LegacyPlanet"
 end
@@ -252,6 +255,9 @@ function C:updateEntities()
    end
 end
 
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
 function C:_sendContent(modified)
     funcRef.sendContent(self, modified)
     net.WriteString(self.name)
@@ -269,6 +275,8 @@ function C:_sendContent(modified)
     end
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     funcRef.receiveSignal(self)
     self.name = net.ReadString()

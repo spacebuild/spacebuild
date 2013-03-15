@@ -47,6 +47,9 @@ local funcRef = {
     onLoad = C.onLoad
 }
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return funcRef.isA(self, className) or className == "ResourceEntity"
 end
@@ -131,6 +134,9 @@ function C:getNetwork()
     return self.network
 end
 
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
 function C:_sendContent(modified)
         if self.network then
             net.writeShort(self.network:getID())
@@ -140,6 +146,8 @@ function C:_sendContent(modified)
         funcRef.sendContent(self, modified);
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     self.network = sb.getDeviceInfo(net.readShort())
     funcRef.receiveSignal(self)

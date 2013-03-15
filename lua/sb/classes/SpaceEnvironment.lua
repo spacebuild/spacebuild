@@ -32,6 +32,9 @@ local funcRef = {
     onLoad = C.onLoad
 }
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return funcRef.isA(self, className) or className == "SpaceEnvironment"
 end

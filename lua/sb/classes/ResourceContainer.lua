@@ -33,6 +33,9 @@ require("class")
 local class = class
 local core = sb.core
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
 function C:isA(className)
     return className == "ResourceContainer"
 end
@@ -149,6 +152,10 @@ function C:getEntity()
     return self.syncid and Entity(self.syncid);
 end
 
+--- Sync function to send data to the client from the server
+-- @param modified timestamp the client received information about this environment last
+-- @param ply the client to send this information to; if nil send to all clients
+--
 function C:send(modified, ply)
     if self.modified > modified then
         net.Start("SBRU")
@@ -162,6 +169,9 @@ function C:send(modified, ply)
     end
 end
 
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
 function C:_sendContent(modified)
     net.writeTiny(table.Count(self.resources))
     for _, v in pairs(self.resources) do
@@ -169,6 +179,8 @@ function C:_sendContent(modified)
     end
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     local nrRes = net.readTiny()
     local am

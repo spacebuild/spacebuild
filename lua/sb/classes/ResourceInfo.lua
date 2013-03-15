@@ -23,6 +23,13 @@ local pairs = pairs
 local C = CLASS
 local sb = sb;
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
+function C:isA(className)
+	return className == "ResourceInfo"
+end
+
 function C:init(id, name, displayName, attributes)
     if not id then error(self:getClass() + " requires an id") end
     if not name then error(self:getClass() + " requires a name") end

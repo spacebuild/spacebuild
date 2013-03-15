@@ -26,6 +26,13 @@ local sb = sb;
 local core = sb.core
 local const = sb.core.const
 
+--- General class function to check is this class is of a certain type
+-- @param className the classname to check against
+--
+function C:isA(className)
+	return className == "PlayerSuit"
+end
+
 function C:init(ply)
     self.ply = ply
     self:reset()
@@ -229,6 +236,9 @@ function C:processEnvironment()
    end
 end
 
+--- Sync function to send data to the client from the server
+-- @param modified timestamp the client received information about this environment last
+--
 function C:send(modified)
     if self.modified > modified then
         self.firstSync = false
@@ -251,6 +261,8 @@ function C:send(modified)
     end
 end
 
+--- Sync function to receive data from the server to this client
+--
 function C:receive()
     self.active = net.readBool()
     self.breath = net.readTiny()
