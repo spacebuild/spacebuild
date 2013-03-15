@@ -45,8 +45,17 @@ local extBase = {
         self.name = "Base Extension"
         self.config = config or {}
 		
+		--Start of Sam Code:
+		self.description = "The Default Description for a Base Extension"
+		--End of Sam Code
     end;
-
+	
+	--Start of Sam Code:
+	getDesc = function(self)
+		return self.description
+	end;
+	--End of Sam Code
+	
     isActive = function(self)
         return self.active
     end;
@@ -193,13 +202,17 @@ if (CLIENT) then
 	--TODO: Talk to Radon about using the unique IDs instead of incrementally inserting them. This would allow extensions to change their own panel.
 	
 	local ExtsPnls = {}
+	local vgui = vgui
+	
 	
 	function DrawExtensionsMenu( panel ) 
 		local exts = 1;
 		for k,v in pairs(sb.core.extensions) do
 			if (v:getName()) then
 				
-				index = table.insert(ExtsPnls,{})
+				index = table.insert(ExtsPnls,v:GetSyncKey,{}) --TODO: Talk to Radon about using SyncKeys or incrementally. Basically should the extension be able to change its panel
+				
+				--TODO: Colour scheme to fit in with everything else such as the FluixHud colours
 				
 				--Create the base panel
 				ExtsPnls[index][1] = vgui.Create( "DPanel",panel )
@@ -218,21 +231,52 @@ if (CLIENT) then
 				
 				--Create the description Text in the panel
 				ExtsPnls[index][3] = vgui.Create( "DLabel",ExtsPnls[index][1])
-				ExtsPnls[index][3]:SetPos( 5, 10) --TODO: Play with Values, Possibly indent
+				ExtsPnls[index][3]:SetPos( 5, 10) --TODO: Play with Values, Possibly indent the text against the title
 				ExtsPnls[index][3]:SetFont( ) --TODO: Create a font for description
-				ExtsPnls[index][3]:SetText(v:GetDesc()) --TODO: Create or find the the equivalent function
+				ExtsPnls[index][3]:SetText(v:GetDesc()) --TODO: Create or find the the equivalent function that returns the description
 				ExtsPnls[index][3]:SizeToContents() 
 				
 				--Create the options button
-				
-				
+				ExtsPnls[index][4] = vgui.Create( "DButton",ExtsPnls[index][1])
+				ExtsPnls[index][4]:SetPos()
+				ExtsPnls[index][4]:SetSize()
+			
 				--Create the disable button 
+				ExtsPnls[index][5] = vgui.Create( "DButton",ExtsPnls[index][1])
+				ExtsPnls[index][5]:SetPos()
+				ExtsPnls[index][5]:SetSize()
 				
-				--If the Extension is disabled colour the button red
+				--Disable the button if the localplayer isn't an admin.
+				-- I'm guessing this is how it is meant to be
+				if not (LocalPlayer():IsAdmin()) then
+					--TODO: Confirm this disables the button.
+					ExtsPnls[index][5]:SetDisabled(true)
+				end		
 				
-				--Else if the extension is enabled colour the button green
+				ExtsPnls[index][5].DoClick() = function() 
+				--If the extension is already disabled.
+					if (v:IsDisabled) then
+						--The button should enable the addon and change the color to red and say Disable Disable addon
+
+						--TODO: Ashley enabling code goes here.
+						sb.core.extension:enable(k)
+						--Set the color to green because the extension is Enabled
+						ExtsPnls[index][5]:ColorTo( Color(0,255,0,255),1, 0 )
+						-- Set the button to disable the extenison
+						ExtsPnls[index][5]:SetText( "Disable the Extension" )
+						
+					else
+						
+						--TODO: Ashley disabling code for extension "v" goes here.
+						sb.core.extensions:disable(k)
+						--Set the color to red because the extension is disabled
+						ExtsPnls[index][5]:ColorTo( Color(255,0,0,255),1, 0 )
+						-- Set the button to enable the extenison
+						ExtsPnls[index][5]:SetText( "Enable the Extension" )	
+				end
 				
 
+				
 			end	
 	end
 	
