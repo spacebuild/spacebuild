@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb
 local timer = timer
 local core = sb.core;
+local convars = sb.core.convars
 require("class")
 local class = class
 require("sbnet")
@@ -29,8 +30,11 @@ local time_to_next_ls_env = 1
 local time_to_next_sb_sync = 3
 
 local time = 0;
+
+local function AllowAdminNoclip(ply) if (    (ply:IsAdmin() and convars.sb_adminspacenoclip.get())) or (ply:IsSuperAdmin() and convars.sb_superadminspacenoclip.get()  ) then return true else return false end end
+
 local function sbThink()
-    time = CurTime();
+	time = CurTime();
     for _, ply in pairs(player.GetAll()) do
         -- RD
         if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
@@ -57,6 +61,10 @@ local function sbThink()
             else
                 ply.lastsbupdate =  (-time_to_next_sb_sync)
             end
+        end
+        -- Noclip from planets check?
+        if ply.environment and ply.environment == sb.getSpace() and ply:Alive() and not AllowAdminNoclip(ply) and ply:GetMoveType() == MOVETYPE_NOCLIP then
+	        ply:SetMoveType(MOVETYPE_WALK)
         end
         --LS
         if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
@@ -89,6 +97,11 @@ local function spawn( ply )
     ply.ls_suit:reset()
 end
 hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )
+
+local function PlayerNoClip( ply, on )
+	if sb.onSBMap() and ply.environment and  ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() then return false end
+end     --and not game.SinglePlayer()
+hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
 
 -- Spacebuild
 
