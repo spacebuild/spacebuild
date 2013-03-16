@@ -41,6 +41,10 @@ sb.core.test = {}
 sb.core.wrappers = {}
 sb.core.extensions = {}
 
+-- Convars
+
+sb.core.convars = {}
+
 function sb.getVersion()
     return VERSION;
 end
