@@ -191,7 +191,14 @@ function C:processEnvironment()
            self.ply:EmitSound( "common/warning.wav" )
        end
    else
-      if self.ply:WaterLevel()  == 3 or (sb.onSBMap() and env and not env:hasEnoughOxygen()) then
+      if env and env == sb.getSpace() then    --If in space, 0 their breath for obvious reasons
+	      local rand = math.random(20,70)
+	      if self:getBreath() >=rand then
+		      self:setBreath(self:getBreath() - rand)
+	      elseif self:getBreath() > 0 then
+		      self:setBreath(0)
+	      end
+      elseif self.ply:WaterLevel()  == 3 or (sb.onSBMap() and env and not env:hasEnoughOxygen()) then
          if self:getBreath() >=5 then
              self:setBreath(self:getBreath() - 5)
          elseif self:getBreath() > 0 then
@@ -201,8 +208,9 @@ function C:processEnvironment()
              self.ply:TakeDamage( sb.core.const.BASE_LS_DAMAGE , 0 )
          end
       else
-          if self:getBreath() <= self:getMaxBreath() - 5 then
-              self:setBreath(self:getBreath() + 5)
+           local rand = math.random(1,25)
+          if self:getBreath() <= self:getMaxBreath() - rand then
+              self:setBreath(self:getBreath() + rand)
           elseif self:getBreath() < self:getMaxBreath() then
               self:setBreath(self:getMaxBreath())
           end

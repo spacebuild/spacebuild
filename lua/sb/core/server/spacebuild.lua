@@ -63,8 +63,12 @@ local function sbThink()
             end
         end
         -- Noclip from planets check?
-        if ply.environment and ply.environment == sb.getSpace() and ply:Alive() and not AllowAdminNoclip(ply) and ply:GetMoveType() == MOVETYPE_NOCLIP then
-	        ply:SetMoveType(MOVETYPE_WALK)
+        if ply.environment and ply.environment == sb.getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
+	        if ply:InVehicle() then --Kick them out of the vehicle first
+		        ply:ExitVehicle()
+	        end
+            elseif not AllowAdminNoclip(ply) and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
+	            ply:SetMoveType(MOVETYPE_WALK)
         end
         --LS
         if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
@@ -95,8 +99,31 @@ local function spawn( ply )
        ply.ls_suit = class.new("PlayerSuit", ply)
     end
     ply.ls_suit:reset()
+
+    if ply:Team() ~= TEAM_SPECTATOR then
+	    ply:PrintMessage(HUD_PRINTTALK, "Joined Team")
+	    timer.Simple( 3, function()
+	        if ply.ls_suit.environment == nil then
+		        ply:PrintMessage(HUD_PRINTTALK, "Your Environment was nil 3 seconds after joining a team, setting it to space")
+	            ply.ls_suit:setEnvironment( sb.getSpace() )
+	        end
+	    end)
+    end
+
 end
+
+local function initial_spawn( ply )
+	if not ply.ls_suit or not ply.ls_suit.reset then
+		ply.ls_suit = class.new("PlayerSuit", ply)
+	end
+	ply.ls_suit:reset()
+end
+
+
+
 hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )
+hook.Add( "PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
+
 
 local function PlayerNoClip( ply, on )
 	if sb.onSBMap() and ply.environment and  ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() then return false end
