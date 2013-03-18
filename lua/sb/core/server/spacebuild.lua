@@ -31,7 +31,11 @@ local time_to_next_sb_sync = 3
 
 local time = 0;
 
-local function AllowAdminNoclip(ply) if (    (ply:IsAdmin() and convars.sb_adminspacenoclip.get())) or (ply:IsSuperAdmin() and convars.sb_superadminspacenoclip.get()  ) then return true else return false end end
+local function AllowAdminNoclip(ply)
+	if (ply:IsAdmin() or ply:IsSuperAdmin()) and convars.sb_adminspacenoclip.get() then return true end
+	if ply:IsSuperAdmin() and convars.sb_superadminspacenoclip.get() then return true end
+	return false
+end
 
 local function sbThink()
 	time = CurTime();
@@ -67,8 +71,9 @@ local function sbThink()
 	        if ply:InVehicle() then --Kick them out of the vehicle first
 		        ply:ExitVehicle()
 	        end
-            elseif not AllowAdminNoclip(ply) and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
+            if not AllowAdminNoclip(ply) and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
 	            ply:SetMoveType(MOVETYPE_WALK)
+            end
         end
         --LS
         if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
@@ -102,9 +107,9 @@ local function spawn( ply )
 
     if ply:Team() ~= TEAM_SPECTATOR then
 	    ply:PrintMessage(HUD_PRINTTALK, "Joined Team")
-	    timer.Simple( 3, function()
+	    timer.Simple( 5, function()
 	        if ply.ls_suit.environment == nil then
-		        ply:PrintMessage(HUD_PRINTTALK, "Your Environment was nil 3 seconds after joining a team, setting it to space")
+		        ply:PrintMessage(HUD_PRINTTALK, "Your Environment was nil 5 seconds after joining a team, setting it to space")
 	            ply.ls_suit:setEnvironment( sb.getSpace() )
 	        end
 	    end)
@@ -125,9 +130,14 @@ hook.Add( "PlayerSpawn", "spacebuild_spawn", spawn )
 hook.Add( "PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
 
 
-local function PlayerNoClip( ply, on )
-	if sb.onSBMap() and ply.environment and  ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() then return false end
-end     --and not game.SinglePlayer()
+local function PlayerNoClip( ply )
+	if sb.onSBMap() and ply.environment and ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() then
+		return false
+	else
+		return true
+	end
+
+end
 hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
 
 -- Spacebuild
