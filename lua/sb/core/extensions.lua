@@ -44,9 +44,30 @@ local extBase = {
         self.version = 1
         self.name = "Base Extension"
         self.config = config or {}
-
+		
+		--Start of Sam Code:
+		self.description = "The Default Description for a Base Extension. I am making this longer to check if it will wrap around the panel if not i will have to implement something hacky probably to stop it."
+		--Try not to use more than 180 characters for your description:
+		--TODO: Clamp the length of description to 180. 	
+		self.disabled = false;
+		--End of Sam Code
     end;
-
+	
+	--Start of Sam Code:
+	getDesc = function(self)
+		return self.description
+	end;
+	
+	MakeMenu = function(self)
+		--Developers should create the options for their extensions here
+		--By default we will do nothing
+	end;
+	
+	IsDisabled = function(self)
+		return self.disabled
+	end;
+	--End of Sam Code
+	
     isActive = function(self)
         return self.active
     end;
@@ -152,7 +173,7 @@ end
 
 
 -- After declaring the setter and getter methods, now make the table read only!
-sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
+--sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
 
 local basePath = "sb/extensions/"
 local exts = sb.core.wrappers:Find("dir","sb/extensions/*","LUA") -- table for storing exts in.
@@ -185,3 +206,152 @@ else
     loadExts(util.SCOPES.CLIENT)
     loadExts(util.SCOPES.SHARED)
 end
+
+
+
+if (CLIENT) then
+	--This will contain all the Extension Panels
+	--TODO: Talk to Radon about using the unique IDs instead of incrementally inserting them. This would allow extensions to change their own panel.
+	
+	ExtsPnls = {}
+	local vgui = vgui
+	
+	
+	function DrawExtensionsMenuOption( panel ) 
+	
+		print(panel)
+		local exts = 1;
+		for k,v in pairs(sb.core.extensions) do
+
+			
+			if (type(v) == "table") then
+				
+				print("K: "..k.."\n")
+				print("V:"..tostring(v).."\n")
+				
+				index = table.insert(ExtsPnls,{}) --TODO: Talk to Radon about using SyncKeys or incrementally. Basically should the extension be able to change its panel
+				print("Index: "..index.."\n")
+				--TODO: Colour scheme to fit in with everything else such as the FluixHud colours
+
+				print((exts * 100) + (10 * (exts - 1)))
+				--Create the base panel
+				ExtsPnls[index][1] = vgui.Create( "DPanel",panel )
+					ExtsPnls[index][1]:SetPos( 10, (exts * 100) + (10 * (exts - 1))) --TODO: Play around with the spacing (<10 perhaps)
+					ExtsPnls[index][1]:SetSize( 300, 100  ) --TODO: Play around with value 100
+					--Increments the amount of Extensions so we know where to place the next Panel
+					exts = exts + 1
+				
+				--Create the Title Text in the panel
+				ExtsPnls[index][2] = vgui.Create( "DLabel",ExtsPnls[index][1])
+					ExtsPnls[index][2]:SetPos( 5, 5 ) 
+					ExtsPnls[index][2]:SetFont( "ExtensionTitle" ) 
+						if (v:IsDisabled()) then
+							Enabled = "Disabled"
+						else
+							Enabled = "Enabled"
+						end
+					ExtsPnls[index][2]:SetText(v:getName().." ("..Enabled..")")
+					ExtsPnls[index][2]:SetTextColor(Color(0,0,253))
+					ExtsPnls[index][2]:SizeToContents() 
+				
+				
+				--Create the description Text in the panel
+				ExtsPnls[index][3] = vgui.Create( "DLabel",ExtsPnls[index][1])
+					ExtsPnls[index][3]:SetPos( 5, 10) 
+					ExtsPnls[index][3]:SetText(v:getDesc()) 
+					ExtsPnls[index][3]:SetTextColor( Color(255,0,0))
+					ExtsPnls[index][3]:SetSize( 300, 70)
+					ExtsPnls[index][3]:SetWrap(true)
+				
+				--Create the options button
+				ExtsPnls[index][4] = vgui.Create( "DButton",ExtsPnls[index][1])
+					ExtsPnls[index][4]:SetPos( 65, 70)
+					ExtsPnls[index][4]:SetSize( 50, 25)
+					ExtsPnls[index][4]:SetText("Options")
+					ExtsPnls[index][4].DoClick = function()
+						v:MakeMenu()			
+					end
+				
+				--Create the disable button 
+				ExtsPnls[index][5] = vgui.Create( "DButton",ExtsPnls[index][1])
+					ExtsPnls[index][5]:SetPos( 185, 70 )
+					ExtsPnls[index][5]:SetSize( 50, 25)
+					ExtsPnls[index][5]:SetText("Disable")
+					
+					if (v:IsDisabled()) then
+						ExtsPnls[index][5]:SetText("Enable")
+					else
+						ExtsPnls[index][5]:SetText("Disable")
+					end
+					
+					--Disable the button if the localplayer isn't an admin.
+					-- I'm guessing this is how it is meant to be
+					if not(LocalPlayer():IsAdmin()) then
+				
+						ExtsPnls[index][5]:SetDisabled(true)
+					end		
+					
+					ExtsPnls[index][5].DoClick = function() 
+					--If the extension is already disabled.
+						if  (v:IsDisabled()) then
+							--The button should enable the addon and change the color to red and say Disable addon and change the title 
+
+							--TODO: Ashley ENABLING code goes here.
+							
+							--Set the color to green because the extension is Enabled
+							ExtsPnls[index][5]:ColorTo( Color(0,100,0,255),1, 0 )
+							-- Set the button to disable the extenison
+							ExtsPnls[index][5]:SetText( "Disable" )
+							Enabled = "Enabled"
+							ExtsPnls[index][2]:SetText(v:getName().." ("..Enabled..")")
+							ExtsPnls[index][2]:SizeToContents()
+						else
+							
+							--TODO: Ashley DISABLING code for extension "v" goes here.
+							
+							--Set the color to red because the extension is disabled
+							ExtsPnls[index][5]:ColorTo( Color(255,0,0,255),1, 0 )
+							-- Set the button to enable the extenison
+							ExtsPnls[index][5]:SetText( "Enable" )	
+							Enabled = "Disabled"
+							ExtsPnls[index][2]:SetText(v:getName().." ("..Enabled..")")
+							ExtsPnls[index][2]:SizeToContents()
+						end
+					end
+					
+				--End of Disable Button	
+				end
+		end
+	
+end
+	
+	
+	
+	function InitExtensionMenu()
+		spawnmenu.AddToolMenuOption( "Spacebuild", --Todo: Fucking make this add to the existing one. 
+									"Options", --Category
+									"Extensions", --itemName
+									"Extensions", --Text to display
+									"", -- Command to run 
+									DrawExtensionsMenuOption,
+									DrawExtensionsMenuOption)
+									
+		
+	end
+	
+	hook.Add("PopulateToolMenu", "SB: Add Extension Menu Option", InitExtensionMenu)
+	
+	function CreateSBExtsFonts() 
+		surface.CreateFont( "ExtensionTitle", {
+			font = "Arial",
+			size = 20,
+			weight = 1000,
+			underline = 100
+			})
+	end
+	hook.Add("Initialize","SB: Create Some Fonts", CreateSBExtsFonts )
+	
+end
+
+
+

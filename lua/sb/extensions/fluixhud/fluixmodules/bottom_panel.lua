@@ -73,17 +73,24 @@ function fluix.modules.BottomPanel.Run( )
     suit = sb.getPlayerSuit()
 
     -- Calculate breath
-
     if suit then
+	    if not LocalPlayer():Alive() then
+			suit:setBreath(0)
+	    end
+
         breathBar:setValue(fluix.Smoother( suit:getBreath(), breathBar:getValue(), 0.15 ))
         breathBar:setMaxValue( suit:getMaxBreath())
     end
 
     --Calculate Health.
-    healthBar:setValue(fluix.Smoother( LocalPlayer():Health(), healthBar:getValue(), 0.15 ))
+    local health, armor
+    if LocalPlayer():Health() < 0 then health = 0  else health = LocalPlayer():Health() end
+    if LocalPlayer():Armor() < 0 then armor = 0  else armor = LocalPlayer():Armor() end
+
+    healthBar:setValue(fluix.Smoother( health, healthBar:getValue(), 0.15 ))
 
     --Calculate Armor.
-    armorBar:setValue(fluix.Smoother( LocalPlayer():Armor(), armorBar:getValue(), 0.15 ))
+    armorBar:setValue(fluix.Smoother( armor, armorBar:getValue(), 0.15 ))
 
 	--Check if the weapon is valid.
 	fluix.Weapon = LocalPlayer():GetActiveWeapon()
