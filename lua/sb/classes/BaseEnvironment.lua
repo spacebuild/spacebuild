@@ -61,6 +61,13 @@ function C:getID()
    return self.entid
 end
 
+--- Set the environment id
+-- @param id
+--
+function C:setID(id)
+	self.entid = id
+end
+
 --- Gets the Entity linked to this environment
 -- @return nil or Entity
 function C:getEntity()

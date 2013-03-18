@@ -37,6 +37,25 @@ local function AllowAdminNoclip(ply)
 	return false
 end
 
+--- Players can't get damaged in a jeep, so kick them out
+-- TODO filter for jeep entity!!
+-- @param ply
+--
+local function JeepFix(ply)
+	if ply:InVehicle() then --Kick them out of the vehicle first
+		ply:ExitVehicle()
+	end
+end
+
+--- Prevent players from noclipping in space if isn't not allowed
+-- @param ply
+--
+local function NoClipCheck(ply)
+	if sb.onSBMap() and ply.environment and ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
+		ply:SetMoveType(MOVETYPE_WALK)
+	end
+end
+
 local function sbThink()
 	time = CurTime();
     for _, ply in pairs(player.GetAll()) do
@@ -68,12 +87,8 @@ local function sbThink()
         end
         -- Noclip from planets check?
         if ply.environment and ply.environment == sb.getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
-	        if ply:InVehicle() then --Kick them out of the vehicle first
-		        ply:ExitVehicle()
-	        end
-            if not AllowAdminNoclip(ply) and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
-	            ply:SetMoveType(MOVETYPE_WALK)
-            end
+	        JeepFix(ply)
+	        NoClipCheck(ply)
         end
         --LS
         if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
@@ -105,7 +120,7 @@ local function spawn( ply )
     end
     ply.ls_suit:reset()
 
-    if ply:Team() ~= TEAM_SPECTATOR then
+    if sb.onSBMap() and ply:Team() ~= TEAM_SPECTATOR then
 	    ply:PrintMessage(HUD_PRINTTALK, "Joined Team")
 	    timer.Simple( 5, function()
 	        if ply.ls_suit.environment == nil then
@@ -131,12 +146,7 @@ hook.Add( "PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
 
 
 local function PlayerNoClip( ply )
-	if sb.onSBMap() and ply.environment and ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() then
-		return false
-	else
-		return true
-	end
-
+	return not (sb.onSBMap() and ply.environment and ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get())
 end
 hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
 
