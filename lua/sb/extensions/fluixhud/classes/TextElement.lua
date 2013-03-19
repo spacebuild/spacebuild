@@ -31,6 +31,17 @@ function C:setColor(color)
     self.color = color
 end
 
+function C:getAlpha()
+	return self.color.a
+end
+
+function C:setAlpha(alpha)
+	local Col = self:getColor()
+	Col.a = alpha or self:getAlpha()
+	self:setColor(Col)
+end
+
+
 function C:getFont()
     return self.font_type
 end
@@ -58,7 +69,7 @@ function C:render()
     local Width, _ = surface.GetTextSize( self:getText() or " " )
     local Height, _ = surface.GetTextSize( "W" )
     x = x + self:getWidth() * 0.5 - ( Width or 8 ) * 0.5
-    y = y - ( Height or 8 )
+    y = y + ( Height or 8 )
 
     surface.SetTextColor( self:getColor() )
     surface.SetTextPos( x, y )

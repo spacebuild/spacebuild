@@ -29,6 +29,8 @@ end
 local white, orange, red, bg = Color( 255, 255, 255, 240 ), Color( 255, 127, 36, 240 ), Color( 205, 51, 51, 240 ), Color( 50,50,50,220)
 local suit, hudLeftBottomPanel, hudBottomRightPanel, breathBar, healthBar, armorBar, ammoBar, altBar
 function fluix.modules.BottomPanel.Run( )
+	if not LocalPlayer():Alive() then return end
+
     -- Define Hud Components
     if not hudLeftBottomPanel then
         hudLeftBottomPanel = class.new("BottomLeftPanel", 16, scrH - 20, 0, 0, false, true) -- Parent housing/stack, (ClassName,x,y,w,h,valColor,bgColor,string)
@@ -66,18 +68,20 @@ function fluix.modules.BottomPanel.Run( )
 
 
     --Check if player is alive.
-    if LocalPlayer():Alive() then
-        healthBar:setValue(LocalPlayer():Health())
-        armorBar:setValue(LocalPlayer():Armor())
-    end
+    --if LocalPlayer():Alive() then
+    healthBar:setValue(LocalPlayer():Health())
+    armorBar:setValue(LocalPlayer():Armor())
+    --end
+
+
     suit = sb.getPlayerSuit()
 
     -- Calculate breath
     if suit then
-	    if not LocalPlayer():Alive() then
+	    --[[if not LocalPlayer():Alive() then
 			suit:setBreath(0)
 	    end
-
+             ]]
         breathBar:setValue(fluix.Smoother( suit:getBreath(), breathBar:getValue(), 0.15 ))
         breathBar:setMaxValue( suit:getMaxBreath())
     end

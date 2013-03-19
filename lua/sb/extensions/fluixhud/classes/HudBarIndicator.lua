@@ -23,6 +23,28 @@ function C:init(x, y, width, height, value, maxvalue, color, bgcolor)
     self.backgroundColor = bgcolor
 end
 
+function C:getBackgroundAlpha()
+	return self:getBackgroundColor().a
+end
+
+function C:setBackgroundAlpha(alpha)
+	local Col = self:getBackgroundColor()
+	Col.a = alpha or self:getBackgroundAlpha()
+	self:setBackgroundColor(Col)
+end
+
+function C:getAlpha()
+	return self:getColor().a
+end
+
+function C:setAlpha(alpha)
+	local Col = self:getColor()
+	Col.a = alpha or self:getAlpha()
+	self:setColor(Col)
+end
+
+
+
 function C:getValue()
    return self.value
 end

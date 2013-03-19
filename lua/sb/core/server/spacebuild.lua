@@ -121,11 +121,9 @@ local function spawn( ply )
     ply.ls_suit:reset()
 
     if sb.onSBMap() and ply:Team() ~= TEAM_SPECTATOR then
-	    ply:PrintMessage(HUD_PRINTTALK, "Joined Team")
 	    timer.Simple( 5, function()
 	        if ply.ls_suit.environment == nil then
-		        ply:PrintMessage(HUD_PRINTTALK, "Your Environment was nil 5 seconds after joining a team, setting it to space")
-	            ply.ls_suit:setEnvironment( sb.getSpace() )
+			ply.ls_suit:setEnvironment( sb.getSpace() )
 	        end
 	    end)
     end

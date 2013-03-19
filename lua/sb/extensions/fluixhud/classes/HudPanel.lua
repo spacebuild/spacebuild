@@ -31,6 +31,25 @@ function C:getAutoSize()
    return self.autosize
 end
 
+function C:getBackgroundAlpha()
+	return self:getBackgroundColor().a
+end
+
+function C:setBackgroundAlpha(alpha)
+	local Col = self:getBackgroundColor()
+	Col.a = alpha or self:getBackgroundAlpha()
+	self:setBackgroundColor(Col)
+end
+
+function C:getAlpha() --getAlpha or getBackgroundAlpha should work for panels
+	return self:getBackgroundAlpha()
+end
+
+function C:setAlpha(alpha)
+	self:setBackgroundAlpha(alpha)
+end
+
+
 function C:calculateSize()
     if self.autosize then
         self:setWidth(self.base_width)
