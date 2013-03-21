@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 require("sbnet")
 local net = sbnet
 
+require("log")
+local log = log
+
 local sb = sb
 local core = sb.core;
 local to_sync;
@@ -33,7 +36,10 @@ net.Receive("SBRU", function(bitsreceived)
     if not to_sync then
         core.missing_devices[syncid] = true
     end
-    if to_sync then to_sync:receive() end
+    if to_sync then
+	    to_sync:receive()
+	    log.table(to_sync, "SBRU", log.DEBUG )
+    end
 end)
 
 net.Receive("SBRPU", function(bitsreceived)
@@ -44,6 +50,7 @@ net.Receive("SBRPU", function(bitsreceived)
         sb.callOnLeaveEnvironmentHook(env, nil)
         sb.callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
     end
+    log.table(suit, "SBRPU", log.DEBUG )
 end)
 
 net.Receive("SBEU", function(bitsreceived)
@@ -56,6 +63,7 @@ net.Receive("SBEU", function(bitsreceived)
         sb.addEnvironment(environment_object)
     end
     environment_object:receive()
+    log.table(environment_object, "SBEU", log.DEBUG )
 end)
 
 net.Receive("SBMU", function(bitsreceived)
@@ -82,6 +90,7 @@ net.Receive("SBMU", function(bitsreceived)
        end
     end
     mod_object:receive()
+    log.table(mod_object, "SBMU", log.DEBUG )
 end)
 
 function sb.getPlayerSuit()

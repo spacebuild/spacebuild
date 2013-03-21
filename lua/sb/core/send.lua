@@ -26,6 +26,7 @@ AddCSLuaFile("includes/modules/quaternion.lua")
 AddCSLuaFile("includes/modules/class.lua")
 AddCSLuaFile("includes/modules/sbnet.lua")
 AddCSLuaFile("includes/modules/sbfile.lua")
+AddCSLuaFile("includes/modules/log.lua")
 
 --Send core files
 AddCSLuaFile("sb/core/const.lua")

@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+require("log")
+local log = log
+
+log.setLevel(log.INFO)
+
 local gmod_version_required = 145;
 if ( VERSION < gmod_version_required ) then
 	error("SB CORE: Your gmod is out of date: found version ", VERSION, "required ", gmod_version_required)
@@ -35,6 +40,8 @@ local sb = sb
 if not sb then
 	error("SB CORE: failed loading SB core")
 end
+log.info("SB 4 is ready loading!")
+
 
 if sb.core.config and sb.core.config.testMode then
 	require("luaunit")

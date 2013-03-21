@@ -283,7 +283,7 @@ end
 function C:receive()
     self.temperature = net.readShort()
     self.gravity = net.ReadFloat()
-    self.temperature = net.ReadFloat()
+    self.atmosphere = net.ReadFloat()
     local nrRes = net.readTiny()
     local am
     local name
