@@ -75,14 +75,17 @@ end
 
 if SERVER then
 
+    local RD_TABLE = "SB4_RESOURCE_INFO"
+
+
     function ENT:PreEntityCopy()
-        duplicator.StoreEntityModifier( self, "SB4_RESOURCE_INFO", self.rdobject:onSave())
+        duplicator.StoreEntityModifier( self, RD_TABLE, self.rdobject:onSave())
     end
 
     function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
-        if self.EntityMods and self.EntityMods.SB4_RESOURCE_INFO then
-            self.rdobject:applyDupeInfo(self.EntityMods.SB4_RESOURCE_INFO, self, CreatedEntities)
-            self.EntityMods.SB4_RESOURCE_INFO = nil -- Remove the data
+        if self.EntityMods and self.EntityMods[RD_TABLE] then
+            self.rdobject:applyDupeInfo(self.EntityMods[RD_TABLE], self, CreatedEntities)
+            self.EntityMods[RD_TABLE] = nil -- Remove the data
         end
     end
 
