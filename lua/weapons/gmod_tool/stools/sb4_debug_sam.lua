@@ -13,7 +13,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-]]--
+]] --
 -- Created by IntelliJ IDEA.
 -- User: Sam
 -- Date: 31/12/12
@@ -37,10 +37,10 @@ local ent;
 
 function TOOL:LeftClick(trace)
 	--Spawn in the selected Generator
-	DebugMessage(tostring(trace.HitPos ))
+	DebugMessage(tostring(trace.HitPos))
 	pos = trace.HitPos
 	if IsValid(ent) then
-		DebugMessage("local "..tostring(ent:WorldToLocal( pos )))
+		DebugMessage("local " .. tostring(ent:WorldToLocal(pos)))
 	else
 	end
 end
@@ -49,12 +49,10 @@ end
 function TOOL:RightClick(trace)
 	--Select Model
 	--[[
-	if (  not trace.Entity:IsValid() or trace.Entity:IsPlayer() ) then return false end
+if (  not trace.Entity:IsValid() or trace.Entity:IsPlayer() ) then return false end
 
-	RunConsoleCommand( "sb4_ls_spawner_model", trace.Entity:GetModel());
-    ]]--
+RunConsoleCommand( "sb4_ls_spawner_model", trace.Entity:GetModel());
+]] --
 
 	ent = trace.Entity
-
-
 end

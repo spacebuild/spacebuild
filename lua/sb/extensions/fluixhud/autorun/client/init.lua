@@ -11,8 +11,8 @@ local sb = sb
 require("class")
 local class = class
 
-class.registerClassPath(fluix.basePath.."classes/")
+class.registerClassPath(fluix.basePath .. "classes/")
 
-include(fluix.basePath.."fluixmodules/bottom_panel.lua")
-include(fluix.basePath.."fluixmodules/top_panel.lua")
-include(fluix.basePath.."fluixmodules/playersuit.lua")
+include(fluix.basePath .. "fluixmodules/bottom_panel.lua")
+include(fluix.basePath .. "fluixmodules/top_panel.lua")
+include(fluix.basePath .. "fluixmodules/playersuit.lua")

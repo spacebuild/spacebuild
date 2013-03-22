@@ -21,53 +21,53 @@ local util = sb.core.util;
 local math = math
 
 util.SCOPES = {
-    SERVER = "server/",
-    CLIENT = "client/",
-    SHARED = "shared/"
+	SERVER = "server/",
+	CLIENT = "client/",
+	SHARED = "shared/"
 }
 
 util.createReadOnlyTable = function(t)
-    return setmetatable({},{
-        __index = t,
-        __newindex = function (t,k,v)
-            print("Attempt to update a read-only table")
-        end,
-        __metatable = false
-    })
+	return setmetatable({}, {
+		__index = t,
+		__newindex = function(t, k, v)
+			print("Attempt to update a read-only table")
+		end,
+		__metatable = false
+	})
 end
 
-util.mergeTable = function(base,ext)
+util.mergeTable = function(base, ext)
 
-        for k,v in pairs(base) do
-            if ext[k] == nil then
-                ext[k] = v
-            end
-        end
-        return ext
+	for k, v in pairs(base) do
+		if ext[k] == nil then
+			ext[k] = v
+		end
+	end
+	return ext
 end
 
 util.calculateOxygenRequired = function(pressure)
-    pressure = math.ceil(pressure - const.PRESSURE_SAFE_MAX)
-    if pressure < 0 then
-       pressure = 0
-    end
-    return const.BASE_OXYGEN_USE + pressure
+	pressure = math.ceil(pressure - const.PRESSURE_SAFE_MAX)
+	if pressure < 0 then
+		pressure = 0
+	end
+	return const.BASE_OXYGEN_USE + pressure
 end
 
 util.calculateEnergyRequired = function(temperature)
-   temperature = math.ceil((const.TEMPERATURE_SAFE_MIN - temperature)/const.AMOUNTOFDEGREES_DIVIDER)
-   if temperature < 0 then
-       temperature = 0
-   end
-   return const.BASE_ENERGY_USE + temperature
+	temperature = math.ceil((const.TEMPERATURE_SAFE_MIN - temperature) / const.AMOUNTOFDEGREES_DIVIDER)
+	if temperature < 0 then
+		temperature = 0
+	end
+	return const.BASE_ENERGY_USE + temperature
 end
 
 util.calculateCoolantRequired = function(temperature)
-    temperature = math.ceil((temperature - const.TEMPERATURE_SAFE_MAX)/const.AMOUNTOFDEGREES_DIVIDER)
-    if temperature < 0 then
-        temperature = 0
-    end
-    return const.BASE_COOLANT_USE + temperature
+	temperature = math.ceil((temperature - const.TEMPERATURE_SAFE_MAX) / const.AMOUNTOFDEGREES_DIVIDER)
+	if temperature < 0 then
+		temperature = 0
+	end
+	return const.BASE_COOLANT_USE + temperature
 end
 
 

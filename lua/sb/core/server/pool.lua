@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb
 
 -- Add data to be pooled here
-local net_pools = { "SBRU", "SBRPU", "SBMU", "SBEU"};
+local net_pools = { "SBRU", "SBRPU", "SBMU", "SBEU" };
 for _, v in pairs(net_pools) do
-    MsgN("Pooling ", v, " for net library");
-    util.AddNetworkString(v)
+	MsgN("Pooling ", v, " for net library");
+	util.AddNetworkString(v)
 end

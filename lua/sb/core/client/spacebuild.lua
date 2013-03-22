@@ -31,95 +31,97 @@ local class = class
 local player_suit = class.new("PlayerSuit")
 
 net.Receive("SBRU", function(bitsreceived)
-    local syncid = net.readShort()
-    to_sync = core.device_table[syncid]
-    if not to_sync then
-        core.missing_devices[syncid] = true
-    end
-    if to_sync then
-	    to_sync:receive()
-	    log.table(to_sync, "SBRU", log.DEBUG )
-    end
+	local syncid = net.readShort()
+	to_sync = core.device_table[syncid]
+	if not to_sync then
+		core.missing_devices[syncid] = true
+	end
+	if to_sync then
+		to_sync:receive()
+		log.table(to_sync, "SBRU", log.DEBUG)
+	end
 end)
 
 net.Receive("SBRPU", function(bitsreceived)
-    local suit = sb.getPlayerSuit()
-    local env = suit:getEnvironment()
-    suit:receive()
-    if suit:getEnvironment() ~= env then
-        sb.callOnLeaveEnvironmentHook(env, nil)
-        sb.callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
-    end
-    log.table(suit, "SBRPU", log.DEBUG )
+	local suit = sb.getPlayerSuit()
+	local env = suit:getEnvironment()
+	suit:receive()
+	if suit:getEnvironment() ~= env then
+		sb.callOnLeaveEnvironmentHook(env, nil)
+		sb.callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
+	end
+	log.table(suit, "SBRPU", log.DEBUG)
 end)
 
 net.Receive("SBEU", function(bitsreceived)
-    local class_name = net.ReadString()
-    local id = net.readShort()
-    local environment_object = sb.getEnvironment(id);
-    if not environment_object then
-        environment_object = class.new(class_name)
-        environment_object:setID(id)
-        sb.addEnvironment(environment_object)
-    end
-    environment_object:receive()
-    log.table(environment_object, "SBEU", log.DEBUG )
+	local class_name = net.ReadString()
+	local id = net.readShort()
+	local environment_object = sb.getEnvironment(id);
+	if not environment_object then
+		environment_object = class.new(class_name)
+		environment_object:setID(id)
+		sb.addEnvironment(environment_object)
+	end
+	environment_object:receive()
+	log.table(environment_object, "SBEU", log.DEBUG)
 end)
 
 net.Receive("SBMU", function(bitsreceived)
-    local type = net.readTiny()
-    local class_name = net.ReadString()
-    local id = net.ReadString()
-    local mod_object
-    if type == 1 then
-        mod_object = sb.getEnvironmentColor(mod_object)
-    elseif type == 2 then
-        mod_object = sb.getEnvironmentBloom(mod_object)
-    else
-        error("invalid mod sync type")
-    end
-    if not mod_object then
-       mod_object = class.new(class_name)
-       mod_object:setID(id)
-       if type == 1 then
-           sb.addEnvironmentColor(mod_object)
-       elseif type == 2 then
-           sb.addEnvironmentBloom(mod_object)
-       else
-           error("invalid mod sync type")
-       end
-    end
-    mod_object:receive()
-    log.table(mod_object, "SBMU", log.DEBUG )
+	local type = net.readTiny()
+	local class_name = net.ReadString()
+	local id = net.ReadString()
+	local mod_object
+	if type == 1 then
+		mod_object = sb.getEnvironmentColor(mod_object)
+	elseif type == 2 then
+		mod_object = sb.getEnvironmentBloom(mod_object)
+	else
+		error("invalid mod sync type")
+	end
+	if not mod_object then
+		mod_object = class.new(class_name)
+		mod_object:setID(id)
+		if type == 1 then
+			sb.addEnvironmentColor(mod_object)
+		elseif type == 2 then
+			sb.addEnvironmentBloom(mod_object)
+		else
+			error("invalid mod sync type")
+		end
+	end
+	mod_object:receive()
+	log.table(mod_object, "SBMU", log.DEBUG)
 end)
 
 function sb.getPlayerSuit()
-   return player_suit
+	return player_suit
 end
 
 local function RenderEffects()
-    if not LocalPlayer():Alive() then return end
-    if not sb.getPlayerSuit() or not sb.getPlayerSuit():getEnvironment() then return end
-    local bloom = sb.getPlayerSuit():getEnvironment():getEnvironmentBloom()
-    local color = sb.getPlayerSuit():getEnvironment():getEnvironmentColor()
+	if not LocalPlayer():Alive() then return end
+	if not sb.getPlayerSuit() or not sb.getPlayerSuit():getEnvironment() then return end
+	local bloom = sb.getPlayerSuit():getEnvironment():getEnvironmentBloom()
+	local color = sb.getPlayerSuit():getEnvironment():getEnvironmentColor()
 
-    if color then color:render() end
-    if bloom then bloom:render() end
+	if color then color:render() end
+	if bloom then bloom:render() end
 end
-hook.Add("RenderScreenspaceEffects","SBRenderEnvironmentEffects", RenderEffects)
+
+hook.Add("RenderScreenspaceEffects", "SBRenderEnvironmentEffects", RenderEffects)
 
 local function InitGame()
-    chat.AddText( Color( 255,255,255 ), "Welcome to ", Color( 100,255,100 ), "Spacebuild " .. sb.getVersionAsString() )
-    chat.AddText( Color( 255,255,255 ), "Visit ", Color( 100,255,100 ), "http://www.snakesvx.net/", Color( 255,255,255 ), " to dicuss spacebuild or introduce yourself." )
-    chat.AddText( Color( 255,255,255 ), "Visit ", Color( 100,255,100 ), "https://github.com/SnakeSVx/spacebuild", Color( 255,255,255 ), " for the latest version or to report bugs." )
+	chat.AddText(Color(255, 255, 255), "Welcome to ", Color(100, 255, 100), "Spacebuild " .. sb.getVersionAsString())
+	chat.AddText(Color(255, 255, 255), "Visit ", Color(100, 255, 100), "http://www.snakesvx.net/", Color(255, 255, 255), " to dicuss spacebuild or introduce yourself.")
+	chat.AddText(Color(255, 255, 255), "Visit ", Color(100, 255, 100), "https://github.com/SnakeSVx/spacebuild", Color(255, 255, 255), " for the latest version or to report bugs.")
 end
-hook.Add("Initialize","SBClientInit", InitGame)
+
+hook.Add("Initialize", "SBClientInit", InitGame)
 
 
 sb.addOnEnterEnvironmentHook("SB_EnterMessage", function(environment)
-    if environment:hasName() then
-        chat.AddText( Color( 255,255,255 ), "Entering ", Color( 100,255,100 ), environment:getName() )
-    end
+	if environment:hasName() then
+		chat.AddText(Color(255, 255, 255), "Entering ", Color(100, 255, 100), environment:getName())
+	end
 end)
 
 --[[sb.addOnLeaveEnvironmentHook("SB_LeaveMessage", function(environment)

@@ -13,33 +13,33 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AddCSLuaFile( )
+AddCSLuaFile()
 
-DEFINE_BASECLASS( "base_resource_network" )
+DEFINE_BASECLASS("base_resource_network")
 
-ENT.PrintName		= "Large Resource Network"
-ENT.Author			= "SnakeSVx & Radon"
-ENT.Contact			= ""
-ENT.Purpose			= "Testing"
-ENT.Instructions	= ""
+ENT.PrintName = "Large Resource Network"
+ENT.Author = "SnakeSVx & Radon"
+ENT.Contact = ""
+ENT.Purpose = "Testing"
+ENT.Instructions = ""
 
-ENT.Spawnable 		= true
-ENT.AdminOnly 		= false
+ENT.Spawnable = true
+ENT.AdminOnly = false
 
 ENT.hud = {
-    vector = Vector(-130,70,5.28),
-    scale = 0.4
+	vector = Vector(-130, 70, 5.28),
+	scale = 0.4
 }
 
 function ENT:SpawnFunction(ply, tr)
-    if (not tr.HitWorld) then return end
+	if (not tr.HitWorld) then return end
 
-    local ent = ents.Create("resource_network_large")
-    ent:SetModel("models/ce_ls3additional/screens/large_screen.mdl") --Only have to set it serverside
-    ent:SetPos(tr.HitPos + Vector(0, 0, 50))
-    ent:Spawn()
+	local ent = ents.Create("resource_network_large")
+	ent:SetModel("models/ce_ls3additional/screens/large_screen.mdl") --Only have to set it serverside
+	ent:SetPos(tr.HitPos + Vector(0, 0, 50))
+	ent:Spawn()
 
-    return ent
+	return ent
 end
 
 
