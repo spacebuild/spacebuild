@@ -33,138 +33,138 @@ local core = sb.core
 -- @param className the classname to check against
 --
 function C:isA(className)
-    return className == "Resource"
+	return className == "Resource"
 end
 
 function C:init(name, maxAmount, amount)
-    if not name then error("Resource requires a name!") end
-    name = tostring(name)
-    if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
-    if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
-    self.name = name;
-    self.amount = amount;
-    self.maxAmount = maxAmount;
-    self.resourceInfo = sb.getResourceInfoFromName(name)
-    self.modified = CurTime();
-    self.modifiedMaxAmount = CurTime()
+	if not name then error("Resource requires a name!") end
+	name = tostring(name)
+	if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
+	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
+	self.name = name;
+	self.amount = amount;
+	self.maxAmount = maxAmount;
+	self.resourceInfo = sb.getResourceInfoFromName(name)
+	self.modified = CurTime();
+	self.modifiedMaxAmount = CurTime()
 end
 
 function C:supply(amount)
-    if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:supply requires a number >= 0") end
-    if amount == 0 then return 0 end -- don't do anything if amount = 0
-    if self.amount == self.maxAmount then return amount end -- don't do anything if we reached the max amount already
-    local to_much = 0;
-    self.amount = self.amount + amount;
-    if self.amount > self.maxAmount then
-        to_much = self.amount - self.maxAmount
-        self.amount = self.maxAmount
-    end
-    self.modified = CurTime();
-    return to_much;
+	if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:supply requires a number >= 0") end
+	if amount == 0 then return 0 end -- don't do anything if amount = 0
+	if self.amount == self.maxAmount then return amount end -- don't do anything if we reached the max amount already
+	local to_much = 0;
+	self.amount = self.amount + amount;
+	if self.amount > self.maxAmount then
+		to_much = self.amount - self.maxAmount
+		self.amount = self.maxAmount
+	end
+	self.modified = CurTime();
+	return to_much;
 end
 
 function C:consume(amount)
-    if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:consume requires a number >= 0") end
-    if amount == 0 then return 0 end -- don't do anything if amount = 0
-    if self.amount == 0 then return amount end -- don't do anything if we have 0 resources
-    local to_little = 0;
-    self.amount = self.amount - amount
-    if self.amount < 0 then
-        to_little = math.abs(self.amount)
-        self.amount = 0
-    end
-    self.modified = CurTime();
-    return to_little
+	if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:consume requires a number >= 0") end
+	if amount == 0 then return 0 end -- don't do anything if amount = 0
+	if self.amount == 0 then return amount end -- don't do anything if we have 0 resources
+	local to_little = 0;
+	self.amount = self.amount - amount
+	if self.amount < 0 then
+		to_little = math.abs(self.amount)
+		self.amount = 0
+	end
+	self.modified = CurTime();
+	return to_little
 end
 
 function C:getResourceInfo()
-   return self.resourceInfo
+	return self.resourceInfo
 end
 
 function C:getDisplayName()
-   return self:getResourceInfo():getDisplayName()
+	return self:getResourceInfo():getDisplayName()
 end
 
 function C:getMaxAmount()
-    return self.maxAmount
+	return self.maxAmount
 end
 
 function C:setMaxAmount(amount)
-    if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:setMaxamount requires a number >= 0") end
-    if self.maxAmount ~= amount then
-        self.maxAmount = amount
-        if self.amount > self.maxAmount then
-            self.amount = self.maxAmount
-            self.modified = CurTime();
-        end
-        self.modifiedMaxAmount = CurTime()
-    end
+	if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:setMaxamount requires a number >= 0") end
+	if self.maxAmount ~= amount then
+		self.maxAmount = amount
+		if self.amount > self.maxAmount then
+			self.amount = self.maxAmount
+			self.modified = CurTime();
+		end
+		self.modifiedMaxAmount = CurTime()
+	end
 end
 
 function C:getAmount()
-    return self.amount;
+	return self.amount;
 end
 
 function C:setAmount(amount)
-    if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:setAmount requires a number >= 0") end
-    self.amount = amount
-    if self.amount > self.maxAmount then
-        self.amount = self.maxAmount
-    end
-    self.modified = CurTime();
+	if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:setAmount requires a number >= 0") end
+	self.amount = amount
+	if self.amount > self.maxAmount then
+		self.amount = self.maxAmount
+	end
+	self.modified = CurTime();
 end
 
 function C:getName()
-    return self.name;
+	return self.name;
 end
 
 --- Sync function to send data to the client from the server
 -- @param modified timestamp the client received information about this environment last
 --
 function C:send(modified)
-    net.writeTiny(self.resourceInfo:getID())
-    if self.modified > modified then
-        net.writeBool(true)
-        net.writeAmount(self.amount)
-    else
-        net.writeBool(false) --not modified since last update
-    end
-    if self.modifiedMaxAmount > modified then
-        net.writeBool(true)
-        net.writeAmount(self.maxAmount)
-    else
-        net.writeBool(false) --not modified since last update
-    end
+	net.writeTiny(self.resourceInfo:getID())
+	if self.modified > modified then
+		net.writeBool(true)
+		net.writeAmount(self.amount)
+	else
+		net.writeBool(false) --not modified since last update
+	end
+	if self.modifiedMaxAmount > modified then
+		net.writeBool(true)
+		net.writeAmount(self.maxAmount)
+	else
+		net.writeBool(false) --not modified since last update
+	end
 end
 
 --- Sync function to receive data from the server to this client
 --
 function C:receive()
-    if net.readBool() then
-        self.amount = net.readAmount()
-    end
-    if net.readBool() then
-        self.maxAmount = net.readAmount()
-    end
+	if net.readBool() then
+		self.amount = net.readAmount()
+	end
+	if net.readBool() then
+		self.maxAmount = net.readAmount()
+	end
 end
 
 function C:getModified()
-    return self.modified;
+	return self.modified;
 end
 
 -- Start Save/Load functions
 
 function C:onSave()
-  return self
+	return self
 end
 
 function C:onLoad(data)
-    self.name = data.name;
-    self.amount = data.amount;
-    self.maxAmount = data.maxAmount;
-    self.resourceInfo = sb.getResourceInfoFromName(self.name)
-    self.modified = CurTime();
-    self.modifiedMaxAmount = CurTime()
+	self.name = data.name;
+	self.amount = data.amount;
+	self.maxAmount = data.maxAmount;
+	self.resourceInfo = sb.getResourceInfoFromName(self.name)
+	self.modified = CurTime();
+	self.modifiedMaxAmount = CurTime()
 end
 
 -- End Save/Load functions

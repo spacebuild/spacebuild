@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-sb.core.extensions:register("fluixHUD",{})
+sb.core.extensions:register("fluixHUD", {})
 
 fluix = sb.core.extensions:get("fluixHUD")
 fluix:construct()
@@ -15,19 +15,18 @@ fluix.wrappers = {}
 fluix.modules = {}
 
 --========================================Setup Wrapper Functions===================================================
-function fluix.wrappers:Find(typeof,...)
+function fluix.wrappers:Find(typeof, ...)
 
-    local arg = {...}
+	local arg = { ... }
 
-    local typeof = typeof
-    local files = {};	local dirs = {}
+	local typeof = typeof
+	local files = {}; local dirs = {}
 
-    files, dirs = file.Find(...)
+	files, dirs = file.Find(...)
 
-    if typeof == "file" then
-        return files
-    else
-        return dirs
-    end
-
+	if typeof == "file" then
+		return files
+	else
+		return dirs
+	end
 end

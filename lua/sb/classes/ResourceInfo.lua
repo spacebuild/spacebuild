@@ -31,41 +31,41 @@ function C:isA(className)
 end
 
 function C:init(id, name, displayName, attributes)
-    if not id then error(self:getClass() + " requires an id") end
-    if not name then error(self:getClass() + " requires a name") end
-    self.id = id
-    self.name = name
-    self.displayName = displayName or self.name
-    self.attributes = attributes or {}
+	if not id then error(self:getClass() + " requires an id") end
+	if not name then error(self:getClass() + " requires a name") end
+	self.id = id
+	self.name = name
+	self.displayName = displayName or self.name
+	self.attributes = attributes or {}
 end
 
 function C:getID()
-   return self.id
+	return self.id
 end
 
 function C:getName()
-    return self.name
+	return self.name
 end
 
 function C:getDisplayName()
-    return self.displayName
+	return self.displayName
 end
 
 function C:setDisplayName(name)
-    self.displayName = name or self.displayName
+	self.displayName = name or self.displayName
 end
 
 function C:getAttributes()
-    return self.attributes
+	return self.attributes
 end
 
 function C:hasAttribute(attribute)
-    for _, v in pairs(self.attributes) do
-        if v == attribute then
-            return true
-        end
-    end
-    return false
+	for _, v in pairs(self.attributes) do
+		if v == attribute then
+			return true
+		end
+	end
+	return false
 end
 
 

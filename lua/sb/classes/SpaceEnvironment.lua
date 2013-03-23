@@ -24,35 +24,35 @@ local core = sb.core
 
 -- Function Refs
 local funcRef = {
-    isA = C.isA,
-    init = C.init,
-    sendContent = C._sendContent,
-    receiveSignal = C.receive,
-    onSave = C.onSave,
-    onLoad = C.onLoad
+	isA = C.isA,
+	init = C.init,
+	sendContent = C._sendContent,
+	receiveSignal = C.receive,
+	onSave = C.onSave,
+	onLoad = C.onLoad
 }
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
 --
 function C:isA(className)
-    return funcRef.isA(self, className) or className == "SpaceEnvironment"
+	return funcRef.isA(self, className) or className == "SpaceEnvironment"
 end
 
 function C:init()
-    funcRef.init(self, -1)
-    self.temperature = 14 -- in K
+	funcRef.init(self, -1)
+	self.temperature = 14 -- in K
 end
 
 function C:getEntity()
-    return nil
+	return nil
 end
 
 function C:hasName()
-    return true
+	return true
 end
 
 function C:getName()
-    return "Space"
+	return "Space"
 end
 

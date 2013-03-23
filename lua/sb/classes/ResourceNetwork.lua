@@ -18,17 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 include("sb/classes/ResourceContainer.lua")
 
 -- Lua Specific
-local type      = type
-local pairs     = pairs
-local math      = math
+local type = type
+local pairs = pairs
+local math = math
 -- Gmod specific
-local Entity    = Entity
-local CurTime   = CurTime
+local Entity = Entity
+local CurTime = CurTime
 require("sbnet")
-local net  = sbnet
+local net = sbnet
 -- Class Specific
-local C         = CLASS
-local sb        = sb;
+local C = CLASS
+local sb = sb;
 local core = sb.core
 
 local funcRef = {
@@ -38,11 +38,11 @@ local funcRef = {
 	consumeResource = C.consumeResource,
 	getResourceAmount = C.getResourceAmount,
 	getMaxResourceAmount = C.getMaxResourceAmount,
-    sendContent = C._sendContent,
+	sendContent = C._sendContent,
 	receiveSignal = C.receive,
-    onSave = C.onSave,
-    onLoad = C.onLoad,
-    applyDupeInfo = C.applyDupeInfo
+	onSave = C.onSave,
+	onLoad = C.onLoad,
+	applyDupeInfo = C.applyDupeInfo
 }
 
 --- General class function to check is this class is of a certain type
@@ -59,9 +59,9 @@ function C:init(entID)
 	self.containers = {}
 	self.networks = {}
 	self.busy = false
-    self.canCheckConstraints = true
-    self.containersmodified = CurTime()
-    self.networksmodified = CurTime()
+	self.canCheckConstraints = true
+	self.containersmodified = CurTime()
+	self.networksmodified = CurTime()
 end
 
 -- Are we already using this network (prevent loops when looking up)
@@ -137,16 +137,16 @@ end
 function C:link(container, dont_link)
 	if not self:canLink(container) then return end
 	if container:isA("ResourceNetwork") then
-        if self.networks[container:getID()] then return end
+		if self.networks[container:getID()] then return end
 		self.networks[container:getID()] = container
-        self.networksmodified = CurTime()
-    else
-        if self.containers[container:getID()] then return end
+		self.networksmodified = CurTime()
+	else
+		if self.containers[container:getID()] then return end
 		self.containers[container:getID()] = container
 		for k, v in pairs(container:getResources()) do
 			self:addResource(k, v:getMaxAmount(), v:getAmount())
-        end
-        self.containersmodified = CurTime()
+		end
+		self.containersmodified = CurTime()
 	end
 	if not dont_link then
 		container:link(self, true);
@@ -155,138 +155,138 @@ function C:link(container, dont_link)
 end
 
 function C:unlink(container, dont_unlink)
-    if not container then
-       for k, v in pairs(self.containers) do
-          v:unlink(self, true)
-       end
-       for k, v in pairs(self.networks) do
-          v:unlink(self, true)
-       end
-       self.networksmodified = CurTime()
-       self.containersmodified = CurTime()
-    else
-        if not self:canLink(container, true) then return end
-        if not dont_unlink then
-            container:unlink(self, true);
-        end
-        if container:isA("ResourceNetwork") then
-            if not self.networks[container:getID()] then return end
-            self.networks[container:getID()] = nil
-            self.networksmodified = CurTime()
-        else
-            if not self.containers[container:getID()] then return end
-            self.containers[container:getID()] = nil
-            local percent, amount = 0, 0
-            for k, v in pairs(container:getResources()) do
-                percent = v:getMaxAmount() / self:getMaxResourceAmount(k)
-                amount = math.Round(self:getResourceAmount(k) * percent)
-                container:supplyResource(k, amount)
-                self:removeResource(k, v:getMaxAmount(), amount)
-            end
-            self.containersmodified = CurTime()
-        end
-    end
+	if not container then
+		for k, v in pairs(self.containers) do
+			v:unlink(self, true)
+		end
+		for k, v in pairs(self.networks) do
+			v:unlink(self, true)
+		end
+		self.networksmodified = CurTime()
+		self.containersmodified = CurTime()
+	else
+		if not self:canLink(container, true) then return end
+		if not dont_unlink then
+			container:unlink(self, true);
+		end
+		if container:isA("ResourceNetwork") then
+			if not self.networks[container:getID()] then return end
+			self.networks[container:getID()] = nil
+			self.networksmodified = CurTime()
+		else
+			if not self.containers[container:getID()] then return end
+			self.containers[container:getID()] = nil
+			local percent, amount = 0, 0
+			for k, v in pairs(container:getResources()) do
+				percent = v:getMaxAmount() / self:getMaxResourceAmount(k)
+				amount = math.Round(self:getResourceAmount(k) * percent)
+				container:supplyResource(k, amount)
+				self:removeResource(k, v:getMaxAmount(), amount)
+			end
+			self.containersmodified = CurTime()
+		end
+	end
 	self.modified = CurTime()
 end
 
 function C:getConnectedNetworks()
-   return self.networks
+	return self.networks
 end
 
 function C:getConnectedEntities()
-   return self.containers
+	return self.containers
 end
 
 function C:canLink(container, checkforSelf)
-	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and (container:getNetwork() == nil or ( checkforSelf and container:getNetwork() == self ))))
+	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and (container:getNetwork() == nil or (checkforSelf and container:getNetwork() == self))))
 end
 
 function C:canCheck()
-    return self.canCheckConstraints
+	return self.canCheckConstraints
 end
 
 function C:disableCheck()
-    self.canCheckConstraints = false
+	self.canCheckConstraints = false
 end
 
 function C:enableCheck()
-    self.canCheckConstraints = true
+	self.canCheckConstraints = true
 end
 
 --- Sync function to send data from the client to the server, contains the specific data transfer
 -- @param modified timestamp the client received information about this environment last
 --
 function C:_sendContent(modified)
-    if self.containersmodified > modified then
-        net.writeBool(true)
-        net.writeShort(table.Count(self.containers))
-        for k, _ in pairs(self.containers) do
-           net.writeShort(k)
-        end
-    else
-        net.writeBool(false)
-    end
-    if self.networksmodified > modified then
-        net.writeBool(true)
-        net.writeShort(table.Count(self.networks))
-        for k, _ in pairs(self.networks) do
-            net.writeShort(k)
-        end
-    else
-        net.writeBool(false)
-    end
-    funcRef.sendContent(self, modified);
+	if self.containersmodified > modified then
+		net.writeBool(true)
+		net.writeShort(table.Count(self.containers))
+		for k, _ in pairs(self.containers) do
+			net.writeShort(k)
+		end
+	else
+		net.writeBool(false)
+	end
+	if self.networksmodified > modified then
+		net.writeBool(true)
+		net.writeShort(table.Count(self.networks))
+		for k, _ in pairs(self.networks) do
+			net.writeShort(k)
+		end
+	else
+		net.writeBool(false)
+	end
+	funcRef.sendContent(self, modified);
 end
 
 --- Sync function to receive data from the server to this client
 --
 function C:receive()
-    local hasContainerUpdate = net.readBool()
-    if hasContainerUpdate then
-        local nrofcontainers = net.readShort()
-        self.containers = {}
-        local am, id
-        for am = 1, nrofcontainers do
-            id = net.readShort()
-            self.containers[id] = sb.getDeviceInfo(id)
-        end
-    end
-    local hasNetworksUpdate = net.readBool()
-    if hasNetworksUpdate then
-        local nrofnetworks = net.readShort()
-        self.networks = {}
-        local am, id
-        for am = 1, nrofnetworks do
-            id = net.readShort()
-            self.networks[id] = sb.getDeviceInfo(id)
-        end
-    end
+	local hasContainerUpdate = net.readBool()
+	if hasContainerUpdate then
+		local nrofcontainers = net.readShort()
+		self.containers = {}
+		local am, id
+		for am = 1, nrofcontainers do
+			id = net.readShort()
+			self.containers[id] = sb.getDeviceInfo(id)
+		end
+	end
+	local hasNetworksUpdate = net.readBool()
+	if hasNetworksUpdate then
+		local nrofnetworks = net.readShort()
+		self.networks = {}
+		local am, id
+		for am = 1, nrofnetworks do
+			id = net.readShort()
+			self.networks[id] = sb.getDeviceInfo(id)
+		end
+	end
 	funcRef.receiveSignal(self)
 end
 
 -- Start Save/Load functions
 
 function C:applyDupeInfo(data, newent, CreatedEntities)
-    --funcRef.applyDupeInfo(self, data, newent, CreatedEntities) -- Don't restore resource info, this will happen by relinking below
-    for k, v in pairs(data.networks) do
-        self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
-    end
-    for k, v in pairs(data.containers) do
-        self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
-    end
+	--funcRef.applyDupeInfo(self, data, newent, CreatedEntities) -- Don't restore resource info, this will happen by relinking below
+	for k, v in pairs(data.networks) do
+		self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
+	end
+	for k, v in pairs(data.containers) do
+		self:link(sb.getDeviceInfo(CreatedEntities[k]:EntIndex()))
+	end
 end
 
 function C:onLoad(data)
-    funcRef.onLoad(self, data)
-    local ent = self
-    timer.Simple(0.1, function()
-        for k, v in pairs(data.networks) do
-          ent.networks[v] = sb.getDeviceInfo(k)
-        end
-        for k, v in pairs(data.containers) do
-            ent.containers[v] = sb.getDeviceInfo(k)
-        end
-    end)
+	funcRef.onLoad(self, data)
+	local ent = self
+	timer.Simple(0.1, function()
+		for k, v in pairs(data.networks) do
+			ent.networks[v] = sb.getDeviceInfo(k)
+		end
+		for k, v in pairs(data.containers) do
+			ent.containers[v] = sb.getDeviceInfo(k)
+		end
+	end)
 end
 
 -- End Save/Load functions

@@ -5,22 +5,22 @@
 -- Time: 10:45
 -- To change this template use File | Settings | File Templates.
 --
-include(fluix.basePath.."classes/HudComponent.lua")
+include(fluix.basePath .. "classes/HudComponent.lua")
 local C = CLASS
 local surface = surface
 
 local oldIsA = C.isA
 function C:isA(className)
-    return oldIsA(self) or className == "HudBarIndicator"
+	return oldIsA(self) or className == "HudBarIndicator"
 end
 
 local oldInit = C.init
 function C:init(x, y, width, height, value, maxvalue, color, bgcolor)
-    oldInit(self, x, y, width, height)
-    self.value = value
-    self.maxvalue = maxvalue
-    self.color = color
-    self.backgroundColor = bgcolor
+	oldInit(self, x, y, width, height)
+	self.value = value
+	self.maxvalue = maxvalue
+	self.color = color
+	self.backgroundColor = bgcolor
 end
 
 function C:getBackgroundAlpha()
@@ -46,44 +46,48 @@ end
 
 
 function C:getValue()
-   return self.value
+	return self.value
 end
 
 function C:setValue(value)
-   self.value = value
+	self.value = value
 end
 
 function C:getMaxValue()
-    return self.maxvalue
+	return self.maxvalue
 end
 
 function C:setMaxValue(maxvalue)
-    self.maxvalue = maxvalue
+	self.maxvalue = maxvalue
 end
 
 function C:getColor()
-   return self.color
+	return self.color
 end
 
 function C:setColor(color)
-   self.color = color
+	self.color = color
 end
 
 function C:getBackgroundColor()
-   return self.backgroundColor
+	return self.backgroundColor
 end
 
 function C:setBackgroundColor(backgroundColor)
-   self.backgroundColor = backgroundColor
+	self.backgroundColor = backgroundColor
 end
 
 function C:render()
-    surface.SetDrawColor( self:getColor() )           -- Outline of Background of the bar
-    surface.DrawOutlinedRect( self:getX(), self:getY(), self:getWidth(), self:getHeight() )
+	surface.SetDrawColor(self:getColor()) -- Outline of Background of the bar
+	surface.DrawOutlinedRect(self:getX(), self:getY(), self:getWidth(), self:getHeight())
 
-    surface.SetDrawColor( self:getBackgroundColor() )        -- Background of Bar
-    surface.DrawRect( self:getX(), self:getY() , self:getWidth() , self:getHeight() )
+	surface.SetDrawColor(self:getBackgroundColor()) -- Background of Bar
+	surface.DrawRect(self:getX(), self:getY(), self:getWidth(), self:getHeight())
 
-    surface.SetDrawColor( self:getColor() )          --Value of Bar
-    surface.DrawRect( self:getX() , self:getY() , self.width * ( self:getValue() / self:getMaxValue() ), self:getHeight())
+	surface.SetDrawColor(self:getColor()) --Value of Bar
+	if self:getValue() / self:getMaxValue() <= 1 then
+		surface.DrawRect(self:getX(), self:getY(), self.width * (self:getValue() / self:getMaxValue()), self:getHeight())
+	else
+		surface.DrawRect(self:getX(), self:getY(), self.width, self:getHeight())
+	end
 end

@@ -20,18 +20,19 @@ local u = sb.core.util
 local spawned_entities = {}
 
 local function OnEntitySpawn(ent)
-    if not table.HasValue(spawned_entities, ent) then
-        table.insert(spawned_entities, ent)
-        timer.Simple(0.1, function()
-            if sb.onSBMap() and not ent.environment and sb.isValidSBEntity(ent)  then
-                ent.environment = sb.getSpace()
-                sb.getSpace():updateEnvironmentOnEntity(ent)
-            end
-        end)
-    end
+	if not table.HasValue(spawned_entities, ent) then
+		table.insert(spawned_entities, ent)
+		timer.Simple(0.1, function()
+			if sb.onSBMap() and not ent.environment and sb.isValidSBEntity(ent) then
+				ent.environment = sb.getSpace()
+				sb.getSpace():updateEnvironmentOnEntity(ent)
+			end
+		end)
+	end
 end
+
 hook.Add("OnEntityCreated", "SB_OnEntitySpawn", OnEntitySpawn)
 
 function u.getSpawnedEntities()
-    return spawned_entities;
+	return spawned_entities;
 end

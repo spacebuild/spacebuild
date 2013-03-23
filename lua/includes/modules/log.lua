@@ -27,51 +27,51 @@ local PrintTable = PrintTable
 
 module("log")
 
-NONE  = 0
-INFO  = 1
-WARN  = 2
+NONE = 0
+INFO = 1
+WARN = 2
 ERROR = 3
 DEBUG = 4
 
 local level = DEBUG
 
 local function levelToString(lvl)
-	return "[" ..((lvl == INFO and "info") or (lvl == WARN and "warn") or (lvl == ERROR and "error") or "debug").."]"
+	return "[" .. ((lvl == INFO and "info") or (lvl == WARN and "warn") or (lvl == ERROR and "error") or "debug") .. "]"
 end
 
 function setLevel(lvl)
 	level = tonumber(lvl)
-	print("Setting Loging to "..levelToString(lvl))
+	print("Setting Loging to " .. levelToString(lvl))
 end
 
 
 
 function log(message, lvl)
-   if not lvl then lvl = DEBUG end
-   if lvl <= level then
-      print(levelToString(lvl)..message)
-   end
+	if not lvl then lvl = DEBUG end
+	if lvl <= level then
+		print(levelToString(lvl) .. message)
+	end
 end
 
 function info(message)
-   log(message, INFO)
+	log(message, INFO)
 end
 
 function warn(message)
-   log(message, WARN)
+	log(message, WARN)
 end
 
 function error(message)
-   log(message, ERROR)
+	log(message, ERROR)
 end
 
 function debug(message)
-   log(message, DEBUG)
+	log(message, DEBUG)
 end
 
 function table(table, message, lvl)
-   if lvl <= level then
-	   log(message, lvl)
+	if lvl <= level then
+		log(message, lvl)
 		PrintTable(table)
-   end
+	end
 end

@@ -24,7 +24,7 @@ local file, sb = file, sb
 -- @param typeof What to return, files, or directories. Defaults to directories if not passed "file".
 -- @param ... Other parameters, array of passed params which will be used in file.Find, see official Garrys Mod documentation.
 --
-function sb.core.wrappers:Find(typeof,...)
+function sb.core.wrappers:Find(typeof, ...)
 
 	local typeof = typeof
 	local files, dirs = {}, {}
@@ -36,5 +36,4 @@ function sb.core.wrappers:Find(typeof,...)
 	else
 		return dirs
 	end
-
 end

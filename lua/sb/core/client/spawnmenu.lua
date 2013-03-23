@@ -8,7 +8,7 @@
 local sb = sb
 
 local function SBTab()
-    spawnmenu.AddToolTab("Spacebuild", "SB")
+	spawnmenu.AddToolTab("Spacebuild", "SB")
 end
 
 hook.Add("AddToolMenuTabs", "SBTab", SBTab)

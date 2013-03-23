@@ -29,7 +29,7 @@ module("sbnet")
 -- Proxy
 Broadcast = net.Broadcast
 BytesWritten = net.BytesWritten
-Incoming =  net.Incoming
+Incoming = net.Incoming
 ReadAngle = net.ReadAngle
 ReadBit = net.ReadBit
 ReadData = net.ReadData
@@ -43,7 +43,7 @@ ReadString = net.ReadString
 ReadTable = net.ReadTable
 ReadType = net.ReadType
 ReadUInt = net.ReadUInt
-ReadVector =  net.ReadVector
+ReadVector = net.ReadVector
 Receive = net.Receive
 Send = net.Send
 SendOmit = net.SendOmit
@@ -68,78 +68,78 @@ WriteVector = net.WriteVector
 -- Custom
 
 local TYPES_INT = {
-    -- Default types
-    TINY = {
-        length = 1 * 8,
-        min = -128,
-        max = 127,
-        umax = 255
-    },
-    SHORT = {
-        length = 2 * 8,
-        min = -32768,
-        max = 32767,
-        umax = 65535
-    },
-    INT = {
-        length = 4 * 8,
-        min = -2147483648,
-        max = 2147483647,
-        umax = 4294967295
-    }
+	-- Default types
+	TINY = {
+		length = 1 * 8,
+		min = -128,
+		max = 127,
+		umax = 255
+	},
+	SHORT = {
+		length = 2 * 8,
+		min = -32768,
+		max = 32767,
+		umax = 65535
+	},
+	INT = {
+		length = 4 * 8,
+		min = -2147483648,
+		max = 2147483647,
+		umax = 4294967295
+	}
 }
 
 -- Write
 function writeBool(bool)
-    net.WriteBit(bool)
+	net.WriteBit(bool)
 end
 
 function writeShort(short)
-    net.WriteInt(short, TYPES_INT.SHORT.length);
+	net.WriteInt(short, TYPES_INT.SHORT.length);
 end
 
 function writeLong(long)
-    net.WriteInt(long, TYPES_INT.INT.length);
+	net.WriteInt(long, TYPES_INT.INT.length);
 end
 
 function writeTiny(tiny)
-    net.WriteInt(tiny, TYPES_INT.TINY.length);
+	net.WriteInt(tiny, TYPES_INT.TINY.length);
 end
 
 function writeAmount(amount)
-    local mul = 0;
-    if amount > TYPES_INT.INT.max then
-        writeBool(true)
-        mul = math.floor(amount/TYPES_INT.INT.max)
-        writeTiny(mul)
-        amount = amount - (mul * TYPES_INT.INT.max)   --Prevent syncing more then is allowed!!
-    else
-        writeBool(false)
-    end
-    net.WriteUInt(amount, TYPES_INT.INT.length);
+	local mul = 0;
+	if amount > TYPES_INT.INT.max then
+		writeBool(true)
+		mul = math.floor(amount / TYPES_INT.INT.max)
+		writeTiny(mul)
+		amount = amount - (mul * TYPES_INT.INT.max) --Prevent syncing more then is allowed!!
+	else
+		writeBool(false)
+	end
+	net.WriteUInt(amount, TYPES_INT.INT.length);
 end
 
 -- Read
 function readBool()
-    return net.ReadBit() == 1
+	return net.ReadBit() == 1
 end
 
 function readShort()
-    return net.ReadInt(TYPES_INT.SHORT.length);
+	return net.ReadInt(TYPES_INT.SHORT.length);
 end
 
 function readLong()
-    return net.ReadInt(TYPES_INT.INT.length);
+	return net.ReadInt(TYPES_INT.INT.length);
 end
 
 function readTiny()
-    return net.ReadInt(TYPES_INT.TINY.length)
+	return net.ReadInt(TYPES_INT.TINY.length)
 end
 
 function readAmount()
-    local base = 0;
-    if readBool() then
-        base = readTiny() * TYPES_INT.INT.max
-    end
-    return base + net.ReadUInt(TYPES_INT.INT.length)
+	local base = 0;
+	if readBool() then
+		base = readTiny() * TYPES_INT.INT.max
+	end
+	return base + net.ReadUInt(TYPES_INT.INT.length)
 end
