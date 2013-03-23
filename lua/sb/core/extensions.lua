@@ -209,7 +209,7 @@ if (CLIENT) then
 	--This will contain all the Extension Panels
 	--TODO: Talk to Radon about using the unique IDs instead of incrementally inserting them. This would allow extensions to change their own panel.
 
-	ExtsPnls = {}
+	localExtsPnls = {}
 	local vgui = vgui
 
 
