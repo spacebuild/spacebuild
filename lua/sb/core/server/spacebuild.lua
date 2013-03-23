@@ -177,6 +177,12 @@ local function addLegacyEnvironment(data)
 		ent.envobject = environment
 		sb.addEnvironment(environment)
 		ent:InitEnvironment()
+	elseif data[1] == "cube" then
+		local ent = spawnEnvironmentEnt("LegacyPlanet", data.ent:GetPos(), data.ent:GetAngles())
+		local environment = class.new("LegacyCube", ent:EntIndex(), data)
+		ent.envobject = environment
+		sb.addEnvironment(environment)
+		ent:InitEnvironment()
 	elseif data[1] == "planet_color" then
 		local colorinfo = class.new("LegacyColorInfo", data)
 		sb.addEnvironmentColor(colorinfo)

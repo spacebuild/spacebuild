@@ -142,7 +142,7 @@ function C:init(entid, data)
 				self.bloom_id = data[8]
 			end
 			self:ProcessSB1Flags(tonumber(data[16]))
-		elseif data[1] == "planet2" then
+		elseif data[1] == "planet2" or data[1] == "cube" then
 			self.radius = tonumber(data[2])
 			self.gravity = tonumber(data[3])
 			self.atmosphere = tonumber(data[4])
@@ -242,14 +242,19 @@ function C:updateEntities()
 	-- PhysicInitSphere doesn't create a real sphere, but a box, so we have to do a more accurate check here
 	local envent = self:getEntity()
 	for k, ent in pairs(self.entities) do
-		if sb.isValidSBEntity(ent) and ent:GetPos():Distance(envent:GetPos()) < self.radius then
-			if ent.environment ~= self then
-				self:setEnvironmentOnEntity(ent, self)
+		if sb.isValidSBEntity(ent) then
+			if ent:GetPos():Distance(envent:GetPos()) < self.radius then
+				if ent.environment ~= self then
+					self:setEnvironmentOnEntity(ent, self)
+				end
+			else
+				if ent.environment ~= sb.getSpace() then
+					self:setEnvironmentOnEntity(ent, sb.getSpace())
+				end
 			end
 		else
-			if ent.environment ~= sb.getSpace() then
-				self:setEnvironmentOnEntity(ent, sb.getSpace())
-			end
+			self.entities[k] = nil
+			ent.environment = nil
 		end
 	end
 end

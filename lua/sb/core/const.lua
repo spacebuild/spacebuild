@@ -1,6 +1,11 @@
 local sb = sb
 local const = sb.core.const
 
+const.suit = {}
+const.suit.MAX_OXYGEN = 2000
+const.suit.MAX_ENERGY = 2000
+const.suit.MAX_COOLANT = 2000
+
 const.TEMPERATURE_SAFE_MIN = 283
 const.TEMPERATURE_SAFE_MAX = 308
 const.PRESSURE_SAFE_MAX = 1.5

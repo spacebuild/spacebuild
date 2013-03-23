@@ -50,9 +50,9 @@ end
 function ENT:Use(ply)
 	if ply:IsPlayer() and ply.ls_suit then
 		ply.ls_suit:setActive(true)
-		ply.ls_suit:setOxygen(2000)
-		ply.ls_suit:setCoolant(2000)
-		ply.ls_suit:setEnergy(2000)
+		ply.ls_suit:setOxygen(sb.core.const.suit.MAX_OXYGEN)
+		ply.ls_suit:setCoolant(sb.core.const.suit.MAX_COOLANT)
+		ply.ls_suit:setEnergy(sb.core.const.suit.MAX_ENERGY)
 	end
 end
 

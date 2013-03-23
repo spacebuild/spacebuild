@@ -128,7 +128,6 @@ function C:processEnvironment()
 	if not self.ply:Alive() then return end
 	env = self:getEnvironment()
 	if self:isActive() then
-
 		req_oxygen = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
 		if sb.onSBMap() and env then
 			env_temperature = env:getTemperature(self.ply);
@@ -168,29 +167,36 @@ function C:processEnvironment()
 			end
 		end
 		if req_oxygen > 0 then
-			if self:getOxygen() >= req_oxygen then
-				self:setOxygen(self:getOxygen() - req_oxygen)
-				if self:getBreath() <= self:getMaxBreath() - req_oxygen then
-					self:setBreath(self:getBreath() + req_oxygen)
-				elseif self:getBreath() < self:getMaxBreath() then
-					self:setBreath(self:getMaxBreath())
+			if self.ply:WaterLevel() < 3 and (sb.onSBMap() and env and env:hasEnoughOxygen()) then
+				req_oxygen = sb.core.const.suit.MAX_OXYGEN - self:getOxygen()
+				if  req_oxygen > 0  then
+					self:setOxygen(self:getOxygen() + req_oxygen - env:convertResource("oxygen", "co2", req_oxygen))
 				end
-			elseif self:getOxygen() > 0 then
-				self.ply:TakeDamage((req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE, 0)
-				if self:getBreath() <= self:getMaxBreath() - (req_oxygen - self:getOxygen()) then
-					self:setBreath(self:getBreath() + (req_oxygen - self:getOxygen()))
-				elseif self:getBreath() < self:getMaxBreath() then
-					self:setBreath(self:getMaxBreath())
-				end
-				self:setOxygen(0)
 			else
-				if self:getBreath() >= req_oxygen then
-					self:setBreath(self:getBreath() - req_oxygen)
-				elseif self:getBreath() > 0 then
-					self:setBreath(0)
+				if self:getOxygen() >= req_oxygen then
+					self:setOxygen(self:getOxygen() - req_oxygen)
+					if self:getBreath() <= self:getMaxBreath() - req_oxygen then
+						self:setBreath(self:getBreath() + req_oxygen)
+					elseif self:getBreath() < self:getMaxBreath() then
+						self:setBreath(self:getMaxBreath())
+					end
+				elseif self:getOxygen() > 0 then
+					self.ply:TakeDamage((req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE, 0)
+					if self:getBreath() <= self:getMaxBreath() - (req_oxygen - self:getOxygen()) then
+						self:setBreath(self:getBreath() + (req_oxygen - self:getOxygen()))
+					elseif self:getBreath() < self:getMaxBreath() then
+						self:setBreath(self:getMaxBreath())
+					end
+					self:setOxygen(0)
 				else
-					self.ply:EmitSound("Player.DrownStart")
-					self.ply:TakeDamage(req_oxygen * sb.core.const.BASE_LS_DAMAGE, 0)
+					if self:getBreath() >= req_oxygen then
+						self:setBreath(self:getBreath() - req_oxygen)
+					elseif self:getBreath() > 0 then
+						self:setBreath(0)
+					else
+						self.ply:EmitSound("Player.DrownStart")
+						self.ply:TakeDamage(req_oxygen * sb.core.const.BASE_LS_DAMAGE, 0)
+					end
 				end
 			end
 		end
