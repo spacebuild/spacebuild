@@ -11,6 +11,8 @@ CreateConVar("SB_AdminSpaceNoclip", "1") -- Makes it so admins can no clip in sp
 CreateConVar("SB_SuperAdminSpaceNoclip", "1") -- Makes it so admins can no clip in space, defaults to yes
 CreateConVar("SB_PlanetNoClipOnly", "1") -- Make it so admins can let players no clip in space.
 
+CreateConVar("SB_LogLevel", "1") -- Set log level to 1, which by default is info.
+
 local sb = sb
 local game = game
 local GetConVar = GetConVar
