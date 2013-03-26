@@ -130,7 +130,7 @@ function C:processEnvironment()
 	if self:isActive() then
 		req_oxygen = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
 		if sb.onSBMap() and env then
-			env_temperature = env:getTemperature(self.ply);
+			env_temperature = env:getTemperature()
 			suit_temp = self:getTemperature()
 			if suit_temp ~= env_temperature then
 				diff_temp = env_temperature - suit_temp

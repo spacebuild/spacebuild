@@ -21,6 +21,7 @@ local net = sbnet
 local C = CLASS
 local sb = sb;
 local core = sb.core
+local util = core.util
 
 -- Function Refs
 local funcRef = {
@@ -133,8 +134,8 @@ function C:init(entid, data)
 			self.radius = tonumber(data[2])
 			self.gravity = tonumber(data[3])
 			self.atmosphere = tonumber(data[4])
-			self.temperature = tonumber(data[5])
-			self.hightemperature = tonumber(data[6])
+			self.nighttemperature = tonumber(data[5])
+			self.temperature = tonumber(data[6])
 			if string.len(data[7]) > 0 then
 				self.color_id = data[7]
 			end
@@ -147,8 +148,8 @@ function C:init(entid, data)
 			self.gravity = tonumber(data[3])
 			self.atmosphere = tonumber(data[4])
 			-- Ignore data[5] (pressure)
-			self.temperature = tonumber(data[6])
-			self.hightemperature = tonumber(data[7])
+			self.nighttemperature = tonumber(data[6])
+			self.temperature = tonumber(data[7])
 			self:ProcessSB3Flags(tonumber(data[8]))
 			local oxygenpercentage = tonumber(data[9])
 			local co2percentage = tonumber(data[10])
@@ -166,12 +167,12 @@ function C:init(entid, data)
 			self.radius = 512
 			self.gravity = 0
 			self.atmosphere = 0
+			self.nighttemperature = 10000
 			self.temperature = 10000
-			self.hightemperature = 10000
 		elseif data[1] == "star2" then
 			self.radius = tonumber(data[2])
-			self.temperature = tonumber(data[3])
-			self.hightemperature = tonumber(data[5])
+			self.nighttemperature = tonumber(data[3])
+			self.temperature = tonumber(data[5])
 			self.name = (string.len(data[6]) > 0 and data[6]) or self.name
 		end
 		self.entities = {}
@@ -186,9 +187,8 @@ function C:getVolume()
 	return math.Round((4 / 3) * math.pi * self.radius * self.radius)
 end
 
-function C:getTemperature(ent)
-	--TODO
-	return self.temperature
+function C:getTemperature()
+	return util.calculateTemperate(self.nighttemperature, self.temperature)
 end
 
 function C:getEnvironmentColor()
@@ -265,6 +265,7 @@ end
 function C:_sendContent(modified)
 	funcRef.sendContent(self, modified)
 	net.WriteString(self.name)
+	net.writeShort(self.nighttemperature)
 	if self.color_id then
 		net.writeBool(true)
 		net.WriteString(self.color_id)
@@ -284,6 +285,7 @@ end
 function C:receive()
 	funcRef.receiveSignal(self)
 	self.name = net.ReadString()
+	self.nighttemperature = net.readShort()
 	if net.readBool() then
 		self.color_id = net.ReadString()
 	end

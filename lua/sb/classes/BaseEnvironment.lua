@@ -76,7 +76,7 @@ end
 
 --- Gets the temperature on this environment for the given entity
 -- @return an integer
-function C:getTemperature(ent)
+function C:getTemperature()
 	return self.temperature
 end
 

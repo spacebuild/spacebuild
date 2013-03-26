@@ -70,4 +70,9 @@ util.calculateCoolantRequired = function(temperature)
 	return const.BASE_COOLANT_USE + temperature
 end
 
+util.calculateTemperate = function(min_temp, max_temp)
+	-- TODO take into account the time
+   return max_temp
+end
+
 
