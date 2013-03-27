@@ -119,10 +119,22 @@ function C:setBreath(breath)
 end
 
 function C:getMaxBreath()
-	return self.maxbreath;
+	return self.maxbreath
 end
 
 local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
+
+local calcQ_radiation = function(body_temp,env_temp)
+	local t1 = (body_temp*body_temp)+(env_temp*env_temp)
+	local t2 = (body_temp)+(env_temp)
+	local tt = t1*t2
+	local hr = const.BOLTZMAN * ((const.EMISSIVITY.aluminium*0.2)+(const.EMISSIVITY.plastic*0.8)) * tt
+	return hr* const.BODY_SURFACE_AREA  * (body_temp - env_temp)
+end
+
+local calcdT_radiation = function(self)
+	return calcQ_radiation(self:getTemperature(), self:getEnvironment():getTemperature(self.ply)) / (const.PLY_MASS * const.SPECIFIC_HEAT_CAPACITY.plastic)
+end
 
 function C:processEnvironment()
 	if not self.ply:Alive() then return end
@@ -132,7 +144,12 @@ function C:processEnvironment()
 		if sb.onSBMap() and env then
 			env_temperature = env:getTemperature()
 			suit_temp = self:getTemperature()
-			if suit_temp ~= env_temperature then
+			if env == sb.getSpace() and suit_temp ~= env_temperature then -- Use radiation
+				local T = calcdT_radiation(self)*100 -- Ramp up the value as we're not actually in real life here ...
+				MsgN("dT: ",T)
+				suit_temp = suit_temp - T
+				self:setTemperature(suit_temp)
+			else -- Use convection/conduction
 				diff_temp = env_temperature - suit_temp
 				diff_temp = math.floor(diff_temp * const.SUIT_THERMAL_CONDUCTIVITY)
 				suit_temp = suit_temp + diff_temp
@@ -204,7 +221,7 @@ function C:processEnvironment()
 			self.ply:EmitSound("common/warning.wav")
 		end
 	else
-		if env and env == sb.getSpace() then --If in space, 0 their breath for obvious reasons
+		if env and env == sb.getSpace() then --If in space, we'll deduct a random amount between 20 and 70
 			local rand = math.random(20, 70)
 			if self:getBreath() >= rand then
 				self:setBreath(self:getBreath() - rand)

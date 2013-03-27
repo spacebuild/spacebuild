@@ -17,19 +17,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 local sb = sb
 local timer = timer
-local core = sb.core;
+local core = sb.core
+local const = sb.core.const
 local convars = sb.core.convars
 require("class")
 local class = class
 require("sbnet")
 local net = sbnet
 
-local time_to_next_rd_sync = 1
-local time_to_next_ls_sync = 0.2
-local time_to_next_ls_env = 1
-local time_to_next_sb_sync = 3
+local time_to_next_rd_sync = const.TIME_TO_NEXT_RD_SYNC
+local time_to_next_ls_sync = const.TIME_TO_NEXT_LS_SYNC
+local time_to_next_ls_env = const.TIME_TO_NEXT_LS_ENV
+local time_to_next_sb_sync = const.TIME_TO_NEXT_SB_SYNC
 
-local time = 0;
+local time = 0
 
 local function AllowAdminNoclip(ply)
 	if (ply:IsAdmin() or ply:IsSuperAdmin()) and convars.sb_adminspacenoclip.get() then return true end
