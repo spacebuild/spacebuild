@@ -34,7 +34,7 @@ local exp = math.exp
 
 local setmetatable = setmetatable
 
-local print = MsgN -- Because fuck Garry
+local print = MsgN
 
 module("quaternion")  -- Define as a module after getting all the variable from global namespace that we need.
 
@@ -224,16 +224,12 @@ function quat:fromEuler(p,y,r) -- should make a quat from a euler angle. Just ma
     self.j = q.j
     self.k = q.k
 
-    self:normalise() -- Normalise ourselves because why the fuck not?
+    self:normalise() -- Normalise ourselves because why not?
 
     return self  -- Return self so we can chain :D eg, q:fromEuler(p,y,r):toVec()
 
 end
 
-
-
-
--- Because fuck garry
 function quat:toVec()
     return {self.i,self.j,self.k} -- Because you can do horrible Vector stuff
 end

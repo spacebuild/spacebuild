@@ -92,14 +92,14 @@ function fluix.modules.playerSuit.Run()
 	oxygen:setText(string.format("Oxygen: %i units", math.Round(suit:getOxygen())))
 	coolant:setText(string.format("Coolant: %i units", math.Round(suit:getCoolant())))
 	energy:setText(string.format("Energy: %i units", math.Round(suit:getEnergy())))
-	temperature:setText(string.format("Temperature: %iK", math.Round(suit:getTemperature())))
+	temperature:setText(string.format("Temperature: %i K", math.Round(suit:getTemperature())))
 
 	-- Environment
 	local env = suit:getEnvironment()
 	if env then
 		envTemp:setText(string.format("Temperature: %i K", math.Round(env:getTemperature())))
-		envGrav:setText(string.format("Gravity: %2g", env:getGravity()))
-		envAtmos:setText(string.format("Atmosphere: %2g", env:getAtmosphere()))
+		envGrav:setText(string.format("Gravity: %2g g", env:getGravity()))
+		envAtmos:setText(string.format("Atmospheric Pressure: %2g kPa", env:getAtmosphere()*100))
 	end
 
 	if suit:isActive() then
