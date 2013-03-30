@@ -24,7 +24,7 @@ const.AMOUNTOFDEGREES_DIVIDER = 40
 -- used in the formula to calculate temperature changes (Nylon 6)
 const.SUIT_THERMAL_CONDUCTIVITY = 0.91 -- used the emissivity of plastic, as this is for radiation
 
-const.BOLTZMAN = 0.00000005673 -- Stefan Boltzman constant = 5.673 x10^-8 W m^-2 K^-4
+const.BOLTZMANN = 0.00000005673 -- Stefan Boltzman constant = 5.673 x10^-8 W m^-2 K^-4
 const.EMISSIVITY = {
 	skin = 0.98,
 	plastic = 0.91,

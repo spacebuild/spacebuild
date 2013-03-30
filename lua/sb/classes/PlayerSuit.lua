@@ -125,15 +125,21 @@ end
 local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
 
 local calcQ_radiation = function(body_temp,env_temp)
-	local t1 = (body_temp*body_temp)+(env_temp*env_temp)
-	local t2 = (body_temp)+(env_temp)
-	local tt = t1*t2
-	local hr = const.BOLTZMAN * ((const.EMISSIVITY.aluminium*0.2)+(const.EMISSIVITY.plastic*0.8)) * tt
-	return hr* const.BODY_SURFACE_AREA  * (body_temp - env_temp)
+	--local t1 = (body_temp*body_temp)+(env_temp*env_temp)
+	--local t2 = (body_temp)+(env_temp)
+	--local tt = t1*t2
+	--local hr = const.BOLTZMAN * ((const.EMISSIVITY.aluminium*0.2)+(const.EMISSIVITY.plastic*0.8)) * tt
+	return ( const.BOLTZMANN * (body_temp*body_temp*body_temp*body_temp) * const.BODY_SURFACE_AREA ) * const.EMISSIVITY.plastic * (500000/(body_temp-env_temp))  -- Last part is constant tweaks.
+	--return hr * const.BODY_SURFACE_AREA  * (body_temp - env_temp)
 end
 
 local calcdT_radiation = function(self)
-	return calcQ_radiation(self:getTemperature(), self:getEnvironment():getTemperature(self.ply)) / (const.PLY_MASS * const.SPECIFIC_HEAT_CAPACITY.plastic)
+	local rtnQ = calcQ_radiation(self:getTemperature(), self:getEnvironment():getTemperature(self.ply)) / (const.PLY_MASS * const.SPECIFIC_HEAT_CAPACITY.aluminium)
+	if rtnQ >= 0 then
+		return calcQ_radiation(self:getTemperature(), self:getEnvironment():getTemperature(self.ply)) / (const.PLY_MASS * const.SPECIFIC_HEAT_CAPACITY.aluminium)
+	else
+		return 0
+	end
 end
 
 function C:processEnvironment()
@@ -145,7 +151,7 @@ function C:processEnvironment()
 			env_temperature = env:getTemperature()
 			suit_temp = self:getTemperature()
 			if env == sb.getSpace() and suit_temp ~= env_temperature then -- Use radiation
-				local T = calcdT_radiation(self)*100 -- Ramp up the value as we're not actually in real life here ...
+				local T = calcdT_radiation(self) -- Ramp up the value as we're not actually in real life here ...
 				MsgN("dT: ",T)
 				suit_temp = suit_temp - T
 				self:setTemperature(suit_temp)
