@@ -19,6 +19,8 @@ local sb = sb
 local const = sb.core.const
 local util = sb.core.util;
 local math = math
+local print = print
+local tostring = tostring
 
 util.SCOPES = {
 	SERVER = "server/",
@@ -31,6 +33,7 @@ util.createReadOnlyTable = function(t)
 		__index = t,
 		__newindex = function(t, k, v)
 			print("Attempt to update a read-only table")
+			print(tostring(debug.traceback()))
 		end,
 		__metatable = false
 	})
