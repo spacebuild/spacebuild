@@ -109,7 +109,7 @@ local function DrawExtensionsMenuOption(panel)
 					extmenu[5]:ColorTo(Color(255, 0, 0, 255), 1, 0)
 					-- Set the button to enable the extenison
 					extmenu[5]:SetText("Enable")
-					extmenu:SetText(v:getName() .. " (Disabled)")
+					extmenu[5]:SetText(v:getName() .. " (Disabled)")
 					extmenu[2]:SizeToContents()
 				end
 			end
