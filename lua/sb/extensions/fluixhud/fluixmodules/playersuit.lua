@@ -8,7 +8,7 @@
 require("class")
 local class = class
 local const = sb.core.const
-local fluix = fluix
+local fluix = EXT
 fluix.modules.playerSuit = { Enabled = true }
 
 local scrW, scrH, width, height = ScrW(), ScrH()

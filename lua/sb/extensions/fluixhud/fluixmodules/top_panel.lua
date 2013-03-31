@@ -1,9 +1,11 @@
-fluix.modules.TopPanel = { Enabled = true }
+
 
 local surface = surface
-local fluix = fluix
+local fluix = EXT
 local Color = Color
 local pi = 3.14159265
+
+fluix.modules.TopPanel = { Enabled = true }
 
 --======================================== OMNIFUNCTION ============================================================
 local drawCircle = function(type, PosX, PosY, SizeX, SizeY, a, b, bg_color, value_color, gradient_toggle)

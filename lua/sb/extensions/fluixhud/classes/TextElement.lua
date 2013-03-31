@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include(fluix.basePath .. "classes/HudComponent.lua")
+include( sb.core.extensions:getBasePath() .. "classes/HudComponent.lua")
 local C = CLASS
 local surface = surface
 

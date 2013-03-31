@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include(fluix.basePath .. "classes/HudPanel.lua")
+include(sb.core.extensions:getBasePath().."classes/HudPanel.lua")
 local C = CLASS
 
 function C:calculateSize()

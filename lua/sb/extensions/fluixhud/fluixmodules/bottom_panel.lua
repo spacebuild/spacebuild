@@ -1,6 +1,6 @@
 require("class")
 local class = class
-local fluix = fluix
+local fluix = EXT
 fluix.modules.BottomPanel = { Enabled = true }
 fluix.Ammo1, fluix.Ammo1S, fluix.Ammo1Total, fluix.Ammo1Max, fluix.Ammo2 = 0, 0, 0, 0, 0
 fluix.Weapon = LocalPlayer()
