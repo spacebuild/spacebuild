@@ -26,7 +26,7 @@ require("sbnet")
 local net = sbnet
 -- Class specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 
 --- General class function to check is this class is of a certain type
@@ -41,11 +41,11 @@ function C:init(name, maxAmount, amount)
 	name = tostring(name)
 	if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
 	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
-	self.name = name;
-	self.amount = amount;
-	self.maxAmount = maxAmount;
+	self.name = name
+	self.amount = amount
+	self.maxAmount = maxAmount
 	self.resourceInfo = sb.getResourceInfoFromName(name)
-	self.modified = CurTime();
+	self.modified = CurTime()
 	self.modifiedMaxAmount = CurTime()
 end
 
@@ -53,27 +53,27 @@ function C:supply(amount)
 	if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:supply requires a number >= 0") end
 	if amount == 0 then return 0 end -- don't do anything if amount = 0
 	if self.amount == self.maxAmount then return amount end -- don't do anything if we reached the max amount already
-	local to_much = 0;
-	self.amount = self.amount + amount;
+	local to_much = 0
+	self.amount = self.amount + amount
 	if self.amount > self.maxAmount then
 		to_much = self.amount - self.maxAmount
 		self.amount = self.maxAmount
 	end
-	self.modified = CurTime();
-	return to_much;
+	self.modified = CurTime()
+	return to_much
 end
 
 function C:consume(amount)
 	if not amount or type(amount) ~= "number" or amount < 0 then error("Resource:consume requires a number >= 0") end
 	if amount == 0 then return 0 end -- don't do anything if amount = 0
 	if self.amount == 0 then return amount end -- don't do anything if we have 0 resources
-	local to_little = 0;
+	local to_little = 0
 	self.amount = self.amount - amount
 	if self.amount < 0 then
 		to_little = math.abs(self.amount)
 		self.amount = 0
 	end
-	self.modified = CurTime();
+	self.modified = CurTime()
 	return to_little
 end
 
@@ -95,14 +95,14 @@ function C:setMaxAmount(amount)
 		self.maxAmount = amount
 		if self.amount > self.maxAmount then
 			self.amount = self.maxAmount
-			self.modified = CurTime();
+			self.modified = CurTime()
 		end
 		self.modifiedMaxAmount = CurTime()
 	end
 end
 
 function C:getAmount()
-	return self.amount;
+	return self.amount
 end
 
 function C:setAmount(amount)
@@ -111,11 +111,11 @@ function C:setAmount(amount)
 	if self.amount > self.maxAmount then
 		self.amount = self.maxAmount
 	end
-	self.modified = CurTime();
+	self.modified = CurTime()
 end
 
 function C:getName()
-	return self.name;
+	return self.name
 end
 
 --- Sync function to send data to the client from the server
@@ -149,7 +149,7 @@ function C:receive()
 end
 
 function C:getModified()
-	return self.modified;
+	return self.modified
 end
 
 -- Start Save/Load functions
@@ -159,11 +159,11 @@ function C:onSave()
 end
 
 function C:onLoad(data)
-	self.name = data.name;
-	self.amount = data.amount;
-	self.maxAmount = data.maxAmount;
+	self.name = data.name
+	self.amount = data.amount
+	self.maxAmount = data.maxAmount
 	self.resourceInfo = sb.getResourceInfoFromName(self.name)
-	self.modified = CurTime();
+	self.modified = CurTime()
 	self.modifiedMaxAmount = CurTime()
 end
 

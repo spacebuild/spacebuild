@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb;
-local core = sb.core;
+local sb = sb
+local core = sb.core
 
 require("class")
 local class = class
@@ -48,7 +48,7 @@ sb.RDTYPES = {
 	NETWORK = 3
 }
 
-local obj;
+local obj
 
 function sb.registerDevice(ent, rdtype)
 	local entid = ent:EntIndex()
@@ -59,9 +59,9 @@ function sb.registerDevice(ent, rdtype)
 	else
 		error("type is not supported")
 	end
-	ent.rdobject = obj;
+	ent.rdobject = obj
 	ent._synctimestamp = CurTime() --Time stamp on registration, for use with timers.
-	core.device_table[entid] = obj;
+	core.device_table[entid] = obj
 
 	if not ent.rdobject then
 		MsgN("Something went wrong registering the device")
@@ -84,10 +84,10 @@ function sb.removeDevice(ent)
 end
 
 function sb.getDeviceInfo(entid)
-	return core.device_table[entid];
+	return core.device_table[entid]
 end
 
-local resourceinfo;
+local resourceinfo
 function sb.registerResourceInfo(id, name, displayName, attributes)
 	resourceinfo = class.new("ResourceInfo", id, name, displayName, attributes)
 	core.resources_names_table[name] = resourceinfo

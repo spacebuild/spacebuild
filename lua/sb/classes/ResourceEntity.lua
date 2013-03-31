@@ -28,7 +28,7 @@ local net = sbnet
 
 -- Class Specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 
 -- Function Refs
@@ -93,7 +93,7 @@ function C:getResourceAmount(name)
 	if self.network then
 		return self.network:getResourceAmount(name)
 	end
-	return funcRef.getResourceAmount(self, name);
+	return funcRef.getResourceAmount(self, name)
 end
 
 function C:getMaxResourceAmount(name, visited)
@@ -106,10 +106,10 @@ end
 function C:link(container, dont_link)
 	if not self:canLink(container) then return end
 	if not dont_link then
-		container:link(self, true);
+		container:link(self, true)
 	end
 	-- Link to the new
-	self.network = container;
+	self.network = container
 	self.modified = CurTime()
 end
 
@@ -120,7 +120,7 @@ function C:unlink(container, dont_unlink)
 	elseif self.network == container then
 		self.network = nil
 		if not dont_unlink then
-			container:unlink(self, true);
+			container:unlink(self, true)
 		end
 	end
 	self.modified = CurTime()
@@ -143,7 +143,7 @@ function C:_sendContent(modified)
 	else
 		net.writeShort(0)
 	end
-	funcRef.sendContent(self, modified);
+	funcRef.sendContent(self, modified)
 end
 
 --- Sync function to receive data from the server to this client

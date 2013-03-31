@@ -19,7 +19,7 @@ local drawCircle = function(type, PosX, PosY, SizeX, SizeY, a, b, bg_color, valu
 
 	--===Draw the big circle===
 	local sin, cos, rad = math.sin, math.cos, math.rad
-	local tmp = 0;
+	local tmp = 0
 
 	local radius = 1
 	if SizeX < SizeY then
@@ -37,7 +37,7 @@ local drawCircle = function(type, PosX, PosY, SizeX, SizeY, a, b, bg_color, valu
 	local radius2 = radius / 2
 
 	local quality = math.ceil(radius * 1)
-	local circle = {};
+	local circle = {}
 	local tmp = 0
 	for i = 1, quality do
 		tmp = rad(i * 360) / quality
@@ -127,7 +127,7 @@ local drawCircle = function(type, PosX, PosY, SizeX, SizeY, a, b, bg_color, valu
 
 
 		--Then draw second circle last -- COVER CIRCLE
-		circle = {};
+		circle = {}
 		for i = 1, quality do
 			tmp = rad(i * 360) / quality
 			circle[i] = { x = x + cos(tmp) * radius2, y = y + sin(tmp) * radius2 }

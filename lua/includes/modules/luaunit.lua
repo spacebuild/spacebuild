@@ -93,9 +93,9 @@ end
 
 local string = string
 local table = table
-local error = error;
+local error = error
 local _G = _G
-local pairs = pairs;
+local pairs = pairs
 local xpcall = xpcall
 local loadstring = function(code) return CompileString(code, "luaunit") end
 local debug = debug
@@ -104,7 +104,7 @@ local type = type
 local math = math
 local unpack = unpack
 
-module("luaunit");
+module("luaunit")
 
 local stack_list, strip_end, testClassList, key, testName, errorMsg
 -------------------------------------------------------------------------------

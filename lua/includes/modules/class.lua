@@ -37,7 +37,7 @@ end
 
 -- GMOD
 local function openClass(name)
-	include(getClassFolder(name) .. name .. ".lua");
+	include(getClassFolder(name) .. name .. ".lua")
 end
 
 
@@ -46,18 +46,18 @@ function exists(name)
 end
 
 function new(name, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)
-	name = tostring(name);
+	name = tostring(name)
 	if not loadedclasses[name] then
 		if not exists(name) then
-			error("Class " .. name .. " not found");
+			error("Class " .. name .. " not found")
 		end
 		local class = {}
 		class.__index = class
 		initClass(class)
-		openClass(name);
+		openClass(name)
 		destroyClass()
 		function class:getClass()
-			return name;
+			return name
 		end
 
 		loadedclasses[name] = function(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)

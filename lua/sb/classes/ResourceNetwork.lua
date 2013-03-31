@@ -28,7 +28,7 @@ require("sbnet")
 local net = sbnet
 -- Class Specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 
 local funcRef = {
@@ -66,23 +66,23 @@ end
 
 -- Are we already using this network (prevent loops when looking up)
 function C:isBusy()
-	return self.busy;
+	return self.busy
 end
 
 
 function C:supplyResource(name, amount)
 	local to_much = funcRef.supplyResource(self, name, amount)
 	if to_much > 0 then
-		self.busy = true;
+		self.busy = true
 		for k, v in pairs(self.networks) do
 			if not v:isBusy() then
 				to_much = v:supplyResource(name, to_much)
 			end
 			if to_much == 0 then
-				break;
+				break
 			end
 		end
-		self.busy = false;
+		self.busy = false
 	end
 	return to_much
 end
@@ -90,47 +90,47 @@ end
 function C:consumeResource(name, amount)
 	local to_little = funcRef.consumeResource(self, name, amount)
 	if to_little > 0 then
-		self.busy = true;
+		self.busy = true
 		for k, v in pairs(self.networks) do
 			if not v:isBusy() then
 				to_little = v:consumeResource(name, to_little)
 			end
 			if to_little == 0 then
-				break;
+				break
 			end
 		end
-		self.busy = false;
+		self.busy = false
 	end
 	return to_little
 end
 
 function C:getResourceAmount(name, visited)
 	visited = visited or {}
-	local amount, tmp = funcRef.getResourceAmount(self, name), nil;
-	self.busy = true;
+	local amount, tmp = funcRef.getResourceAmount(self, name), nil
+	self.busy = true
 	for k, v in pairs(self.networks) do
 		if not v:isBusy() and not visited[v:getID()] then
 			tmp, visited = v:getResourceAmount(name, visited)
-			amount = amount + tmp;
-			visited[v:getID()] = v;
+			amount = amount + tmp
+			visited[v:getID()] = v
 		end
 	end
-	self.busy = false;
+	self.busy = false
 	return amount, visited
 end
 
 function C:getMaxResourceAmount(name, visited)
 	visited = visited or {}
-	local amount, tmp = funcRef.getMaxResourceAmount(self, name), nil;
-	self.busy = true;
+	local amount, tmp = funcRef.getMaxResourceAmount(self, name), nil
+	self.busy = true
 	for k, v in pairs(self.networks) do
 		if not v:isBusy() and not visited[v:getID()] then
 			tmp, visited = v:getMaxResourceAmount(name, visited)
-			amount = amount + tmp;
-			visited[v:getID()] = v;
+			amount = amount + tmp
+			visited[v:getID()] = v
 		end
 	end
-	self.busy = false;
+	self.busy = false
 	return amount, visited
 end
 
@@ -149,7 +149,7 @@ function C:link(container, dont_link)
 		self.containersmodified = CurTime()
 	end
 	if not dont_link then
-		container:link(self, true);
+		container:link(self, true)
 	end
 	self.modified = CurTime()
 end
@@ -167,7 +167,7 @@ function C:unlink(container, dont_unlink)
 	else
 		if not self:canLink(container, true) then return end
 		if not dont_unlink then
-			container:unlink(self, true);
+			container:unlink(self, true)
 		end
 		if container:isA("ResourceNetwork") then
 			if not self.networks[container:getID()] then return end
@@ -235,7 +235,7 @@ function C:_sendContent(modified)
 	else
 		net.writeBool(false)
 	end
-	funcRef.sendContent(self, modified);
+	funcRef.sendContent(self, modified)
 end
 
 --- Sync function to receive data from the server to this client

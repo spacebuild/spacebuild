@@ -21,5 +21,5 @@ local table = table
 local debug = debug
 local unpack = unpack
 
-local sb = sb;
+local sb = sb
 

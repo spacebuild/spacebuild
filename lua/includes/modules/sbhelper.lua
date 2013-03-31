@@ -15,27 +15,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local tostring = tostring;
-local file = file;
-require("Json");
+local tostring = tostring
+local file = file
+require("Json")
 local Json = Json
 
 module("sbhelper")
 
 local base_folder = "configs/"
 local empty_config = {}
-local temp;
-local extension = ".txt";
+local temp
+local extension = ".txt"
 
 function loadConfig(filename, basefolder)
 	basefolder = basefolder or base_folder
 	basefolder = tostring(basefolder)
-	filename = tostring(filename);
+	filename = tostring(filename)
 	filename = basefolder .. filename .. extension
 	if file.Exists(filename, "DATA") then
-		temp = file.Read(filename);
+		temp = file.Read(filename)
 		if temp then
-			return Json.Decode(temp);
+			return Json.Decode(temp)
 		end
 	end
 	return empty_config
@@ -44,9 +44,9 @@ end
 function saveConfig(filename, data, basefolder)
 	basefolder = basefolder or base_folder
 	basefolder = tostring(basefolder)
-	filename = tostring(filename);
+	filename = tostring(filename)
 	filename = basefolder .. filename .. extension
-	temp = Json.Encode(data);
+	temp = Json.Encode(data)
 	file.Write(filename, temp)
 end
 

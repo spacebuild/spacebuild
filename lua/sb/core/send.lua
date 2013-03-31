@@ -39,18 +39,18 @@ AddCSLuaFile("sb/core/spacebuild.lua")
 AddCSLuaFile("sb/core/util.lua")
 
 --Send classes
-AddCSLuaFile("sb/classes/Resource.lua");
-AddCSLuaFile("sb/classes/ResourceContainer.lua");
-AddCSLuaFile("sb/classes/ResourceEntity.lua");
-AddCSLuaFile("sb/classes/ResourceInfo.lua");
-AddCSLuaFile("sb/classes/ResourceNetwork.lua");
-AddCSLuaFile("sb/classes/PlayerSuit.lua");
-AddCSLuaFile("sb/classes/BaseEnvironment.lua");
-AddCSLuaFile("sb/classes/SunEnvironment.lua");
-AddCSLuaFile("sb/classes/LegacyBloomInfo.lua");
-AddCSLuaFile("sb/classes/LegacyColorInfo.lua");
-AddCSLuaFile("sb/classes/LegacyPlanet.lua");
-AddCSLuaFile("sb/classes/SpaceEnvironment.lua");
+AddCSLuaFile("sb/classes/Resource.lua")
+AddCSLuaFile("sb/classes/ResourceContainer.lua")
+AddCSLuaFile("sb/classes/ResourceEntity.lua")
+AddCSLuaFile("sb/classes/ResourceInfo.lua")
+AddCSLuaFile("sb/classes/ResourceNetwork.lua")
+AddCSLuaFile("sb/classes/PlayerSuit.lua")
+AddCSLuaFile("sb/classes/BaseEnvironment.lua")
+AddCSLuaFile("sb/classes/SunEnvironment.lua")
+AddCSLuaFile("sb/classes/LegacyBloomInfo.lua")
+AddCSLuaFile("sb/classes/LegacyColorInfo.lua")
+AddCSLuaFile("sb/classes/LegacyPlanet.lua")
+AddCSLuaFile("sb/classes/SpaceEnvironment.lua")
 
 
 

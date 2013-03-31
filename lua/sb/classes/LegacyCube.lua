@@ -25,7 +25,7 @@ include("sb/classes/LegacyPlanet.lua")
 
 -- Class Specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 
 -- Function Refs
 local funcRef = {

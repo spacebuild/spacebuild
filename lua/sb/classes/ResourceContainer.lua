@@ -16,9 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
 -- Lua specific
-local type = type;
-local tostring = tostring;
-local pairs = pairs;
+local type = type
+local tostring = tostring
+local pairs = pairs
 local table = table
 
 -- Gmod Specific
@@ -28,7 +28,7 @@ local net = sbnet
 
 -- Class specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 require("class")
 local class = class
 local core = sb.core
@@ -41,14 +41,14 @@ function C:isA(className)
 end
 
 function C:init(syncid)
-	self.syncid = syncid;
+	self.syncid = syncid
 	self.resources = {}
 	self.delta = 0
 	self.modified = CurTime()
 end
 
 function C:getID()
-	return self.syncid;
+	return self.syncid
 end
 
 function C:addResources(resources)
@@ -66,9 +66,9 @@ function C:addResource(name, maxAmount, amount)
 	name = tostring(name)
 	if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
 	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
-	local res = self.resources[name];
+	local res = self.resources[name]
 	if not res then
-		res = class.new("Resource", name, maxAmount, amount);
+		res = class.new("Resource", name, maxAmount, amount)
 		self.resources[name] = res
 	else
 		res:setMaxAmount(res:getMaxAmount() + maxAmount)
@@ -87,7 +87,7 @@ function C:removeResource(name, maxAmount, amount)
 	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
 	if not self:containsResource(name) then error("ResourceContainer:removeResource couldn't find the resource") end
 
-	local res = self.resources[name];
+	local res = self.resources[name]
 	res:consume(amount)
 	res:setMaxAmount(res:getMaxAmount() - maxAmount)
 
@@ -149,7 +149,7 @@ function C:canLink(container)
 end
 
 function C:getEntity()
-	return self.syncid and Entity(self.syncid);
+	return self.syncid and Entity(self.syncid)
 end
 
 --- Sync function to send data to the client from the server
@@ -190,14 +190,14 @@ function C:receive()
 		id = net.readTiny()
 		name = sb.getResourceInfoFromID(id):getName()
 		if not self.resources[name] then
-			self.resources[name] = class.new("Resource", name);
+			self.resources[name] = class.new("Resource", name)
 		end
 		self.resources[name]:receive()
 	end
 end
 
 function C:getModified()
-	return self.modified;
+	return self.modified
 end
 
 -- Start Save/Load functions

@@ -22,7 +22,7 @@ local net = sbnet
 
 -- Class Specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 local const = sb.core.const
 
@@ -252,7 +252,7 @@ function C:processEnvironment()
 			end
 		end
 		if sb.onSBMap() and env then
-			env_temperature = env:getTemperature(self.ply);
+			env_temperature = env:getTemperature(self.ply)
 			req_energy = sb.core.util.calculateEnergyRequired(env_temperature) - const.BASE_ENERGY_USE
 			req_coolant = sb.core.util.calculateCoolantRequired(env_temperature) - const.BASE_COOLANT_USE
 			if req_energy > 0 then

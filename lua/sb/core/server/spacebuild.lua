@@ -58,7 +58,7 @@ local function NoClipCheck(ply)
 end
 
 local function sbThink()
-	time = CurTime();
+	time = CurTime()
 	for _, ply in pairs(player.GetAll()) do
 		-- RD
 		if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
@@ -248,7 +248,7 @@ end
 
 local function Register_Environments_Data()
 	MsgN("Registering environment info")
-	local entities;
+	local entities
 	local data
 	local values
 	for k, _ in pairs(environment_classes) do

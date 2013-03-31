@@ -159,7 +159,7 @@ if CLIENT then
 
 				-- connected networks
 				drawText("Connected to ", 5, 20)
-				local str = "";
+				local str = ""
 				for k, v in pairs(self.rdobject:getConnectedNetworks()) do
 					str = str .. tostring(k) .. " "
 				end

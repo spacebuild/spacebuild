@@ -81,10 +81,10 @@ function TOOL:AddRDEntities(entTables, type)
 		--Let's get the highest number:
 		print(v) -- 1,2,3)
 		if (k > highest) then
-			highest = k;
+			highest = k
 		end
 	end
-	highest = highest + 1;
+	highest = highest + 1
 	for k, v in pairs(entTables) do
 		generators[type][highest] = {
 			Name = v.Name,
@@ -161,7 +161,7 @@ function TOOL:LeftClick(trace)
 
 	if (tonumber(freeze) == 1) then
 		MsgN("Freezing")
-		phys:EnableMotion(false);
+		phys:EnableMotion(false)
 	end
 
 	undo.Create("Undo Generators")
@@ -180,7 +180,7 @@ function TOOL:RightClick(trace)
 	--[[
 if (  not trace.Entity:IsValid() or trace.Entity:IsPlayer() ) then return false end
 
-RunConsoleCommand( "sb4_ls_spawner_model", trace.Entity:GetModel());
+RunConsoleCommand( "sb4_ls_spawner_model", trace.Entity:GetModel())
 ]] --
 
 	local ent = trace.Entity
@@ -209,7 +209,7 @@ function TOOL.BuildCPanel(panel)
 
 
 	--Add the categories
-	local counter = 1;
+	local counter = 1
 	local categories = {}
 
 	--Create CheckBoxes for Welding, Freezing
@@ -305,7 +305,7 @@ function TOOL.BuildCPanel(panel)
 				--icon:SetIconSize( width )
 				grid:AddItem(icon)
 			end
-			counter = counter + 1;
+			counter = counter + 1
 		else
 			categories[counter] = vgui.Create("DCollapsibleCategory", panel)
 			categories[counter]:Dock(TOP)
@@ -342,7 +342,7 @@ function TOOL.BuildCPanel(panel)
 				--icon:SetIconSize( width )
 				grid:AddItem(icon)
 			end
-			counter = counter + 1;
+			counter = counter + 1
 		end
 	end
 

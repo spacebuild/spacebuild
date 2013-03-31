@@ -34,5 +34,5 @@ end
 hook.Add("OnEntityCreated", "SB_OnEntitySpawn", OnEntitySpawn)
 
 function u.getSpawnedEntities()
-	return spawned_entities;
+	return spawned_entities
 end

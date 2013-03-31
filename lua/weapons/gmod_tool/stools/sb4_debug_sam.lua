@@ -31,8 +31,8 @@ TOOL.Tab = "Spacebuild"
 TOOL.ClientConVar["ent"] = "models/SmallBridge/Hulls_SW/sbhulle1.mdl"
 TOOL.ClientConVar[""] = ""
 
-local pos;
-local ent;
+local pos
+local ent
 
 
 function TOOL:LeftClick(trace)

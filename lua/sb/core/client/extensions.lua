@@ -28,12 +28,12 @@ local Color = Color
 
 
 local function DrawExtensionsMenuOption(panel)
-	local exts = 1;
+	local exts = 1
 	for k, v in pairs(sb.core.extensions) do
 		if (type(v) == "table") then
 
 			local extmenu = {}
-			ExtsPnls[v:getSyncKey()] = extmenu;
+			ExtsPnls[v:getSyncKey()] = extmenu
 
 			print((exts * 100) + (10 * (exts - 1)))
 			--Create the base panel

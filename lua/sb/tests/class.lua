@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 AddCSLuaFile()
 
 
-local print = print;
+local print = print
 require("class")
 local class = class
 
@@ -36,7 +36,7 @@ end
 
 function TestClasses:testClasses()
 	local obj = class.new("Resource", "resource_name")
-	assert(obj);
+	assert(obj)
 	assertEquals(obj:getName(), "resource_name")
 
 	local network1 = class.new("ResourceNetwork", 1)

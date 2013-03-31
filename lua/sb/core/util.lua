@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 local sb = sb
 local const = sb.core.const
-local util = sb.core.util;
+local util = sb.core.util
 local math = math
 local print = print
 local tostring = tostring

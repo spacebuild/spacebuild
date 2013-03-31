@@ -19,7 +19,7 @@ local net = sbnet
 
 -- Class Specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 local util = core.util
 

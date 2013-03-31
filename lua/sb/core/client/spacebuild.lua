@@ -22,8 +22,8 @@ require("log")
 local log = log
 
 local sb = sb
-local core = sb.core;
-local to_sync;
+local core = sb.core
+local to_sync
 
 require("class")
 local class = class
@@ -56,7 +56,7 @@ end)
 net.Receive("SBEU", function(bitsreceived)
 	local class_name = net.ReadString()
 	local id = net.readShort()
-	local environment_object = sb.getEnvironment(id);
+	local environment_object = sb.getEnvironment(id)
 	if not environment_object then
 		environment_object = class.new(class_name)
 		environment_object:setID(id)

@@ -46,17 +46,17 @@ sb.core.extensions = {}
 sb.core.convars = {}
 
 function sb.getVersion()
-	return VERSION;
+	return VERSION
 end
 
 function sb.getVersionAsString()
-	return VERSION_AS_STRING;
+	return VERSION_AS_STRING
 end
 
-include("sb/core/wrappers.lua");
-include("sb/core/const.lua");
-include("sb/core/config.lua");
-include("sb/core/debug.lua");
+include("sb/core/wrappers.lua")
+include("sb/core/const.lua")
+include("sb/core/config.lua")
+include("sb/core/debug.lua")
 include("sb/core/util.lua")
 include("sb/core/spacebuild.lua")
 

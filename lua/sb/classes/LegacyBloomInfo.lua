@@ -17,7 +17,7 @@ require("sbnet")
 local net = sbnet
 -- Class specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 
 --- General class function to check is this class is of a certain type
@@ -59,8 +59,8 @@ function C:setID(id)
 end
 
 function C:render()
-	if (not render.SupportsPixelShaders_2_0()) then return; end -- Don't try if bloom is not supported
-	DrawBloom(self.darken, self.multiply, self.SizeX, self.SizeY, self.passes, self.color, self.Col_r, self.Col_g, self.Col_b);
+	if (not render.SupportsPixelShaders_2_0()) then return end -- Don't try if bloom is not supported
+	DrawBloom(self.darken, self.multiply, self.SizeX, self.SizeY, self.passes, self.color, self.Col_r, self.Col_g, self.Col_b)
 end
 
 --- Sync function to send data to the client from the server

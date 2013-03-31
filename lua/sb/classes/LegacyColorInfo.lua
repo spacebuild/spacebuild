@@ -17,7 +17,7 @@ require("sbnet")
 local net = sbnet
 -- Class specific
 local C = CLASS
-local sb = sb;
+local sb = sb
 local core = sb.core
 
 --- General class function to check is this class is of a certain type
@@ -62,7 +62,7 @@ end
 
 local cmod = {}
 function C:render()
-	if (not render.SupportsPixelShaders_2_0()) then return; end -- Don't try if not supported
+	if (not render.SupportsPixelShaders_2_0()) then return end -- Don't try if not supported
 	cmod["$pp_colour_addr"] = self.addColor.r
 	cmod["$pp_colour_addg"] = self.addColor.g
 	cmod["$pp_colour_addb"] = self.addColor.b

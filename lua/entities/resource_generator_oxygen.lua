@@ -42,7 +42,7 @@ end
 if SERVER then
 
 	function ENT:Think()
-		self.rdobject:supplyResource("oxygen", 10);
+		self.rdobject:supplyResource("oxygen", 10)
 		self:NextThink(CurTime() + 1)
 		return true
 	end

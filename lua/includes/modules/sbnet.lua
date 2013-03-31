@@ -95,19 +95,19 @@ function writeBool(bool)
 end
 
 function writeShort(short)
-	net.WriteInt(short, TYPES_INT.SHORT.length);
+	net.WriteInt(short, TYPES_INT.SHORT.length)
 end
 
 function writeLong(long)
-	net.WriteInt(long, TYPES_INT.INT.length);
+	net.WriteInt(long, TYPES_INT.INT.length)
 end
 
 function writeTiny(tiny)
-	net.WriteInt(tiny, TYPES_INT.TINY.length);
+	net.WriteInt(tiny, TYPES_INT.TINY.length)
 end
 
 function writeAmount(amount)
-	local mul = 0;
+	local mul = 0
 	if amount > TYPES_INT.INT.max then
 		writeBool(true)
 		mul = math.floor(amount / TYPES_INT.INT.max)
@@ -116,7 +116,7 @@ function writeAmount(amount)
 	else
 		writeBool(false)
 	end
-	net.WriteUInt(amount, TYPES_INT.INT.length);
+	net.WriteUInt(amount, TYPES_INT.INT.length)
 end
 
 -- Read
@@ -125,11 +125,11 @@ function readBool()
 end
 
 function readShort()
-	return net.ReadInt(TYPES_INT.SHORT.length);
+	return net.ReadInt(TYPES_INT.SHORT.length)
 end
 
 function readLong()
-	return net.ReadInt(TYPES_INT.INT.length);
+	return net.ReadInt(TYPES_INT.INT.length)
 end
 
 function readTiny()
@@ -137,7 +137,7 @@ function readTiny()
 end
 
 function readAmount()
-	local base = 0;
+	local base = 0
 	if readBool() then
 		base = readTiny() * TYPES_INT.INT.max
 	end

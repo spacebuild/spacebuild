@@ -43,7 +43,7 @@ function EXT.wrappers:Find(typeof, ...)
 	local arg = { ... }
 
 	local typeof = typeof
-	local files, dirs;
+	local files, dirs
 
 	files, dirs = file.Find(...)
 
@@ -126,7 +126,7 @@ if CLIENT then
 	EXT.MaxFPS, EXT.SmoothFPS = 0, 0
 	EXT.PingS, EXT.PacketsS = 0, 0
 	EXT.EntityCount, EXT.Stability = 0, 0
-	EXT.HUDToggle = true;
+	EXT.HUDToggle = true
 
 	if not ConVarExists("fluix_toggle") then
 		CreateConVar("fluix_toggle", 0)
@@ -179,7 +179,7 @@ if CLIENT then
 
 	local function hidehud(name)
 		for k, v in pairs{ "CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo" } do
-			if name == v then return GetConVarNumber("fluix_toggle") ~= 0 end;
+			if name == v then return GetConVarNumber("fluix_toggle") ~= 0 end
 		end
 	end
 	hook.Add("HUDShouldDraw", "FluixDisableDefault", hidehud)

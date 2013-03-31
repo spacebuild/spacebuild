@@ -125,7 +125,7 @@ if SERVER then
 
 	function ENT:Think()
 		if self.active and self.thinkcount >= 10 then
-			self.rdobject:supplyResource("water", math.Round(self:getRate()));
+			self.rdobject:supplyResource("water", math.Round(self:getRate()))
 			self.thinkcount = 0
 		end
 
