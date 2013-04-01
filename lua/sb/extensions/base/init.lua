@@ -14,10 +14,19 @@ function EXT:init(config)
 	self.config = config or {}
 	self.options = {}
 	self.description = "The Default Description for a Base Extension. I am making this longer to check if it will wrap around the panel if not i will have to implement something hacky probably to stop it."
+	self.clientside = false
+end
+
+function EXT:isClientSide()
+	return self.clientside
 end
 
 function EXT:isHidden()
 	return self.hidden
+end
+
+function EXT:setActive(active)
+	self.active = active
 end
 
 function EXT:isActive()
@@ -46,14 +55,14 @@ end
 
 function EXT:getSyncKey()
 --Since the name shouldn't change we are only going to generate it once!!
-	if not self.generated_key then
+	if self.generated_key == nil then
 		local generated_key = 23
 		self:getName():gsub(".", function(c)
 			generated_key =  generated_key * (string.byte(c) - 64) -- A = 65, a = 97
 		end)
 		generated_key = generated_key + string.len(self:getName())
 		generated_key = generated_key % 32767 --We don't want more then a SHORT INTEGER
-		print("Generated key for extension: "..tostring(generated_key))
+		print("Generated key for extension "..tostring(self:getName())..": "..tostring(generated_key))
 		self.generated_key = generated_key
 	end
 	return self.generated_key

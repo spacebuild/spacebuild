@@ -283,3 +283,15 @@ end
 function sb.registerIgnoredEntityClass(class)
 	ignoredClasses[class] = true
 end
+
+local function entityRemoved(ent)
+	if ent.rdobject then
+		ent.rdobject:unlink()
+		MsgN("Removing RD object pre-hook")
+	end
+	if ent.envobject then
+		MsgN("Removing SB Environment object pre-hook")
+	end
+end
+
+hook.Add("EntityRemoved", "RDSBEntRemoved", entityRemoved)

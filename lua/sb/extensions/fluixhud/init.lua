@@ -29,6 +29,7 @@ function EXT:init(config)
 	self.version = 1
 	self.name = "Fluix HUD"
 	self.description = "The default SB4 hud"
+	self.clientside = true
 end
 EXT.wrappers = {}
 EXT.modules = {}
@@ -136,50 +137,52 @@ if CLIENT then
 
 	--===========================================Run the functions=========================================================
 	function EXT.RenderLoop()
-
 		EXT.FrameDelay = math.Clamp(FrameTime(), 0.0001, 10)
+		if EXT:isActive() then
 
 
 
-		if LocalPlayer():Alive() == false or not EXT.HUDToggle then
-			if EXT.Smooth2 >= 0 then
-				EXT.Smooth2 = math.Clamp(EXT.Smooth2 - EXT.FrameDelay, -0.001, 1)
-			elseif EXT.Smooth > 0.0001 then
-				EXT.Smooth = EXT.Smoother(-0.002, EXT.Smooth, 0.25)
-				EXT.Smooth2 = 0
-			elseif EXT.Smooth < -0.001 then
-				EXT.Smooth = -0.001
-			end
 
-		else
-			if EXT.Smooth < 0.9999 then
-				--fluix.Smooth = fluix.Smooth + 0.02
-				EXT.Smooth = EXT.Smoother(1, EXT.Smooth, 0.25)
-			elseif EXT.Smooth2 < 1 then
-				EXT.Smooth2 = EXT.Smooth2 + EXT.FrameDelay
-				EXT.Smooth = 1
-			elseif EXT.Smooth2 > 1 then
-				EXT.Smooth2 = 1
-			end
-		end
+			if LocalPlayer():Alive() == false or not EXT.HUDToggle then
+				if EXT.Smooth2 >= 0 then
+					EXT.Smooth2 = math.Clamp(EXT.Smooth2 - EXT.FrameDelay, -0.001, 1)
+				elseif EXT.Smooth > 0.0001 then
+					EXT.Smooth = EXT.Smoother(-0.002, EXT.Smooth, 0.25)
+					EXT.Smooth2 = 0
+				elseif EXT.Smooth < -0.001 then
+					EXT.Smooth = -0.001
+				end
 
-
-		if EXT.Smooth > 0 then
-			--[[============================================Load Modules=========================================================]] --
-
-			for k, v in pairs(EXT.modules) do
-				if v.Enabled and v.Enabled == true then
-					v:Run()
+			else
+				if EXT.Smooth < 0.9999 then
+					--fluix.Smooth = fluix.Smooth + 0.02
+					EXT.Smooth = EXT.Smoother(1, EXT.Smooth, 0.25)
+				elseif EXT.Smooth2 < 1 then
+					EXT.Smooth2 = EXT.Smooth2 + EXT.FrameDelay
+					EXT.Smooth = 1
+				elseif EXT.Smooth2 > 1 then
+					EXT.Smooth2 = 1
 				end
 			end
+
+
+			if EXT.Smooth > 0 then
+				--[[============================================Load Modules=========================================================]] --
+
+				for k, v in pairs(EXT.modules) do
+					if v.Enabled and v.Enabled == true then
+						v:Run()
+					end
+				end
+			end
+			--=============================================
 		end
-		--=============================================
 	end
 	hook.Add("HUDPaint", "fluix_hud", EXT.RenderLoop) -- doesn't work?
 
 	local function hidehud(name)
 		for k, v in pairs{ "CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo" } do
-			if name == v then return GetConVarNumber("fluix_toggle") ~= 0 end
+			if name == v then return GetConVarNumber("fluix_toggle") ~= 0 or not EXT:isActive() end
 		end
 	end
 	hook.Add("HUDShouldDraw", "FluixDisableDefault", hidehud)

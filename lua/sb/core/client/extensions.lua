@@ -26,95 +26,131 @@ local surface = surface
 local spawnmenu = spawnmenu
 local Color = Color
 
+require("sbnet")
+local net = sbnet
+
+local function changeExtensionStatus(ext, status)
+	if status ~= ext:isActive() then
+	    if ext:isClientSide() then
+			ext:setActive(status)
+			return true
+		elseif LocalPlayer():IsAdmin() then
+			net.Start( "EXTSTATUS" )
+				net.writeShort( ext:getSyncKey() )
+				net.writeBool( status )
+			net.SendToServer()
+			return true
+		end
+	end
+	return false
+end
+
+local function netChangeExtensionStatus(len)
+	local synckey = net.readShort()
+	local status = net.readBool()
+	for k, v in pairs(sb.core.extensions) do
+		if (type(v) == "table") then
+			if v:getSyncKey() == synckey then
+				if status ~= v:isActive() then
+					v:setActive(status)
+					chat.AddText(Color(255, 255, 255), "Changing status of extension ", Color(100, 255, 100), v:getName())
+				end
+				break
+			end
+		end
+	end
+end
+net.Receive("EXTSTATUS", netChangeExtensionStatus)
+
+
 
 local function DrawExtensionsMenuOption(panel)
 	local exts = 1
 	for k, v in pairs(sb.core.extensions) do
 		if (type(v) == "table") then
+			if not v:isHidden() then
+				local extmenu = {}
+				ExtsPnls[v:getSyncKey()] = extmenu
 
-			local extmenu = {}
-			ExtsPnls[v:getSyncKey()] = extmenu
+				print((exts * 100) + (10 * (exts - 1)))
+				--Create the base panel
+				extmenu[1] = vgui.Create("DPanel", panel)
+				extmenu[1]:SetPos(10, (exts * 100) + (10 * (exts - 1))) --TODO: Play around with the spacing (<10 perhaps)
+				extmenu[1]:SetSize(300, 100) --TODO: Play around with value 100
+				--Increments the amount of Extensions so we know where to place the next Panel
+				exts = exts + 1
 
-			print((exts * 100) + (10 * (exts - 1)))
-			--Create the base panel
-			extmenu[1] = vgui.Create("DPanel", panel)
-			extmenu[1]:SetPos(10, (exts * 100) + (10 * (exts - 1))) --TODO: Play around with the spacing (<10 perhaps)
-			extmenu[1]:SetSize(300, 100) --TODO: Play around with value 100
-			--Increments the amount of Extensions so we know where to place the next Panel
-			exts = exts + 1
-
-			--Create the Title Text in the panel
-			extmenu[2] = vgui.Create("DLabel", extmenu[1])
-			extmenu[2]:SetPos(5, 5)
-			extmenu[2]:SetFont("ExtensionTitle")
-			if v:isActive() then
-				extmenu[2]:SetText(v:getName() .. " (Enabled)")
-			else
-				extmenu[2]:SetText(v:getName() .. " (Disabled)")
-			end
-			extmenu[2]:SetTextColor(Color(0, 0, 253))
-			extmenu[2]:SizeToContents()
-
-
-			--Create the description Text in the panel
-			extmenu[3] = vgui.Create("DLabel", extmenu[1])
-			extmenu[3]:SetPos(5, 10)
-			extmenu[3]:SetText(v:getDescription())
-			extmenu[3]:SetTextColor(Color(255, 0, 0))
-			extmenu[3]:SetSize(300, 70)
-			extmenu[3]:SetWrap(true)
-
-			--Create the options button
-			extmenu[4] = vgui.Create("DButton", extmenu[1])
-			extmenu[4]:SetPos(65, 70)
-			extmenu[4]:SetSize(50, 25)
-			extmenu[4]:SetText("Options")
-			extmenu[4].DoClick = function()
-				v:MakeMenu()
-			end
-			if not v:hasOptions() then
-				extmenu[4]:SetDisabled(true)
-			end
-
-			--Create the disable button
-			extmenu[5] = vgui.Create("DButton", extmenu[1])
-			extmenu[5]:SetPos(185, 70)
-			extmenu[5]:SetSize(50, 25)
-			extmenu[5]:SetText("Disable")
-
-			if (not v:isActive()) then
-				extmenu[5]:SetText("Enable")
-			else
-				extmenu[5]:SetText("Disable")
-			end
-
-			extmenu[5].DoClick = function()
-			--If the extension is already disabled.
-				if (not v:isActive()) then
-					--The button should enable the addon and change the color to red and say Disable addon and change the title
-
-					--TODO: Ashley ENABLING code goes here.
-
-					--Set the color to green because the extension is Enabled
-					extmenu[5]:ColorTo(Color(0, 100, 0, 255), 1, 0)
-					-- Set the button to disable the extenison
-					extmenu[5]:SetText("Disable")
+				--Create the Title Text in the panel
+				extmenu[2] = vgui.Create("DLabel", extmenu[1])
+				extmenu[2]:SetPos(5, 5)
+				extmenu[2]:SetFont("ExtensionTitle")
+				if v:isActive() then
 					extmenu[2]:SetText(v:getName() .. " (Enabled)")
-					extmenu[2]:SizeToContents()
 				else
+					extmenu[2]:SetText(v:getName() .. " (Disabled)")
+				end
+				extmenu[2]:SetTextColor(Color(0, 0, 253))
+				extmenu[2]:SizeToContents()
 
-					--TODO: Ashley DISABLING code for extension "v" goes here.
 
-					--Set the color to red because the extension is disabled
-					extmenu[5]:ColorTo(Color(255, 0, 0, 255), 1, 0)
-					-- Set the button to enable the extenison
-					extmenu[5]:SetText("Enable")
-					extmenu[5]:SetText(v:getName() .. " (Disabled)")
-					extmenu[2]:SizeToContents()
+				--Create the description Text in the panel
+				extmenu[3] = vgui.Create("DLabel", extmenu[1])
+				extmenu[3]:SetPos(5, 10)
+				extmenu[3]:SetText(v:getDescription())
+				extmenu[3]:SetTextColor(Color(255, 0, 0))
+				extmenu[3]:SetSize(300, 70)
+				extmenu[3]:SetWrap(true)
+
+				if v:hasOptions() then
+					--Create the options button
+					extmenu[4] = vgui.Create("DButton", extmenu[1])
+					extmenu[4]:SetPos(65, 70)
+					extmenu[4]:SetSize(50, 25)
+					extmenu[4]:SetText("Options")
+					extmenu[4].DoClick = function()
+						v:MakeMenu()
+					end
+				end
+
+				if v:isClientSide() or LocalPlayer():IsAdmin() then
+					--Create the disable button
+					extmenu[5] = vgui.Create("DButton", extmenu[1])
+					extmenu[5]:SetPos(185, 70)
+					extmenu[5]:SetSize(50, 25)
+
+					if (not v:isActive()) then
+						extmenu[5]:SetText("Enable")
+					else
+						extmenu[5]:SetText("Disable")
+					end
+
+					extmenu[5].DoClick = function()
+						--If the extension is already disabled.
+						if (not v:isActive()) then
+							--The button should enable the addon and change the color to red and say Disable addon and change the title
+							if changeExtensionStatus(v, true) then
+								--Set the color to green because the extension is Enabled
+								extmenu[5]:ColorTo(Color(0, 100, 0, 255), 1, 0)
+								-- Set the button to disable the extenison
+								extmenu[5]:SetText("Disable")
+								extmenu[2]:SetText(v:getName() .. " (Enabled)")
+								extmenu[2]:SizeToContents()
+							end
+						else
+							if changeExtensionStatus(v, false) then
+								--Set the color to red because the extension is disabled
+								extmenu[5]:ColorTo(Color(255, 0, 0, 255), 1, 0)
+								-- Set the button to enable the extenison
+								extmenu[5]:SetText("Enable")
+								extmenu[2]:SetText(v:getName() .. " (Disabled)")
+								extmenu[2]:SizeToContents()
+							end
+						end
+					end
+
+					--End of Disable Button
 				end
 			end
-
-			--End of Disable Button
 		end
 	end
 end
