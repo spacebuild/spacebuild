@@ -61,6 +61,8 @@ if SERVER then
 
 	function ENT:Think()
 		self.envobject:updateEntities()
+		self:NextThink(CurTime() + 0.2)
+		return true
 	end
 end
 

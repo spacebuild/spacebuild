@@ -38,8 +38,8 @@ function C:init(data)
 		end
 		if string.len(data[3]) > 0 then
 			local case3 = string.Explode(" ", data[3])
-			self.SizeX = case3[1]
-			self.SizeY = case3[2]
+			self.SizeX = tonumber(case3[1])
+			self.SizeY = tonumber(case3[2])
 		end
 		self.passes = tonumber(data[4])
 		self.darken = tonumber(data[5])
