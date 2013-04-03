@@ -170,57 +170,6 @@ function CAF2.endStart(len, client)
 end
 net.Receive("CAF_Start_false", CAF2.endStart)
 
-
---Menu's
-CAF2.HTTP = {
-	BUGS = "http://www.snakesvx.net",
-	INTERNET = "http://www.snakesvx.net",
-	VERSION = "http://www.snakesvx.net/versions/caf.txt"
-};
-
-CAF2.LATEST_VERSION = version;
-if(not CAF2.HasInternet and CAF2.InternetEnabled) then
-	http.Fetch(CAF2.HTTP.INTERNET,
-		function(html,size)
-			if(html) then
-				MsgN(CAF.GetLangVar("CAF: Client has Internet. Enabled Online-Help"));
-				CAF2.HasInternet = true;
-			end
-		end,
-		function()
-			CAF2.HasInternet = false;
-		end
-	);
-end
-
-local isuptodatecheck;
---Performs the CAF update check
-local function IsUpToDate(callBackfn)
-	if not CAF2.HasInternet then
-		return
-	end
-	if isuptodatecheck ~= nil then
-		callBackfn(isuptodatecheck);
-		return
-	end
-	-- Do we have the latest version of CAF installed?
-	http.Get(CAF2.HTTP.VERSION,"",
-		function(html,size)
-			local version = tonumber(html);
-			if(version) then
-				CAF2.LATEST_VERSION = version;
-				if(CAF2.LATEST_VERSION > CAF2.version) then
-					isuptodatecheck = false;
-					callBackfn(false)
-				else
-					isuptodatecheck = true;
-					callBackfn(true)
-				end
-			end
-		end
-	);
-end
-
 local displaypopups = {}
 local popups = {}
 
@@ -531,17 +480,6 @@ local function AddCAFInfoToStatus(List)
 	versionupdatetext:SetPos(x + 10, y)
 	versionupdatetext:SetText(CAF.GetLangVar("No Update Information Available"))
 	versionupdatetext:SetTextColor( Color(200,200,0,200) )
-	IsUpToDate(function(uptodate)
-		if uptodate then
-			versionupdatetext:SetText(CAF.GetLangVar("This Addon is up to date"))
-			versionupdatetext:SetTextColor( Color(0,230,0,200) )
-			
-		else
-			versionupdatetext:SetText(CAF.GetLangVar("This Addon is out of date"))
-			versionupdatetext:SetTextColor( Color(230,0,0,200) )
-		end
-		versionupdatetext:SizeToContents()
-	end);
 	versionupdatetext:SizeToContents()
 	
 	y = y + 30;
@@ -642,18 +580,6 @@ local function GetStatusPanel(frame)
 				versionupdatetext:SetPos(x + 10, y)
 				versionupdatetext:SetText(CAF.GetLangVar("No Update Information Available"))
 				versionupdatetext:SetTextColor( Color(200,200,0,200) )
-				if v.IsUpToDate and CAF2.HasInternet then
-					v.IsUpToDate(function(uptodate)
-						if uptodate then
-							versionupdatetext:SetText(CAF.GetLangVar("This Addon is up to date"))
-							versionupdatetext:SetTextColor( Color(0,230,0,200) )
-						else
-							versionupdatetext:SetText(CAF.GetLangVar("This Addon is out of date"))
-							versionupdatetext:SetTextColor( Color(230,0,0,200) )
-						end
-						versionupdatetext:SizeToContents()
-					end);
-				end
 				versionupdatetext:SizeToContents()
 				
 				y = y + 30;
