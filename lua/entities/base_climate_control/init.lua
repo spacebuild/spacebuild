@@ -123,12 +123,12 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    GAMEMODE:RemoveEnvironment(self)
+    CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
     CAF.GetAddon("Life Support").LS_Destruct(self, true)
 end
 
 function ENT:OnRemove()
-    GAMEMODE:RemoveEnvironment(self)
+    CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
     self.BaseClass.OnRemove(self)
     self:StopSound("apc_engine_start")
 end
