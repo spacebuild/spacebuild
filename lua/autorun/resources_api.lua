@@ -5,7 +5,7 @@
 -- Time: 9:03 AM
 -- To change this template use File | Settings | File Templates.
 --
-RS = {}
+RESOURCES = {}
 
 --TODO: Complete Documentation
 --TODO: For Developers: You need to fill this file out with your custom RD replacement/whatever.
@@ -82,7 +82,7 @@ end
 if (SERVER) then
 	
 	
-	function RS:Link(ent,ent1)
+	function RESOURCES:Link(ent,ent1)
 		RD.Link(ent,ent1)
 	end
 	
