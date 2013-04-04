@@ -368,6 +368,6 @@ generators.energy.YourEntityName.EntityDescription = "A test entity that isn't r
 ]] --
 end
 
-sb.callOnToolCreatedHook("sb4_generators", TOOL)
+GAMEMODE:callOnToolCreatedHook("sb4_generators", TOOL)
 
 

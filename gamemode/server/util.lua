@@ -15,22 +15,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
-local u = sb.core.util
+local GM = GM
+local u = GM.util
 local spawned_entities = {}
 
 local function OnEntitySpawn(ent)
 	if not table.HasValue(spawned_entities, ent) then
 		table.insert(spawned_entities, ent)
 		timer.Simple(0.1, function()
-			if sb.onSBMap() and not ent.environment and sb.isValidSBEntity(ent) then
-				ent.environment = sb.getSpace()
-				sb.getSpace():updateEnvironmentOnEntity(ent)
+			if GM:onSBMap() and not ent.environment and GM:isValidSBEntity(ent) then
+				ent.environment = GM:getSpace()
+				GM:getSpace():updateEnvironmentOnEntity(ent)
 			end
 		end)
 	end
 end
-
 hook.Add("OnEntityCreated", "SB_OnEntitySpawn", OnEntitySpawn)
 
 function u.getSpawnedEntities()

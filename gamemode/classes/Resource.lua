@@ -26,8 +26,7 @@ require("sbnet")
 local net = sbnet
 -- Class specific
 local C = CLASS
-local sb = sb
-local core = sb.core
+local GM = GM
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
@@ -44,7 +43,7 @@ function C:init(name, maxAmount, amount)
 	self.name = name
 	self.amount = amount
 	self.maxAmount = maxAmount
-	self.resourceInfo = sb.getResourceInfoFromName(name)
+	self.resourceInfo = GM:getResourceInfoFromName(name)
 	self.modified = CurTime()
 	self.modifiedMaxAmount = CurTime()
 end
@@ -162,7 +161,7 @@ function C:onLoad(data)
 	self.name = data.name
 	self.amount = data.amount
 	self.maxAmount = data.maxAmount
-	self.resourceInfo = sb.getResourceInfoFromName(self.name)
+	self.resourceInfo = GM:getResourceInfoFromName(self.name)
 	self.modified = CurTime()
 	self.modifiedMaxAmount = CurTime()
 end

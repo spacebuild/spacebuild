@@ -17,13 +17,13 @@ require("sbnet")
 local net = sbnet
 local pairs = pairs
 local type = type
-local sb = sb
+local GM = GM
 
 local function netChangeExtensionStatus(len, ply)
 	if ply:IsAdmin() then
 		local synckey = net.readShort()
 		local status = net.readBool()
-		for k, v in pairs(sb.core.extensions) do
+		for k, v in pairs(GM.extensions) do
 			if (type(v) == "table") then
 			    if v:getSyncKey() == synckey then
 					if status ~= v:isActive() then

@@ -14,7 +14,7 @@ ENT.AdminOnly = false
 
 
 function ENT:Initialize()
-	sb.registerDevice(self, sb.RDTYPES.NETWORK)
+	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.NETWORK)
 	if SERVER then
 		self:PhysicsInit(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
@@ -29,7 +29,6 @@ function ENT:Initialize()
 	end
 
 	if CLIENT then
-
 		self.oldResourceValues = {}
 		self.ResourceValues = {}
 		self._synctimestamp2 = CurTime()
@@ -38,7 +37,7 @@ end
 
 function ENT:OnRestore()
 	self.oldrdobject = self.rdobject
-	sb.registerDevice(self, sb.RDTYPES.NETWORK)
+	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.NETWORK)
 	self.rdobject:onRestore(self)
 end
 
@@ -52,7 +51,7 @@ if SERVER then
 		self.constraints = constraint.GetAllConstrainedEntities(self)
 
 		for k, v in pairs(self.constraints or {}) do
-			if v ~= self and sb.isValidRDEntity(v) and v.rdobject:canLink(self.rdobject) and v.rdobject.network ~= self.rdobject then
+			if v ~= self and GAMEMODE:isValidRDEntity(v) and v.rdobject:canLink(self.rdobject) and v.rdobject.network ~= self.rdobject then
 				v.rdobject:link(self.rdobject)
 			end
 		end
@@ -81,7 +80,7 @@ if CLIENT then
 	local surface = surface
 	local cam = cam
 	local Vector = Vector
-	local colors = sb.core.const.colors
+	local colors = GAMEMODE.constants.colors
 	local function drawText(text, x, y, color)
 		if not color then color = colors.white end
 		surface.SetTextPos(x, y) -- As the func name. Set's the pos for all DrawTexts coming up:

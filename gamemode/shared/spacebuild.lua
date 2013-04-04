@@ -15,10 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
-local core = sb.core
-
-local class = core.class
+local GM = GM
+local class = GM.class
+local int = GM.internal
 
 require("sbnet")
 local net = sbnet
@@ -27,27 +26,27 @@ local space
 
 
 local function init()
- space = class.new("SpaceEnvironment")
+	space = class.new("SpaceEnvironment")
 end
 hook.Add("Initialize", "spacebuild_init_shared", init)
 
 -- RD
-core.device_table = {}
-core.resources_names_table = {}
-core.resources_ids_table = {}
-core.missing_devices = {}
+int.device_table = {}
+int.resources_names_table = {}
+int.resources_ids_table = {}
+int.missing_devices = {}
 
 -- SB
-core.environments = {}
-core.mod_tables = {}
-core.mod_tables.color = {}
-core.mod_tables.bloom = {}
-core.sb_hooks = {}
-core.sb_hooks.onEnter = {}
-core.sb_hooks.onLeave = {}
-core.sb_hooks.onToolCreated = {}
+int.environments = {}
+int.mod_tables = {}
+int.mod_tables.color = {}
+int.mod_tables.bloom = {}
+int.sb_hooks = {}
+int.sb_hooks.onEnter = {}
+int.sb_hooks.onLeave = {}
+int.sb_hooks.onToolCreated = {}
 
-sb.RDTYPES = {
+GM.RDTYPES = {
 	STORAGE = 1,
 	GENERATOR = 2,
 	NETWORK = 3
@@ -55,63 +54,64 @@ sb.RDTYPES = {
 
 local obj
 
-function sb.registerDevice(ent, rdtype)
+function GM:registerDevice(ent, rdtype)
 	local entid = ent:EntIndex()
-	if rdtype == sb.RDTYPES.STORAGE or rdtype == sb.RDTYPES.GENERATOR then
+	if rdtype == self.RDTYPES.STORAGE or rdtype == self.RDTYPES.GENERATOR then
 		obj = class.new("ResourceEntity", entid)
-	elseif rdtype == sb.RDTYPES.NETWORK then
+	elseif rdtype == self.RDTYPES.NETWORK then
 		obj = class.new("ResourceNetwork", entid)
 	else
 		error("type is not supported")
 	end
 	ent.rdobject = obj
 	ent._synctimestamp = CurTime() --Time stamp on registration, for use with timers.
-	core.device_table[entid] = obj
+	int.device_table[entid] = obj
 
 	if not ent.rdobject then
 		MsgN("Something went wrong registering the device")
 	end
-	if CLIENT and core.missing_devices[entid] then
-		core.missing_devices[entid] = nil
+	-- TODO move this to client!!
+	if CLIENT and int.missing_devices[entid] then
+		int.missing_devices[entid] = nil
 		net.Start("SBRU")
 		net.writeShort(entid)
 		net.SendToServer()
 	end
 end
 
-function sb.removeDevice(ent)
+function GM:removeDevice(ent)
 	local entid = ent:EntIndex()
-	core.device_table[entid] = nil
+	int.device_table[entid] = nil
 	if ent.rdobject ~= nil then
 		ent.rdobject:unlink()
 	end
 	ent.rdobject = nil
 end
 
-function sb.getDeviceInfo(entid)
-	return core.device_table[entid]
+function GM:getDeviceInfo(entid)
+	return int.device_table[entid]
 end
 
 local resourceinfo
-function sb.registerResourceInfo(id, name, displayName, attributes)
+function GM:registerResourceInfo(id, name, displayName, attributes)
 	resourceinfo = class.new("ResourceInfo", id, name, displayName, attributes)
-	core.resources_names_table[name] = resourceinfo
-	core.resources_ids_table[id] = resourceinfo
+	int.resources_names_table[name] = resourceinfo
+	int.resources_ids_table[id] = resourceinfo
 end
 
-function sb.getResourceInfoFromID(id)
-	return core.resources_ids_table[id]
+function GM:getResourceInfoFromID(id)
+	return int.resources_ids_table[id]
 end
 
-function sb.getResourceInfoFromName(name)
-	return core.resources_names_table[name]
+function GM:getResourceInfoFromName(name)
+	return int.resources_names_table[name]
 end
 
 local coolant_resources
-function sb.getRegisteredCoolants()
+function GM:getRegisteredCoolants()
 	if coolant_resources == nil then
 		coolant_resources = {}
-		for k, v in pairs(core.resources_names_table) do
+		for k, v in pairs(int.resources_names_table) do
 			if v:hasAttribute("COOLANT") then
 				table.insert(coolant_resources, v:getName())
 			end
@@ -120,117 +120,117 @@ function sb.getRegisteredCoolants()
 	return coolant_resources
 end
 
-function sb.addEnvironment(environment)
-	core.environments[environment:getID()] = environment
+function GM:addEnvironment(environment)
+	int.environments[environment:getID()] = environment
 end
 
-function sb.removeEnvironment(environment)
-	core.environments[environment:getID()] = nil
+function GM:removeEnvironment(environment)
+	int.environments[environment:getID()] = nil
 end
 
-function sb.removeEnvironmentFromEntity(ent)
-	core.environments[ent:EntIndex()] = nil
+function GM:removeEnvironmentFromEntity(ent)
+	int.environments[ent:EntIndex()] = nil
 end
 
 
-function sb.getEnvironment(id)
+function GM:getEnvironment(id)
 	if id == -1 then
-		return sb.getSpace()
+		return self:getSpace()
 	end
-	return core.environments[id]
+	return int.environments[id]
 end
 
-function sb.onSBMap()
-	return table.Count(core.environments) > 0
+function GM:onSBMap()
+	return table.Count(int.environments) > 0
 end
 
-function sb.getSpace()
+function GM:getSpace()
 	return space
 end
 
-function sb.addEnvironmentColor(env_color)
-	core.mod_tables.color[env_color:getID()] = env_color
+function GM:addEnvironmentColor(env_color)
+	int.mod_tables.color[env_color:getID()] = env_color
 end
 
-function sb.getEnvironmentColor(id)
-	return core.mod_tables.color[id]
+function GM:getEnvironmentColor(id)
+	return int.mod_tables.color[id]
 end
 
-function sb.addEnvironmentBloom(env_bloom)
-	core.mod_tables.bloom[env_bloom:getID()] = env_bloom
+function GM:addEnvironmentBloom(env_bloom)
+	int.mod_tables.bloom[env_bloom:getID()] = env_bloom
 end
 
-function sb.getEnvironmentBloom(id)
-	return core.mod_tables.bloom[id]
+function GM:getEnvironmentBloom(id)
+	return int.mod_tables.bloom[id]
 end
 
-function sb.isValidRDEntity(ent)
+function GM:isValidRDEntity(ent)
 	return ent.rdobject ~= nil
 end
 
-function sb.canLink(ent1, ent2)
-	return sb.isValidRDEntity(ent1) and sb.isValidRDEntity(ent2) and ent1.rdobject:canLink(ent2.rdobject)
+function GM:canLink(ent1, ent2)
+	return self:isValidRDEntity(ent1) and self:isValidRDEntity(ent2) and ent1.rdobject:canLink(ent2.rdobject)
 end
 
-function sb.addOnEnterEnvironmentHook(name, func)
-	core.sb_hooks.onEnter[name] = func
+function GM:addOnEnterEnvironmentHook(name, func)
+	int.sb_hooks.onEnter[name] = func
 end
 
-function sb.removeOnEnterEnvironmentHook(name)
-	core.sb_hooks.onEnter[name] = nil
+function GM:removeOnEnterEnvironmentHook(name)
+	int.sb_hooks.onEnter[name] = nil
 end
 
-function sb.addOnLeaveEnvironmentHook(name, func)
-	core.sb_hooks.onLeave[name] = func
+function GM:addOnLeaveEnvironmentHook(name, func)
+	int.sb_hooks.onLeave[name] = func
 end
 
-function sb.removeOnLeaveEnvironmentHook(name)
-	core.sb_hooks.onLeave[name] = nil
+function GM:removeOnLeaveEnvironmentHook(name)
+	int.sb_hooks.onLeave[name] = nil
 end
 
-function sb.callOnEnterEnvironmentHook(environment, ent)
+function GM:callOnEnterEnvironmentHook(environment, ent)
 	if environment then
-		for k, v in pairs(core.sb_hooks.onEnter) do
-			v(environment, ply)
+		for k, v in pairs(int.sb_hooks.onEnter) do
+			v(environment, ent)
 		end
 	end
 end
 
-function sb.callOnLeaveEnvironmentHook(environment, ent)
+function GM:callOnLeaveEnvironmentHook(environment, ent)
 	if environment then
-		for k, v in pairs(core.sb_hooks.onLeave) do
-			v(environment, ply)
+		for k, v in pairs(int.sb_hooks.onLeave) do
+			v(environment, ent)
 		end
 	end
 end
 
-function sb.addOnToolCreatedHook(toolname, func)
-	if not core.sb_hooks.onToolCreated[toolname] then core.sb_hooks.onToolCreated[toolname] = {} end
-	table.insert(core.sb_hooks.onToolCreated[toolname], func)
+function GM:addOnToolCreatedHook(toolname, func)
+	if not int.sb_hooks.onToolCreated[toolname] then int.sb_hooks.onToolCreated[toolname] = {} end
+	table.insert(int.sb_hooks.onToolCreated[toolname], func)
 end
 
-function sb.callOnToolCreatedHook(toolname, tool)
-	if core.sb_hooks.onToolCreated[toolname] then
-		for k, v in pairs(core.sb_hooks.onToolCreated[toolname]) do
+function GM:callOnToolCreatedHook(toolname, tool)
+	if int.sb_hooks.onToolCreated[toolname] then
+		for k, v in pairs(int.sb_hooks.onToolCreated[toolname]) do
 			v(tool)
 		end
 	end
 end
 
 -- Basic resources
-sb.registerResourceInfo(1, "energy", "Energy", { "ENERGY" })
-sb.registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
-sb.registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
-sb.registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
-sb.registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
-sb.registerResourceInfo(6, "co2", "Carbon Dioxide", { "GAS" })
+GM:registerResourceInfo(1, "energy", "Energy", { "ENERGY" })
+GM:registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
+GM:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
+GM:registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
+GM:registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
+GM:registerResourceInfo(6, "co2", "Carbon Dioxide", { "GAS" })
 
 
 --[[
 	Register hooks
 ]]
 
-sb.addOnToolCreatedHook("sb4_generators", function(tool)
+GM:addOnToolCreatedHook("sb4_generators", function(tool)
 	local generators = {
 		{
 			Name = "Test Solar Panel",

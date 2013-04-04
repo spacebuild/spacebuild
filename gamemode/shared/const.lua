@@ -1,5 +1,4 @@
-local sb = sb
-local const = sb.core.const
+local const, Color = GM.constants, Color
 
 const.suit = {}
 const.suit.MAX_OXYGEN = 2000

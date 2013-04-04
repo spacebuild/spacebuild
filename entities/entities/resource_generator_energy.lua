@@ -11,8 +11,6 @@ ENT.Instructions = ""
 ENT.Spawnable = true
 ENT.AdminOnly = false
 
-local sb = sb
-
 function ENT:Initialize()
 	BaseClass.Initialize(self)
 	if SERVER then
@@ -52,7 +50,7 @@ if SERVER then
 		local trace = {}
 		local util = util
 		local up = up or self:GetAngles():Up() or nil
-		local sun = sun or sb.getSun() or nil
+		local sun = sun or GAMEMODE:getSun() or nil
 
 		if up == nil or sun == nil then return true end
 
@@ -78,7 +76,7 @@ if SERVER then
 	function ENT:getRate()
 
 		local up = self:GetAngles():Up()
-		local sun = sb.getSun() or nil
+		local sun = GAMEMODE:getSun() or nil
 
 		local sunAngle = Vector(0, 0, -1)
 

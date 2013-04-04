@@ -15,10 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
-local util = sb.core.util
+local GM = GM
 local include = include
-local AddCSLuaFile = AddCSLuaFile
 
 local debug = debug
 local string = string
@@ -28,13 +26,13 @@ local pairs = pairs
 
 
 local basePath = "sb/extensions/"
-local exts = sb.core.wrappers:Find("dir", basePath.."*", "LUA") -- table for storing exts in.
+local exts = GM.wrappers:Find("dir", basePath.."*", "LUA") -- table for storing exts in.
 
 --- Registering Extensions. Responsible for assigning values and keys on the extensions table.
 -- Such as sb.core.extensions.key = value
 -- @param name The name of the extension, or the name used to store it on the extensions table
 -- @param value The value you wish to store at that key on the table. Usually another table, for extensions.
-function sb.core.extensions:register(name, value)
+function GM.extensions:register(name, value)
 	if not self[name] then
 
 		value.basePath = self:getBasePath(debug.getinfo(2).source)
@@ -47,10 +45,10 @@ end
 
 --- Getting your basePath from an extension without registering.
 -- So you can get your basePath for use in shared includes.
-function sb.core.extensions:getBasePath(source)
+function GM.extensions:getBasePath(source)
 
 	local execPath = source or debug.getinfo(2).source
-	local _, _, folder = string.find(execPath, "sb/extensions/(.-)/") -- Find what the folder is, will be third return from string.find
+	local _, _, folder = string.find(execPath, basePath.."(.-)/") -- Find what the folder is, will be third return from string.find
 
 	local basePath = "sb/extensions/" .. folder .. "/"
 
@@ -61,7 +59,7 @@ end
 --- Getter function, retreive values from the sb.core.extensions table.
 -- Simply a getter, however normal sb.core.extensions["key"] or sb.core.extensions.key should work.
 -- @param name The name of the key to retreive the value of.
-function sb.core.extensions:get(name)
+function GM.extensions:get(name)
 	return self[name] or false
 end
 
@@ -72,8 +70,8 @@ for k, v in pairs(exts) do
 	EXT = nil
 	if ext and ext.init then
 		ext:init()
-		if ext.getName and ext:getName() and not sb.core.extensions[ext:getName()] then
-			sb.core.extensions[ext:getName()] =  ext
+		if ext.getName and ext:getName() and not GM.extensions[ext:getName()] then
+			GM.extensions[ext:getName()] =  ext
 			print("Loaded and registered extension: "..tostring(ext:getName()))
 		end
 	end

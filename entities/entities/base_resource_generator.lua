@@ -13,7 +13,7 @@ ENT.AdminOnly = false
 
 
 function ENT:Initialize()
-	sb.registerDevice(self, sb.RDTYPES.GENERATOR)
+	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.GENERATOR)
 end
 
 if (CLIENT) then
@@ -57,6 +57,6 @@ end
 
 function ENT:OnRestore()
 	self.oldrdobject = self.rdobject
-	sb.registerDevice(self, sb.RDTYPES.GENERATOR)
+	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.GENERATOR)
 	self.rdobject:onRestore(self)
 end

@@ -13,7 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-local class = sb.core.class
+local GM = GM
+local class = GM.class
 
 local preload = true
 local tostring = tostring
@@ -25,17 +26,6 @@ local table = table
 -- GMOD
 local include = include
 local file = file
-local MsgN = MsgN
-
-local PrintTable = PrintTable
-
-local function initClass(class)
-	CLASS = class
-end
-
-local function destroyClass()
-	CLASS = nil
-end
 
 local classes_folder = { "classes" }
 local loadedclasses = {}
@@ -69,9 +59,9 @@ function class.new(name, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s
 		end
 		local class = {}
 		class.__index = class
-		initClass(class)
+		CLASS = class
 		openClass(name)
-		destroyClass()
+		CLASS = nil
 		function class:getClass()
 			return name
 		end

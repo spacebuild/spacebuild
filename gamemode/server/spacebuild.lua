@@ -15,12 +15,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
+local GM = GM
+
 local timer = timer
-local core = sb.core
-local const = sb.core.const
-local convars = sb.core.convars
-local class = sb.core.class
+local const = GM.constants
+local convars = GM.convars
+local class = GM.class
+local int = GM.internal
 require("sbnet")
 local net = sbnet
 
@@ -32,8 +33,8 @@ local time_to_next_sb_sync = const.TIME_TO_NEXT_SB_SYNC
 local time = 0
 
 local function AllowAdminNoclip(ply)
-	if (ply:IsAdmin() or ply:IsSuperAdmin()) and convars.sb_adminspacenoclip.get() then return true end
-	if ply:IsSuperAdmin() and convars.sb_superadminspacenoclip.get() then return true end
+	if (ply:IsAdmin() or ply:IsSuperAdmin()) and convars.adminspacenoclip.get() then return true end
+	if ply:IsSuperAdmin() and convars.superadminspacenoclip.get() then return true end
 	return false
 end
 
@@ -51,7 +52,7 @@ end
 -- @param ply
 --
 local function NoClipCheck(ply)
-	if sb.onSBMap() and ply.environment and ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get() and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
+	if GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get() and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
 		ply:SetMoveType(MOVETYPE_WALK)
 	end
 end
@@ -61,7 +62,7 @@ local function sbThink()
 	for _, ply in pairs(player.GetAll()) do
 		-- RD
 		if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
-			for k, v in pairs(core.device_table) do
+			for k, v in pairs(int.device_table) do
 				v:send(ply.lastrdupdate or 0, ply)
 			end
 			ply.lastrdupdate = time
@@ -69,15 +70,15 @@ local function sbThink()
 		-- SB
 		if not ply.lastsbupdate or ply.lastsbupdate + time_to_next_sb_sync < time then
 			if ply.lastsbupdate then
-				for k, v in pairs(core.device_table) do
+				for k, v in pairs(int.device_table) do
 					v:send(ply.lastsbupdate or 0, ply)
 				end
-				for _, v in pairs(core.mod_tables) do
+				for _, v in pairs(int.mod_tables) do
 					for _, w in pairs(v) do
 						w:send(ply.lastsbupdate or 0, ply)
 					end
 				end
-				for _, v in pairs(core.environments) do
+				for _, v in pairs(int.environments) do
 					v:send(ply.lastsbupdate or 0, ply)
 				end
 				ply.lastsbupdate = time
@@ -86,7 +87,7 @@ local function sbThink()
 			end
 		end
 		-- Noclip from planets check?
-		if ply.environment and ply.environment == sb.getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
+		if ply.environment and ply.environment == GM:getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
 			JeepFix(ply)
 			NoClipCheck(ply)
 		end
@@ -121,10 +122,10 @@ local function spawn(ply)
 	end
 	ply.ls_suit:reset()
 
-	if sb.onSBMap() and ply:Team() ~= TEAM_SPECTATOR then
+	if GM:onSBMap() and ply:Team() ~= TEAM_SPECTATOR then
 		timer.Simple(5, function()
 			if ply.ls_suit.environment == nil then
-				ply.ls_suit:setEnvironment(sb.getSpace())
+				ply.ls_suit:setEnvironment(GM:getSpace())
 			end
 		end)
 	end
@@ -144,14 +145,21 @@ hook.Add("PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
 
 
 local function PlayerNoClip(ply)
-	return not (sb.onSBMap() and ply.environment and ply.environment == sb.getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.sb_planetnocliponly.get())
+	return not (GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get())
 end
 
 hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
 
 -- Spacebuild
 
-local sun = class.new("SunEnvironment", nil)
+local sun
+
+local function init()
+	if not sun then
+		sun = class.new("SunEnvironment", nil)
+	end
+end
+hook.Add("Initialize", "spacebuild_init_server", init)
 
 local function addSun(data)
 	MsgN("Spawn Sun")
@@ -175,24 +183,24 @@ local function addLegacyEnvironment(data)
 		local ent = spawnEnvironmentEnt("LegacyPlanet", data.ent:GetPos(), data.ent:GetAngles())
 		local environment = class.new("LegacyPlanet", ent:EntIndex(), data)
 		ent.envobject = environment
-		sb.addEnvironment(environment)
+		GM:addEnvironment(environment)
 		ent:InitEnvironment()
 	elseif data[1] == "cube" then
 		local ent = spawnEnvironmentEnt("LegacyPlanet", data.ent:GetPos(), data.ent:GetAngles())
 		local environment = class.new("LegacyCube", ent:EntIndex(), data)
 		ent.envobject = environment
-		sb.addEnvironment(environment)
+		GM:addEnvironment(environment)
 		ent:InitEnvironment()
 	elseif data[1] == "planet_color" then
 		local colorinfo = class.new("LegacyColorInfo", data)
-		sb.addEnvironmentColor(colorinfo)
+		GM:addEnvironmentColor(colorinfo)
 	elseif data[1] == "planet_bloom" then
 		local bloominfo = class.new("LegacyBloomInfo", data)
-		sb.addEnvironmentBloom(bloominfo)
+		GM:addEnvironmentBloom(bloominfo)
 	end
 end
 
-function sb.getSun()
+function GM:getSun()
 	return sun
 end
 
@@ -271,7 +279,7 @@ local ignoredClasses = {}
 ignoredClasses["func_door"] = true
 ignoredClasses["prop_combine_ball"] = true
 
-function sb.isValidSBEntity(ent)
+function GM:isValidSBEntity(ent)
 	return IsValid(ent)
 			and not ent:IsWorld()
 			and IsValid(ent:GetPhysicsObject()) -- only valid physics
@@ -279,7 +287,7 @@ function sb.isValidSBEntity(ent)
 			and not ignoredClasses[ent:GetClass()] -- ignore certain types of entities
 end
 
-function sb.registerIgnoredEntityClass(class)
+function GM:registerIgnoredEntityClass(class)
 	ignoredClasses[class] = true
 end
 

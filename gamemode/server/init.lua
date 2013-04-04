@@ -17,6 +17,5 @@
 
 include("util.lua")
 include("pool.lua")
-include("convars.lua") -- Initialise convars.lua before server/spacebuild as this is required first.
 include("spacebuild.lua")
 include("extensions.lua")

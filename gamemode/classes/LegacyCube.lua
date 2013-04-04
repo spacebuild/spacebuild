@@ -25,7 +25,7 @@ include("LegacyPlanet.lua")
 
 -- Class Specific
 local C = CLASS
-local sb = sb
+local GM = GM
 
 -- Function Refs
 local funcRef = {
@@ -41,7 +41,7 @@ end
 
 function C:updateEntities()
 	for k, ent in pairs(self.entities) do
-		if sb.isValidSBEntity(ent) then
+		if GM:isValidSBEntity(ent) then
 			if ent.environment ~= self then
 				self:setEnvironmentOnEntity(ent, self)
 			end

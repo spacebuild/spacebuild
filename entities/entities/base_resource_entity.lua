@@ -12,12 +12,12 @@ ENT.Spawnable = false
 ENT.AdminOnly = false
 
 function ENT:Initialize()
-	sb.registerDevice(self, sb.RDTYPES.STORAGE)
+	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.STORAGE)
 end
 
 
 function ENT:OnRemove()
-	sb.removeDevice(self)
+	GAMEMODE:removeDevice(self)
 end
 
 if (CLIENT) then

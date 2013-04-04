@@ -16,6 +16,5 @@
 
 include("spacebuild.lua")
 include("spawnmenu.lua")
-include("hud.lua")
 include("extensions.lua")
 

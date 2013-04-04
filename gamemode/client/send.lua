@@ -20,7 +20,6 @@ local AddCSLuaFile = AddCSLuaFile
 AddCSLuaFile("init.lua")
 AddCSLuaFile("spacebuild.lua")
 AddCSLuaFile("spawnmenu.lua")
-AddCSLuaFile("hud.lua")
 AddCSLuaFile("extensions.lua")
 
 

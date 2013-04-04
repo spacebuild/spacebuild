@@ -11,8 +11,6 @@ ENT.Instructions = ""
 ENT.Spawnable = true
 ENT.AdminOnly = false
 
-local sb = sb
-
 function ENT:Initialize()
 	BaseClass.Initialize(self)
 	if SERVER then
@@ -28,7 +26,7 @@ function ENT:Initialize()
 
 		self.rdobject:addResource("energy", 0, 0)
 		self.rdobject:addResource("oxygen", 0, 0)
-		for _, res in pairs(sb.getRegisteredCoolants()) do
+		for _, res in pairs(GAMEMODE:getRegisteredCoolants()) do
 			self.rdobject:addResource(res, 0, 0)
 		end
 		self.energygen = 8
@@ -50,9 +48,9 @@ end
 function ENT:Use(ply)
 	if ply:IsPlayer() and ply.ls_suit then
 		ply.ls_suit:setActive(true)
-		ply.ls_suit:setOxygen(sb.core.const.suit.MAX_OXYGEN)
-		ply.ls_suit:setCoolant(sb.core.const.suit.MAX_COOLANT)
-		ply.ls_suit:setEnergy(sb.core.const.suit.MAX_ENERGY)
+		ply.ls_suit:setOxygen(GAMEMODE.constants.suit.MAX_OXYGEN)
+		ply.ls_suit:setCoolant(GAMEMODE.constants.suit.MAX_COOLANT)
+		ply.ls_suit:setEnergy(GAMEMODE.constants.suit.MAX_ENERGY)
 	end
 end
 

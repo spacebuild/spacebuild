@@ -21,7 +21,6 @@ local pairs = pairs
 
 --Class specific
 local C = CLASS
-local sb = sb
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against

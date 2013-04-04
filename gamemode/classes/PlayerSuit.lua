@@ -22,9 +22,9 @@ local net = sbnet
 
 -- Class Specific
 local C = CLASS
-local sb = sb
-local core = sb.core
-local const = sb.core.const
+local GM = GM
+local const = GM.constants
+local util = GM.util
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
@@ -146,11 +146,11 @@ function C:processEnvironment()
 	if not self.ply:Alive() then return end
 	env = self:getEnvironment()
 	if self:isActive() then
-		req_oxygen = sb.core.util.calculateOxygenRequired((env and env:getPressure()) or 0)
-		if sb.onSBMap() and env then
+		req_oxygen = util.calculateOxygenRequired((env and env:getPressure()) or 0)
+		if GM:onSBMap() and env then
 			env_temperature = env:getTemperature()
 			suit_temp = self:getTemperature()
-			if env == sb.getSpace() and suit_temp ~= env_temperature then -- Use radiation
+			if env == GM:getSpace() and suit_temp ~= env_temperature then -- Use radiation
 				local T = calcdT_radiation(self) -- Ramp up the value as we're not actually in real life here ...
 				MsgN("dT: ",T)
 				suit_temp = suit_temp - T
@@ -161,10 +161,10 @@ function C:processEnvironment()
 				suit_temp = suit_temp + diff_temp
 				self:setTemperature(suit_temp)
 			end
-			req_energy = sb.core.util.calculateEnergyRequired(suit_temp)
-			req_coolant = sb.core.util.calculateCoolantRequired(suit_temp)
+			req_energy = util.calculateEnergyRequired(suit_temp)
+			req_coolant = util.calculateCoolantRequired(suit_temp)
 		else
-			req_energy = sb.core.util.calculateEnergyRequired(const.TEMPERATURE_SAFE_MIN)
+			req_energy = util.calculateEnergyRequired(const.TEMPERATURE_SAFE_MIN)
 			req_coolant = 0 --sb.core.util.calculateCoolantRequired(const.TEMPERATURE_SAFE_MAX)
 		end
 		if req_energy > 0 then
@@ -172,26 +172,26 @@ function C:processEnvironment()
 				self:setEnergy(self:getEnergy() - req_energy)
 				used_energy = true
 			elseif self:getEnergy() > 0 then
-				self.ply:TakeDamage((req_energy - self:getEnergy()) * sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage((req_energy - self:getEnergy()) * const.BASE_LS_DAMAGE, 0)
 				self:setEnergy(0)
 				used_energy = true
 			else
-				self.ply:TakeDamage(req_energy * sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage(req_energy * const.BASE_LS_DAMAGE, 0)
 			end
 		end
 		if req_coolant > 0 then
 			if self:getCoolant() >= req_coolant then
 				self:setCoolant(self:getCoolant() - req_coolant)
 			elseif self:getCoolant() > 0 then
-				self.ply:TakeDamage((req_coolant - self:getCoolant()) * sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage((req_coolant - self:getCoolant()) * const.BASE_LS_DAMAGE, 0)
 				self:setCoolant(0)
 			else
-				self.ply:TakeDamage(req_coolant * sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage(req_coolant * const.BASE_LS_DAMAGE, 0)
 			end
 		end
 		if req_oxygen > 0 then
-			if self.ply:WaterLevel() < 3 and (sb.onSBMap() and env and env:hasEnoughOxygen()) then
-				req_oxygen = sb.core.const.suit.MAX_OXYGEN - self:getOxygen()
+			if self.ply:WaterLevel() < 3 and (GM:onSBMap() and env and env:hasEnoughOxygen()) then
+				req_oxygen = const.suit.MAX_OXYGEN - self:getOxygen()
 				if  req_oxygen > 0  then
 					self:setOxygen(self:getOxygen() + req_oxygen - env:convertResource("oxygen", "co2", req_oxygen))
 				end
@@ -218,7 +218,7 @@ function C:processEnvironment()
 						self:setBreath(0)
 					else
 						self.ply:EmitSound("Player.DrownStart")
-						self.ply:TakeDamage(req_oxygen * sb.core.const.BASE_LS_DAMAGE, 0)
+						self.ply:TakeDamage(req_oxygen * const.BASE_LS_DAMAGE, 0)
 					end
 				end
 			end
@@ -227,21 +227,21 @@ function C:processEnvironment()
 			self.ply:EmitSound("common/warning.wav")
 		end
 	else
-		if env and env == sb.getSpace() then --If in space, we'll deduct a random amount between 20 and 70
+		if env and env == GM:getSpace() then --If in space, we'll deduct a random amount between 20 and 70
 			local rand = math.random(20, 70)
 			if self:getBreath() >= rand then
 				self:setBreath(self:getBreath() - rand)
 			elseif self:getBreath() > 0 then
 				self:setBreath(0)
 			end
-		elseif self.ply:WaterLevel() == 3 or (sb.onSBMap() and env and not env:hasEnoughOxygen()) then
+		elseif self.ply:WaterLevel() == 3 or (GM:onSBMap() and env and not env:hasEnoughOxygen()) then
 			if self:getBreath() >= 5 then
 				self:setBreath(self:getBreath() - 5)
 			elseif self:getBreath() > 0 then
 				self:setBreath(0)
 			else
 				self.ply:EmitSound("Player.DrownStart")
-				self.ply:TakeDamage(sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage(const.BASE_LS_DAMAGE, 0)
 			end
 		else
 			local rand = math.random(1, 25)
@@ -251,15 +251,15 @@ function C:processEnvironment()
 				self:setBreath(self:getMaxBreath())
 			end
 		end
-		if sb.onSBMap() and env then
+		if GM:onSBMap() and env then
 			env_temperature = env:getTemperature(self.ply)
-			req_energy = sb.core.util.calculateEnergyRequired(env_temperature) - const.BASE_ENERGY_USE
-			req_coolant = sb.core.util.calculateCoolantRequired(env_temperature) - const.BASE_COOLANT_USE
+			req_energy = util.calculateEnergyRequired(env_temperature) - const.BASE_ENERGY_USE
+			req_coolant = util.calculateCoolantRequired(env_temperature) - const.BASE_COOLANT_USE
 			if req_energy > 0 then
-				self.ply:TakeDamage(req_energy * sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage(req_energy * const.BASE_LS_DAMAGE, 0)
 			end
 			if req_coolant > 0 then
-				self.ply:TakeDamage(req_coolant * sb.core.const.BASE_LS_DAMAGE, 0)
+				self.ply:TakeDamage(req_coolant * const.BASE_LS_DAMAGE, 0)
 			end
 		end
 	end
@@ -303,6 +303,6 @@ function C:receive()
 	end
 	local hasenvironment = net.readBool()
 	if hasenvironment then
-		self.environment = sb.getEnvironment(net.readShort())
+		self.environment = GM:getEnvironment(net.readShort())
 	end
 end

@@ -8,19 +8,8 @@
 
 include("BaseEnvironment.lua")
 
--- Lua Specific
-local type = type
-
--- Gmod specific
-local Entity = Entity
-local CurTime = CurTime
-require("sbnet")
-local net = sbnet
-
 -- Class Specific
 local C = CLASS
-local sb = sb
-local core = sb.core
 
 -- Function Refs
 local funcRef = {
@@ -32,7 +21,6 @@ local funcRef = {
 	onLoad = C.onLoad
 }
 
---local DEFAULT_SUN_ANGLE = Vector(0,0,-1)
 local DEFAULT_SUN_POSITION = Vector(0, 0, 0)
 
 --- General class function to check is this class is of a certain type

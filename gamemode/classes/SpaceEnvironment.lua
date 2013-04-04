@@ -8,19 +8,8 @@
 
 include("BaseEnvironment.lua")
 
--- Lua Specific
-local type = type
-
--- Gmod specific
-local Entity = Entity
-local CurTime = CurTime
-require("sbnet")
-local net = sbnet
-
 -- Class Specific
 local C = CLASS
-local sb = sb
-local core = sb.core
 
 -- Function Refs
 local funcRef = {

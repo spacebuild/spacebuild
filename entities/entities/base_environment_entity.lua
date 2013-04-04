@@ -17,7 +17,7 @@ end
 
 
 function ENT:OnRemove()
-	sb.removeEnvironmentFromEntity(self)
+	GAMEMODE:removeEnvironmentFromEntity(self)
 end
 
 function ENT:OnRestore()

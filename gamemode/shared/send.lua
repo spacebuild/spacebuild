@@ -19,18 +19,13 @@ local AddCSLuaFile = AddCSLuaFile
 
 --Send modules first
 AddCSLuaFile("includes/modules/Json.lua")
-AddCSLuaFile("includes/modules/sbhelper.lua")
 AddCSLuaFile("includes/modules/luaunit.lua")
 AddCSLuaFile("includes/modules/quaternion.lua")
---AddCSLuaFile("includes/modules/class.lua")
 AddCSLuaFile("includes/modules/sbnet.lua")
-AddCSLuaFile("includes/modules/sbfile.lua")
 AddCSLuaFile("includes/modules/log.lua")
 
 --Send core files
 AddCSLuaFile("const.lua")
-AddCSLuaFile("config.lua")
-AddCSLuaFile("debug.lua")
 AddCSLuaFile("wrappers.lua")
 AddCSLuaFile("extensions.lua")
 AddCSLuaFile("spacebuild.lua")

@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-local sb = sb
+local GM = GM
 local ExtsPnls = {}
 local vgui = vgui
 local hook = hook
@@ -66,7 +66,7 @@ net.Receive("EXTSTATUS", netChangeExtensionStatus)
 
 local function DrawExtensionsMenuOption(panel)
 	local exts = 1
-	for k, v in pairs(sb.core.extensions) do
+	for k, v in pairs(GM.extensions) do
 		if (type(v) == "table") then
 			if not v:isHidden() then
 				local extmenu = {}

@@ -19,9 +19,8 @@ local net = sbnet
 
 -- Class Specific
 local C = CLASS
-local sb = sb
-local core = sb.core
-local util = core.util
+local GM  = GM
+local util = GM.util
 
 -- Function Refs
 local funcRef = {
@@ -192,11 +191,11 @@ function C:getTemperature()
 end
 
 function C:getEnvironmentColor()
-	return sb.getEnvironmentColor(self.color_id)
+	return GM:getEnvironmentColor(self.color_id)
 end
 
 function C:getEnvironmentBloom()
-	return sb.getEnvironmentBloom(self.bloom_id)
+	return GM:getEnvironmentBloom(self.bloom_id)
 end
 
 function C:hasName()
@@ -213,7 +212,7 @@ end
 
 function C:removeEntity(ent)
 	if self.entities[ent:EntIndex()] then
-		self:setEnvironmentOnEntity(ent, sb.getSpace())
+		self:setEnvironmentOnEntity(ent, GM:getSpace())
 		self.entities[ent:EntIndex()] = nil
 	end
 end
@@ -228,13 +227,13 @@ end
 
 function C:setEnvironmentOnEntity(ent, environment)
 	if ent.environment ~= environment then
-		sb.callOnLeaveEnvironmentHook(ent.environment, ent)
+		GM:callOnLeaveEnvironmentHook(ent.environment, ent)
 		ent.environment = environment
 		environment:updateEnvironmentOnEntity(ent)
 		if ent.ls_suit then
 			ent.ls_suit:setEnvironment(environment)
 		end
-		sb.callOnEnterEnvironmentHook(self, ent)
+		GM:callOnEnterEnvironmentHook(self, ent)
 	end
 end
 
@@ -242,14 +241,14 @@ function C:updateEntities()
 	-- PhysicInitSphere doesn't create a real sphere, but a box, so we have to do a more accurate check here
 	local envent = self:getEntity()
 	for k, ent in pairs(self.entities) do
-		if sb.isValidSBEntity(ent) then
+		if GM:isValidSBEntity(ent) then
 			if ent:GetPos():Distance(envent:GetPos()) < self.radius then
 				if ent.environment ~= self then
 					self:setEnvironmentOnEntity(ent, self)
 				end
 			else
-				if ent.environment ~= sb.getSpace() then
-					self:setEnvironmentOnEntity(ent, sb.getSpace())
+				if ent.environment ~= GM:getSpace() then
+					self:setEnvironmentOnEntity(ent, GM:getSpace())
 				end
 			end
 		else

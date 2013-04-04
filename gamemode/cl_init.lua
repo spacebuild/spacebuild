@@ -16,5 +16,13 @@
 
 
 include("shared.lua") --Initialize the shared code first
+
+CreateConVar("SB_TemperatureScale", "K") -- Set temperature scale, default = K(elvin), other values are C(elcius) and F(ahrenheit)
+
+GM.convars.log = {
+	get = function() return GetConVar("SB_TemperatureScale"):GetString() end,
+	set = function(val) game.ConsoleCommand("SB_TemperatureScale", tostring(val)) end
+}
+
 include("client/init.lua")
 

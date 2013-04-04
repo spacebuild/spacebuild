@@ -51,7 +51,7 @@ if SERVER then
 	end
 
 	function ENT:StartTouch(ent)
-		if not sb.isValidSBEntity(ent) then return end -- SB can't handle this
+		if not GAMEMODE:isValidSBEntity(ent) then return end -- SB can't handle this
 		self.envobject:addEntity(ent)
 	end
 

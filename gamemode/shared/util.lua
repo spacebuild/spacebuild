@@ -15,18 +15,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
-local const = sb.core.const
-local util = sb.core.util
+local GM = GM
+local const = GM.constants
+local util = GM.util
 local math = math
 local print = print
 local tostring = tostring
-
-util.SCOPES = {
-	SERVER = "server/",
-	CLIENT = "client/",
-	SHARED = "shared/"
-}
 
 util.createReadOnlyTable = function(t)
 	return setmetatable({}, {
@@ -40,7 +34,6 @@ util.createReadOnlyTable = function(t)
 end
 
 util.mergeTable = function(base, ext)
-
 	for k, v in pairs(base) do
 		if ext[k] == nil then
 			ext[k] = v

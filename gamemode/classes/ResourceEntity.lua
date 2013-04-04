@@ -28,8 +28,7 @@ local net = sbnet
 
 -- Class Specific
 local C = CLASS
-local sb = sb
-local core = sb.core
+local GM = GM
 
 -- Function Refs
 local funcRef = {
@@ -149,7 +148,7 @@ end
 --- Sync function to receive data from the server to this client
 --
 function C:receive()
-	self.network = sb.getDeviceInfo(net.readShort())
+	self.network = GM:getDeviceInfo(net.readShort())
 	funcRef.receiveSignal(self)
 end
 
@@ -159,7 +158,7 @@ function C:onLoad(data)
 	funcRef.onLoad(self, data)
 	local ent = self
 	timer.Simple(0.1, function()
-		ent.network = sb.getDeviceInfo(data.network.syncid)
+		ent.network = GM:getDeviceInfo(data.network.syncid)
 	end)
 end
 

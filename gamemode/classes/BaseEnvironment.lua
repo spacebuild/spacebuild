@@ -17,9 +17,9 @@ require("sbnet")
 local net = sbnet
 -- Class specific
 local C = CLASS
-local sb = sb
-local class = sb.core.class
-local core = sb.core
+
+local GM = GM
+local class = GM.class
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
@@ -289,7 +289,7 @@ function C:receive()
 	local id
 	for am = 1, nrRes do
 		id = net.readTiny()
-		name = sb.getResourceInfoFromID(id):getName()
+		name = GM:getResourceInfoFromID(id):getName()
 		if not self.resources[name] then
 			self.resources[name] = class.new("Resource", name)
 		end

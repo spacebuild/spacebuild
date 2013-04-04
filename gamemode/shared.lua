@@ -14,52 +14,42 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+local DeriveGamemode = DeriveGamemode
+local CreateConVar = CreateConVar
+local include = include
+local GetConVar = GetConVar
+local game = game
+local tonumber = tonumber
+
 DeriveGamemode("sandbox")
 
+local GM = GM
 
+GM.Name 	= "Spacebuild"
+GM.Author 	= "SB Dev Team"
+GM.Email 	= "spacebuild.dev@gmail.com"
+GM.Website 	= "www.snakesvx.net"
+GM.Version 	= "1"
 
-require("sbhelper")
-local sbhelper = sbhelper
+GM.convars 		= {}
+GM.constants 	= {}
+GM.util 		= {}
+GM.wrappers 	= {}
+GM.extensions 	= {}
+GM.class 		= {}
+GM.internal 	= {}
 
--- Gmod Specific
-local include = include
+CreateConVar("SB_Log", "1") -- Set log level to 1, which by default is info.
 
--- SB specific
-local VERSION = 4.00
-local VERSION_AS_STRING = "4.0.0b1"
+GM.convars.log = {
+	get = function() return GetConVar("SB_Log"):GetInt() end,
+	set = function(val) game.ConsoleCommand("SB_Log", tonumber(val)) end
+}
 
-sb = {} --Define the global SB table
-local sb = sb -- Make it local for a little bit of better performance
-sb.core = {}
-sb.core.const = {}
-sb.core.config = sbhelper.loadConfig("core")
-sb.core.data = {}
-sb.core.debug = {}
-sb.core.gui = {}
-sb.core.lang = {}
-sb.core.log = {}
-sb.core.util = {}
-sb.core.test = {}
-sb.core.wrappers = {}
-sb.core.extensions = {}
-sb.core.class = {}
-
--- Convars
-
-sb.core.convars = {}
-
-function sb.getVersion()
-	return VERSION
-end
-
-function sb.getVersionAsString()
-	return VERSION_AS_STRING
-end
+-- Old stuff
 
 include("shared/wrappers.lua")
 include("shared/const.lua")
-include("shared/config.lua")
-include("shared/debug.lua")
 include("shared/util.lua")
 include("classes/class.lua")
 include("shared/spacebuild.lua")
