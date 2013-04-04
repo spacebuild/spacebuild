@@ -18,13 +18,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 local sb = sb
 local core = sb.core
 
-require("class")
-local class = class
+local class = core.class
 
 require("sbnet")
 local net = sbnet
 
-local space = class.new("SpaceEnvironment")
+local space
+
+
+local function init()
+ space = class.new("SpaceEnvironment")
+end
+hook.Add("Initialize", "spacebuild_init_shared", init)
 
 -- RD
 core.device_table = {}

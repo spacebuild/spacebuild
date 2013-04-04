@@ -20,8 +20,7 @@ local timer = timer
 local core = sb.core
 local const = sb.core.const
 local convars = sb.core.convars
-require("class")
-local class = class
+local class = sb.core.class
 require("sbnet")
 local net = sbnet
 

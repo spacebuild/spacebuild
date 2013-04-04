@@ -15,15 +15,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
-local include = include
+local AddCSLuaFile = AddCSLuaFile
 
-include("sb/core/init.lua") --Initialize the shared code first
-include("sb/core/client/spacebuild.lua")
-include("sb/core/client/spawnmenu.lua")
-include("sb/core/client/hud.lua")
-include("sb/core/client/extensions.lua")
-
+AddCSLuaFile("init.lua")
+AddCSLuaFile("spacebuild.lua")
+AddCSLuaFile("spawnmenu.lua")
+AddCSLuaFile("hud.lua")
+AddCSLuaFile("extensions.lua")
 
 
 

@@ -15,7 +15,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ]]
 
-local sb = sb
 local AddCSLuaFile = AddCSLuaFile
 
 --Send modules first
@@ -23,34 +22,19 @@ AddCSLuaFile("includes/modules/Json.lua")
 AddCSLuaFile("includes/modules/sbhelper.lua")
 AddCSLuaFile("includes/modules/luaunit.lua")
 AddCSLuaFile("includes/modules/quaternion.lua")
-AddCSLuaFile("includes/modules/class.lua")
+--AddCSLuaFile("includes/modules/class.lua")
 AddCSLuaFile("includes/modules/sbnet.lua")
 AddCSLuaFile("includes/modules/sbfile.lua")
 AddCSLuaFile("includes/modules/log.lua")
 
 --Send core files
-AddCSLuaFile("sb/core/const.lua")
-AddCSLuaFile("sb/core/config.lua")
-AddCSLuaFile("sb/core/init.lua")
-AddCSLuaFile("sb/core/debug.lua")
-AddCSLuaFile("sb/core/wrappers.lua")
-AddCSLuaFile("sb/core/extensions.lua")
-AddCSLuaFile("sb/core/spacebuild.lua")
-AddCSLuaFile("sb/core/util.lua")
-
---Send classes
-AddCSLuaFile("sb/classes/Resource.lua")
-AddCSLuaFile("sb/classes/ResourceContainer.lua")
-AddCSLuaFile("sb/classes/ResourceEntity.lua")
-AddCSLuaFile("sb/classes/ResourceInfo.lua")
-AddCSLuaFile("sb/classes/ResourceNetwork.lua")
-AddCSLuaFile("sb/classes/PlayerSuit.lua")
-AddCSLuaFile("sb/classes/BaseEnvironment.lua")
-AddCSLuaFile("sb/classes/SunEnvironment.lua")
-AddCSLuaFile("sb/classes/LegacyBloomInfo.lua")
-AddCSLuaFile("sb/classes/LegacyColorInfo.lua")
-AddCSLuaFile("sb/classes/LegacyPlanet.lua")
-AddCSLuaFile("sb/classes/SpaceEnvironment.lua")
+AddCSLuaFile("const.lua")
+AddCSLuaFile("config.lua")
+AddCSLuaFile("debug.lua")
+AddCSLuaFile("wrappers.lua")
+AddCSLuaFile("extensions.lua")
+AddCSLuaFile("spacebuild.lua")
+AddCSLuaFile("util.lua")
 
 
 

@@ -21,7 +21,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include("sb/classes/LegacyPlanet.lua")
+include("LegacyPlanet.lua")
 
 -- Class Specific
 local C = CLASS

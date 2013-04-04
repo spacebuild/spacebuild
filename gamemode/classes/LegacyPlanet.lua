@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include("sb/classes/BaseEnvironment.lua")
+include("BaseEnvironment.lua")
 
 -- Lua Specific
 local type = type

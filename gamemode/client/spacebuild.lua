@@ -25,8 +25,7 @@ local sb = sb
 local core = sb.core
 local to_sync
 
-require("class")
-local class = class
+local class = sb.core.class
 
 local player_suit = class.new("PlayerSuit")
 

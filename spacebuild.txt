@@ -1,0 +1,12 @@
+"spacebuild"
+{
+	"base"		"sandbox"
+	"title"		"Spacebuild"
+	"maps"		"^sb_"
+	"menusystem"	"1"
+
+	"settings"
+	{
+		// TODO: put some settings here
+	}
+}

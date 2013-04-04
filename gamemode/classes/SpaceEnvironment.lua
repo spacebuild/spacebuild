@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include("sb/classes/BaseEnvironment.lua")
+include("BaseEnvironment.lua")
 
 -- Lua Specific
 local type = type
@@ -32,17 +32,27 @@ local funcRef = {
 	onLoad = C.onLoad
 }
 
---local DEFAULT_SUN_ANGLE = Vector(0,0,-1)
-local DEFAULT_SUN_POSITION = Vector(0, 0, 0)
-
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
 --
 function C:isA(className)
-	return funcRef.isA(self, className) or className == "SunEnvironment"
+	return funcRef.isA(self, className) or className == "SpaceEnvironment"
 end
 
-function C:getPos()
-	return (self:getEntity() and self:getEntity():GetPos()) or DEFAULT_SUN_POSITION
+function C:init()
+	funcRef.init(self, -1)
+	self.temperature = 14 -- in K
+end
+
+function C:getEntity()
+	return nil
+end
+
+function C:hasName()
+	return true
+end
+
+function C:getName()
+	return "Space"
 end
 

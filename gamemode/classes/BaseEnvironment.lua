@@ -18,8 +18,7 @@ local net = sbnet
 -- Class specific
 local C = CLASS
 local sb = sb
-require("class")
-local class = class
+local class = sb.core.class
 local core = sb.core
 
 --- General class function to check is this class is of a certain type
