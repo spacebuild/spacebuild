@@ -14,8 +14,16 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+AddCSLuaFile()
 
-include("util.lua")
-include("pool.lua")
-include("spacebuild.lua")
---include("extensions.lua")
+properties.Add("rdmenu",
+	{
+		MenuLabel = "Open RD Menu",
+		Order = 300,
+		Filter = function(self, ent)
+			return true -- CODE HERE TO CHECK IF IT IS AN RD ENTITY
+		end,
+		Action = function(self, ent)
+		-- CODE HERE TO OPEN THE RD MENU
+		end
+	})

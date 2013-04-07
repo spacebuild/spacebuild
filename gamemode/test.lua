@@ -14,8 +14,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+AddCSLuaFile()
 
-include("util.lua")
-include("pool.lua")
-include("spacebuild.lua")
---include("extensions.lua")
+require("luaunit")
+
+include("tests/class.lua")
+include("tests/quaternion.lua")
+
+luaunit.run() -- will execute all tests
+

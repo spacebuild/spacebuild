@@ -106,7 +106,6 @@ local function sbThink()
 		end
 	end
 end
-
 hook.Add("Think", "spacebuild_think", sbThink)
 
 local to_sync

@@ -70,6 +70,6 @@ GM.convars.resources = {
 	set = function(val) game.ConsoleCommand("SB_InfiniteResources", val:toNumber()) end
 }
 
-
-
 include("server/init.lua")
+
+include("test.lua")

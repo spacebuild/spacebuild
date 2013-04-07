@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include( sb.core.extensions:getBasePath() .. "classes/HudComponent.lua")
+include("HudComponent.lua")
 local C = CLASS
 local surface = surface
 

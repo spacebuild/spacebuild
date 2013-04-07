@@ -30,6 +30,15 @@ AddCSLuaFile("LegacyBloomInfo.lua")
 AddCSLuaFile("LegacyColorInfo.lua")
 AddCSLuaFile("LegacyPlanet.lua")
 AddCSLuaFile("SpaceEnvironment.lua")
+AddCSLuaFile("BottomLeftPanel.lua")
+AddCSLuaFile("BottomRightPanel.lua")
+AddCSLuaFile("HudBarIndicator.lua")
+AddCSLuaFile("HudBarTextIndicator.lua")
+AddCSLuaFile("HudComponent.lua")
+AddCSLuaFile("HudPanel.lua")
+AddCSLuaFile("TextElement.lua")
+AddCSLuaFile("TopLeftPanel.lua")
+AddCSLuaFile("TopRightPanel.lua")
 
 
 

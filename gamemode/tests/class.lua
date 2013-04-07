@@ -19,8 +19,7 @@ AddCSLuaFile()
 
 
 local print = print
-require("class")
-local class = class
+local class = GM.class
 
 TestClasses = {} --class
 function TestClasses:setUp()

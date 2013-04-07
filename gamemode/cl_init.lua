@@ -25,4 +25,4 @@ GM.convars.log = {
 }
 
 include("client/init.lua")
-
+include("test.lua")

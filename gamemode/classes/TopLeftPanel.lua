@@ -6,7 +6,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-include( sb.core.extensions:getBasePath() .. "classes/HudPanel.lua")
+include("HudPanel.lua")
 local C = CLASS
 
 function C:calculateSize()
@@ -20,6 +20,5 @@ function C:calculateSize()
 			v:setY(self:getHeight())
 			self:setHeight(self:getHeight() + v:getHeight())
 		end
-		self:setX(self.base_x - self:getWidth())
 	end
 end
