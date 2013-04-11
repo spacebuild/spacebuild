@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "spacebuild/light"
+	"$selfillum" 1
+	"$model" 1
+}

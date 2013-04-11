@@ -37,7 +37,7 @@ net.Receive("SBRU", function(bitsreceived)
 	end
 	if to_sync then
 		to_sync:receive()
-		log.table(to_sync, "SBRU", log.DEBUG)
+		--log.table(to_sync, "SBRU", log.DEBUG)
 	end
 end)
 
@@ -49,7 +49,7 @@ net.Receive("SBRPU", function(bitsreceived)
 		GM:callOnLeaveEnvironmentHook(env, nil)
 		GM:callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
 	end
-	log.table(suit, "SBRPU", log.DEBUG)
+	--log.table(suit, "SBRPU", log.DEBUG)
 end)
 
 net.Receive("SBEU", function(bitsreceived)
@@ -62,7 +62,7 @@ net.Receive("SBEU", function(bitsreceived)
 		GM:addEnvironment(environment_object)
 	end
 	environment_object:receive()
-	log.table(environment_object, "SBEU", log.DEBUG)
+	--log.table(environment_object, "SBEU", log.DEBUG)
 end)
 
 net.Receive("SBMU", function(bitsreceived)
@@ -89,7 +89,7 @@ net.Receive("SBMU", function(bitsreceived)
 		end
 	end
 	mod_object:receive()
-	log.table(mod_object, "SBMU", log.DEBUG)
+	--log.table(mod_object, "SBMU", log.DEBUG)
 end)
 
 function GM:getPlayerSuit()

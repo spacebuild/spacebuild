@@ -1,0 +1,8 @@
+"Accessories"
+{	   
+	"1"		"models/cerus/modbridge/misc/accessories/acc_ant2_red.mdl" 
+	"2"		"models/cerus/modbridge/misc/accessories/acc_ant_red.mdl" 
+	"3"		"models/cerus/modbridge/misc/accessories/acc_furnace1.mdl" 
+	"4"		"models/cerus/modbridge/misc/accessories/acc_radar1.mdl" 
+	"5"		"models/cerus/modbridge/misc/engines/eng_sq11b.mdl"
+}		

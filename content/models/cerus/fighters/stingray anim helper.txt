@@ -1,0 +1,66 @@
+Overview:
+*_idle_open(or closed) indicates a 1 frame animation of the named 
+part in an open(or closed) position, in most cases you might be able to
+call either 'idle' or 'canopy_idle_closed' and it would appear to look 
+the same, but the transition between animations *might* not function 
+properly if you do.
+
+It's assumed that the canopy will be closed for all animations of the rack and bay, for this reason, there are no combination animations involving the canopy directly, calling an animation that does not involve the canopy will
+rapidly close the canopy during the first few frames of the called sequence's run, and may influence the overall timing.
+
+(This same behavior will effect any instance of an animation being called that does not directly influence a looping *_idle_open state part.)
+
+
+The Solo individual *_open and *_close animations are self-explanatory, they can be used when just a single part needs animated and the model is *NOT* already in a _idle_open state.
+
+-Misc. Anims-
+
+List:
+idle (Default idle anim, possibly redundant with 'canopy_idle_closed')
+
+-Solo Canopy Anims-
+
+Description: Dealing with the cockpit/canopy.
+
+List:
+canopy_idle_closed 
+canopy_idle_open
+canopy_open
+canopy_close
+
+-Solo Bay Anims-
+
+Description: Dealing with the underbelly/bay.
+
+List:
+bay_idle_closed
+bay_idle_open
+bay_open
+bay_close
+
+-Solo Rack Anims-
+
+Description: Dealing with the twin pop-up racks.
+
+List:
+rack_idle_closed
+rack_idle_open
+rack_open
+rack_close
+
+-Combo Rack/Bay Anims-
+
+Description: 
+*_RIO and *_BIO Stand for rack_idle_open and bay_idle_open respectively.  To allow for a transition between (for example) 'rack_idle_open' and 'BIO_RIO' which stands for
+'bay_idle_open' + 'rack_idle_open', using 'bay_open_RIO'.  Another example is for transitioning from 'BIO_RIO' to 'bay_idle_open', using 'rack_close_BIO'.
+
+'BO_RO' ('bay_open' + 'rack_open') and 'BC_RC' ('bay_close' + 'rack_close') are simultaneous animations of both the rack and bay.
+
+List:
+bay_open_RIO
+bay_close_RIO
+rack_open_BIO
+rack_close_BIO 
+BIO_RIO 
+BO_RO 
+BC_RC

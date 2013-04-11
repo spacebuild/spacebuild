@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/ramen cup.vtf"
+	"$surfaceprop" "metal"
+	"$model" 1
+}

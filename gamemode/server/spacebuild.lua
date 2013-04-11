@@ -144,7 +144,7 @@ hook.Add("PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
 
 
 local function PlayerNoClip(ply)
-	return not (GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get())
+	return not (GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get())
 end
 
 hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
@@ -162,11 +162,9 @@ hook.Add("Initialize", "spacebuild_init_server", init)
 
 local function addSun(data)
 	MsgN("Spawn Sun")
-	--PrintTable(data)
 	--TODO spawn sunEntity
 	local ent = data.ent
 	sun = class.new("SunEnvironment", ent:EntIndex(), data)
-	--PrintTable(sun)
 end
 
 local function spawnEnvironmentEnt(name, pos, angles)

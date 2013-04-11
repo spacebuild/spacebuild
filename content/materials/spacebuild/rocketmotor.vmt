@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/rocketmotor.vtf"
+	"$surfaceprop" "metal"
+	"$model" 1
+}

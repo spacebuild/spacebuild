@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture"	"vgui/entities/sbep_cerusturret"
+	"$vertexcolor"	1
+	"$vertexalpha"	0
+	"$nolod"	1
+}

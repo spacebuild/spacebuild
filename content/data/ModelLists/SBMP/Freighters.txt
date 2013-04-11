@@ -1,0 +1,14 @@
+"Freighters"
+{
+	"1"		"models/slyfo/cargoship.mdl"
+	"2"		"models/slyfo/cargoshiphatch.mdl"
+	"3"		"models/slyfo/frigate1.mdl"
+	"4"		"models/slyfo/frigate1ramp.mdl"
+	"5"		"models/spacebuild/medbridge.mdl"
+	"6"		"models/slyfo/ccockpit.mdl"
+	"7"		"models/slyfo/carrierbay.mdl"
+	"8"		"models/slyfo/doublecarrier.mdl"
+	"9"		"models/slyfo/carriersplit.mdl"
+	"10"		"models/slyfo/cengine.mdl"
+	"11"		"models/slyfo/fhatch.mdl"
+}

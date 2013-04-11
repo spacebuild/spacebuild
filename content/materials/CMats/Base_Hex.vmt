@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "CMats/Base_Hex"
+	"$surfaceprop" "metal"
+	"$model" 1
+	"$bumpmap" "CMats/Base_Hex_Bump"
+	"$phong"     "1"
+	"$halflambert"	1
+ 	"$phongboost"   "0.8"
+ 	"$phongfresnelranges"   "[0.08 0.17 0.95]"
+}

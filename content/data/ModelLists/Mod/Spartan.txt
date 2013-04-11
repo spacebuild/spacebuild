@@ -1,0 +1,15 @@
+"Spartan"
+{   
+	"1"		"models/cerus/modbridge/core/spartan/s-111.mdl"
+	"2"		"models/cerus/modbridge/core/spartan/s-211.mdl"
+	"3"		"models/cerus/modbridge/core/spartan/s-311.mdl"
+	"4"		"models/cerus/modbridge/core/spartan/c-111.mdl"
+	"5"		"models/cerus/modbridge/core/spartan/s-121.mdl"
+	"6"		"models/cerus/modbridge/core/spartan/s-221.mdl"
+	"7"		"models/cerus/modbridge/core/spartan/s-321.mdl"
+	"8"		"models/cerus/modbridge/core/spartan/c-221.mdl"
+	"9"		"models/cerus/modbridge/core/spartan/s-131.mdl"
+	"10"		"models/cerus/modbridge/core/spartan/s-231.mdl"
+	"11"		"models/cerus/modbridge/core/spartan/s-331.mdl"
+	"12"		"models/cerus/modbridge/core/spartan/cv-11-31.mdl"
+} 

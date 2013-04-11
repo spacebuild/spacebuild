@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "VGUI/entities/sbep_rover1_chassis"
+	"$vertexcolor" 		1 
+	"$vertexalpha" 		0 
+	"$nolod" 		1 
+}

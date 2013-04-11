@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/DirtyPlate3"
+	"$surfaceprop" "metal"
+	"$model"     1
+}

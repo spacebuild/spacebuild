@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "VGUI/entities/sbep_P_chair"
+	"$vertexcolor" 		1 
+	"$vertexalpha" 		0 
+	"$nolod" 		1 
+}

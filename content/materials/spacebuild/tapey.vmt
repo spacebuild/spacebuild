@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/tapey"
+	"$surfaceprop" "metal"
+	"$vertexcolor" 		1 
+	"$nolod" 			1 
+}

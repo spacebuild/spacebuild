@@ -1,0 +1,5 @@
+"VertexLitGeneric" 
+{ 
+	"$basetexture"		"spacebuild/BackComputer"
+	"$surfaceprop" "metal"
+} 

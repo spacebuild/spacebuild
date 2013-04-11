@@ -1,0 +1,10 @@
+"Carrier Deck"
+{
+	"1"		"models/slyfo/cdeck_bow.mdl"
+	"2"		"models/slyfo/cdeck_back.mdl"
+	"3"		"models/slyfo/cdeck_single.mdl"
+	"4"		"models/slyfo/cdeck_tjoint.mdl"
+	"5"		"models/slyfo/cdeck_double.mdl"
+	"6"		"models/slyfo/cdeck_doublewide.mdl"
+	"7"		"models/slyfo/cdeck_doublewideconv.mdl"
+}

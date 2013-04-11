@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/grungewall"
+	"$surfaceprop" "concrete"
+	"$model" 1 
+	"$bumpmap" "spacebuild/grungewallbump"
+	"$normalmapalphaenvmapmask" 1
+}

@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture"	"vgui/entities/holopanel"
+	"$vertexcolor"	1
+	"$vertexalpha"	0
+	"$nolod"	1
+}

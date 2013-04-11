@@ -1,0 +1,13 @@
+"UnlitGeneric"
+{
+   "$basetexture" "lazor/Fusion"
+   "Proxies"
+   {
+      "AnimatedTexture"
+      {
+         "animatedtexturevar" "$basetexture"
+         "animatedtextureframenumvar" "$frame"
+         "animatedtextureframerate" 15
+      }
+   }
+}

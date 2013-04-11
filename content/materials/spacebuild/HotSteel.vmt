@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/HotSteel"
+	"$surfaceprop" "metal"
+	"$model"     1
+	$selfillum 1
+}

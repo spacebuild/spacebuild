@@ -152,7 +152,6 @@ function C:processEnvironment()
 			suit_temp = self:getTemperature()
 			if env == GM:getSpace() and suit_temp ~= env_temperature then -- Use radiation
 				local T = calcdT_radiation(self) -- Ramp up the value as we're not actually in real life here ...
-				MsgN("dT: ",T)
 				suit_temp = suit_temp - T
 				self:setTemperature(suit_temp)
 			else -- Use convection/conduction

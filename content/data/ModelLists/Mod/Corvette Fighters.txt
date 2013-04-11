@@ -1,0 +1,9 @@
+"corvette fighters"   
+{   
+	"1"		"models/cerus/mcorvette/bridge1.mdl"
+	"2"		"models/cerus/mcorvette/body1.mdl"
+	"3"		"models/cerus/mcorvette/pod1-r.mdl"
+	"4"		"models/cerus/mcorvette/pod1-l.mdl"
+	"5"		"models/cerus/fighters/wraith.mdl"
+	"6"		"models/cerus/fighters/stingray.mdl"
+} 

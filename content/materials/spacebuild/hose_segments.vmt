@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/hose_segments"
+	"$surfaceprop" "metal"
+	"$model"     1
+}
