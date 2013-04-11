@@ -144,7 +144,7 @@ hook.Add("PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
 
 
 local function PlayerNoClip(ply)
-	return not (GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.sb_noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get())
+	return not (GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get())
 end
 
 hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
