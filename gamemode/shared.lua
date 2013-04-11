@@ -56,5 +56,5 @@ include("shared/spacebuild.lua")
 include("propertiesmenu.lua")
 
 --- - Extension System ----
---include("shared/extensions.lua")
+include("shared/extensions.lua")
 --------------------------

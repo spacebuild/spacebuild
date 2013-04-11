@@ -14,8 +14,36 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+include("WireComponent.lua")
 
-include("util.lua")
-include("pool.lua")
-include("spacebuild.lua")
-include("extensions.lua")
+local C = CLASS
+
+local GM = GM
+local class = GM.class
+
+local oldInit = C.init
+local oldIsA = C.isA
+
+function C:isA(className)
+	return oldIsA(self, className) or className == "WireBoard"
+end
+
+function C:init()
+	oldInit(self)
+	self.nodes = {}
+end
+
+function C:addNode(node)
+	table.insert(self.nodes, node)
+	node:setParent(self)
+end
+
+function C:removeNode(node)
+	for k, v in pairs(self.nodes)  do
+		if v == node then
+			table.remove(self.nodes, k)
+			node:setParent(nil)
+			break
+		end
+	end
+end

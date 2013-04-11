@@ -63,7 +63,7 @@ function GM.extensions:get(name)
 	return self[name] or false
 end
 
-for k, v in pairs(exts) do
+--[[for k, v in pairs(exts) do
 	EXT = {}
 	local ext = EXT
 	include(basePath .. v .. "/init.lua")
@@ -76,7 +76,7 @@ for k, v in pairs(exts) do
 		end
 	end
 
-end
+end   ]]
 
 --sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
 
