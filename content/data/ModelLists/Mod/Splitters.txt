@@ -1,0 +1,15 @@
+"Split"
+{  
+	"1"		"models/cerus/modbridge/core/tc-131.mdl"
+	"2"		"models/cerus/modbridge/core/t-131.mdl"
+	"3"		"models/cerus/modbridge/core/c-131r.mdl"
+	"4"		"models/cerus/modbridge/core/c-131l.mdl"
+	"5"		"models/cerus/modbridge/core/cv-11-21.mdl"
+	"6"		"models/cerus/modbridge/core/cv-11-31.mdl"
+	"7"		"models/cerus/modbridge/core/cv-21-31.mdl"
+	"8"		"models/cerus/modbridge/core/cvw-11-31.mdl"
+	"9"		"models/cerus/modbridge/core/cv-mb-smb.mdl"
+	"10"		"models/cerus/modbridge/core/rso-312.mdl"
+	"11"		"models/cerus/modbridge/core/rso-322.mdl"
+	"12"		"models/cerus/modbridge/core/rso-332.mdl"
+}	

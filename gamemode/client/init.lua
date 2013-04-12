@@ -17,5 +17,6 @@
 include("spacebuild.lua")
 include("spawnmenu.lua")
 include("hud.lua")
+include("sb4_partdata.lua")
 include("extensions.lua")
 

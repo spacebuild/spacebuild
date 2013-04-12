@@ -1,0 +1,18 @@
+"Cockpits\Bridges\Glass Corridors"
+{  
+	"1"		"models/cerus/modbridge/core/g-111wd.mdl"
+	"2"		"models/cerus/modbridge/core/g-211s.mdl"
+	"3"		"models/cerus/modbridge/core/g-221s.mdl"
+	"4"		"models/cerus/modbridge/core/g-231s.mdl" 
+	"5"		"models/cerus/modbridge/core/bridgeg-211.mdl"
+	"6"		"models/cerus/modbridge/core/g-221.mdl"
+	"7"		"models/cerus/modbridge/core/g-231w.mdl"
+	"8"		"models/cerus/modbridge/core/g-231r.mdl"
+	"9"		"models/cerus/modbridge/core/sc-111g.mdl"
+	"10"		"models/cerus/modbridge/core/s-111g.mdl"
+	"11"		"models/cerus/modbridge/core/s-221g.mdl"
+	"12"		"models/cerus/modbridge/core/s-331g.mdl"
+	"13"		"models/cerus/modbridge/core/sc-131g2.mdl"
+	"14"		"models/cerus/modbridge/core/sc-131g3.mdl"
+	"15"		"models/cerus/modbridge/core/sc-131g.mdl"
+}	

@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "lazor/stripes"
+	"$surfaceprop" "metal"
+	"$bumpmap" "lazor/stripes_normal"
+	"$phong"     "1"
+	"$halflambert"	1
+ 	"$phongexponent"   "20"
+ 	"$phongboost"   "2"
+ 	"$phongfresnelranges"   "[.5 .8 1]"
+}

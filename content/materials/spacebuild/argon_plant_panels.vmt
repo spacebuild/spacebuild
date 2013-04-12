@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/argon_plant_panels"
+	"$bumpmap" "spacebuild/argon_solar_panels_TP_bump"
+	"$surfaceprop" "metal"
+	"$model"     1
+}

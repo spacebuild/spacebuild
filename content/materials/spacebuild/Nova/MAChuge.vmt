@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/Nova/MAChuge.vtf"
+	"$surfaceprop" "metal"
+	"$model" 1
+}

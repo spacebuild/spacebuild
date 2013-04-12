@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/Humans/jumpsuit_sheet"
+	"$bumpmap" "models/Humans/jumpsuit_sheet_nor"
+	$halflamber 1
+}

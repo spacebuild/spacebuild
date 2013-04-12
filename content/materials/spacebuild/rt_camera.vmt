@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+	"$model" 1
+	"$basetexture" "_rt_Camera"
+	"%tooltexture" "dev/dev_monitor"
+	"$surfaceprop" "glass"
+}
+
+

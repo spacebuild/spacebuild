@@ -1,0 +1,15 @@
+"Height Transfer"
+{   
+	"1"		"models/cerus/modbridge/core/r-312.mdl"
+	"2"		"models/cerus/modbridge/core/rs-312.mdl"
+	"3"		"models/cerus/modbridge/core/rst-312.mdl"
+	"4"		"models/cerus/modbridge/core/rs-322.mdl"
+	"5"		"models/cerus/modbridge/core/rst-322l.mdl"
+	"6"		"models/cerus/modbridge/core/rst-322r.mdl"
+	"7"		"models/cerus/modbridge/core/rs-332.mdl"
+	"8"		"models/cerus/modbridge/core/rst-332.mdl"
+	"9"		"models/cerus/modbridge/core/rst-332c.mdl"
+	"10"		"models/cerus/modbridge/core/rso-332f.mdl"
+	"11"		"models/cerus/modbridge/core/rst-332cf.mdl"
+	"12"		"models/cerus/modbridge/core/rst-332f.mdl"
+} 

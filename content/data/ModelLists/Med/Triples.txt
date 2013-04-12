@@ -1,0 +1,9 @@
+"Triples"
+{
+	"1"		"models/Slyfo/thhull.mdl"
+	"2"		"models/Slyfo/thlong.mdl"
+	"3"		"models/Slyfo/thnoramp.mdl"
+	"4"		"models/Slyfo/thramp.mdl"
+	"5"		"models/Slyfo/thcockpit.mdl"
+	"6"		"models/Slyfo/thhangar.mdl"
+}

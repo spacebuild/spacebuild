@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture"	"vgui/entities/THBombM"
+	"$vertexcolor"	1
+	"$vertexalpha"	0
+	"$nolod"	1
+}
+

@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" 	"VGUI/entities/sbep_sideassaultpod"
+	"$vertexalpha" 	0
+	"$vertexcolor" 	1
+	"$nolod"	1
+}

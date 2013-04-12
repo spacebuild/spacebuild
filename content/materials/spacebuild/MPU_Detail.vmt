@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/MPU_Detail"
+	"$surfaceprop" "metal"
+	"$model"     1
+
+}

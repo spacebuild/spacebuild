@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/ps_grass"
+	"$surfaceprop" "grass"
+	"$selfillum" 0
+	"$model" 1
+	"$halflambert" 1
+}
+
+

@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "spacebuild/lighto"
+	"$translucent" 1
+	"$additive" 1
+	"$model" 1
+}

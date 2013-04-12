@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/metal_boron_plating3"
+	"$surfaceprop" "metal"
+	"$model"     1
+}

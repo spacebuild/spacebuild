@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/iron_rails"
+	"$surfaceprop" "metal"
+	"$model" 1
+	 "$phong"     "1"
+	"$halflambert"	1
+ 	"$phongexponent"   "60"
+ 	"$phongboost"   "0.5"
+ 	"$phongfresnelranges"   "[.5 .8 1]"
+}
+
+

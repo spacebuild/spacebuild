@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/glass"
+	"$translucent" 1
+	"$nocull" 0	
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ 0.9 0.9 1.0 ]"
+	"$selfillum" 0
+	"$model" 1
+}
+
+

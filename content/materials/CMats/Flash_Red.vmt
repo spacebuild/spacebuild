@@ -1,0 +1,17 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "CMats/Flash_Red"
+	"$selfillum" 1
+	"$model" 1
+
+	 "Proxies"
+   {
+      "AnimatedTexture"
+      {
+         "animatedtexturevar" "$basetexture"
+         "animatedtextureframenumvar" "$frame"
+         "animatedtextureframerate" 15
+      }
+   }
+
+}

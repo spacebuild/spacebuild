@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture"	"vgui/entities/SF-SRailgun"
+	"$vertexcolor"	1
+	"$vertexalpha"	0
+	"$nolod"	1
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/papertex1.vtf"
+	"$surfaceprop" "metal"
+	"$model" 1
+}

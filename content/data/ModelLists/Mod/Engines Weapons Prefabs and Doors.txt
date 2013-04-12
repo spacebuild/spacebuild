@@ -1,0 +1,12 @@
+"EWP"
+{   
+	"1"		"models/cerus/modbridge/misc/engines/eng_sq11b.mdl"
+	"2"		"models/cerus/modbridge/misc/weapons/wep_ion1.mdl"
+	"3"		"models/cerus/modbridge/core/prefab/crew_331.mdl"
+	"4"		"models/cerus/modbridge/misc/doors/door11b.mdl"
+	"5"		"models/cerus/modbridge/misc/doors/door11a.mdl"
+	"6"		"models/cerus/modbridge/misc/doors/door12a.mdl"
+	"7"		"models/cerus/modbridge/misc/doors/door13a.mdl"
+	"8"		"models/cerus/modbridge/misc/doors/door23a.mdl"
+	"9"		"models/cerus/modbridge/misc/doors/door33a.mdl"
+}	

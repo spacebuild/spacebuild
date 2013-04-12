@@ -1,0 +1,11 @@
+"Ships"
+{
+		"1"		"models/smallbridge/ships/sbshuttlec1e1.mdl"
+		"2"		"models/smallbridge/ships/sbshuttlec1e2.mdl"
+		"3"		"models/smallbridge/ships/sbshuttlec2e2.mdl"
+		"4"		"models/smallbridge/ships/sbfrigate1.mdl"
+		"5"		"models/smallbridge/ships/hysteria_galapagos.mdl"
+		"6"		"models/smallbridge/ships/wilkie1020.mdl"
+		"7"		"models/smallbridge/ships/steakknife.mdl"
+		"8"		"models/smallbridge/ships/matthew0623_hydra.mdl"
+}

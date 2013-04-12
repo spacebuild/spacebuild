@@ -162,11 +162,9 @@ hook.Add("Initialize", "spacebuild_init_server", init)
 
 local function addSun(data)
 	MsgN("Spawn Sun")
-	--PrintTable(data)
 	--TODO spawn sunEntity
 	local ent = data.ent
 	sun = class.new("SunEnvironment", ent:EntIndex(), data)
-	--PrintTable(sun)
 end
 
 local function spawnEnvironmentEnt(name, pos, angles)

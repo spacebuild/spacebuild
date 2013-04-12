@@ -29,6 +29,7 @@ require('quaternion')
 if SERVER then
 	function ENT:Initialize()
 		if SERVER then
+			self.NoGrav = true
 			self:PhysicsInit(SOLID_VPHYSICS)
 			self:SetMoveType(MOVETYPE_VPHYSICS)
 			self:SetSolid(SOLID_VPHYSICS)
@@ -91,18 +92,29 @@ if SERVER then
 		local ang = self:GetAngles()
 		local curr = quaternion.create(ang.p, ang.y, ang.r):normalise()
 
-		if curr ~= self.targquat and self.active == true then
+		if curr:normalise() ~= self.targquat:normalise() and self.active == true then
 
 			local phys = self:GetPhysicsObject()
 
-			local currquat = self.currquat or quaternion.create()
-			local targquat = self.targquat or quaternion.create()
+			self.currquat = quaternion.create(self)
+			self.targquat = quaternion.create(self)
 
-			--local resQuat = currquat:conj() * targquat
-			local resQuat = quaternion.lerp(currquat, targquat, self.smoothJazz)
+			local currquat = quaternion.create(self)
+			local targquat = quaternion.create(self)
 
-			local AQuat = resQuat
-			local AQuatAng = AQuat:normalise():toAngle()
+
+			local pQuat = quaternion.qRotation( targquat:right(), 0.05 )
+			local yQuat = quaternion.qRotation( targquat:right(), 0 )
+			local rQuat = quaternion.qRotation( targquat:right(), 0 )
+
+			targquat = ( pQuat * yQuat * rQuat ) * targquat
+
+			local resQuat = targquat/currquat
+
+			--local resQuat = quaternion.lerp(currquat, targquat, self.smoothJazz):normalise()
+
+			--local AQuatAng = resQuat:toAngle()
+			--[[local AQuatAng = resQuat:normalise():toAngle()
 			local p, y, r = AQuatAng[1], AQuatAng[2], AQuatAng[3]
 
 			if p ~= p or y ~= y or r ~= r then return end -- Best first 3 thinks produce nan for p,y and r. NaN is the only thing that x ~= x :D
@@ -113,18 +125,21 @@ if SERVER then
 			phys:SetVelocity(velociraptor) -- Correct for setAngles stopping velocity
 			phys:AddAngleVelocity(-phys:GetAngleVelocity()) -- Negate any angular velocity from before the setAngles
 
-			self.smoothJazz = self.smoothJazz + 0.01
-			self:NextThink(CurTime() + 1)
+			if self.smoothJazz < 1 then
+				self.smoothJazz = self.smoothJazz + 0.01
+			end
+                       ]]
 
-			--local Tq = phys:WorldToLocal( Vector(VQuat[1],VQuat[2],VQuat[3]) + phys:GetPos() )
-			--local Force = (Tq*1000 - phys:GetAngleVelocity()*20)*phys:GetInertia()
+			--self:NextThink(CurTime() + 1)
+
+			local rv = quaternion.rotationVector(resQuat)
+			local Tq = phys:WorldToLocal( Vector( rv[1], rv[2], rv[3] ) + phys:GetPos() )
+			local Force = (Tq - phys:GetAngleVelocity()*0.05)*phys:GetInertia()
 
 			--print("Type:",type(Force))
 
-			--self:applyTorque( Force:GetNormalized() * 50 )
+			self:applyTorque(Force)
 
-			--print(self.smoothJazz)
-			--self.smoothJazz = self.smoothJazz + 0.01
 		end
 	end
 
@@ -132,6 +147,7 @@ if SERVER then
 
 		print(self:GetPhysicsObject():GetAngles())
 		local ang = self:GetAngles()
+		self:GetPhysicsObject():SetMass(5000)
 		self.currquat = quaternion.create(ang.p, ang.y, ang.r):normalise()
 		self.active = true
 		self.smoothJazz = 0

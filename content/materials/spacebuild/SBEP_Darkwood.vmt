@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/SBEP_Darkwood"
+	"$surfaceprop" "wood"
+	"$vertexcolor" 		1 
+	"$nolod" 			1 
+	"$model"			1
+}

@@ -1,4 +1,5 @@
 --
+--
 -- Created by IntelliJ IDEA.
 -- User: Ash
 -- Date: 03/01/13
@@ -16,6 +17,8 @@ local math = math
 local setmetatable = setmetatable
 local type = type
 local string = string
+local Vector = Vector
+local Angle = Angle
 
 local ipairs = ipairs
 local pcall = pcall
@@ -57,9 +60,40 @@ quat.type = "quaternion" -- So we can filter/check for it in later operations
 --local math = math   -- Why is this even here?
 --local setmetatable = setmetatable
 
-local newQuat = function( w, i, j, k )     --Generic Builder
+function newQuat( w, i, j, k )     --Generic Builder
 
     local status, err = pcall( function()
+
+		if type(w) == "Entity" then
+			local ent = w
+
+			local ang = ent:GetAngles()
+			local p, y, r = ang.p, ang.y, ang.r
+			p = toRadians(p*0.5)
+			y = toRadians(y*0.5)
+			r = toRadians(r*0.5)
+			return newQuat(cos(y), 0, 0, sin(y) )*(newQuat(cos(p), 0, sin(p), 0) * newQuat(cos(r), sin(r), 0, 0)  )
+			--[[local qr = newQuat(cos(r), sin(r), 0, 0)
+			local qp = newQuat(cos(p), 0, sin(p), 0)
+			local qy = newQuat(cos(y), 0, 0, sin(y) )
+			local pr = qp*qr
+			return qy*pr     ]]
+		end
+
+		if type(w) == "Angle" then
+			local ang = w
+			local p, y, r = ang[1], ang[2], ang[3]
+			p = toRadians(p*0.5)
+			y = toRadians(y*0.5)
+			r = toRadians(r*0.5)
+			local qr = quaternion.newQuat(cos(r), sin(r), 0, 0)
+			local qp = quaternion.newQuat(cos(p), 0, sin(p), 0)
+			local qy = quaternion.newQuat(cos(y), 0, 0, sin(y) )
+			local pr = qp*qr
+			local qpr = qy*pr
+			w,i,j,k = qpr.w,qpr.i,qpr.j,qpr.k
+		end
+
 
         if type(i) == "Vector" then
             i,j,k = i.x,i.y,i.z
@@ -90,6 +124,18 @@ end
 function create(w, i, j, k)
     return newQuat(w,i,j,k)
 end
+
+function rotationVector(q)
+
+	local l2 = q:getNormSq()
+	local m2 = math.max( q.i*q.i + q.j*q.j + q.k*q.k, 0 )
+	if l2 == 0 or m2 == 0 then return { 0, 0, 0 } end
+	local s = toDegrees(2 * acos( math.Clamp( q.i / sqrt(l2), -1, 1 ) ) )
+	if s > 180 then s = s - 360 end
+	s = s / sqrt(m2)
+	return { q.i * s, q.j * s, q.k * s }
+end
+
 
 --========= Now for some operator metamethods =========--
 
@@ -169,9 +215,20 @@ function quat.__div(q1,q2)          -- FINE I added it ok?
             q1.w/q2, q1.i/q2, q1.j/q2, q1.k/q2
 
         )
-    elseif q1.type == "quaternion" and q2.type == "quaternion" then -- Yay Quat division, my fav
+    elseif q1 and q2 and q1.type == "quaternion" and q2.type == "quaternion" then -- Yay Quat division, my fav
 
-        return q1*q2:conj()
+		local lhs1, lhs2, lhs3, lhs4 = q1.w,q1.i,q1.j,q1.k
+		local rhs1, rhs2, rhs3, rhs4 = q2.w,q2.i,q2.j,q2.k
+		local l = rhs1*rhs1 + rhs2*rhs2 + rhs3*rhs3 + rhs4*rhs4
+		return newQuat(
+			( lhs1 * rhs1 + lhs2 * rhs2 + lhs3 * rhs3 + lhs4 * rhs4)/l,
+			(-lhs1 * rhs2 + lhs2 * rhs1 - lhs3 * rhs4 + lhs4 * rhs3)/l,
+			(-lhs1 * rhs3 + lhs3 * rhs1 - lhs4 * rhs2 + lhs2 * rhs4)/l,
+			(-lhs1 * rhs4 + lhs4 * rhs1 - lhs2 * rhs3 + lhs3 * rhs2)/l
+		)
+
+		--[[local rtn =  q1*q2:conj()
+		return rtn      ]]
 
     end
 end
@@ -205,7 +262,7 @@ function quat:normalise() --Standard
 end
 
 function quat:fromEuler(p,y,r) -- should make a quat from a euler angle. Just make a zero quat, (0,0,0,0) then run this on it with your angles.
-
+	--[[
     local p = toRadians(p)  /2
     local y = toRadians(y)  /2
     local r = toRadians(r)  /2
@@ -226,7 +283,28 @@ function quat:fromEuler(p,y,r) -- should make a quat from a euler angle. Just ma
 
     self:normalise() -- Normalise ourselves because why not?
 
-    return self  -- Return self so we can chain :D eg, q:fromEuler(p,y,r):toVec()
+    return self  -- Return self so we can chain :D eg, q:fromEuler(p,y,r):toVec()  ]]
+
+
+	local RAD = math.pi/180
+
+	local hPhi = (r * RAD) / 2;
+	local hTheta  = (y * RAD) / 2;
+	local hPsi = (p * RAD) / 2;
+
+	local sin_hPhi = math.sin(  hPhi)
+	local cos_hPhi = math.cos(  hPhi)
+	local sin_hTheta = math.sin(hTheta)
+	local cos_hTheta = math.cos(hTheta)
+	local sin_hPsi = math.sin(  hPsi)
+	local cos_hPsi = math.cos(  hPsi)
+
+	self.w = cos_hPhi * cos_hTheta * cos_hPsi + sin_hPhi * sin_hTheta * sin_hPsi
+	self.i = sin_hPhi * cos_hTheta * cos_hPsi - cos_hPhi * sin_hTheta * sin_hPsi
+	self.j = cos_hPhi * sin_hTheta * cos_hPsi + sin_hPhi * cos_hTheta * sin_hPsi
+	self.k = cos_hPhi * cos_hTheta * sin_hPsi - sin_hPhi * sin_hTheta * cos_hPsi
+
+	return self
 
 end
 
@@ -235,45 +313,87 @@ function quat:toVec()
 end
 
 function quat:toAngle()
+	--[[
+    --local q = self:normalise()
 
-    local q = self:normalise()
+	local q = self
 
-    local test = q.i*q.j + q.k*q.w
-    if (test > 0.499) then -- singularity at north pole
-        local heading = 2 * atan2(q.i,q.w)
+	local sqw = q.w * q.w
+	local sqx = q.i * q.i
+	local sqy = q.j * q.j
+	local sqz = q.k * q.k
+
+	local unit = sqx + sqy + sqz + sqw
+    local test = q.i*q.j - q.k*q.w
+
+    if (test > 0.499 * unit) then -- singularity at north pole
+        --local heading = 2 * atan2(q.i,q.w)
+		local heading = 2 * atan2(q.w, q.i)
         local attitude = math.pi/2
-        local bank = 0
+        local bank = math.pi
         return {toDegrees(attitude),toDegrees(heading),toDegrees(bank)}
 
-    elseif (test < -0.499) then-- singularity at south pole
-        local heading = -2 * atan2(q.x,q.w)
-        local attitude = - math.pi/2
-        local bank = 0
+    elseif (test < -0.499 * unit) then-- singularity at south pole
+        --local heading = atan2(q.i,q.w) *-2
+		local heading = atan2(q.w, q.i) *-2
+        local attitude = (math.pi*-1)/2
+        local bank = math.pi
         return {toDegrees(attitude),toDegrees(heading),toDegrees(bank)}
     else
 
         local sqx = q.i*q.i
         local sqy = q.j*q.j
         local sqz = q.k*q.k
-        local heading = atan2(2*q.j*q.w-2*q.i*q.k , 1 - 2*sqy - 2*sqz)
-        local attitude = asin(2*test)
-        local  bank = atan2(2*q.i*q.w-2*q.j*q.k , 1 - 2*sqx - 2*sqz)
+        --local heading = atan2(2*q.j*q.w-2*q.i*q.k , sqx - sqy - sqz + sqw)
+        --local attitude = asin(2*test/unit)
+        --local bank = atan2(2*q.i*q.w-2*q.j*q.k , -sqx + sqy - sqz + sqw)
+
+		local heading = atan2(  2 * (q.w * q.k + q.i * q.j) , 1 - 2 * (sqy + sqz) )
+
+		local attitude = asin(  2 *  test )
+
+		local bank = atan2(  2 * (q.w * q.i + q.j * q.k) , 1 - 2 * (sqx + sqy) )
 
         return {toDegrees(attitude),toDegrees(heading),toDegrees(bank)}
 
-    end
+    end       ]]
+
+	local q = self
+
+	local sqw = q.w * q.w
+	local sqx = q.i * q.i
+	local sqy = q.j * q.j
+	local sqz = q.k * q.k
+
+	local unit = sqx + sqy + sqz + sqw
+
+	if unit == 0 then return {0,0,0} end
+	local q1, q2, q3, q4 = q.w/unit, q.i/unit, q.j/unit, q.k/unit
+
+	local x = Vector(q1*q1 + q2*q2 - q3*q3 - q4*q4,
+		2*q3*q2 + 2*q4*q1,
+		2*q4*q2 - 2*q3*q1)
+
+	local y = Vector(2*q2*q3 - 2*q4*q1,
+		q1*q1 - q2*q2 + q3*q3 - q4*q4,
+		2*q2*q1 + 2*q3*q4)
+
+	local ang = x:Angle()
+	if ang.p > 180 then ang.p = ang.p - 360 end
+	if ang.y > 180 then ang.y = ang.y - 360 end
+
+	local yyaw = Vector(0,1,0)
+	yyaw:Rotate(Angle(0,ang.y,0))
+
+	local roll = toDegrees( acos(math.Clamp(y:Dot(yyaw), -1, 1)) )
+
+	local dot = q2*q1 + q3*q4
+	if dot < 0 then roll = -roll end
+
+	return {ang.p, ang.y, roll}
+
 
 end
-
---[[function quat:dot(q2)
-    local q1 = {self.w, self.i,self.j,self.k}
-    local ret = 0
-    for i = 1, #q1 do
-        ret = ret + q1[i] * q2[i]
-    end
-    return ret
-
-end ]]
 
 function quat:dot(q2)
     return self.i * q2.i + self.j * q2.j + self.k * q2.k + self.w * q2.w
@@ -332,3 +452,52 @@ function slerp(q1,q2,smoothJazz)
 
 
 end
+
+
+--==== Some right forward up stuf ====
+
+function quat:right()
+
+	local this1, this2, this3, this4 = self.w, self.i, self.j, self.k
+	local t2, t3, t4 = this2 * 2, this3 * 2, this4 * 2
+	return Vector(
+		t4 * this1 - t2 * this3,
+		this2 * this2 - this1 * this1 + this4 * this4 - this3 * this3,
+		- t2 * this1 - t3 * this4
+	)
+
+end
+
+function quat:up()
+
+	local this1, this2, this3, this4 = self.w, self.i, self.j, self.k
+	local t2, t3, t4 = this2 * 2, this3 * 2, this4 * 2
+	return Vector(
+		t3 * this1 + t2 * this4,
+		t3 * this4 - t2 * this1,
+		this1 * this1 - this2 * this2 - this3 * this3 + this4 * this4
+	)
+
+end
+
+function quat:forward()
+
+	local this1, this2, this3, this4 = self.w, self.i, self.j, self.k
+	local t2, t3, t4 = this2 * 2, this3 * 2, this4 * 2
+	return Vector(
+		this1 * this1 + this2 * this2 - this3 * this3 - this4 * this4,
+		t3 * this2 + t4 * this1,
+		t4 * this2 - t3 * this1
+	)
+
+end
+
+function qRotation(axis, ang)
+
+	local ax = Vector(axis[1], axis[2], axis[3])
+	ax:Normalize()
+	local ang2 = toRadians(ang*0.5)
+	return newQuat( cos(ang2), ax.x*sin(ang2), ax.y*sin(ang2), ax.z*sin(ang2) )
+
+end
+

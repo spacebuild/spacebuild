@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "spacebuild/player/asgard_sheet"
+	"$surfaceprop" "flesh"
+	"$model" 1 
+}
