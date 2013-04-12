@@ -30,7 +30,7 @@ TOOL.SPE = {}
 
 if SERVER then
 	local function AddMaterials()
-		local files, directories = GAMEMODE.wrappers:Find("file","materials/sprites/sb4_partassembler/*", "GAME" )
+		local files = GAMEMODE.wrappers:Find("file","materials/sprites/sb4_partassembler/*", "GAME" )
 		for k,v in pairs(files) do
 			local sFile = "materials/sprites/sb4_partassembler/"..v
 			resource.AddFile(sFile)
