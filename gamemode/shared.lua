@@ -31,9 +31,9 @@ local BaseClass = BaseClass
 local GM = GM
 
 GM.Name 	= "Spacebuild"
-GM.Author 	= "SB Dev Team"
-GM.Email 	= "spacebuild.dev@gmail.com"
-GM.Website 	= "www.snakesvx.net"
+GM.Author 	= "SB Dev Team | INP Games"
+GM.Email 	= "spacebuild.dev@gmail.com | admin@inpgames.com"
+GM.Website 	= "www.snakesvx.net | www.inpgames.com"
 GM.Version 	= "1"
 
 GM.convars 		= {}
