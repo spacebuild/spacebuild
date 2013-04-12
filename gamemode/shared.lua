@@ -21,7 +21,12 @@ local GetConVar = GetConVar
 local game = game
 local tonumber = tonumber
 
-DeriveGamemode("sandbox")
+--
+-- Make BaseClass available
+--
+DEFINE_BASECLASS( "gamemode_base" )
+
+local BaseClass = BaseClass
 
 local GM = GM
 
@@ -48,6 +53,11 @@ GM.convars.log = {
 
 -- Old stuff
 
+function GM:GetBaseClass()
+	return BaseClass
+end
+
+include( "player_class/player_terran.lua" )
 include("shared/wrappers.lua")
 include("shared/const.lua")
 include("shared/util.lua")

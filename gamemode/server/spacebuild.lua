@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 local GM = GM
 
+local BaseClass = GM:GetBaseClass()
+
 local timer = timer
 local const = GM.constants
 local convars = GM.convars
@@ -57,7 +59,11 @@ local function NoClipCheck(ply)
 	end
 end
 
-local function sbThink()
+--[[---------------------------------------------------------
+   Name: gamemode:Think( )
+   Desc: Called every frame
+-----------------------------------------------------------]]
+function GM:Think( )
 	time = CurTime()
 	for _, ply in pairs(player.GetAll()) do
 		-- RD
@@ -106,7 +112,6 @@ local function sbThink()
 		end
 	end
 end
-hook.Add("Think", "spacebuild_think", sbThink)
 
 local to_sync
 net.Receive("SBRU", function(bitsreceived, ply)
@@ -115,7 +120,16 @@ net.Receive("SBRU", function(bitsreceived, ply)
 	to_sync:send(0, ply) -- Send fully to client on request :)
 end)
 
-local function spawn(ply)
+
+
+--[[---------------------------------------------------------
+   Name: gamemode:PlayerSpawn( )
+   Desc: Called when a player spawns
+-----------------------------------------------------------]]
+function GM:PlayerSpawn( ply )
+
+	player_manager.SetPlayerClass( ply, "player_terran" )
+
 	if not ply.ls_suit or not ply.ls_suit.reset then
 		ply.ls_suit = class.new("PlayerSuit", ply)
 	end
@@ -128,26 +142,39 @@ local function spawn(ply)
 			end
 		end)
 	end
+	BaseClass.PlayerSpawn( self, ply )
+
 end
 
-local function initial_spawn(ply)
+--[[---------------------------------------------------------
+   Called once on the player's first spawn
+-----------------------------------------------------------]]
+function GM:PlayerInitialSpawn( ply )
 	if not ply.ls_suit or not ply.ls_suit.reset then
 		ply.ls_suit = class.new("PlayerSuit", ply)
 	end
 	ply.ls_suit:reset()
+
+	BaseClass.PlayerInitialSpawn( self, ply )
+
 end
 
+--[[---------------------------------------------------------
+   Name: gamemode:PlayerNoClip( player, bool )
+   Desc: Player pressed the noclip key, return true if
+		  the player is allowed to noclip, false to block
+-----------------------------------------------------------]]
+function GM:PlayerNoClip( ply, on )
 
+	-- Don't allow if player is in vehicle
+	if ( ply:InVehicle() ) then return false end
 
-hook.Add("PlayerSpawn", "spacebuild_spawn", spawn)
-hook.Add("PlayerInitialSpawn", "spacebuild_initial_spawn", initial_spawn)
+	-- Always allow in single player
+	if ( game.SinglePlayer() ) then return true end
 
-
-local function PlayerNoClip(ply)
 	return not (GM:onSBMap() and ply.environment and ply.environment == GM:getSpace() and convars.noclip.get() and not AllowAdminNoclip(ply) and convars.planetnocliponly.get())
-end
 
-hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
+end
 
 -- Spacebuild
 
@@ -250,7 +277,12 @@ local function SpawnEnvironments()
 	end
 end
 
-local function Register_Environments_Data()
+
+--[[---------------------------------------------------------
+   Name: gamemode:InitPostEntity( )
+   Desc: Called as soon as all map entities have been spawned
+-----------------------------------------------------------]]
+function GM:InitPostEntity( )
 	MsgN("Registering environment info")
 	local entities
 	local data
@@ -269,8 +301,6 @@ local function Register_Environments_Data()
 	SpawnEnvironments()
 end
 
-hook.Add("InitPostEntity", "sb4_load_data", Register_Environments_Data)
-
 
 local ignoredClasses = {}
 ignoredClasses["func_door"] = true
@@ -288,7 +318,7 @@ function GM:registerIgnoredEntityClass(class)
 	ignoredClasses[class] = true
 end
 
-local function entityRemoved(ent)
+function GM:EntityRemoved(ent)
 	if ent.rdobject then
 		ent.rdobject:unlink()
 		MsgN("Removing RD object pre-hook")
@@ -297,5 +327,3 @@ local function entityRemoved(ent)
 		MsgN("Removing SB Environment object pre-hook")
 	end
 end
-
-hook.Add("EntityRemoved", "RDSBEntRemoved", entityRemoved)

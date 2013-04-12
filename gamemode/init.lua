@@ -30,6 +30,8 @@ include("client/resources.lua")
 -- Start serverside code
 include("shared.lua") --Initialize the shared code first
 
+local BaseClass = GM:GetBaseClass()
+
 local GM = GM
 
 CreateConVar("SB_NoClip", "1")

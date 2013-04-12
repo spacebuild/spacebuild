@@ -22,6 +22,8 @@ AddCSLuaFile("spacebuild.lua")
 AddCSLuaFile("spawnmenu.lua")
 AddCSLuaFile("hud.lua")
 AddCSLuaFile("extensions.lua")
+AddCSLuaFile("sb4_partdata.lua")
+AddCSLuaFile("scoreboard.lua")
 
 
 

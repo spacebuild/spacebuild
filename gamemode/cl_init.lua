@@ -14,8 +14,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+local GM = GM
 
 include("shared.lua") --Initialize the shared code first
+
+local BaseClass = GM:GetBaseClass()
 
 CreateConVar("SB_TemperatureScale", "K") -- Set temperature scale, default = K(elvin), other values are C(elcius) and F(ahrenheit)
 
