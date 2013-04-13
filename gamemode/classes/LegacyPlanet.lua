@@ -227,13 +227,13 @@ end
 
 function C:setEnvironmentOnEntity(ent, environment)
 	if ent.environment ~= environment then
-		GM:callOnLeaveEnvironmentHook(ent.environment, ent)
+		hook.Call("OnLeaveEnvironment", GM, ent.environment, ent)
 		ent.environment = environment
 		environment:updateEnvironmentOnEntity(ent)
 		if ent.ls_suit then
 			ent.ls_suit:setEnvironment(environment)
 		end
-		GM:callOnEnterEnvironmentHook(self, ent)
+		hook.Call("OnEnterEnvironment", GM, self, ent)
 	end
 end
 

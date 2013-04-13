@@ -1,0 +1,7 @@
+    "UnlitGeneric" 
+    { 
+  "$basetexture"      "maps/gm_new_worlds" 
+  "$ignorez"      1 
+  "$vertexcolor"       1 
+  "$vertexalpha"       1 
+    }

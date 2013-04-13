@@ -63,23 +63,6 @@ function GM.extensions:get(name)
 	return self[name] or false
 end
 
---[[for k, v in pairs(exts) do
-	EXT = {}
-	local ext = EXT
-	include(basePath .. v .. "/init.lua")
-	EXT = nil
-	if ext and ext.init then
-		ext:init()
-		if ext.getName and ext:getName() and not GM.extensions[ext:getName()] then
-			GM.extensions[ext:getName()] =  ext
-			print("Loaded and registered extension: "..tostring(ext:getName()))
-		end
-	end
-
-end   ]]
-
---sb.core.extensions = util.createReadOnlyTable(sb.core.extensions)
-
 
 
 

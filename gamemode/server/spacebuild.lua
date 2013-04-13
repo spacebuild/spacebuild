@@ -128,20 +128,6 @@ end)
 -----------------------------------------------------------]]
 function GM:PlayerSpawn( ply )
 
-	player_manager.SetPlayerClass( ply, "player_terran" )
-
-	if not ply.ls_suit or not ply.ls_suit.reset then
-		ply.ls_suit = class.new("PlayerSuit", ply)
-	end
-	ply.ls_suit:reset()
-
-	if GM:onSBMap() and ply:Team() ~= TEAM_SPECTATOR then
-		timer.Simple(5, function()
-			if ply.ls_suit.environment == nil then
-				ply.ls_suit:setEnvironment(GM:getSpace())
-			end
-		end)
-	end
 	BaseClass.PlayerSpawn( self, ply )
 
 end
@@ -150,10 +136,8 @@ end
    Called once on the player's first spawn
 -----------------------------------------------------------]]
 function GM:PlayerInitialSpawn( ply )
-	if not ply.ls_suit or not ply.ls_suit.reset then
-		ply.ls_suit = class.new("PlayerSuit", ply)
-	end
-	ply.ls_suit:reset()
+
+	player_manager.SetPlayerClass( ply, "player_terran" )
 
 	BaseClass.PlayerInitialSpawn( self, ply )
 

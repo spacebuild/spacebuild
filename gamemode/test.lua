@@ -19,7 +19,7 @@ AddCSLuaFile()
 require("luaunit")
 
 include("tests/class.lua")
-include("tests/quaternion.lua")
+--include("tests/quaternion.lua")
 
 luaunit.run() -- will execute all tests
 

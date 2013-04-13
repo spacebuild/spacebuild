@@ -1,6 +1,27 @@
 local GM = GM
 local class = GM.class
 local const = GM.constants
+local internal = GM.internal
+
+internal.hud = {}
+
+function GM:registerHUDComponent(name, component)
+	internal.hud[name] = component
+end
+
+function GM:getHudComponentByName(name)
+	return internal.hud[name]
+end
+
+function GM:getHudComponentByClass(classname)
+	local ret = {}
+	for k, v in pairs(internal.hud) do
+	   	if v.isA and v:isA(classname) then
+		   table.insert(ret, v)
+		end
+	end
+	return ret
+end
 
 local surface, Color, Vector, LocalPlayer, math, ScrH, ScrW, string, FrameTime, pairs, os = surface, Color, Vector, LocalPlayer, math, ScrH, ScrW, string, FrameTime, pairs, os
 
