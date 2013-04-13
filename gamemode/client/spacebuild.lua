@@ -27,8 +27,6 @@ local to_sync
 
 local class = GM.class
 
-local player_suit = class.new("PlayerSuit")
-
 net.Receive("SBRU", function(bitsreceived)
 	local syncid = net.readShort()
 	to_sync = int.device_table[syncid]
@@ -37,19 +35,19 @@ net.Receive("SBRU", function(bitsreceived)
 	end
 	if to_sync then
 		to_sync:receive()
-		--log.table(to_sync, "SBRU", log.DEBUG)
 	end
 end)
 
 net.Receive("SBRPU", function(bitsreceived)
 	local suit = GM:getPlayerSuit()
-	local env = suit:getEnvironment()
-	suit:receive()
-	if suit:getEnvironment() ~= env then
-		GM:callOnLeaveEnvironmentHook(env, nil)
-		GM:callOnEnterEnvironmentHook(suit:getEnvironment(), nil)
+	if suit then
+		local env = suit:getEnvironment()
+		suit:receive()
+		if suit:getEnvironment() ~= env then
+			hook.Call("OnLeaveEnvironment", GM, env, nil)
+			hook.Call("OnEnterEnvironment", GM, suit:getEnvironment(), nil)
+		end
 	end
-	--log.table(suit, "SBRPU", log.DEBUG)
 end)
 
 net.Receive("SBEU", function(bitsreceived)
@@ -62,7 +60,6 @@ net.Receive("SBEU", function(bitsreceived)
 		GM:addEnvironment(environment_object)
 	end
 	environment_object:receive()
-	--log.table(environment_object, "SBEU", log.DEBUG)
 end)
 
 net.Receive("SBMU", function(bitsreceived)
@@ -89,11 +86,10 @@ net.Receive("SBMU", function(bitsreceived)
 		end
 	end
 	mod_object:receive()
-	--log.table(mod_object, "SBMU", log.DEBUG)
 end)
 
 function GM:getPlayerSuit()
-	return player_suit
+	return LocalPlayer().ls_suit
 end
 
 local function RenderEffects()
@@ -117,14 +113,14 @@ end
 hook.Add("Initialize", "SBClientInit", InitGame)
 
 
-GM:addOnEnterEnvironmentHook("SB_EnterMessage", function(environment)
+function GM:OnEnterEnvironment(environment, ent)
 	if environment:hasName() then
 		chat.AddText(Color(255, 255, 255), "Entering ", Color(100, 255, 100), environment:getName())
 	end
-end)
+end
 
---[[sb.addOnLeaveEnvironmentHook("SB_LeaveMessage", function(environment)
+--[[function GM:OnLeaveEnvironment(environment)
     if environment:hasName() then
         chat.AddText( Color( 255,255,255 ), "Leaving ", Color( 100,255,100 ), environment:getName() )
     end
-end)]]
+end]]

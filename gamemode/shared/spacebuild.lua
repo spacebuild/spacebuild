@@ -41,10 +41,6 @@ int.environments = {}
 int.mod_tables = {}
 int.mod_tables.color = {}
 int.mod_tables.bloom = {}
-int.sb_hooks = {}
-int.sb_hooks.onEnter = {}
-int.sb_hooks.onLeave = {}
-int.sb_hooks.onToolCreated = {}
 
 GM.RDTYPES = {
 	STORAGE = 1,
@@ -77,6 +73,10 @@ function GM:registerDevice(ent, rdtype)
 		net.writeShort(entid)
 		net.SendToServer()
 	end
+	hook.Call("onDeviceAdded", GM, ent)
+end
+
+function GM:onDeviceAdded(ent)
 end
 
 function GM:removeDevice(ent)
@@ -86,6 +86,10 @@ function GM:removeDevice(ent)
 		ent.rdobject:unlink()
 	end
 	ent.rdobject = nil
+	hook.Call("onDeviceRemoved", GM, ent)
+end
+
+function GM:onDeviceRemoved(ent)
 end
 
 function GM:getDeviceInfo(entid)
@@ -122,11 +126,20 @@ end
 
 function GM:addEnvironment(environment)
 	int.environments[environment:getID()] = environment
+	hook.Call("onEnvironmentAdded", GM, environment)
+end
+
+function GM:onEnvironmentAdded(environment)
 end
 
 function GM:removeEnvironment(environment)
 	int.environments[environment:getID()] = nil
+	hook.Call("onEnvironmentRemoved", GM, environment)
 end
+
+function GM:onEnvironmentRemoved(environment)
+end
+
 
 function GM:removeEnvironmentFromEntity(ent)
 	int.environments[ent:EntIndex()] = nil
@@ -172,51 +185,6 @@ function GM:canLink(ent1, ent2)
 	return self:isValidRDEntity(ent1) and self:isValidRDEntity(ent2) and ent1.rdobject:canLink(ent2.rdobject)
 end
 
-function GM:addOnEnterEnvironmentHook(name, func)
-	int.sb_hooks.onEnter[name] = func
-end
-
-function GM:removeOnEnterEnvironmentHook(name)
-	int.sb_hooks.onEnter[name] = nil
-end
-
-function GM:addOnLeaveEnvironmentHook(name, func)
-	int.sb_hooks.onLeave[name] = func
-end
-
-function GM:removeOnLeaveEnvironmentHook(name)
-	int.sb_hooks.onLeave[name] = nil
-end
-
-function GM:callOnEnterEnvironmentHook(environment, ent)
-	if environment then
-		for k, v in pairs(int.sb_hooks.onEnter) do
-			v(environment, ent)
-		end
-	end
-end
-
-function GM:callOnLeaveEnvironmentHook(environment, ent)
-	if environment then
-		for k, v in pairs(int.sb_hooks.onLeave) do
-			v(environment, ent)
-		end
-	end
-end
-
-function GM:addOnToolCreatedHook(toolname, func)
-	if not int.sb_hooks.onToolCreated[toolname] then int.sb_hooks.onToolCreated[toolname] = {} end
-	table.insert(int.sb_hooks.onToolCreated[toolname], func)
-end
-
-function GM:callOnToolCreatedHook(toolname, tool)
-	if int.sb_hooks.onToolCreated[toolname] then
-		for k, v in pairs(int.sb_hooks.onToolCreated[toolname]) do
-			v(tool)
-		end
-	end
-end
-
 -- Basic resources
 GM:registerResourceInfo(1, "energy", "Energy", { "ENERGY" })
 GM:registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
@@ -230,63 +198,65 @@ GM:registerResourceInfo(6, "co2", "Carbon Dioxide", { "GAS" })
 	Register hooks
 ]]
 
-GM:addOnToolCreatedHook("sb4_generators", function(tool)
-	local generators = {
-		{
-			Name = "Test Solar Panel",
-			Model = "models/props_phx/life_support/panel_medium.mdl",
-			EntityClass = "resource_generator_energy",
-			EntityDescription = "Solar panel used for testing"
-		},
-		{
-			Name = "Test Oxygen generator",
-			Model = "models/hunter/blocks/cube1x1x1.mdl",
-			EntityClass = "resource_generator_oxygen",
-			EntityDescription = "Oxygen generator used for testing"
-		},
-		{
-			Name = "Test Water Pump",
-			Model = "models/props_phx/life_support/gen_water.mdl",
-			EntityClass = "resource_generator_water",
-			EntityDescription = "Water pump used for testing"
+function GM:OnToolCreated(toolname, tool)
+	if toolname == "sb4_generators" then
+		local generators = {
+			{
+				Name = "Test Solar Panel",
+				Model = "models/props_phx/life_support/panel_medium.mdl",
+				EntityClass = "resource_generator_energy",
+				EntityDescription = "Solar panel used for testing"
+			},
+			{
+				Name = "Test Oxygen generator",
+				Model = "models/hunter/blocks/cube1x1x1.mdl",
+				EntityClass = "resource_generator_oxygen",
+				EntityDescription = "Oxygen generator used for testing"
+			},
+			{
+				Name = "Test Water Pump",
+				Model = "models/props_phx/life_support/gen_water.mdl",
+				EntityClass = "resource_generator_water",
+				EntityDescription = "Water pump used for testing"
+			}
 		}
-	}
-	tool:AddRDEntities(generators, "Generators")
+		tool:AddRDEntities(generators, "Generators")
 
-	local storages = {
-		{
-			Name = "Test Energy Storage",
-			Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-			EntityClass = "resource_storage_energy",
-			EntityDescription = "Test energy storage device"
-		},
-		{
-			Name = "Test Oxygen generator",
-			Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-			EntityClass = "resource_storage_oxygen",
-			EntityDescription = "Test oxygen storage device"
-		},
-		{
-			Name = "Test Water Storage",
-			Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-			EntityClass = "resource_storage_water",
-			EntityDescription = "Test water storage device"
-		},
-		{
-			Name = "Test Blackhole Storage",
-			Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-			EntityClass = "resource_storage_blackhole",
-			EntityDescription = "Test energy/oxygen/water storage device"
+		local storages = {
+			{
+				Name = "Test Energy Storage",
+				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+				EntityClass = "resource_storage_energy",
+				EntityDescription = "Test energy storage device"
+			},
+			{
+				Name = "Test Oxygen generator",
+				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+				EntityClass = "resource_storage_oxygen",
+				EntityDescription = "Test oxygen storage device"
+			},
+			{
+				Name = "Test Water Storage",
+				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+				EntityClass = "resource_storage_water",
+				EntityDescription = "Test water storage device"
+			},
+			{
+				Name = "Test Blackhole Storage",
+				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
+				EntityClass = "resource_storage_blackhole",
+				EntityDescription = "Test energy/oxygen/water storage device"
+			}
 		}
-	}
-	tool:AddRDEntities(storages, "Storage")
+		tool:AddRDEntities(storages, "Storage")
 
-	local networks = {}
-	tool:AddRDEntities(networks, "Resource Nodes")
+		local networks = {}
+		tool:AddRDEntities(networks, "Resource Nodes")
 
-	local ls_devices = {}
-	tool:AddRDEntities(ls_devices, "Life Support")
-end)
+		local ls_devices = {}
+		tool:AddRDEntities(ls_devices, "Life Support")
+	end
+end
 
 
 

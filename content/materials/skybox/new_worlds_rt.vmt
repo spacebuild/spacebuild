@@ -1,0 +1,9 @@
+"UnlitGeneric"
+ {
+ // Original shader: BaseTexture
+ "$basetexture" "skybox/new_worlds_rt"
+ // stops error: "Can't load skybox file skybox/(skyboxname) to build the default cubemap!" 
+ "$hdrbasetexture" "skybox/new_worlds_rt" 
+ "$nofog" "1"
+ "$ignorez" "1"
+ }

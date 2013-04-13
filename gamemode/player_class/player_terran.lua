@@ -18,6 +18,9 @@
 AddCSLuaFile()
 DEFINE_BASECLASS( "player_default" )
 
+local GM = GM
+local class = GM.class
+
 local PLAYER = {}
 
 --
@@ -33,6 +36,10 @@ function PLAYER:SetupDataTables()
 
 	-- as needed.
 
+end
+
+function PLAYER:Init()
+   self.Player.ls_suit = class.new("PlayerSuit", self.Player)
 end
 
 function PLAYER:Loadout()
@@ -77,6 +84,18 @@ function PLAYER:Spawn()
 
 	self.Player:SetPlayerColor( Vector( "0.24 0.34 0.41" ) )
 	self.Player:SetWeaponColor( Vector( "0.30 1.80 2.10" ) )
+
+	self.Player.ls_suit:reset()
+
+	if GM:onSBMap() and self.Player:Team() ~= TEAM_SPECTATOR then
+		local ply = self.Player
+		timer.Simple(5, function()
+			if ply.ls_suit.environment == nil then
+				ply.ls_suit:setEnvironment(GM:getSpace())
+			end
+		end)
+	end
+
 
 end
 
