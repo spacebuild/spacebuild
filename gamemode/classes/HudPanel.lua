@@ -80,12 +80,14 @@ end
 
 local oldRender = C.render
 function C:render()
-	oldRender(self)
-	if self.backgroundColor then
-		draw.RoundedBox(8, self:getX(), self:getY(), self:getWidth(), self:getHeight(), self:getBackgroundColor())
-	end
-	for k, v in pairs(self.children) do
-		v:render()
+	if self:isVisible() then
+		oldRender(self)
+		if self.backgroundColor then
+			draw.RoundedBox(8, self:getX(), self:getY(), self:getWidth(), self:getHeight(), self:getBackgroundColor())
+		end
+		for k, v in pairs(self.children) do
+			v:render()
+		end
 	end
 end
 

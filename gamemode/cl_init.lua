@@ -27,5 +27,6 @@ GM.convars.log = {
 	set = function(val) game.ConsoleCommand("SB_TemperatureScale", tostring(val)) end
 }
 
+include("vgui/init.lua")
 include("client/init.lua")
 include("test.lua")

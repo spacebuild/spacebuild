@@ -44,6 +44,7 @@ local oxygen, coolant, energy, temperature
 local envTemp, envGrav, envAtmos
 local white, orange, red, green, bg = const.colors.white, const.colors.orange, const.colors.red, const.colors.green, Color(50, 50, 50, 220)
 local suit, healthPanel, ammoPanel, breathBar, healthBar, armorBar, ammoBar, altBar
+local localplayer
 
 
 local function getColorBasedOnValue(component, value, maxvalue)
@@ -269,6 +270,130 @@ local drawClock = function(PosX, PosY, SizeX, SizeY, bg_color, value_color)
 	DrawText(PosX, PosY2, SizeX, "Seconds", value_color)
 end
 
+function GM:drawHealthAndArmor()
+	if localplayer and localplayer:Alive() and hook.Call("HUDShouldDraw", self, "SBHudHealth") then
+		suit = GM:getPlayerSuit()
+		if suit then
+			breathBar:setValue(Smoother(suit:getBreath(), breathBar:getValue(), 0.15))
+			breathBar:setMaxValue(suit:getMaxBreath())
+		end
+	   	if localplayer:Health() < 0 then health = 0 else health = LocalPlayer():Health() end
+	   	if localplayer:Armor() < 0 then armor = 0 else armor = LocalPlayer():Armor() end
+
+	   	healthBar:setValue(Smoother(health, healthBar:getValue(), 0.15))
+
+	   	--Calculate Armor.
+	   	armorBar:setValue(Smoother(armor, armorBar:getValue(), 0.15))
+
+		-- Render the panel
+		healthPanel:render()
+	end
+end
+
+function GM:drawAmmo()
+	if localplayer and localplayer:Alive() and hook.Call("HUDShouldDraw", self, "SBHudAmmo") then
+		--Check if the weapon is valid.
+		Weapon = LocalPlayer():GetActiveWeapon()
+		Ammo1Total = Weapon:IsValid() and LocalPlayer():GetAmmoCount(Weapon:GetPrimaryAmmoType()) or 0
+		if Weapon:IsValid() and WeaponS >= 1 then
+
+			Ammo1 = Weapon:Clip1() or 0
+			--Check if weapon has ammo
+			if Ammo1 > 0 then
+
+				--Add weapon's maximum ammo to the table.
+				if not WeaponTable[Weapon:GetClass()] then
+					WeaponTable[Weapon:GetClass()] = Ammo1
+				elseif Ammo1 > WeaponTable[Weapon:GetClass()] then
+					WeaponTable[Weapon:GetClass()] = Ammo1
+				end
+
+				Ammo1Max = WeaponTable[Weapon:GetClass()]
+
+				Ammo2 = Weapon:GetSecondaryAmmoType() and LocalPlayer():GetAmmoCount(Weapon:GetSecondaryAmmoType()) or 0
+			elseif Ammo1Total > 0 then
+				Ammo1 = 0
+			end
+
+			Ammo1S = Smoother(Ammo1, Ammo1S, 0.15)
+		elseif Weapon:IsValid() and (Weapon:Clip1() > 0 or Ammo1Total > 0) then
+			Ammo1S = 0.15
+		end
+
+		--Controller for showing the ammo bar.
+		if (Ammo1Total > 0 or Ammo1S > 0.1) and WeaponS < 1 and Smooth >= 1 then
+			WeaponS = Smoother(1.1, WeaponS, 0.15)
+		elseif Ammo1Total <= 0 and Ammo1S <= 0.1 and WeaponS > 0 then
+			WeaponS = Smoother(-0.1, WeaponS, 0.15)
+		elseif WeaponS > 1 then
+			WeaponS = 1
+		elseif WeaponS < 0 then
+			WeaponS = 0
+		end
+
+		ammoBar:setValue(Ammo1)
+		ammoBar:setMaxValue(Ammo1Max)
+
+		-- render the panel
+		ammoPanel:render()
+	end
+end
+
+function GM:drawSuitInfo()
+	suit = GM:getPlayerSuit()
+	if localplayer and localplayer:Alive() and suit and suit:isActive() and hook.Call("HUDShouldDraw", self, "SBHudSuitInfo") then
+		-- Suit Info
+		oxygen:setText(string.format("Oxygen: %i units", math.Round(suit:getOxygen())))
+		coolant:setText(string.format("Coolant: %i units", math.Round(suit:getCoolant())))
+		energy:setText(string.format("Energy: %i units", math.Round(suit:getEnergy())))
+		temperature:setText(string.format("Temperature: %i K", math.Round(suit:getTemperature())))
+
+		-- Render the panel
+		suitPanel:render()
+	end
+end
+
+function GM:drawEnvironmentInfo()
+	suit = GM:getPlayerSuit()
+	if localplayer and localplayer:Alive() and suit and suit:isActive() and hook.Call("HUDShouldDraw", self, "SBHudEnvironmentInfo") then
+		local env = suit:getEnvironment()
+		if env then
+			envTemp:setText(string.format("Temperature: %i K", math.Round(env:getTemperature())))
+			envGrav:setText(string.format("Gravity: %2g g", env:getGravity()))
+			envAtmos:setText(string.format("Atmospheric Pressure: %2g kPa", env:getAtmosphere()*100))
+
+			-- Render the panel
+			environmentPanel:render()
+		end
+	end
+end
+
+function GM:drawMeters()
+	if Smooth > 0 then
+		local PosX = scrW / 2
+		local PosY = 16
+		local SizeX, SizeY = 64, 64
+		local PosX, PosY = PosX * math.Clamp(Smooth + 0.4, 0, 1), PosY
+
+		local value_color = Color(255, 255, 255, 240)
+		local bg_color = Color(50, 50, 50, 120)
+
+		drawClock(PosX - SizeX, PosY, SizeX, SizeY, bg_color, value_color) -- Don't add the 1/4 to this one, as it's done within the function
+
+		--FPS meter
+		PosX = PosX - SizeX * 2
+
+		if MaxFPS == 0 then MaxFPS = GetConVarNumber("fps_max") end
+		SmoothFPS = Smoother(1 / FrameDelay, SmoothFPS, 0.15)
+		SmoothFPS = math.Clamp(SmoothFPS, 0, MaxFPS)
+
+		local value_color = Color(255, 255, 255, 240)
+		local bg_color = Color(50, 50, 50, 120)
+		drawCircle("Indicator", PosX, PosY, SizeX, SizeY + (SizeY / 4), SmoothFPS, MaxFPS, bg_color, value_color, false)
+		DrawText(PosX, PosY + SizeY + (SizeY / 8), SizeX, string.format("%i FPS", math.Round(SmoothFPS * Smooth2)), value_color)
+	end
+end
+
 local function generateHudComponents()
 	if not scrH or not scrW or scrH ~= ScrH() or scrW ~= ScrW() then
 		local width, height
@@ -293,6 +418,9 @@ local function generateHudComponents()
 		healthBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Health: %i%s")
 		armorBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, "Armor: %i%s")
 		healthPanel:addChild(breathBar):addChild(healthBar):addChild(armorBar)
+
+		healthBar:setValue(LocalPlayer():Health())  -- Set initial value
+		armorBar:setValue(LocalPlayer():Armor()) -- Set initial value
 
 		ammoPanel = class.new("BottomRightPanel", scrW - 16, scrH - 20, 0, 0, false, true)
 		ammoBar = class.new("HudBarTextIndicator", 0, 0, width, height, 0, 100, white, bg, false)
@@ -333,87 +461,7 @@ local function generateHudComponents()
 	end
 end
 
-local function calculateValues()
-	if not suit then
-		suit = GM:getPlayerSuit()
-		return false
-	else
-		breathBar:setValue(Smoother(suit:getBreath(), breathBar:getValue(), 0.15))
-		breathBar:setMaxValue(suit:getMaxBreath())
-	end
-
-	--Check if player is alive.
-	healthBar:setValue(LocalPlayer():Health())
-	armorBar:setValue(LocalPlayer():Armor())
-
-	if LocalPlayer():Health() < 0 then health = 0 else health = LocalPlayer():Health() end
-	if LocalPlayer():Armor() < 0 then armor = 0 else armor = LocalPlayer():Armor() end
-
-	healthBar:setValue(Smoother(health, healthBar:getValue(), 0.15))
-
-	--Calculate Armor.
-	armorBar:setValue(Smoother(armor, armorBar:getValue(), 0.15))
-
-	--Check if the weapon is valid.
-	Weapon = LocalPlayer():GetActiveWeapon()
-	Ammo1Total = Weapon:IsValid() and LocalPlayer():GetAmmoCount(Weapon:GetPrimaryAmmoType()) or 0
-	if Weapon:IsValid() and WeaponS >= 1 then
-
-		Ammo1 = Weapon:Clip1() or 0
-		--Check if weapon has ammo
-		if Ammo1 > 0 then
-
-			--Add weapon's maximum ammo to the table.
-			if not WeaponTable[Weapon:GetClass()] then
-				WeaponTable[Weapon:GetClass()] = Ammo1
-			elseif Ammo1 > WeaponTable[Weapon:GetClass()] then
-				WeaponTable[Weapon:GetClass()] = Ammo1
-			end
-
-			Ammo1Max = WeaponTable[Weapon:GetClass()]
-
-			Ammo2 = Weapon:GetSecondaryAmmoType() and LocalPlayer():GetAmmoCount(Weapon:GetSecondaryAmmoType()) or 0
-		elseif Ammo1Total > 0 then
-			Ammo1 = 0
-		end
-
-		Ammo1S = Smoother(Ammo1, Ammo1S, 0.15)
-	elseif Weapon:IsValid() and (Weapon:Clip1() > 0 or Ammo1Total > 0) then
-		Ammo1S = 0.15
-	end
-
-	--Controller for showing the ammo bar.
-	if (Ammo1Total > 0 or Ammo1S > 0.1) and WeaponS < 1 and Smooth >= 1 then
-		WeaponS = Smoother(1.1, WeaponS, 0.15)
-	elseif Ammo1Total <= 0 and Ammo1S <= 0.1 and WeaponS > 0 then
-		WeaponS = Smoother(-0.1, WeaponS, 0.15)
-	elseif WeaponS > 1 then
-		WeaponS = 1
-	elseif WeaponS < 0 then
-		WeaponS = 0
-	end
-
-	ammoBar:setValue(Ammo1)
-	ammoBar:setMaxValue(Ammo1Max)
-
-
-	-- Suit Info
-	oxygen:setText(string.format("Oxygen: %i units", math.Round(suit:getOxygen())))
-	coolant:setText(string.format("Coolant: %i units", math.Round(suit:getCoolant())))
-	energy:setText(string.format("Energy: %i units", math.Round(suit:getEnergy())))
-	temperature:setText(string.format("Temperature: %i K", math.Round(suit:getTemperature())))
-
-	-- Environment
-	local env = suit:getEnvironment()
-	if env then
-		envTemp:setText(string.format("Temperature: %i K", math.Round(env:getTemperature())))
-		envGrav:setText(string.format("Gravity: %2g g", env:getGravity()))
-		envAtmos:setText(string.format("Atmospheric Pressure: %2g kPa", env:getAtmosphere()*100))
-	end
-	return true
-end
-
-local function RenderLoop()
+function GM:HUDPaint()
 	FrameDelay = math.Clamp(FrameTime(), 0.0001, 10)
 	if LocalPlayer():Alive() == false then
 		if Smooth2 >= 0 then
@@ -435,47 +483,18 @@ local function RenderLoop()
 		end
 	end
 
-	generateHudComponents()
-	if not calculateValues() then
+	if not localplayer then
+		localplayer = LocalPlayer()
 		return
 	end
-	if Smooth > 0 then
-		healthPanel:render()
-		ammoPanel:render()
+	generateHudComponents()
 
-		local PosX = ScrW() / 2
-		local PosY = 16
-		local SizeX, SizeY = 64, 64
-		local PosX, PosY = PosX * math.Clamp(Smooth + 0.4, 0, 1), PosY
-
-		local value_color = Color(255, 255, 255, 240)
-		local bg_color = Color(50, 50, 50, 120)
-
-		drawClock(PosX - SizeX, PosY, SizeX, SizeY, bg_color, value_color) -- Don't add the 1/4 to this one, as it's done within the function
-
-		--FPS meter
-		PosX = PosX - SizeX * 2
-
-		if MaxFPS == 0 then MaxFPS = GetConVarNumber("fps_max") end
-		SmoothFPS = Smoother(1 / FrameDelay, SmoothFPS, 0.15)
-		SmoothFPS = math.Clamp(SmoothFPS, 0, MaxFPS)
-
-		local value_color = Color(255, 255, 255, 240)
-		local bg_color = Color(50, 50, 50, 120)
-		drawCircle("Indicator", PosX, PosY, SizeX, SizeY + (SizeY / 4), SmoothFPS, MaxFPS, bg_color, value_color, false)
-		DrawText(PosX, PosY + SizeY + (SizeY / 8), SizeX, string.format("%i FPS", math.Round(SmoothFPS * Smooth2)), value_color)
-
-		if suit:isActive() then
-			suitPanel:render()
-
-			if suit:getEnvironment() then
-				environmentPanel:render()
-			end
-		end
-	end
-	--=============================================
+	self:drawHealthAndArmor()
+	self:drawAmmo()
+	self:drawSuitInfo()
+	self:drawEnvironmentInfo()
+	self:drawMeters()
 end
-hook.Add("HUDPaint", "sb_hud", RenderLoop) -- doesn't work?
 
 local function hidehud(name)
 	for k, v in pairs{ "CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo" } do

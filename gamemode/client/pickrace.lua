@@ -14,12 +14,33 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include("fonts.lua")
-include("spacebuild.lua")
-include("spawnmenu.lua")
-include("hud.lua")
-include("sb4_partdata.lua")
-include("extensions.lua")
-include("scoreboard.lua")
-include("pickrace.lua")
+local GM = GM
 
+local frame
+
+--[[---------------------------------------------------------
+   Name: gamemode:ShowTeam( )
+   Desc:
+-----------------------------------------------------------]]
+function GM:ShowTeam()
+
+	if ( IsValid(frame) ) then return end
+
+	frame = vgui.Create('DRacePickMenu')
+
+   	frame:Show()
+
+end
+
+--[[---------------------------------------------------------
+   Name: gamemode:HideTeam( )
+   Desc:
+-----------------------------------------------------------]]
+function GM:HideTeam()
+
+	if ( IsValid(frame) ) then
+		frame:close()
+		frame = nil
+	end
+
+end

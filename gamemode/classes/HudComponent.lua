@@ -19,6 +19,15 @@ function C:init(x, y, width, height)
 	self.width = width or 0
 	self.height = height or 0
 	self.parent = nil
+	self.visible = true
+end
+
+function C:setVisible(visible)
+	self.visible = visible
+end
+
+function C:isVisible()
+	return self.visible
 end
 
 function C:getParent()

@@ -14,12 +14,23 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include("fonts.lua")
-include("spacebuild.lua")
-include("spawnmenu.lua")
-include("hud.lua")
-include("sb4_partdata.lua")
-include("extensions.lua")
-include("scoreboard.lua")
-include("pickrace.lua")
+surface.CreateFont("WorkshopLarge",
+	{
+		font = "Helvetica",
+		size = 15,
+		antialias = true,
+		weight = 800
+	})
+
+surface.CreateFont("ToolInfo",
+	{
+		font = "Arial",
+		size = 14,
+		antialias = true,
+		weight = 800
+	})
+
+surface.CreateFont('SB_Menu_Heading', { font = 'coolvetica', size = 64 })
+surface.CreateFont('SB_Menu_Heading2', { font = 'coolvetica', size = 24 })
+surface.CreateFont('SB_Menu_Heading3', { font = 'coolvetica', size = 19 })
 

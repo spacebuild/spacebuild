@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 local AddCSLuaFile = AddCSLuaFile
 
+AddCSLuaFile("fonts.lua")
 AddCSLuaFile("init.lua")
 AddCSLuaFile("spacebuild.lua")
 AddCSLuaFile("spawnmenu.lua")
@@ -24,6 +25,7 @@ AddCSLuaFile("hud.lua")
 AddCSLuaFile("extensions.lua")
 AddCSLuaFile("sb4_partdata.lua")
 AddCSLuaFile("scoreboard.lua")
+AddCSLuaFile("pickrace.lua")
 
 
 

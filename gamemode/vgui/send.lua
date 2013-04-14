@@ -14,12 +14,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include("fonts.lua")
-include("spacebuild.lua")
-include("spawnmenu.lua")
-include("hud.lua")
-include("sb4_partdata.lua")
-include("extensions.lua")
-include("scoreboard.lua")
-include("pickrace.lua")
+local AddCSLuaFile = AddCSLuaFile
+
+AddCSLuaFile("init.lua")
+AddCSLuaFile("DSBMenu.lua")
+AddCSLuaFile("DRacePickMenu.lua")
 

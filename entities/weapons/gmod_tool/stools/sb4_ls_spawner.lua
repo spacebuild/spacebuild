@@ -97,27 +97,6 @@ function TOOL:AddRDEntities(entTables, type)
 	--PrintTable(generators)
 end
 
-
-
-
-if CLIENT then
-	surface.CreateFont("WorkshopLarge",
-		{
-			font = "Helvetica",
-			size = 15,
-			antialias = true,
-			weight = 800
-		})
-
-	surface.CreateFont("ToolInfo",
-		{
-			font = "Arial",
-			size = 14,
-			antialias = true,
-			weight = 800
-		})
-end
-
 function TOOL:LeftClick(trace)
 	--Spawn in the selected Generator
 
