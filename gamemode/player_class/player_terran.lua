@@ -29,6 +29,25 @@ local PLAYER = {}
 PLAYER.WalkSpeed 			= 200
 PLAYER.RunSpeed				= 400
 
+-- Set a Race specific colour, this will be used as an identifier
+PLAYER.RaceColor			= Color(100,150,0,200)
+
+function PLAYER:getRaceColor()
+
+	return self.RaceColor
+
+end
+
+-- Specify variable to store Race name
+PLAYER.RaceName				= "Terran"
+
+function PLAYER:getRace()
+
+	return self.RaceName
+
+end
+
+
 --
 -- Set up the network table accessors
 --

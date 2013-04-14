@@ -19,17 +19,36 @@ local g_Scoreboard
 
 surface.CreateFont( "ScoreboardDefault",
 {
-	font		= "Helvetica",
+	font		= "Oleo Script", -- Custom oleo script font, thanks google.
 	size		= 22,
 	weight		= 800
 })
 
 surface.CreateFont( "ScoreboardDefaultTitle",
 {
-	font		= "Helvetica",
+	font		= "Oleo Script",
 	size		= 32,
 	weight		= 800
 })
+
+--
+-- This is just a linear colour interpolation function
+-- it will be used to create smooth colour transitions based
+-- upon health values
+--
+
+local function clrInterpolation( startClr, endClr, fraction )
+
+	local dr		= endClr.r - startClr.r
+	local dg		= endClr.g - startClr.g
+	local db		= endClr.b - startClr.b
+	local da		= endClr.a - startClr.a
+
+	dr,dg,db,da = dr * fraction, dg * fraction, db * fraction, da * fraction
+
+	return Color( startClr.r + dr, startClr.g + dg, startClr.b + db, startClr.a + da)
+
+end
 
 
 --
@@ -93,9 +112,6 @@ local PLAYER_LINE =
 
 		self:Think( self )
 
-		--local friend = self.Player:GetFriendStatus()
-		--MsgN( pl, " Friend: ", friend )
-
 	end,
 
 	Think = function( self )
@@ -148,7 +164,7 @@ local PLAYER_LINE =
 		-- so if we set the z order according to kills they'll be ordered that way!
 		-- Careful though, it's a signed short internally, so needs to range between -32,768k and +32,767
 		--
-		self:SetZPos( (self.NumKills * -50) + self.NumDeaths )
+		self:SetZPos( (self.NumKills * -50) + self.NumDeaths ) --- TODO Change this to money for each.
 
 	end,
 
@@ -162,18 +178,51 @@ local PLAYER_LINE =
 		-- We draw our background a different colour based on the status of the player
 		--
 
-		if ( self.Player:Team() == TEAM_CONNECTING ) then
-			draw.RoundedBox( 4, 0, 0, w, h, Color( 200, 200, 200, 200 ) )
-			return
-		end
+		local Race = player_manager.RunClass( self.Player, "getRace" )
 
-		if  ( not self.Player:Alive() ) then
-			draw.RoundedBox( 4, 0, 0, w, h, Color( 230, 200, 200, 255 ) )
-			return
-		end
+		if ( Race == "Terran" ) then
+			local Racecolor = player_manager.RunClass( self.Player, "getRaceColor" )
+			draw.RoundedBox( 4, 0, 0, w, h, Racecolor )
 
-		if ( self.Player:IsAdmin() ) then
-			draw.RoundedBox( 4, 0, 0, w, h, Color( 255, 0, 0, 255 ) )
+			local health = self.Player:Health()
+			local xoff, yoff = w/100,h/10 -- We'll indent 10% all the way around :D
+			local w, h = w-xoff*2, h-yoff*2 -- Shave off the same from the other end
+
+			--
+			-- Width should be a minimum of 32-xoff this will put the bar's min just a the end of the avatar
+			-- Then it should have a max length of (orig_w-xoff*2)*(2/5)
+			-- Split that up into 100 increments, and use the health fraction to set width to curr health value
+			-- Use 1-fraction *255 to set the alpha. This will make it more visible the closer to 0 health you get.
+			-- This will give the effect of the health bar emerging from the row
+			--
+
+			local w_min = 32-xoff
+			local w_max = w*(4/5)
+
+			local w_length = w_max - w_min
+
+			local fraction
+			if health >= 100 then fraction = 1
+			else
+				fraction = health / 100       -- Fraction of health between 0 and 1. 1 is full health
+			end
+			local startClr = Color(255,50,50,150) -- Red
+			local endClr = Racecolor   -- Green / Race Colour
+			-- Since 1 represents full health, start ---- fraction --------------- end
+			-- End must be our health when on full colour, and our start must be red :D
+
+			local clr = clrInterpolation(startClr, endClr, fraction)
+			clr.a = 255*(1 - fraction)
+
+			w = w_min+(w_length*fraction)
+
+			if self.Player:Alive() == false or fraction == 0 then
+				w = w_max- (w_length*0.1)
+				clr = Color(255,0,0,255)
+			end
+
+
+			draw.RoundedBox( 4, xoff, yoff, w, h, clr )
 			return
 		end
 
@@ -234,7 +283,7 @@ local SCORE_BOARD =
 
 	Think = function( self, w, h )
 
-		self.Name:SetText( GetHostName() .."hi radon!" )
+		self.Name:SetText( GetHostName() )
 
 		--
 		-- Loop through each player, and if one doesn't have a score entry - create it.

@@ -22,6 +22,7 @@ AddCSLuaFile("shared.lua")
 
 include("shared/send.lua") --Send the shared code
 include("client/send.lua") --Send the clientside code
+include("vgui/send.lua")
 include("classes/send.lua")
 
 -- Resources

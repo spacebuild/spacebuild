@@ -78,16 +78,18 @@ function C:setBackgroundColor(backgroundColor)
 end
 
 function C:render()
-	surface.SetDrawColor(self:getColor()) -- Outline of Background of the bar
-	surface.DrawOutlinedRect(self:getX(), self:getY(), self:getWidth(), self:getHeight())
+	if self:isVisible() then
+		surface.SetDrawColor(self:getColor()) -- Outline of Background of the bar
+		surface.DrawOutlinedRect(self:getX(), self:getY(), self:getWidth(), self:getHeight())
 
-	surface.SetDrawColor(self:getBackgroundColor()) -- Background of Bar
-	surface.DrawRect(self:getX(), self:getY(), self:getWidth(), self:getHeight())
+		surface.SetDrawColor(self:getBackgroundColor()) -- Background of Bar
+		surface.DrawRect(self:getX(), self:getY(), self:getWidth(), self:getHeight())
 
-	surface.SetDrawColor(self:getColor()) --Value of Bar
-	if self:getValue() / self:getMaxValue() <= 1 then
-		surface.DrawRect(self:getX(), self:getY(), self.width * (self:getValue() / self:getMaxValue()), self:getHeight())
-	else
-		surface.DrawRect(self:getX(), self:getY(), self.width, self:getHeight())
+		surface.SetDrawColor(self:getColor()) --Value of Bar
+		if self:getValue() / self:getMaxValue() <= 1 then
+			surface.DrawRect(self:getX(), self:getY(), self.width * (self:getValue() / self:getMaxValue()), self:getHeight())
+		else
+			surface.DrawRect(self:getX(), self:getY(), self.width, self:getHeight())
+		end
 	end
 end

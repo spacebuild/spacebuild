@@ -14,13 +14,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include("fonts.lua")
-include("spacebuild.lua")
-include("spawnmenu.lua")
-include("hud.lua")
-include("partdata.lua")
-include("worldtips.lua")
-include("extensions.lua")
-include("scoreboard.lua")
-include("pickrace.lua")
+local PANEL = {}
+
+function PANEL:Init()
+	self:setTitle("Race Picker")
+	self:setSlogan("Pick your race here")
+	self:setByLine("some byline here")
+end
+
+vgui.Register('DRacePickMenu', PANEL, 'DSBMenu')
 

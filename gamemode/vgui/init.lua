@@ -14,13 +14,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include("fonts.lua")
-include("spacebuild.lua")
-include("spawnmenu.lua")
-include("hud.lua")
-include("partdata.lua")
-include("worldtips.lua")
-include("extensions.lua")
-include("scoreboard.lua")
-include("pickrace.lua")
+local include = include
+
+include("DSBMenu.lua")
+include("DRacePickMenu.lua")
 

@@ -24,7 +24,7 @@ if (CLIENT) then
 			for _, v in pairs(resources) do
 				full_string = full_string .. v:getDisplayName() --[[.." = "..tostring(self.rdobject:getResourceAmount(v:getName())).."/"..tostring(self.rdobject:getMaxResourceAmount( v:getName()))]] .. "\n"
 			end
-			AddWorldTip(self:EntIndex(), full_string, 0.5, self:GetPos(), self)
+			GAMEMODE:AddWorldTip(self:EntIndex(), full_string, 0.5, self:GetPos(), self)
 		end
 		self:DrawModel()
 	end
