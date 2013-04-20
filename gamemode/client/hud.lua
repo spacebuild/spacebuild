@@ -458,8 +458,17 @@ local function generateHudComponents()
 		envGrav = class.new("TextElement", 0, 0, width, height, white, "Gravity")
 		envAtmos = class.new("TextElement", 0, 0, width, height, white, "Atmosphere")
 		environmentPanel:addChild(label):addChild(envTemp):addChild(envGrav):addChild(envAtmos)
+
+
+		-- Register the panels so that other people can keep track of them outside hud.lua
+		GM:registerHUDComponent( "suitPanel", suitPanel )
+		GM:registerHUDComponent( "environmentPanel", environmentPanel )
+		GM:registerHUDComponent( "ammoPanel", ammoPanel )
+		GM:registerHUDComponent( "healthPanel", healthPanel )
 	end
 end
+
+local BaseClass = GM:GetBaseClass()
 
 function GM:HUDPaint()
 	FrameDelay = math.Clamp(FrameTime(), 0.0001, 10)
@@ -494,6 +503,11 @@ function GM:HUDPaint()
 	self:drawSuitInfo()
 	self:drawEnvironmentInfo()
 	self:drawMeters()
+
+	self:PaintWorldTips()
+	self:PaintHudTips()
+
+	--BaseClass.HUDPaint( self ) -- Don't use HUDPaint from base, we don't need anything from there anyway, only breaks 3 things.
 end
 
 local function hidehud(name)

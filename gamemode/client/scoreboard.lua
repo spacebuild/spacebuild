@@ -17,20 +17,28 @@
 local GM = GM
 local g_Scoreboard
 
-surface.CreateFont( "ScoreboardDefault",
-{
-	font		= "Helvetica",
-	size		= 22,
-	weight		= 800
-})
+--
+-- This is just a linear colour interpolation function
+-- it will be used to create smooth colour transitions based
+-- upon health values
+--
 
-surface.CreateFont( "ScoreboardDefaultTitle",
-{
-	font		= "Helvetica",
-	size		= 32,
-	weight		= 800
-})
+local function clrInterpolation( startClr, endClr, fraction )
 
+	local dr		= ( endClr.r and not 0 or math.log(endClr.r) )-( startClr.r and not 0 or math.log(startClr.r) )
+	local dg		= ( endClr.g and not 0 or math.log(endClr.g) )-( startClr.g and not 0 or math.log(startClr.g) )
+	local db		= ( endClr.b and not 0 or math.log(endClr.b) )-( startClr.b and not 0 or math.log(startClr.b) )
+	local da		= ( endClr.a and not 0 or math.log(endClr.a) )-( startClr.a and not 0 or math.log(startClr.a) )
+
+	dr,dg,db,da = dr * fraction, dg * fraction, db * fraction, da * fraction
+
+	local r,g,b,a = startClr.r + math.exp(dr), startClr.g + math.exp(dg), startClr.b + math.exp(db), startClr.a + math.exp(da)
+
+	return Color( r, g, b, a )
+
+end
+
+local ply
 
 --
 -- This defines a new panel type for the player row. The player row is given a player
@@ -53,6 +61,7 @@ local PLAYER_LINE =
 		self.Name		= self:Add( "DLabel" )
 		self.Name:Dock( FILL )
 		self.Name:SetFont( "ScoreboardDefault" )
+		self.Name:SetExpensiveShadow( 2, Color( 0, 0, 0, 200 ) )
 		self.Name:DockMargin( 8, 0, 0, 0 )
 
 		self.Mute		= self:Add( "DImageButton" )
@@ -92,9 +101,6 @@ local PLAYER_LINE =
 		self.Name:SetText( pl:Nick() )
 
 		self:Think( self )
-
-		--local friend = self.Player:GetFriendStatus()
-		--MsgN( pl, " Friend: ", friend )
 
 	end,
 
@@ -140,7 +146,7 @@ local PLAYER_LINE =
 		-- Connecting players go at the very bottom
 		--
 		if ( self.Player:Team() == TEAM_CONNECTING ) then
-			self:SetZPos( 2000 )
+			self:SetZPos( 32700 )
 		end
 
 		--
@@ -148,7 +154,21 @@ local PLAYER_LINE =
 		-- so if we set the z order according to kills they'll be ordered that way!
 		-- Careful though, it's a signed short internally, so needs to range between -32,768k and +32,767
 		--
-		self:SetZPos( (self.NumKills * -50) + self.NumDeaths )
+
+		local race = player_manager.RunClass( self.Player, "getRace" )
+
+		local mult
+		if race == "Terran" then
+			mult = 1000
+		elseif race == "Radijn" then
+			mult = 0
+		elseif race == "Pendrouge" then
+			mult = -1000
+		end
+
+
+
+		self:SetZPos( (mult * -30 ) - (self.NumKills * 10) + self.NumDeaths ) --- TODO Change this to money for each.
 
 	end,
 
@@ -162,23 +182,54 @@ local PLAYER_LINE =
 		-- We draw our background a different colour based on the status of the player
 		--
 
-		if ( self.Player:Team() == TEAM_CONNECTING ) then
-			draw.RoundedBox( 4, 0, 0, w, h, Color( 200, 200, 200, 200 ) )
-			return
-		end
+		local Race = player_manager.RunClass( self.Player, "getRace" )
 
-		if  ( not self.Player:Alive() ) then
-			draw.RoundedBox( 4, 0, 0, w, h, Color( 230, 200, 200, 255 ) )
-			return
-		end
+			local Racecolor = player_manager.RunClass( self.Player, "getRaceColor" )
+			draw.RoundedBox( 4, 0, 0, w, h, Racecolor )         -- Draw the player row
 
-		if ( self.Player:IsAdmin() ) then
-			draw.RoundedBox( 4, 0, 0, w, h, Color( 255, 0, 0, 255 ) )
-			return
-		end
+			local localRace = player_manager.RunClass( ply, "getRace" )
 
-		draw.RoundedBox( 4, 0, 0, w, h, Color( 0, 255, 0, 255 ) )
+			if localRace == Race then          -- Only the same race as the local Player will draw health Bars. Useful :D
 
+				local health = self.Player:Health()
+				local xoff, yoff = w/100,h/10 -- We'll indent 10% all the way around :D
+				local w, h = w-xoff*2, h-yoff*2 -- Shave off the same from the other end
+
+				--
+				-- Width should be a minimum of 32-xoff this will put the bar's min just a the end of the avatar
+				-- Then it should have a max length of (orig_w-xoff*2)*(2/5)
+				-- Split that up into 100 increments, and use the health fraction to set width to curr health value
+				-- Use 1-fraction *255 to set the alpha. This will make it more visible the closer to 0 health you get.
+				-- This will give the effect of the health bar emerging from the row
+				--
+
+				local w_min = 32-xoff
+				local w_max = w*(4/5)
+				local w_length = w_max - w_min
+
+				local fraction
+				if health >= 100 then fraction = 1
+				else
+					fraction = health / 100       -- Fraction of health between 0 and 1. 1 is full health
+				end
+				local startClr = Color(255,50,50,200) -- Red
+				local endClr = Racecolor   -- Green / Race Colour
+				-- Since 1 represents full health, start ---- fraction --------------- end
+				-- End must be our health when on full colour, and our start must be red :D
+
+				local clr = clrInterpolation(startClr, endClr, fraction)
+				clr.a = 255*(1 - fraction)
+
+				w = w_min+(w_length*fraction)
+
+				if self.Player:Alive() == false or fraction == 0 then
+					w = w_max- (w_length*0.1)
+					clr = Color(255,0,0,255)
+				end
+
+
+				draw.RoundedBox( 4, xoff, yoff, w, h, clr )
+			end
 	end,
 }
 
@@ -194,6 +245,8 @@ PLAYER_LINE = vgui.RegisterTable( PLAYER_LINE, "DPanel" );
 local SCORE_BOARD = 
 {
 	Init = function( self )
+
+		ply = LocalPlayer()
 
 		self.Header = self:Add( "Panel" )
 		self.Header:Dock( TOP )
@@ -234,7 +287,7 @@ local SCORE_BOARD =
 
 	Think = function( self, w, h )
 
-		self.Name:SetText( GetHostName() .."hi radon!" )
+		self.Name:SetText( GetHostName() )
 
 		--
 		-- Loop through each player, and if one doesn't have a score entry - create it.
@@ -256,7 +309,7 @@ local SCORE_BOARD =
 	end,
 }
 
-SCORE_BOARD = vgui.RegisterTable( SCORE_BOARD, "EditablePanel" );
+SCORE_BOARD = vgui.RegisterTable( SCORE_BOARD, "EditablePanel" )
 
 --[[---------------------------------------------------------
    Name: gamemode:ScoreboardShow( )
@@ -285,15 +338,6 @@ function GM:ScoreboardHide()
 	if ( IsValid( g_Scoreboard ) ) then
 		g_Scoreboard:Hide()
 	end
-
-end
-
-
---[[---------------------------------------------------------
-   Name: gamemode:HUDDrawScoreBoard( )
-   Desc: If you prefer to draw your scoreboard the stupid way (without vgui)
------------------------------------------------------------]]
-function GM:HUDDrawScoreBoard()
 
 end
 

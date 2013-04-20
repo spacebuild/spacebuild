@@ -9,6 +9,7 @@
 include("HudComponent.lua")
 local C = CLASS
 local surface = surface
+local draw = draw
 
 local oldIsA = C.isA
 function C:isA(className)
@@ -16,11 +17,12 @@ function C:isA(className)
 end
 
 local oldInit = C.init
-function C:init(x, y, width, height, color, text, font_type)
+function C:init(x, y, width, height, color, text, font_type, xalign)
 	oldInit(self, x, y, width, height)
 	self:setColor(color)
 	self:setText(text)
 	self:setFont(font_type)
+	self:setAlign(xalign or TEXT_ALIGN_LEFT)
 end
 
 function C:getColor()
@@ -58,10 +60,18 @@ function C:setText(text)
 	self.text = text
 end
 
+function C:getAlign()
+	return self.xalign
+end
+
+function C:setAlign(align)
+	self.xalign = align
+end
+
 
 function C:render()
 
-	if not self:getFont() then surface.SetFont("HudHintTextSmall") end
+	if not self:getFont() then self:setFont("HudHintTextSmall") end
 
 	local x = self:getX()
 	local y = self:getY()
@@ -73,5 +83,6 @@ function C:render()
 
 	surface.SetTextColor(self:getColor())
 	surface.SetTextPos(x, y)
-	surface.DrawText(self:getText())
+	--surface.DrawText(self:getText())
+	draw.DrawText(self:getText(), self:getFont(), x, y, self:getColor(), self:getAlign() )
 end

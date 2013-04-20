@@ -30,7 +30,7 @@ PLAYER.WalkSpeed 			= 200
 PLAYER.RunSpeed				= 400
 
 -- Set a Race specific colour, this will be used as an identifier
-PLAYER.RaceColor			= Color(100,150,0,200)
+PLAYER.RaceColor			= Color(150,50,200,200)
 
 function PLAYER:getRaceColor()
 
@@ -39,7 +39,7 @@ function PLAYER:getRaceColor()
 end
 
 -- Specify variable to store Race name
-PLAYER.RaceName				= "Terran"
+PLAYER.RaceName				= "Radijn"
 
 function PLAYER:getRace()
 
@@ -143,5 +143,5 @@ function PLAYER:CalcView( view )
 
 end
 
-player_manager.RegisterClass( "player_terran", PLAYER, "player_default" )
+player_manager.RegisterClass( "player_radijn", PLAYER, "player_default" )
 

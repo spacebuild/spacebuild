@@ -14,6 +14,21 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+local RACE = {}
+
+function RACE:init()
+
+	self.AvatarButton = self:Add( "DButton" )
+	self.AvatarButton:Dock( LEFT )
+	self.AvatarButton:SetSize( 32, 32 )
+	self.AvatarButton.DoClick = function() self.Player:ShowProfile() end
+
+	self.Avatar		= vgui.Create( "AvatarImage", self.AvatarButton )
+	self.Avatar:SetSize( 32, 32 )
+	self.Avatar:SetMouseInputEnabled( false )
+
+end
+
 local PANEL = {}
 
 function PANEL:Init()

@@ -30,7 +30,35 @@ surface.CreateFont("ToolInfo",
 		weight = 800
 	})
 
-surface.CreateFont('SB_Menu_Heading', { font = 'coolvetica', size = 64 })
-surface.CreateFont('SB_Menu_Heading2', { font = 'coolvetica', size = 24 })
-surface.CreateFont('SB_Menu_Heading3', { font = 'coolvetica', size = 19 })
+surface.CreateFont( "ScoreboardDefault",
+	{
+		font		= "Oleo Script", -- Custom oleo script font, thanks google.
+		size		= 22,
+		weight		= 800
+	})
+
+surface.CreateFont( "ScoreboardDefaultTitle",
+	{
+		font		= "Oleo Script",
+		size		= 32,
+		weight		= 800
+	})
+
+surface.CreateFont( "ToolGunDefault",
+	{
+		font		= "Oleo Script",
+		size		= 72,
+		weight		= 800
+	})
+
+surface.CreateFont( "GModWorldtip",
+	{
+		font		= "HudHintTextSmall",
+		size		= 16,
+		weight		= 250
+	})
+
+surface.CreateFont('SB_Menu_Heading', { font = 'Oleo Script', size = 64 })
+surface.CreateFont('SB_Menu_Heading2', { font = 'Oleo Script', size = 24 })
+surface.CreateFont('SB_Menu_Heading3', { font = 'Oleo Script', size = 19 })
 

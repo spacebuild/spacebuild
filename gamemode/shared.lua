@@ -31,9 +31,9 @@ local BaseClass = BaseClass
 local GM = GM
 
 GM.Name 	= "Spacebuild"
-GM.Author 	= "SB Dev Team"
-GM.Email 	= "spacebuild.dev@gmail.com"
-GM.Website 	= "www.snakesvx.net"
+GM.Author 	= "SB Dev Team | INP Games"
+GM.Email 	= "spacebuild.dev@gmail.com | admin@inpgames.com"
+GM.Website 	= "www.snakesvx.net | www.inpgames.com"
 GM.Version 	= "1"
 
 GM.convars 		= {}
@@ -58,6 +58,8 @@ function GM:GetBaseClass()
 end
 
 include( "player_class/player_terran.lua" )
+include( "player_class/player_radijn.lua" )
+include( "player_class/player_pendrouge.lua" )
 include("shared/wrappers.lua")
 include("shared/const.lua")
 include("shared/util.lua")

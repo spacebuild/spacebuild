@@ -34,7 +34,7 @@ function TOOL:LeftClick(trace)
 	if (trace.Entity:IsValid() and trace.Entity:IsPlayer()) then return end
 	--if client exit
 	if (CLIENT) then return true end
-	-- If there's no physics object then we can't constraint it!
+	-- If there's no physics object then we can't constraint itnot
 	if (not util.IsValidPhysicsObject(trace.Entity, trace.PhysicsBone)) then return false end
 
 	--how many objects stored
@@ -44,7 +44,7 @@ function TOOL:LeftClick(trace)
 	self:SetObject(iNum, trace.Entity, trace.HitPos, trace.Entity:GetPhysicsObjectNum(trace.PhysicsBone), trace.PhysicsBone, trace.HitNormal)
 	--first clicked object
 	if not self:GetEnt(iNum).rdobject then
-		self:GetOwner():SendLua("GAMEMODE:AddNotify('You need to select a resource entity!', NOTIFY_GENERIC, 7);")
+		self:GetOwner():SendLua("GAMEMODE:AddNotify('You need to select a resource entitynot ', NOTIFY_GENERIC, 7);")
 		self:ClearObjects() --clear objects
 		return
 	end
@@ -56,9 +56,9 @@ function TOOL:LeftClick(trace)
 		local length = (self:GetPos(1) - self:GetPos(iNum)):Length() --TODO
 		if Ent1.rdobject:canLink(Ent2.rdobject) then
 			Ent1.rdobject:link(Ent2.rdobject)
-			self:GetOwner():SendLua("GAMEMODE:AddNotify('Successfully linked!', NOTIFY_GENERIC, 7);")
+			self:GetOwner():SendLua("GAMEMODE:AddNotify('Successfully linkednot ', NOTIFY_GENERIC, 7);")
 		else
-			self:GetOwner():SendLua("GAMEMODE:AddNotify('These 2 devices cant be linked!', NOTIFY_GENERIC, 7);")
+			self:GetOwner():SendLua("GAMEMODE:AddNotify('These 2 devices cant be linkednot ', NOTIFY_GENERIC, 7);")
 			self:ClearObjects() --clear objects
 			return
 		end
@@ -68,7 +68,7 @@ function TOOL:LeftClick(trace)
 		self:SetStage(iNum)
 	end
 
-	--success!
+	--successnot
 	return true
 end
 
@@ -77,7 +77,7 @@ function TOOL:RightClick(trace)
 	if (trace.Entity:IsValid() and trace.Entity:IsPlayer()) then return end
 	--if client exit
 	if (CLIENT) then return true end
-	-- If there's no physics object then we can't constraint it!
+	-- If there's no physics object then we can't constraint itnot
 	if (SERVER and not util.IsValidPhysicsObject(trace.Entity, trace.PhysicsBone)) then return false end
 
 	--how many objects stored
@@ -88,7 +88,7 @@ function TOOL:RightClick(trace)
 
 	--first clicked object
 	if not self:GetEnt(iNum).rdobject then
-		self:GetOwner():SendLua("GAMEMODE:AddNotify('You need to select a resource entity!', NOTIFY_GENERIC, 7);")
+		self:GetOwner():SendLua("GAMEMODE:AddNotify('You need to select a resource entitynot ', NOTIFY_GENERIC, 7);")
 		self:ClearObjects() --clear objects
 		return
 	end
@@ -99,7 +99,7 @@ function TOOL:RightClick(trace)
 		local Ent2 = self:GetEnt(2) --get last ent
 		local length = (self:GetPos(1) - self:GetPos(iNum)):Length() --TODO
 		Ent1.rdobject:unlink(Ent2.rdobject)
-		self:GetOwner():SendLua("GAMEMODE:AddNotify('Successfully unlinked!', NOTIFY_GENERIC, 7);")
+		self:GetOwner():SendLua("GAMEMODE:AddNotify('Successfully unlinkednot ', NOTIFY_GENERIC, 7);")
 		self:ClearObjects() --clear objects
 	else
 		self:SetStage(iNum)

@@ -103,6 +103,10 @@ function C:addChild(component)
 	return self
 end
 
+function C:getChildren()
+	return self.children
+end
+
 function C:removeChild(component)
 	for k, v in pairs(self.children) do
 		if v == component then
