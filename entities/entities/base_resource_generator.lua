@@ -11,24 +11,66 @@ ENT.Instructions = ""
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
+local class = GAMEMODE.class
+local const = GAMEMODE.constants
+
 
 function ENT:Initialize()
 	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.GENERATOR)
 end
 
-if (CLIENT) then
+--[[ if (CLIENT) then
 	function ENT:Draw()
-		if self:BeingLookedAtByLocalPlayer() and self.rdobject then
-			local resources = self.rdobject:getResources()
-			local full_string = self.PrintName .. "\nResources:\n"
-			for _, v in pairs(resources) do
-				full_string = full_string .. v:getDisplayName() --[[.." = "..tostring(self.rdobject:getResourceAmount(v:getName())).."/"..tostring(self.rdobject:getMaxResourceAmount( v:getName()))]] .. "\n"
+		if self.rdobject then
+			local elementTable = {}
+
+			local width, height --- TODO look for a way to not make this every draw call, and perhaps a way to inherit panel width or sutin or largest child width.
+			local scrW = ScrW()
+			local scrH = ScrH()
+			if scrW > 1650 then
+				width = 200
+			elseif scrW > 1024 then
+				width = 150
+			else
+				width = 100
 			end
-			GAMEMODE:AddWorldTip(self:EntIndex(), full_string, 0.5, self:GetPos(), self)
+			if scrH > 900 then
+				height = 36
+			elseif scrH > 750 then
+				height = 24
+			else
+				height = 16
+			end
+
+			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
+			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
+
+			--MsgN("Before: ",#elementTable)
+
+			local resources = self.rdobject:getResources()
+			MsgN("Type resources: ",type(resources))
+
+			--MsgN("Length of Resources: ",#resources)
+
+			for _, v in pairs(self.rdobject:getResources()) do  --- TODO See why this won't add to elementTable :/
+				local str = v:getDisplayName()
+				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, str) )
+			end
+
+			--MsgN("After: ",#elementTable)
+
+			if self:BeingLookedAtByLocalPlayerSomewhat() then
+				GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
+			end
+			if self:BeingLookedAtByLocalPlayer() then
+				GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
+			end
 		end
+
+
 		self:DrawModel()
 	end
-end
+end ]]
 
 function ENT:turnOn(newself)
 	self = newself or self

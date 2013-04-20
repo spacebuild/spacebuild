@@ -25,9 +25,11 @@ AddCSLuaFile("partdata.lua")
 AddCSLuaFile("hud.lua")
 AddCSLuaFile("worldtips.lua")
 AddCSLuaFile("extensions.lua")
-AddCSLuaFile("sb4_partdata.lua")
+AddCSLuaFile("partdata.lua")
 AddCSLuaFile("scoreboard.lua")
 AddCSLuaFile("pickrace.lua")
+AddCSLuaFile("hudtips.lua")
+AddCSLuaFile("spawndata.lua")
 
 
 

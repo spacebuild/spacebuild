@@ -116,7 +116,7 @@ end
 local to_sync
 net.Receive("SBRU", function(bitsreceived, ply)
 	local syncid = net.readShort()
-	to_sync = core.device_table[syncid]
+	to_sync = core.device_table[syncid] --- TODO got a sync issue occasionally :/
 	to_sync:send(0, ply) -- Send fully to client on request :)
 end)
 
@@ -137,7 +137,17 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerInitialSpawn( ply )
 
-	player_manager.SetPlayerClass( ply, "player_terran" )
+	local rand = math.random()
+
+	if rand >= 0.666 then
+		player_manager.SetPlayerClass( ply, "player_terran" )
+	elseif rand >= 0.333 then
+		player_manager.SetPlayerClass( ply, "player_radijn" )
+	elseif rand >= 0 then
+		player_manager.SetPlayerClass( ply, "player_pendrouge" )
+	end
+
+
 
 	BaseClass.PlayerInitialSpawn( self, ply )
 
@@ -307,6 +317,7 @@ function GM:EntityRemoved(ent)
 		ent.rdobject:unlink()
 		MsgN("Removing RD object pre-hook")
 	end
+
 	if ent.envobject then
 		MsgN("Removing SB Environment object pre-hook")
 	end

@@ -469,5 +469,50 @@ if CLIENT then
 		UseCheckBoxB:SetConVar( "SB_part_assembler_weld" )
 		UseCheckBoxB:SetValue( 0 )
 	end
+
+	local function DrawScrollingText( text, y, texwide )
+
+		local w, h = surface.GetTextSize( text  )
+		w = w + 64
+		h = h + 32
+
+		local x = math.fmod( CurTime() * 400, w ) * -1;
+
+		while ( x < texwide ) do
+
+			surface.SetTextColor( 0, 0, 0, 255 )
+			surface.SetTextPos( x + 3, y + 3 )
+			surface.DrawText( text )
+
+			surface.SetTextColor( 255, 150, 150, 255 )
+			surface.SetTextPos( x, y )
+			surface.DrawText( text )
+
+			x = x + w
+
+		end
+
+		y = y + h
+
+	end
+
+	local matScreen 	= Material( "models/weapons/v_toolgun/screen" )
+	local txBackground	= surface.GetTextureID( "models/weapons/v_toolgun/sb4_toolgunbg" )
+	local RTTexture 	= GetRenderTarget( "GModToolgunScreen", 256, 256 )
+
+	function TOOL:DrawToolScreen( w, h)
+		local TEX_SIZE = w
+		local mode 	= gmod_toolmode:GetString()
+
+		-- Background
+		surface.SetDrawColor( 255, 255, 255, 255 )
+		surface.SetTexture( txBackground )
+		surface.DrawTexturedRect( 0, 0, TEX_SIZE, TEX_SIZE )
+
+		surface.SetFont( "ToolGunDefault" )
+		DrawScrollingText( "#tool."..mode..".name", 64, TEX_SIZE )
+
+	end
+
 end
 

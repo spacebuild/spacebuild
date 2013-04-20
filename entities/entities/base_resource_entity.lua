@@ -11,6 +11,9 @@ ENT.Instructions = ""
 ENT.Spawnable = false
 ENT.AdminOnly = false
 
+local class = GAMEMODE.class
+local const = GAMEMODE.constants
+
 function ENT:Initialize()
 	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.STORAGE)
 end
@@ -22,6 +25,24 @@ end
 
 if (CLIENT) then
 
+	local width, height
+	local scrW = ScrW()
+	local scrH = ScrH()
+	if scrW > 1650 then
+		width = 200
+	elseif scrW > 1024 then
+		width = 150
+	else
+		width = 100
+	end
+	if scrH > 900 then
+		height = 36
+	elseif scrH > 750 then
+		height = 24
+	else
+		height = 16
+	end
+
 	function ENT:BeingLookedAtByLocalPlayer()
 
 		if (LocalPlayer():GetEyeTrace().Entity ~= self) then return false end
@@ -30,15 +51,54 @@ if (CLIENT) then
 		return true
 	end
 
-	function ENT:Draw()
-		if self:BeingLookedAtByLocalPlayer() and self.rdobject then
-			local resources = self.rdobject:getResources()
-			local full_string = self.PrintName .. "\nResources:\n"
-			for _, v in pairs(resources) do
-				full_string = full_string .. v:getDisplayName() .. ": " .. tostring(self.rdobject:getResourceAmount(v:getName())) .. "/" .. tostring(self.rdobject:getMaxResourceAmount(v:getName())) .. "\n"
+	-- A sort of fuzzy cute version of BeingLookedAtByLocalPlayer
+	function ENT:BeingLookedAtByLocalPlayerSomewhat()
+		local lookedAt = self:BeingLookedAtByLocalPlayer()
+
+		if not lookedAt then
+			local head = LocalPlayer():LookupBone("ValveBiped.Bip01_Head1")
+			local headpos,_ = LocalPlayer():GetBonePosition(head)
+
+			local vec = self:GetPos() - ( headpos )
+			vec:Normalize()
+
+			local aimVec = LocalPlayer():GetAimVector()
+			aimVec:Normalize()
+
+			if aimVec:DotProduct( vec ) > 0.95 and EyePos():Distance(self:GetPos()) < 512 then
+				return true
+			else
+				return false
 			end
-			GAMEMODE:AddWorldTip(self:EntIndex(), full_string, 0.5, self:GetPos(), self)
+		else
+			return lookedAt
 		end
+
+	end
+
+
+
+	function ENT:Draw()
+		if self.rdobject then
+			local resources = self.rdobject:getResources()    --- TODO Fix why this only works with Terran -.-
+			local elementTable = {}
+
+			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
+
+			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
+
+			for _, v in pairs(resources) do
+				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, v:getDisplayName()) )
+			end
+
+			if self:BeingLookedAtByLocalPlayerSomewhat() then
+				GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
+			end
+			if self:BeingLookedAtByLocalPlayer() then
+				GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
+			end
+		end
+
 		self:DrawModel()
 	end
 end

@@ -18,31 +18,46 @@ local GM = GM
 local draw = draw
 local const = GM.constants
 
-surface.CreateFont( "GModWorldtip",
-	{
-		font		= "HudHintTextSmall",
-		size		= 16,
-		weight		= 250
-	})
-
 local WorldTip = nil
+local tipTable = {}
 
 local TipColor = Color(50, 50, 50, 220)
+
+local FrameDelay = 0
 
 --
 -- Adds a hint to the queue
 --
-function GM:AddWorldTip( unused1, text, unused2, pos, ent )
+function GM:AddWorldTip( unused1, unused2, unused3, pos, ent )
 
 	WorldTip = {}
 
 	WorldTip.dietime 	= SysTime() + 0.05
-	WorldTip.text 		= text
+	--WorldTip.text 		= text
 	WorldTip.pos 		= pos
 	WorldTip.ent 		= ent
 
+	table.insert( tipTable, WorldTip )
+
 end
 
+local function rotatePoint( pt, center, angleDeg)
+
+	local angleRad = angleDeg * math.pi/180
+	local angleRad = angleDeg
+	local cosAngle = math.cos( angleRad )
+	local sinAngle = math.sin( angleRad )
+	local dx = (pt.x - center.x)
+	local dy = (pt.y - center.y)
+
+	pt.x = center.x + (dx*cosAngle-dy*sinAngle)
+	pt.y = center.y + (dx*sinAngle+dy*cosAngle)
+
+	return pt
+
+end
+
+local dx = 0
 
 local function DrawWorldTip( tip )
 
@@ -50,57 +65,82 @@ local function DrawWorldTip( tip )
 		tip.pos = tip.ent:GetPos()
 	end
 
-	local pos = tip.pos:ToScreen()
-	local tipcol = Color( TipColor.r, TipColor.g, TipColor.b, 255 )
+	local pos = tip.pos:ToScreen()  -- Gets the screen x,y for that position vector
+	local r = 50 -- "RADIUS" of our square, or diagonal distance, whatever :P
+	local verts = {}             -- 1: left, 2: up, 3: right, 4: down
+	local poly = {}
 
-	local x = 0
-	local y = 0
-	local padding = 10
-	local offset = 50
+	-- R counts as our initial offset from a center location of pos.x and pos.y
+	-- Counter-clockwise rotation
 
-	surface.SetFont( "GModWorldtip" )
-	local w, h = surface.GetTextSize( tip.text )
+	verts[1] = { x=pos.x-r, y=pos.y } -- Set up a simple square first. (Or Diamond if you prefer)
+	verts[2] = { x=pos.x, y=pos.y-r}
+	verts[3] = { x=pos.x+r, y=pos.y}
+	verts[4] = { x=pos.x, y=pos.y+r }
 
-	x = pos.x - w
-	y = pos.y - h
+	verts[1] = rotatePoint( verts[1], pos, dx) -- Rotate each point around the center position by dx amount.
+	verts[2] = rotatePoint( verts[2], pos, dx)
+	verts[3] = rotatePoint( verts[3], pos, dx)
+	verts[4] = rotatePoint( verts[4], pos, dx)
 
-	x = x - offset
-	y = y - offset
+	local r2 = 15
 
-	draw.RoundedBox( 8, x-padding-2, y-padding-2, w+padding*2+4, h+padding*2+4, const.colors.orange )
+	local dr = math.abs( (r2/5)*math.sin(dx)*1/4 + (r2/5) )
 
+	-- Triangle, up, bottom left, bottom right.
+	poly[1] = { x=pos.x, y=pos.y-(r2) }
+	poly[2] = { x=pos.x- r2*math.cos(30 * math.pi/180), y=pos.y+ r2*math.sin(30 *math.pi/180) }
+	poly[3] = { x=pos.x+ r2*math.cos(30 * math.pi/180), y=pos.y+ r2*math.sin(30 *math.pi/180) }
 
-	local verts = {}
-	verts[1] = { x=x+w/1.5-2, y=y+h+2 }
-	verts[2] = { x=x+w+2, y=y+h/2-1 }
-	verts[3] = { x=pos.x-offset/1.5+2, y=pos.y-offset/1.5+2 }
-
-	draw.NoTexture()
-	surface.SetDrawColor( const.colors.orange.r, const.colors.orange.g, const.colors.orange.b, tipcol.a )
-	surface.DrawPoly( verts )
-
-
-	draw.RoundedBox( 8, x-padding, y-padding, w+padding*2, h+padding*2, tipcol )
-
-	local verts = {}
-	verts[1] = { x=x+w/1.5, y=y+h }
-	verts[2] = { x=x+w, y=y+h/2 }
-	verts[3] = { x=pos.x-offset/1.5, y=pos.y-offset/1.5 }
-
-	draw.NoTexture()
-	surface.SetDrawColor( tipcol.r, tipcol.g, tipcol.b, tipcol.a )
-	surface.DrawPoly( verts )
+	poly[1] = rotatePoint( poly[1], pos, dx*-0.5 )
+	poly[2] = rotatePoint( poly[2], pos, dx*-0.5 )
+	poly[3] = rotatePoint( poly[3], pos, dx*-0.5 )
 
 
-	draw.DrawText( tip.text, "GModWorldtip", x + w/2, y, const.colors.orange, TEXT_ALIGN_CENTER )
+
+	local raceColour = player_manager.RunClass( LocalPlayer(), "getRaceColor" )
+	raceColour.a = 255
+
+	surface.SetDrawColor( raceColour ) -- Set colour for poly
+	surface.DrawPoly( poly ) -- Create our poly in the center
+
+	for i=1, #verts do
+		surface.SetDrawColor( raceColour ) -- Set the line colour to be the player's race colour.
+
+	    if i ~= #verts then
+			surface.DrawLine( verts[i].x, verts[i].y, verts[i+1].x, verts[i+1].y)  -- For 1,2,3 verts connect to next.
+		elseif i == #verts then
+			surface.DrawLine( verts[i].x, verts[i].y, verts[1].x, verts[1].y) -- But on the final vert, loop it back to the first making a connected "poly"
+		end
+
+	end
+
+	dx = RealTime() * -1
+
+	if math.abs( math.abs(dx) % 90) < 0.01 and math.abs(dx) >= 90 then --Ensure that even -90 will work :D Also make sure we reset because otherwise huge floats are bad :C
+		dx = 0
+	end
+
+
 
 end
 
 
 function GM:PaintWorldTips()
 
-	if GM:getPlayerSuit():isActive() and WorldTip and WorldTip.dietime > SysTime() then
-		DrawWorldTip( WorldTip )
+	local suit = GM:getPlayerSuit()
+
+	for k, WorldTip in pairs(tipTable) do
+
+		if suit and suit:isActive() then
+			if WorldTip and WorldTip.dietime > SysTime() then
+				DrawWorldTip( WorldTip )
+			end
+		end
+
 	end
+
+	tipTable = {}  -- Clear the table once we've drawn the contents, otherwise push pop till your shoulder stops
+
 
 end
