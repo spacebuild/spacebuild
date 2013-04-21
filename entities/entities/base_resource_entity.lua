@@ -80,22 +80,29 @@ if (CLIENT) then
 
 	function ENT:Draw()
 		if self.rdobject then
-			local resources = self.rdobject:getResources()    --- TODO Fix why this only works with Terran -.-
-			local elementTable = {}
+			local lookedAt, lookedAtSomewhat = self:BeingLookedAtByLocalPlayer(), self:BeingLookedAtByLocalPlayerSomewhat()
 
-			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
+			if lookedAt or lookedAtSomewhat then
 
-			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
+				local resources = self.rdobject:getResources()
+				local elementTable = {}
 
-			for _, v in pairs(resources) do
-				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, v:getDisplayName()) )
-			end
+				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
 
-			if self:BeingLookedAtByLocalPlayerSomewhat() then
-				GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
-			end
-			if self:BeingLookedAtByLocalPlayer() then
-				GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
+				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
+
+				for _, v in pairs(resources) do
+					table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, v:getDisplayName().. ": " .. tostring(self.rdobject:getResourceAmount(v:getName())) .. "/" .. tostring(self.rdobject:getMaxResourceAmount(v:getName()))) )
+				end
+
+				if lookedAtSomewhat then
+					GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
+				end
+
+				if lookedAt then
+					GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
+				end
+
 			end
 		end
 
