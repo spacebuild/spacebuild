@@ -45,7 +45,7 @@ net.Receive("SBRPU", function(bitsreceived)
 		suit:receive()
 		if suit:getEnvironment() ~= env then
 			hook.Call("OnLeaveEnvironment", GM, env, nil)
-			hook.Call("OnEnterEnvironment", GM, suit:getEnvironment(), nil)
+			hook.Call("OnEnterEnvironment", GM, suit:getEnvironment(), nil) --- TODO Environment nil because of suit:getEnvironment returning nil on occasion?
 		end
 	end
 end)
@@ -114,7 +114,7 @@ hook.Add("Initialize", "SBClientInit", InitGame)
 
 
 function GM:OnEnterEnvironment(environment, ent)
-	if environment:hasName() then
+	if environment:hasName() then --- TODO Fix why this sometimes gives nil value for environment :/
 		chat.AddText(Color(255, 255, 255), "Entering ", Color(100, 255, 100), environment:getName())
 	end
 end

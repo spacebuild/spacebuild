@@ -19,58 +19,58 @@ function ENT:Initialize()
 	GAMEMODE:registerDevice(self, GAMEMODE.RDTYPES.GENERATOR)
 end
 
---[[ if (CLIENT) then
+if (CLIENT) then
+
+	local width, height
+	local scrW = ScrW()
+	local scrH = ScrH()
+	if scrW > 1650 then
+		width = 200
+	elseif scrW > 1024 then
+		width = 150
+	else
+		width = 100
+	end
+	if scrH > 900 then
+		height = 36
+	elseif scrH > 750 then
+		height = 24
+	else
+		height = 16
+	end
+
 	function ENT:Draw()
 		if self.rdobject then
-			local elementTable = {}
+			local lookedAt, lookedAtSomewhat = self:BeingLookedAtByLocalPlayer(), self:BeingLookedAtByLocalPlayerSomewhat()
 
-			local width, height --- TODO look for a way to not make this every draw call, and perhaps a way to inherit panel width or sutin or largest child width.
-			local scrW = ScrW()
-			local scrH = ScrH()
-			if scrW > 1650 then
-				width = 200
-			elseif scrW > 1024 then
-				width = 150
-			else
-				width = 100
-			end
-			if scrH > 900 then
-				height = 36
-			elseif scrH > 750 then
-				height = 24
-			else
-				height = 16
-			end
+			if lookedAt or lookedAtSomewhat then
 
-			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
-			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
+				local resources = self.rdobject:getResources()
+				local elementTable = {}
 
-			--MsgN("Before: ",#elementTable)
+				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
 
-			local resources = self.rdobject:getResources()
-			MsgN("Type resources: ",type(resources))
+				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
 
-			--MsgN("Length of Resources: ",#resources)
+				for _, v in pairs(resources) do
+					table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, v:getDisplayName().. ": " .. tostring(self.rdobject:getResourceAmount(v:getName())) .. "/" .. tostring(self.rdobject:getMaxResourceAmount(v:getName()))) )
+				end
 
-			for _, v in pairs(self.rdobject:getResources()) do  --- TODO See why this won't add to elementTable :/
-				local str = v:getDisplayName()
-				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, str) )
-			end
+				if lookedAtSomewhat then
+					GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
+				end
 
-			--MsgN("After: ",#elementTable)
+				if lookedAt then
+					GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
+				end
 
-			if self:BeingLookedAtByLocalPlayerSomewhat() then
-				GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
-			end
-			if self:BeingLookedAtByLocalPlayer() then
-				GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
 			end
 		end
 
 
 		self:DrawModel()
 	end
-end ]]
+end
 
 function ENT:turnOn(newself)
 	self = newself or self

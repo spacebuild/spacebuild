@@ -40,6 +40,118 @@ end
 
 local ply
 
+local PANEL = {}
+
+AccessorFunc( PANEL, "Padding", 	"Padding" )
+AccessorFunc( PANEL, "pnlCanvas", 	"Canvas" )
+
+--[[---------------------------------------------------------
+   Name: Init
+-----------------------------------------------------------]]
+function PANEL:Init()
+
+	self.pnlCanvas 	= vgui.Create( "Panel", self )
+	self.pnlCanvas.OnMousePressed = function( self, code ) self:GetParent():OnMousePressed( code ) end
+	self.pnlCanvas:SetMouseInputEnabled( true )
+	self.pnlCanvas.PerformLayout = function( pnl )
+
+		self:PerformLayout()
+		self:InvalidateParent()
+
+	end
+
+	self:SetPadding( 0 )
+	self:SetMouseInputEnabled( true )
+
+	-- This turns off the engine drawing
+	self:SetPaintBackgroundEnabled( false )
+	self:SetPaintBorderEnabled( false )
+	self:SetPaintBackground( false )
+
+end
+
+--[[---------------------------------------------------------
+   Name: AddItem
+-----------------------------------------------------------]]
+function PANEL:AddItem( pnl )
+
+	pnl:SetParent( self:GetCanvas() )
+
+end
+
+function PANEL:OnChildAdded( child )
+
+	self:AddItem( child )
+
+end
+
+--[[---------------------------------------------------------
+   Name: SizeToContents
+-----------------------------------------------------------]]
+function PANEL:SizeToContents()
+
+	self:SetSize( self.pnlCanvas:GetSize() )
+
+end
+
+--[[---------------------------------------------------------
+   Name: GetCanvas
+-----------------------------------------------------------]]
+function PANEL:GetCanvas()
+
+	return self.pnlCanvas
+
+end
+
+function PANEL:InnerWidth()
+
+	return self:GetCanvas():GetWide()
+
+end
+
+--[[---------------------------------------------------------
+   Name: Rebuild
+-----------------------------------------------------------]]
+function PANEL:Rebuild()
+
+	self:GetCanvas():SizeToChildren( false, true )
+	self:SizeToChildren( false, true )
+
+	-- Although this behaviour isn't exactly implied, center vertically too
+	if ( self.m_bNoSizing and self:GetCanvas():GetTall() < self:GetTall() ) then
+
+		self:GetCanvas():SetPos( 0, (self:GetTall()-self:GetCanvas():GetTall()) * 0.5 )
+
+	end
+
+end
+
+--[[---------------------------------------------------------
+   Name: PerformLayout
+-----------------------------------------------------------]]
+function PANEL:PerformLayout()
+
+	local Wide = self:GetWide()
+	local YPos = 0
+
+	--self:Rebuild()
+
+	self.pnlCanvas:SetPos( 0, YPos )
+	self.pnlCanvas:SetWide( Wide )
+
+	self:Rebuild()
+
+
+end
+
+function PANEL:Clear()
+
+	return self.pnlCanvas:Clear()
+
+end
+
+derma.DefineControl( "DScrollPanelListNoScroll", "", PANEL, "DPanel" )
+
 --
 -- This defines a new panel type for the player row. The player row is given a player
 -- and then from that point on it pretty much looks after itself. It updates player info
@@ -168,7 +280,8 @@ local PLAYER_LINE =
 
 
 
-		self:SetZPos( (mult * -30 ) - (self.NumKills * 10) + self.NumDeaths ) --- TODO Change this to money for each.
+		--self:SetZPos( (mult * -30 ) - (self.NumKills * 10) + self.NumDeaths ) --- TODO Change this to money for each.
+		self:SetZPos( self.NumKills * -10 + self.NumDeaths )
 
 	end,
 
@@ -267,8 +380,30 @@ local SCORE_BOARD =
 		--self.NumPlayers:SetSize( 300, 30 )
 		--self.NumPlayers:SetContentAlignment( 4 )
 
-		self.Scores = self:Add( "DScrollPanel" )
-		self.Scores:Dock( FILL )
+		-- Let's have 3 'lists' which store player lines.
+		-- Put these 3 into a DScrollPanel so we don't overflow on the screen.
+
+		self.ScorePanel = self:Add( "DScrollPanel" )   -- Main container
+		self.ScorePanel:Dock( FILL ) -- Because it's the frame around the race panels
+
+		-- Now comes the 3 'lists'
+		self.Scores_Terran = self:Add( "DScrollPanelListNoScroll" )  -- Our own custom vgui element, DScrollPanel without the scroll, and infinite expansion of the parent frame :D
+		self.Scores_Terran:Dock( TOP ) -- So that they stack at the top
+		self.Scores_Terran:DockPadding( 3, 3, 3, 3 ) -- So we have loves gaps between race panes
+
+		self.Scores_Radijn = self:Add( "DScrollPanelListNoScroll" )
+		self.Scores_Radijn:Dock( TOP )
+		self.Scores_Radijn:DockPadding( 3, 3, 3, 3 )
+
+		self.Scores_Pendrouge = self:Add( "DScrollPanelListNoScroll" )
+		self.Scores_Pendrouge:Dock( TOP )
+		self.Scores_Pendrouge:DockPadding( 3, 3, 3, 3 )
+
+		-- Parent them to the scroll panel, so scroll panel can autoexpand or w/e
+		self.ScorePanel:AddItem( self.Scores_Terran )
+		self.ScorePanel:AddItem( self.Scores_Radijn )
+		self.ScorePanel:AddItem( self.Scores_Pendrouge )
+
 
 	end,
 
@@ -276,6 +411,10 @@ local SCORE_BOARD =
 
 		self:SetSize( 700, ScrH() - 200 )
 		self:SetPos( ScrW() / 2 - 350, 100 )
+
+		self.ScorePanel:SetSize( 700, ScrH() - 200 )
+		self.ScorePanel:SetPos( ScrW() / 2 - 350, 100 )
+
 
 	end,
 
@@ -300,7 +439,16 @@ local SCORE_BOARD =
 				pl.ScoreEntry = vgui.CreateFromTable( PLAYER_LINE, pl.ScoreEntry )
 				pl.ScoreEntry:Setup( pl )
 
-				self.Scores:AddItem( pl.ScoreEntry )
+				local race = player_manager.RunClass( pl, "getRace" )
+
+
+				if race == "Terran" then
+					self.Scores_Terran:AddItem( pl.ScoreEntry )
+				elseif race == "Radijn" then
+					self.Scores_Radijn:AddItem( pl.ScoreEntry )
+				elseif race == "Pendrouge" then
+					self.Scores_Pendrouge:AddItem( pl.ScoreEntry )
+				end
 
 			end
 
