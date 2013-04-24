@@ -67,6 +67,10 @@ include("classes/class.lua")
 include("shared/spacebuild.lua")
 include("propertiesmenu.lua")
 
---- - Extension System ----
+----- Extension System ----
 include("shared/extensions.lua")
 --------------------------
+
+----- Part Spawner List ---
+include("shared/sb4_model_list.lua")
+---------------------------
