@@ -57,7 +57,9 @@ function GM:GetBaseClass()
 	return BaseClass
 end
 
-
+include( "player_class/player_terran.lua" )
+include( "player_class/player_radijn.lua" )
+include( "player_class/player_pendrouge.lua" )
 include("shared/wrappers.lua")
 include("shared/const.lua")
 include("shared/util.lua")
@@ -65,11 +67,10 @@ include("classes/class.lua")
 include("shared/spacebuild.lua")
 include("propertiesmenu.lua")
 
-include( "player_class/player_sb_base.lua" )
-include( "player_class/player_terran.lua" )
-include( "player_class/player_radijn.lua" )
-include( "player_class/player_pendrouge.lua" )
-
---- - Extension System ----
+----- Extension System ----
 include("shared/extensions.lua")
 --------------------------
+
+----- Part Spawner List ---
+include("shared/sb4_model_list.lua")
+---------------------------
