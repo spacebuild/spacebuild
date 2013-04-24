@@ -71,6 +71,3 @@ include("propertiesmenu.lua")
 include("shared/extensions.lua")
 --------------------------
 
------ Part Spawner List ---
-include("shared/sb4_model_list.lua")
----------------------------

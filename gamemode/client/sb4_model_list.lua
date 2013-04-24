@@ -1,6 +1,6 @@
 
 --Please Note:
---TODO: This file needs updating. However Sam is working on  a lua script checker to ensure the models in here still exist and have not been removed.
+--TODO: This file may need  updating. However Sam is working on  a lua script checker to ensure the models in here still exist and have not been removed.
 
 local SMT = {}
 SMT.SmallBridge = {}

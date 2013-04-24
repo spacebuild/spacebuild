@@ -25,4 +25,6 @@ include("scoreboard.lua")
 include("pickrace.lua")
 include("hudtips.lua")
 include("spawndata.lua")
+include("sb4_model_list.lua")
+
 
