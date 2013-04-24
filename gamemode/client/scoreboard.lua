@@ -298,7 +298,11 @@ local PLAYER_LINE =
 		local Race = player_manager.RunClass( self.Player, "getRace" )
 
 			local Racecolor = player_manager.RunClass( self.Player, "getRaceColor" )
-			draw.RoundedBox( 4, 0, 0, w, h, Racecolor )         -- Draw the player row
+			if Racecolor then
+                draw.RoundedBox( 4, 0, 0, w, h, Racecolor )         -- Draw the player row
+            else
+                draw.RoundedBox( 4, 0, 0, w, h, Color(255, 0, 0, 255) )
+            end
 
 			local localRace = player_manager.RunClass( ply, "getRace" )
 
