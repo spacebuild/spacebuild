@@ -70,3 +70,6 @@ include("propertiesmenu.lua")
 --- - Extension System ----
 include("shared/extensions.lua")
 --------------------------
+
+--- Chat System ---
+include("shared/chat.lua")
