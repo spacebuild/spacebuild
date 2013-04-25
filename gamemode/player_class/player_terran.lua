@@ -31,7 +31,7 @@ PLAYER.RunSpeed				= 400
 
 -- Set a Race specific colour, this will be used as an identifier
 PLAYER.RaceColor			= Color(100,150,0,200)
-PLAYER.PlayerColor          = Vector( "0.24 0.34 0.41" )
+PLAYER.PlayerColor          = Vector( 100/255, 150/255, 0/255 )
 PLAYER.WeaponColor          = Vector( "0.30 1.80 2.10" )
 
 -- Specify variable to store Race name
