@@ -24,6 +24,27 @@ local net = sbnet
 
 local space
 
+local races = {}
+
+function GM:registerPlayerClass(name, class)
+    player_manager.RegisterClass( name, class, "player_sb_base" )
+    races[name] = class
+end
+
+function GM:getRaces()
+    return races
+end
+
+local function changeRace(len, ply)
+    local race = net.ReadString()
+    MsgN("Changing to race "..race)
+    if races[race] then
+        player_manager.SetPlayerClass( ply, race )
+        ply:KillSilent()
+    end
+end
+net.Receive("RACECHANGE", changeRace)
+
 
 local function init()
 	space = class.new("SpaceEnvironment")
