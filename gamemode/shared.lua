@@ -61,6 +61,7 @@ end
 include("shared/wrappers.lua")
 include("shared/const.lua")
 include("shared/util.lua")
+include("shared/items.lua")
 include("classes/class.lua")
 include("shared/spacebuild.lua")
 include("propertiesmenu.lua")

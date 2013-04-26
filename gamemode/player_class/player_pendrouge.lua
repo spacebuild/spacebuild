@@ -39,7 +39,7 @@ PLAYER.RaceName				= "Pendrouge"
 
 
 function PLAYER:Init()
-   self.Player.ls_suit = class.new("PlayerSuit", self.Player)
+   self.Player.ls_suit = class.new("PlayerSuit", self.Player, "oxygen", "co2")
 end
 
 GM:registerPlayerClass("player_pendrouge", PLAYER)

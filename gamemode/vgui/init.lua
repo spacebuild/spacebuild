@@ -18,4 +18,5 @@ local include = include
 
 include("DSBMenu.lua")
 include("DRacePickMenu.lua")
+include("DItemMenu.lua")
 
