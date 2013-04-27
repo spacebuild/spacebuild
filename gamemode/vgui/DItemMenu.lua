@@ -25,36 +25,41 @@ function PANEL:Init()
 
     local x, y = 25, 100;
 
-    local CatList = vgui.Create( "DCategoryList", self )
-    CatList:SetPos( x, y )
-    CatList:SetSize( 974, 643 );
-
     local items = GAMEMODE:getItems()
 
-    local cat_ui, cat_content_ui
+    local tree_ui = vgui.Create("DTree", self)
+    tree_ui:SetPos(x, y)
+    tree_ui:SetSize(150, 550)  -- 974 - 170 = 807
+
+    x = x + 170
+    local icon_panel = vgui.Create("DGrid", self)
+    icon_panel:SetPos(x, y)
+    icon_panel:SetSize(805, 550)
+    icon_panel:SetCols( 9 )
+    icon_panel:SetColWide( 85 )
+    icon_panel:SetRowHeight( 85 )
+
+    local node, item
     for cat_name, cat in pairs(items) do
-        cat_ui = CatList:Add( cat.name )
-        cat_content_ui = vgui.Create( "DPanel")
-        cat_content_ui:SetSize(974, 643)
-        --cat_ui:SetSize(974, 643)
-
-
-        --[[---------------------------------------------------------
-           Name: PerformLayout
-        -----------------------------------------------------------]]
-        function cat_ui:SizeToChildren()
-            self:SetSize(self.Contents:GetTall(), self.Contents:GetWide())
+        node = tree_ui:AddNode( cat.name )
+        function node:DoClick()
+           for _, v in pairs(icon_panel:GetItems()) do
+              icon_panel:RemoveItem(v)
+           end
+           for item_name, v in pairs(cat.items) do
+               item = vgui.Create( "SpawnIcon" ) --DModelPanel
+               item:SetSize( 80, 80 )
+               item:SetModel( v.model )
+               item:SetToolTip(v.name)
+               function item:DoClick()
+                   net.Start( "SPAWNITEM" )
+                       net.WriteString( cat_name )
+                       net.WriteString( item_name )
+                   net.SendToServer()
+               end
+               icon_panel:AddItem( item )
+           end
         end
-
-        -- Test
-        local DLabel = vgui.Create( "DLabel", cat_content_ui )
-        DLabel:SetPos( 10, 10 ) -- Set the position of the label
-        DLabel:SetText( cat.name ) --  Set the text of the label
-        DLabel:SizeToContents() -- Size the label to fit the text in it
-        DLabel:SetDark( 1 ) -- Set the colour of the text inside the label to a darker one
-
-        cat_ui:SetContents(cat_content_ui)
-        -- End test
     end
 end
 
