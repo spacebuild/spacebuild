@@ -42,6 +42,9 @@ function PANEL:Init()
     local node, item
     for cat_name, cat in pairs(items) do
         node = tree_ui:AddNode( cat.name )
+        if cat.icon then
+            node.Icon:SetImage(cat.icon)
+        end
         function node:DoClick()
            for _, v in pairs(icon_panel:GetItems()) do
               icon_panel:RemoveItem(v)

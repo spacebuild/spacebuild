@@ -20,6 +20,7 @@ local items = {
     hulls = {
         name = "Hulls",
         description = "All kinds of hulls for ship building",
+        icon = "icons/128/hulls.png",
         items = {
             hull_1 = {
                 name = "Hull Test 1",
@@ -158,6 +159,7 @@ local items = {
     generators = {
         name = "Generators",
         description = "All kinds of generators",
+        icon = "icons/128/generators.png",
         items = {
             solar_panel = {
                 name = "Test Solar Panel",
@@ -198,6 +200,7 @@ local items = {
     storages = {
         name = "Storages",
         description = "All kinds of storages",
+        icon = "icons/128/storage.png",
         items = {
             energy_storage = {
                 name = "Test Energy Storage",
@@ -248,6 +251,7 @@ local items = {
     life_support = {
         name = "Life Support Devices",
         description = "All kinds of life support devices",
+        icon = "icons/128/support.png",
         items = {
             suit_dispenser = {
                 name = "Suit Dispenser Test",
@@ -265,6 +269,7 @@ local items = {
     network = {
         name = "Network devices",
         description = "All kinds of network devices",
+        icon = "icons/128/network.png",
         items = {
 
         }
@@ -272,6 +277,7 @@ local items = {
     mining = {
         name = "Mining devices",
         description = "All kinds of mining devices",
+        icon = "icons/128/mining.png",
         items = {
 
         }
@@ -279,6 +285,7 @@ local items = {
     weapons = {
         name = "Weapons",
         description = "All kinds of weapons",
+        icon = "icons/128/weapons.png",
         items = {
 
         }
