@@ -164,7 +164,7 @@ local items = {
             solar_panel = {
                 name = "Test Solar Panel",
                 description = "Solar panel used for testing",
-                price = 1000,
+                price = 0,
                 model = "models/props_phx/life_support/panel_medium.mdl",
                 health = 100,
                 armor = 100,
@@ -175,7 +175,7 @@ local items = {
             oxygen_generator = {
                 name = "Test Oxygen generator",
                 description = "Oxygen generator used for testing",
-                price = 1000,
+                price = 0,
                 model = "models/hunter/blocks/cube1x1x1.mdl",
                 health = 100,
                 armor = 100,
@@ -186,7 +186,7 @@ local items = {
             water_pump = {
                 name = "Test Water Pump",
                 description = "Water pump used for testing",
-                price = 1000,
+                price = 0,
                 model = "models/props_phx/life_support/gen_water.mdl",
                 health = 100,
                 armor = 100,
@@ -205,7 +205,7 @@ local items = {
             energy_storage = {
                 name = "Test Energy Storage",
                 description = "Test energy storage device",
-                price = 1000,
+                price = 0,
                 model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
                 health = 100,
                 armor = 100,
@@ -216,7 +216,7 @@ local items = {
             oxygen_storage = {
                 name = "Test Oxygen generator",
                 description = "Test oxygen storage device",
-                price = 1000,
+                price = 0,
                 model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
                 health = 100,
                 armor = 100,
@@ -227,7 +227,7 @@ local items = {
             water_storage = {
                 name = "Test Water Storage",
                 description = "Test water storage device",
-                price = 1000,
+                price = 0,
                 model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
                 health = 100,
                 armor = 100,
@@ -238,7 +238,7 @@ local items = {
             blackhole = {
                 name = "Test Blackhole Storage",
                 description = "Test energy/oxygen/water storage device",
-                price = 1000,
+                price = 0,
                 model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
                 health = 100,
                 armor = 100,
@@ -256,7 +256,7 @@ local items = {
             suit_dispenser = {
                 name = "Suit Dispenser Test",
                 description = "Puts resources into the suit",
-                price = 1000,
+                price = 0,
                 model = "models/hunter/blocks/cube1x1x1.mdl",
                 health = 100,
                 armor = 100,
@@ -271,7 +271,50 @@ local items = {
         description = "All kinds of network devices",
         icon = "icons/128/network.png",
         items = {
-
+            extra_small_network = {
+                name = "Extra Small Network",
+                description = "Resource Network Node",
+                price = 0,
+                model = "models/ce_ls3additional/screens/s_small_screen.mdl",
+                health = 100,
+                armor = 100,
+                class = "resource_network_small",
+                material = nil,
+                skin = nil
+            },
+            small_network = {
+                name = "Small Network",
+                description = "Resource Network Node",
+                price = 0,
+                model = "models/ce_ls3additional/screens/small_screen.mdl",
+                health = 100,
+                armor = 100,
+                class = "resource_network",
+                material = nil,
+                skin = nil
+            },
+            medium_network = {
+                name = "Medium Network",
+                description = "Resource Network Node",
+                price = 0,
+                model = "models/ce_ls3additional/screens/medium_screen.mdl",
+                health = 100,
+                armor = 100,
+                class = "resource_network_medium",
+                material = nil,
+                skin = nil
+            },
+            large_network = {
+                name = "Large Network",
+                description = "Resource Network Node",
+                price = 0,
+                model = "models/ce_ls3additional/screens/large_screen.mdl",
+                health = 100,
+                armor = 100,
+                class = "resource_network_large",
+                material = nil,
+                skin = nil
+            }
         }
     },
     mining = {
@@ -295,4 +338,12 @@ local items = {
 
 function GM:getItems()
     return items
+end
+
+if CLIENT then
+   for k, v in pairs(items) do
+      for l, w in pairs(v.items) do
+          util.PrecacheModel(w.model)
+      end
+   end
 end

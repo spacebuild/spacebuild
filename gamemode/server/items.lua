@@ -39,6 +39,16 @@ local function spawnItem(len, ply)
     end
     item = items[category].items[item]
 
+    local canSpawn = true
+    if item.canSpawn then
+       canSpawn = item.canSpawn(ply)
+    end
+
+    if not canSpawn then
+        -- Fail
+        return
+    end
+
     -- Spawn the prop
     local vStart = ply:GetShootPos()
     local vForward = ply:GetAimVector()
@@ -79,5 +89,9 @@ local function spawnItem(len, ply)
 
     -- Set new position
     ent:SetPos( vFlushPoint )
+
+    if item.onSpawn then
+       item.onSpawn(ent, ply)
+    end
 end
 net.Receive("SPAWNITEM", spawnItem)
