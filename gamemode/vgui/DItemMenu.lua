@@ -20,7 +20,10 @@ local PANEL = {}
 function PANEL:Init()
     self:setTitle("Item Menu")
     self:setSlogan("Pick your items")
-    self:setByLine("Test")
+
+    local credits = player_manager.RunClass( LocalPlayer(), "getCredits" ) or 0
+
+    self:setByLine(tostring(credits).." credits")
 
 
     local x, y = 25, 100;
@@ -75,7 +78,7 @@ function PANEL:Init()
                Label:Dock( BOTTOM )
                Label:SetContentAlignment( 2 )
                Label:DockMargin( 4, 0, 4, 4 )
-               if v.price == 0 or v.price <= 100 then --Player has enough money
+               if v.price == 0 or v.price <= credits then --Player has enough money
                    Label:SetTextColor( Color( 42, 255, 9, 255 ) )
                else -- Player doesn't have enough money
                    Label:SetTextColor( Color( 255, 9, 9, 255 ) )

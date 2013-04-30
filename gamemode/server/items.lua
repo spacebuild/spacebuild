@@ -28,6 +28,7 @@ local function spawnItem(len, ply)
     local item = net.ReadString()
     MsgN("Spawning item " ..item .. " from category "..category)
     local items = GM:getItems()
+    local credits = player_manager.RunClass( ply, "getCredits")
 
     if not items[category] then
        -- Fail
@@ -38,6 +39,11 @@ local function spawnItem(len, ply)
         return
     end
     item = items[category].items[item]
+
+    if item.price > credits then
+        -- Fail
+        return
+    end
 
     local canSpawn = true
     if item.canSpawn then
@@ -90,6 +96,7 @@ local function spawnItem(len, ply)
     -- Set new position
     ent:SetPos( vFlushPoint )
 
+    player_manager.RunClass( ply, "setCredits", credits - item.price)
     if item.onSpawn then
        item.onSpawn(ent, ply)
     end

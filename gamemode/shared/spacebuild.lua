@@ -35,18 +35,6 @@ function GM:getRaces()
     return races
 end
 
-if SERVER then --TODO move to server
-    local function changeRace(len, ply)
-        local race = net.ReadString()
-        MsgN("Changing to race "..race)
-        if races[race] then
-            player_manager.SetPlayerClass( ply, race )
-            ply:KillSilent()
-        end
-    end
-    net.Receive("RACECHANGE", changeRace)
-end
-
 
 local function init()
 	space = class.new("SpaceEnvironment")
