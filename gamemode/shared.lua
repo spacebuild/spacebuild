@@ -73,6 +73,3 @@ include( "player_class/player_pendrouge.lua" )
 --- - Extension System ----
 include("shared/extensions.lua")
 --------------------------
-
---- Chat System ---
-include("shared/chat.lua")

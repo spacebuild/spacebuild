@@ -25,4 +25,5 @@ include("scoreboard.lua")
 include("pickrace.lua")
 include("hudtips.lua")
 include("spawndata.lua")
+include("chat.lua")
 

@@ -30,7 +30,6 @@ AddCSLuaFile("wrappers.lua")
 AddCSLuaFile("extensions.lua")
 AddCSLuaFile("spacebuild.lua")
 AddCSLuaFile("util.lua")
-AddCSLuaFile("chat.lua")
 
 
 
