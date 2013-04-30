@@ -39,19 +39,28 @@ function GM:HideTeam(ply)
 
 end
 
-function GM:ShowHelp()
+function GM:ShowHelp( ply )
 	MsgN("F1 pressed")
+    local TimeBetweenSwitches = GAMEMODE.SecondsBetweenTeamSwitches or 10
+    if ( ply.LastHelpMenuSwitch and RealTime()-ply.LastHelpMenuSwitch < TimeBetweenSwitches ) then
+        ply.LastHelpMenuSwitch = ply.LastHelpMenuSwitch + 1;
+        ply:ChatPrint( Format( "Please wait %i more seconds before trying to open the help menu again", (TimeBetweenSwitches - (RealTime()-ply.LastTeamSwitch)) + 1 ) )
+        return false
+    end
+
+    -- For clientside see cl_pickteam.lua
+    ply:SendLua( "GAMEMODE:ShowHelp()" )
 end
 
 --[[function GM:ShowTeam()
 	MsgN("F2 pressed")
 end ]]
 
-function GM:ShowSpare1()
+function GM:ShowSpare1( ply )
 	MsgN("F3 pressed")
 end
 
-function GM:ShowSpare2()
+function GM:ShowSpare2( ply )
 	MsgN("F4 pressed")
 end
 

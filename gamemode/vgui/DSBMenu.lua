@@ -17,7 +17,7 @@
 local PANEL = {}
 
 function PANEL:Init()
-	self:SetSize( math.Clamp( 1024, 0, ScrW() ), math.Clamp( 768, 0, ScrH() ) )
+	self:SetSize( 1024, 768 )
 	self:SetPos((ScrW() / 2) - (self:GetWide() / 2), (ScrH() / 2) - (self:GetTall() / 2))
 
 	local closeButton = vgui.Create('DButton', self)

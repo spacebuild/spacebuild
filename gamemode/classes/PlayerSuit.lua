@@ -33,10 +33,12 @@ function C:isA(className)
 	return className == "PlayerSuit"
 end
 
-function C:init(ply)
+function C:init(ply, breathAble, breathProduce )
 	self.ply = ply
 	self:reset()
 	self.firstSync = true
+    self.breathAble = breathAble or "oxygen"
+    self.breathProduce = breathProduce or "co2"
 end
 
 function C:reset()
@@ -189,10 +191,10 @@ function C:processEnvironment()
 			end
 		end
 		if req_oxygen > 0 then
-			if self.ply:WaterLevel() < 3 and (GM:onSBMap() and env and env:hasEnoughOxygen()) then
+			if self.ply:WaterLevel() < 3 and (GM:onSBMap() and env and env:hasEnoughOxygen(self.breathAble)) then
 				req_oxygen = const.suit.MAX_OXYGEN - self:getOxygen()
 				if  req_oxygen > 0  then
-					self:setOxygen(self:getOxygen() + req_oxygen - env:convertResource("oxygen", "co2", req_oxygen))
+					self:setOxygen(self:getOxygen() + req_oxygen - env:convertResource(self.breathAble, self.breathProduce, req_oxygen))
 				end
 			else
 				if self:getOxygen() >= req_oxygen then
@@ -233,7 +235,7 @@ function C:processEnvironment()
 			elseif self:getBreath() > 0 then
 				self:setBreath(0)
 			end
-		elseif self.ply:WaterLevel() == 3 or (GM:onSBMap() and env and not env:hasEnoughOxygen()) then
+		elseif self.ply:WaterLevel() == 3 or (GM:onSBMap() and env and not env:hasEnoughOxygen(self.breathAble)) then
 			if self:getBreath() >= 5 then
 				self:setBreath(self:getBreath() - 5)
 			elseif self:getBreath() > 0 then

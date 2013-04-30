@@ -69,3 +69,11 @@ surface.CreateFont('SB_Menu_Heading', { font = 'Oleo Script', size = 64 })
 surface.CreateFont('SB_Menu_Heading2', { font = 'Oleo Script', size = 24 })
 surface.CreateFont('SB_Menu_Heading3', { font = 'Oleo Script', size = 19 })
 
+surface.CreateFont("StorePriceFont",
+    {
+        font = "Oleo Script",
+        size = 18,
+        antialias = true,
+        weight = 1000
+    })
+

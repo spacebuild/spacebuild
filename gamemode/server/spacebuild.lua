@@ -132,23 +132,28 @@ function GM:PlayerSpawn( ply )
 
 end
 
+
+local function changeRaceClass(ply, race)
+    local races = GM:getRaces()
+    if races[race] then
+        player_manager.SetPlayerClass( ply, race )
+        player_manager.RunClass( ply, "setCredits", 2500 )
+        ply:KillSilent()
+    end
+end
+
+local function changeRace(len, ply)
+    local race = net.ReadString()
+    changeRaceClass(ply, race)
+end
+net.Receive("RACECHANGE", changeRace)
+
 --[[---------------------------------------------------------
    Called once on the player's first spawn
 -----------------------------------------------------------]]
 function GM:PlayerInitialSpawn( ply )
 
-	local rand = math.random()
-
-	if rand >= 0.666 then
-		player_manager.SetPlayerClass( ply, "player_terran" )
-	elseif rand >= 0.333 then
-		player_manager.SetPlayerClass( ply, "player_radijn" )
-	elseif rand >= 0 then
-		player_manager.SetPlayerClass( ply, "player_pendrouge" )
-	end
-
-
-
+    changeRaceClass(ply, "player_terran")
 	BaseClass.PlayerInitialSpawn( self, ply )
 
 end
