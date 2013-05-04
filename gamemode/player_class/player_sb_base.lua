@@ -114,6 +114,7 @@ end
 -- Called when the player spawns
 --
 function PLAYER:Spawn()
+    BaseClass.Spawn(self)
 
     self.Player:SetPlayerColor( self.PlayerColor  )
     self.Player:SetWeaponColor( PLAYER.WeaponColor   )

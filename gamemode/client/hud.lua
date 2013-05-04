@@ -3,6 +3,16 @@ local class = GM.class
 local const = GM.constants
 local internal = GM.internal
 
+local images = {
+    armor = Material("icons/48/armor.png"),
+    breath = Material("icons/48/breath.png"),
+    credits = Material("icons/48/credits.png"),
+    device = Material("icons/48/device.png"),
+    environment = Material("icons/48/environment.png"),
+    heart = Material("icons/256/heart.png"),
+    suit = Material("icons/48/suit.png")
+}
+
 internal.hud = {}
 
 function GM:registerHUDComponent(name, component)
@@ -503,6 +513,17 @@ function GM:HUDPaint()
 	self:drawSuitInfo()
 	self:drawEnvironmentInfo()
 	self:drawMeters()
+
+    surface.SetMaterial(images.breath)
+    surface.DrawTexturedRect(16, ScrH() - 140, 24, 24)
+
+    surface.SetMaterial(images.heart)
+    surface.DrawTexturedRect(16, ScrH() - 105, 24 , 24)
+
+    surface.SetMaterial(images.armor)
+    surface.DrawTexturedRect(16, ScrH() - 70, 24, 24)
+
+
 
 	self:PaintWorldTips()
 	self:PaintHudTips()
