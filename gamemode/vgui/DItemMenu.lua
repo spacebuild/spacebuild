@@ -190,7 +190,7 @@ function PANEL:Init()
                function item:DoClick()
                    item = createItem(cat_name, item_name, v, credits)
                    function item:DoClick()
-                       icon_buy_panel:AddItem(self)
+                       icon_buy_panel:RemoveItem(self)
                    end
                    icon_buy_panel:AddItem(item)
                    item = nil

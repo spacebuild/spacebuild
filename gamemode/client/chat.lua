@@ -381,8 +381,7 @@ if CLIENT then
 	end)      ]]
 
 	-- TESTING
-	local oldChatAddText
-	if not oldChatAddText then oldChatAddText = chat.AddText end
+	local oldChatAddText = chat.AddText
 
 	local test = vgui.Create('DChatPanel')
 	--test:MoveToBack()
