@@ -19,5 +19,6 @@ local AddCSLuaFile = AddCSLuaFile
 AddCSLuaFile("init.lua")
 AddCSLuaFile("DSBMenu.lua")
 AddCSLuaFile("DRacePickMenu.lua")
+AddCSLuaFile("DChatPanel.lua")
 AddCSLuaFile("DItemMenu.lua")
 

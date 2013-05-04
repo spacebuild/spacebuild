@@ -30,6 +30,7 @@ AddCSLuaFile("scoreboard.lua")
 AddCSLuaFile("menus.lua")
 AddCSLuaFile("hudtips.lua")
 AddCSLuaFile("spawndata.lua")
+AddCSLuaFile("chat.lua")
 
 
 

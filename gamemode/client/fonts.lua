@@ -14,6 +14,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+surface.CreateFont( "ChatText",
+	{
+		font = "coolvetica",
+		size = 20,
+		weight = 400
+	})
+
 surface.CreateFont("WorkshopLarge",
 	{
 		font = "Helvetica",

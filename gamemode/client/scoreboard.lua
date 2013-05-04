@@ -304,49 +304,49 @@ local PLAYER_LINE =
                 draw.RoundedBox( 4, 0, 0, w, h, Color(255, 0, 0, 255) )
             end
 
-			local localRace = player_manager.RunClass( ply, "getRace" )
+		local localRace = player_manager.RunClass( ply, "getRace" )
 
-			if localRace == Race then          -- Only the same race as the local Player will draw health Bars. Useful :D
+		if localRace == Race then          -- Only the same race as the local Player will draw health Bars. Useful :D
 
-				local health = self.Player:Health()
-				local xoff, yoff = w/100,h/10 -- We'll indent 10% all the way around :D
-				local w, h = w-xoff*2, h-yoff*2 -- Shave off the same from the other end
+			local health = self.Player:Health()
+			local xoff, yoff = w/100,h/10 -- We'll indent 10% all the way around :D
+			local w, h = w-xoff*2, h-yoff*2 -- Shave off the same from the other end
 
-				--
-				-- Width should be a minimum of 32-xoff this will put the bar's min just a the end of the avatar
-				-- Then it should have a max length of (orig_w-xoff*2)*(2/5)
-				-- Split that up into 100 increments, and use the health fraction to set width to curr health value
-				-- Use 1-fraction *255 to set the alpha. This will make it more visible the closer to 0 health you get.
-				-- This will give the effect of the health bar emerging from the row
-				--
+			--
+			-- Width should be a minimum of 32-xoff this will put the bar's min just a the end of the avatar
+			-- Then it should have a max length of (orig_w-xoff*2)*(2/5)
+			-- Split that up into 100 increments, and use the health fraction to set width to curr health value
+			-- Use 1-fraction *255 to set the alpha. This will make it more visible the closer to 0 health you get.
+			-- This will give the effect of the health bar emerging from the row
+			--
 
-				local w_min = 32-xoff
-				local w_max = w*(4/5)
-				local w_length = w_max - w_min
+			local w_min = 32-xoff
+			local w_max = w*(4/5)
+			local w_length = w_max - w_min
 
-				local fraction
-				if health >= 100 then fraction = 1
-				else
-					fraction = health / 100       -- Fraction of health between 0 and 1. 1 is full health
-				end
-				local startClr = Color(255,50,50,200) -- Red
-				local endClr = Racecolor   -- Green / Race Colour
-				-- Since 1 represents full health, start ---- fraction --------------- end
-				-- End must be our health when on full colour, and our start must be red :D
-
-				local clr = clrInterpolation(startClr, endClr, fraction)
-				clr.a = 255*(1 - fraction)
-
-				w = w_min+(w_length*fraction)
-
-				if self.Player:Alive() == false or fraction == 0 then
-					w = w_max- (w_length*0.1)
-					clr = Color(255,0,0,255)
-				end
-
-
-				draw.RoundedBox( 4, xoff, yoff, w, h, clr )
+			local fraction
+			if health >= 100 then fraction = 1
+			else
+				fraction = health / 100       -- Fraction of health between 0 and 1. 1 is full health
 			end
+			local startClr = Color(255,50,50,200) -- Red
+			local endClr = Racecolor   -- Green / Race Colour
+			-- Since 1 represents full health, start ---- fraction --------------- end
+			-- End must be our health when on full colour, and our start must be red :D
+
+			local clr = clrInterpolation(startClr, endClr, fraction)
+			clr.a = 255*(1 - fraction)
+
+			w = w_min+(w_length*fraction)
+
+			if self.Player:Alive() == false or fraction == 0 then
+				w = w_max- (w_length*0.1)
+				clr = Color(255,0,0,255)
+			end
+
+
+			draw.RoundedBox( 4, xoff, yoff, w, h, clr )
+		end
 	end,
 }
 
