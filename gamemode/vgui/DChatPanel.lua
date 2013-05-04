@@ -18,6 +18,33 @@ local color = GM.constants.colors
 local surface = surface
 local draw = draw
 
+local function wrapString( data, w )
+	surface.SetFont( "ChatText" )
+	local linewidth = 0
+	local packedlines = {}
+	local linenumber = 1
+	table.insert(packedlines, {icon = linedata.icon, textdata = {}})
+	for k, v in pairs(linedata.textdata) do
+		if type(v) == "string" then
+			local w, h = surface.GetTextSize(v)
+			linewidth = linewidth + w
+			if linewidth + ((linedata.icon and #packedlines == 1) and 22 or 0) >= maxwidth then
+				local w, h = surface.GetTextSize(v)
+				linewidth = w
+				linenumber = linenumber + 1
+				table.insert(packedlines, {textdata = {JChat.GetLastColor(packedlines[linenumber-1])}})
+			end
+		end
+		if type(v) == "table" and v.r and v.g and v.b then
+			table.insert(packedlines[linenumber].textdata, v)
+		end
+		if type(v) == "string" then
+			table.insert(packedlines[linenumber].textdata, v)
+		end
+	end
+	return packedlines
+end
+
 local MESSAGE = {}
 function MESSAGE:new( o )
 	-- Msg Format
@@ -32,16 +59,42 @@ function MESSAGE:shouldFade( )
 	return CurTime() > self.sendTime + 10
 end
 
+function MESSAGE:updateTime()
+	self.sendTime = CurTime()
+end
+
 function MESSAGE:reindex( i )
 	-- Reindex the message, essentially change its ID.
 	self.id = i or self.id
 end
 
-function MESSAGE:Paint()
+function MESSAGE:Parent( vgui )
+	self.parent = vgui or nil
+end
+
+function MESSAGE:GetParent()
+	return self.parent or nil
+end
+
+function MESSAGE:Paint(  ) -- Each message will be responsible for drawing itself.
+	surface.SetFont( "ChatText" )
+	local x, y = self:GetParent():GetPos()
+	local width = 0
+	for _, item in pairs(self.msg) do -- Let's disect our msg data :D
+		local r,g,b,a
+		if type(item) == "table" and item.r and item.g and item.b and item.a then -- It's a color
+			surface.SetTextColor( Color(item.r, item.g, item.b, item.alpha) )
+		elseif type(item) == "string" then -- It's actual text
+			local w, h = surface.GetTextSize(item) -- How big is this string going to be?
+			surface.SetTextPos( x + 2 + width, y + h + (self:GetParent().ScrollY or 0) * -1) -- Set distance along, and how far down
+			surface.DrawText( item )
+			width = width + w
+		end
+	end
 	-- Paint the message, this should be called to display the message
 end
 
-function MESSAGE:IsTeam()
+function MESSAGE:IsTeam( )
 	return self.teamMsg
 end
 
@@ -96,9 +149,10 @@ function PANEL:Init()
 	self.msgBox:SetSize( self.width, self.maxLines * self.lineSpacing )
 	self.msgBox:SetPos( 0, 0 ) -- Place at top of viewport
 	self.msgBox.color = superparent.color
+	self.msgBox.msgs = {}
 	self.msgBox.Paint = function( self )
 		local input = superparent.input
-		if input and input:HasFocus() then
+		if input and input:HasFocus() then -- Somebody is typing
 			-- In box
 			draw.RoundedBox( 4, 0, 0, self:GetWide(), self:GetTall(), self.color )
 
@@ -107,8 +161,21 @@ function PANEL:Init()
 			surface.DrawOutlinedRect(0, 0, self:GetWide(), self:GetTall())
 		end
 	end
+	self.msgBox.Think = function ( self )
+		self.ScrollY = 0
+		for k,v in pairs( self.msgs ) do
+			v:Paint() -- Paint itself?
+			self.ScrollY = self.ScrollY + superparent.lineSpacing
+		end
+	end
+
 
 	self.msgBox.addMsg = function ( self, msgData )
+		-- Check for wrap around, make multiple messages based upon number of lines and add them.
+		local msg = MESSAGE:new( msgData )
+		msg:Parent(self) -- Set the msgs parent to us
+		table.insert( self.msgs, msg)
+		PrintTable( self.msgs )
 		-- Check for wrapping / wrap the string
 
 		-- Check if addition of this line will exceed the boundary condition, scroll to compensate
@@ -173,8 +240,6 @@ function PANEL:Init()
 			sendTime = CurTime(),
 			teamMsg = self:IsTeam()
 		} )
-		PrintTable( msg )
-		print(msg:shouldFade())
 		self:turnOffTyping()
 	end
 

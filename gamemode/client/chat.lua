@@ -381,6 +381,8 @@ if CLIENT then
 	end)      ]]
 
 	-- TESTING
+	local oldChatAddText
+	if not oldChatAddText then oldChatAddText = chat.AddText end
 
 	local test = vgui.Create('DChatPanel')
 	--test:MoveToBack()
@@ -426,17 +428,83 @@ if CLIENT then
 		end
 	end
 
+	function GM:OnPlayerChat(  ply, msg, msgIsTeam, plyIsDead  )
+		local data = {}
+
+		--- TODO ConVar for if dead should be able to talk, at the moment default is accepted.
+		if ply then
+			data.sender = ply
+			data.race = player_manager.RunClass( ply, "getRace" )
+			data.raceColor = player_manager.RunClass( ply, "getRaceColor" )
+			data.msg = msg:Trim() -- Trim any whitespace from either end just in case
+			--- TODO Make a function to track delay in send and receive time, using net lib
+			data.sendTime = CurTime()
+			data.teamMsg = msgIsTeam
+		end -- We should have all our msg data now.
+
+		-- Pass this data to msgBox to construct itself an object and store it.
+		test.msgBox.addMsg( data ) --- TODO Make this function use MESSAGE:new in VGUI element file
+
+
+
+
+
+	end
+
+
 	function GM:ChatText( ply,  name, msg, type )
+
+		--- TODO filter this out, use OnPlayerChat instead as it catches teamChat
+		--- TODO Just use ChatText for join/leave events? or console events?
 
 		if type == "joinleave" then -- This is if a client leaves or joins
 			-- Set colour, filter for leave or join
 			-- Print Msg
+		end
+		--[[
 		elseif type == "none" then -- Standard message
 			-- Parse it accordingly,
 			-- Add it to chat
-		end
+		end  ]]-- Because we parsed above in OnPlayerChat for standard messages anyay?
 
 	end
 
+	function chat.AddText(...)
+		local args = {... }
+
+		local data = {} -- We'll construct our message into here :D
+
+		for k, v in pairs( args ) do -- For each argument it will be either a color, string, or player
+
+			if type(v) == "table" and v.r and v.g and v.b then
+				local clr = Color( v.r, v.g, v.b, 255 )
+				table.insert( data, clr )
+			elseif type(v) == "Player" then
+				-- Get it's nick
+				local plyNick = v:Nick()
+				table.insert( data, plyNick)
+			elseif type(v) == "string" then
+				surface.SetFont( "ChatText" )
+				if #v < test.msgBox:GetWide() then
+					for str in string.gmatch( v, "%s?[(%S)]+[^.]?" ) do
+						table.insert( data, str)
+					end
+				else
+					local len = 0
+					for str in string.gmatch( v, "%s?[(%S)]+[^.]?" ) do
+						local w, h = surface.GetTextSize(str)
+						local sw, sh = surface.GetTextSize("W")
+
+						if #str + len > test.msgBox:GetWide() then
+							MsgN("WTF IS GOING ON :C")
+						end
+					end
+				end
+			end
+		end
+
+		test.msgBox:addMsg( {sender = "CONSOLE", race = nil, raceColor = nil, msg = data, sendTime = CurTime(), teamMsg = false  } )
+		oldChatAddText(unpack(data))
+	end
 end
 
