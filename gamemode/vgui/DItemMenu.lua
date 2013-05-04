@@ -200,6 +200,34 @@ function PANEL:Init()
         end
     end
     node, item = nil, nil
+
+    x, y = 0, 5;
+    local outer_icon_inventory_panel = vgui.Create("DScrollPanel", inventoryPanel)
+    outer_icon_inventory_panel:SetPos(x, y)
+    outer_icon_inventory_panel:SetSize(955, 600)
+    local icon_inventory_panel = vgui.Create("DGrid")
+    icon_inventory_panel:SetCols( 9 )
+    icon_inventory_panel:SetColWide( 85 )
+    icon_inventory_panel:SetRowHeight( 85 )
+    outer_icon_inventory_panel:AddItem(icon_inventory_panel)
+    function itemCallBack()
+        for _, v in pairs(icon_inventory_panel:GetItems()) do
+            icon_inventory_panel:RemoveItem(v)
+        end
+        for cat_name, cat in pairs(items) do
+                for item_name, v in pairs(cat.items) do
+                    item = createItem(cat_name, item_name, v, credits)
+
+                    function item:DoClick()
+                        --item = createItem(cat_name, item_name, v, credits)
+                        item = nil
+                    end
+                    icon_inventory_panel:AddItem( item )
+                end
+        end
+    end
+    itemCallBack()
+    node, item = nil, nil
 end
 vgui.Register('DItemMenu', PANEL, 'DSBMenu')
 
