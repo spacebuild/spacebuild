@@ -77,3 +77,11 @@ surface.CreateFont("StorePriceFont",
         weight = 1000
     })
 
+surface.CreateFont("StoreMenuFont",
+    {
+        font = "Oleo Script",
+        size = 14,
+        antialias = true,
+        weight = 1000
+    })
+

@@ -249,7 +249,7 @@ local items = {
         }
     },
     life_support = {
-        name = "Life Support Devices",
+        name = "Environmental",
         description = "All kinds of life support devices",
         icon = "icons/128/support.png",
         items = {
@@ -267,7 +267,7 @@ local items = {
         }
     },
     network = {
-        name = "Network devices",
+        name = "Network",
         description = "All kinds of network devices",
         icon = "icons/128/network.png",
         items = {
@@ -318,7 +318,7 @@ local items = {
         }
     },
     mining = {
-        name = "Mining devices",
+        name = "Mining",
         description = "All kinds of mining devices",
         icon = "icons/128/mining.png",
         items = {

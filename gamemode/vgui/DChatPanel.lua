@@ -131,6 +131,7 @@ function PANEL:Init()
 	local superparent = self -- So we can access the superparent of any child from within it's functions
 	self.maxLines = 10 -- This refer to max amount shown at any given time.
 	self.lineSpacing = h + 3 -- Space by max height and then 3
+    print("size of h " ..tostring(lineSpacing) )
 	self.lineMemory = 100 -- Amount of lines to keep stored, too many and it will seriously lag on draw.
 	self.color =  Color(50, 50, 50, 70)
 	self.outlineColor = color.white

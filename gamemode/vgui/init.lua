@@ -19,5 +19,9 @@ local include = include
 include("DSBMenu.lua")
 include("DRacePickMenu.lua")
 include("DChatPanel.lua")
+include("DChatPanel2.lua")
 include("DItemMenu.lua")
+
+-- Spawn Menu
+include("DSBMenu2.lua")
 
