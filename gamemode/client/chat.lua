@@ -383,7 +383,7 @@ if CLIENT then
 	-- TESTING
 	local oldChatAddText = chat.AddText
 
-	local test = vgui.Create('DChatPanel2')
+	local test = vgui.Create('DChatPanel')
 	--test:MoveToBack()
 
 	function GM:StartChat()
@@ -502,7 +502,8 @@ if CLIENT then
 			end
 		end
 
-		test:AddMessage( {sender = "CONSOLE", race = nil, raceColor = nil, msg = data, sendTime = CurTime(), teamMsg = false  } )
+		test.msgBox:addMsg( {sender = "CONSOLE", race = nil, raceColor = nil, msg = data, sendTime = CurTime(), teamMsg = false  } )
+        --test:AddMessage( {sender = "CONSOLE", race = nil, raceColor = nil, msg = data, sendTime = CurTime(), teamMsg = false  } )
 		oldChatAddText(unpack(data))
 	end
 end
