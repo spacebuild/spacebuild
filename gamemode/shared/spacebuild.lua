@@ -35,16 +35,6 @@ function GM:getRaces()
     return races
 end
 
-local function changeRace(len, ply)
-    local race = net.ReadString()
-    MsgN("Changing to race "..race)
-    if races[race] then
-        player_manager.SetPlayerClass( ply, race )
-        ply:KillSilent()
-    end
-end
-net.Receive("RACECHANGE", changeRace)
-
 
 local function init()
 	space = class.new("SpaceEnvironment")
@@ -213,71 +203,6 @@ GM:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
 GM:registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
 GM:registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
 GM:registerResourceInfo(6, "co2", "Carbon Dioxide", { "GAS" })
-
-
---[[
-	Register hooks
-]]
-
-function GM:OnToolCreated(toolname, tool)
-	if toolname == "sb4_generators" then
-		local generators = {
-			{
-				Name = "Test Solar Panel",
-				Model = "models/props_phx/life_support/panel_medium.mdl",
-				EntityClass = "resource_generator_energy",
-				EntityDescription = "Solar panel used for testing"
-			},
-			{
-				Name = "Test Oxygen generator",
-				Model = "models/hunter/blocks/cube1x1x1.mdl",
-				EntityClass = "resource_generator_oxygen",
-				EntityDescription = "Oxygen generator used for testing"
-			},
-			{
-				Name = "Test Water Pump",
-				Model = "models/props_phx/life_support/gen_water.mdl",
-				EntityClass = "resource_generator_water",
-				EntityDescription = "Water pump used for testing"
-			}
-		}
-		tool:AddRDEntities(generators, "Generators")
-
-		local storages = {
-			{
-				Name = "Test Energy Storage",
-				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-				EntityClass = "resource_storage_energy",
-				EntityDescription = "Test energy storage device"
-			},
-			{
-				Name = "Test Oxygen generator",
-				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-				EntityClass = "resource_storage_oxygen",
-				EntityDescription = "Test oxygen storage device"
-			},
-			{
-				Name = "Test Water Storage",
-				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-				EntityClass = "resource_storage_water",
-				EntityDescription = "Test water storage device"
-			},
-			{
-				Name = "Test Blackhole Storage",
-				Model = "models/ce_ls3additional/resource_cache/resource_cache_small.mdl",
-				EntityClass = "resource_storage_blackhole",
-				EntityDescription = "Test energy/oxygen/water storage device"
-			}
-		}
-		tool:AddRDEntities(storages, "Storage")
-
-		local networks = {}
-		tool:AddRDEntities(networks, "Resource Nodes")
-
-		local ls_devices = {}
-		tool:AddRDEntities(ls_devices, "Life Support")
-	end
-end
 
 
 

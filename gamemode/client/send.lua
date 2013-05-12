@@ -27,9 +27,10 @@ AddCSLuaFile("worldtips.lua")
 AddCSLuaFile("extensions.lua")
 AddCSLuaFile("partdata.lua")
 AddCSLuaFile("scoreboard.lua")
-AddCSLuaFile("pickrace.lua")
+AddCSLuaFile("menus.lua")
 AddCSLuaFile("hudtips.lua")
 AddCSLuaFile("spawndata.lua")
+AddCSLuaFile("chat.lua")
 
 
 

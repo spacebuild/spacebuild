@@ -201,8 +201,8 @@ end
 
 --- Does this environment have enough oxygen?
 -- @return boolean
-function C:hasEnoughOxygen()
-	return self:getResourcePercentage("oxygen") > 5
+function C:hasEnoughOxygen(resource)
+	return self:getResourcePercentage(resource) > 5
 end
 
 -- Environment checking

@@ -22,9 +22,10 @@ include("partdata.lua")
 include("worldtips.lua")
 include("extensions.lua")
 include("scoreboard.lua")
-include("pickrace.lua")
+include("menus.lua")
 include("hudtips.lua")
 include("spawndata.lua")
+include("chat.lua")
 
 
 

@@ -45,6 +45,7 @@ net.Receive("SBRPU", function(bitsreceived)
 		suit:receive()
 		if suit:getEnvironment() ~= env then
 			hook.Call("OnLeaveEnvironment", GM, env, nil)
+            print(suit:getEnvironment())
 			hook.Call("OnEnterEnvironment", GM, suit:getEnvironment(), nil) --- TODO Environment nil because of suit:getEnvironment returning nil on occasion?
 		end
 	end

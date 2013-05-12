@@ -20,33 +20,63 @@ local PANEL = {}
 function PANEL:Init()
 	self:setTitle("Race Picker")
 	self:setSlogan("Pick your race here")
-	self:setByLine("some byline here")
+	self:setByLine("")
 
     local x, y = 25, 100;
     local panel = self
 
     local races =  GAMEMODE:getRaces()
-    local DermaButton
+    local DermaButton, modelPanel, selectedRace, raceSelectButton, descriptionText
     for k, v in pairs(races) do
         DermaButton = vgui.Create( "DButton", self )
         DermaButton:SetText( v.RaceName )
         DermaButton:SetPos( x, y )
-        x = x + 100
-        DermaButton:SetSize( 96, 48 )
+        x = x + 200
+        DermaButton:SetSize( 192, 48 )
         DermaButton.DoClick = function()
-            net.Start( "RACECHANGE" )
-            net.WriteString( k )
-            net.SendToServer()
-            RunConsoleCommand( "say", "Changing to "..tostring(v.RaceName) )
-            panel:close()
+            selectedRace = k
+            raceSelectButton:SetDisabled(false)
+            descriptionText:SetText( v.RaceName )
+            raceSelectButton:SetText( "Select "..tostring(v.RaceName) )
+            function modelPanel.Entity:GetPlayerColor() return v.PlayerColor end --we need to set it to a Vector not a Color, so the values are normal RGB values divided by 255.
         end
     end
 
     -- Reset
     x = 25
-    y = y + 50
+    y = y + 60
 
+    modelPanel = vgui.Create("DModelPanel", self)
+    modelPanel:SetSize(192, 192)
+    modelPanel:SetModel( "models/player/alyx.mdl" ) -- you can only change colors on playermodels
+    --function modelPanel:LayoutEntity( Entity ) return end -- disables default rotation
+    --function modelPanel.Entity:GetPlayerColor() return v.PlayerColor end --we need to set it to a Vector not a Color, so the values are normal RGB values divided by 255.
 
+    modelPanel:SetPos( x, y )
+
+    x = x + 200
+
+    descriptionText = vgui.Create( "DLabel", self )
+    descriptionText:SetPos( x, y )
+    descriptionText:SetText( "" )
+
+    -- Text and stuff here
+
+    x, y = 25, y + 200
+
+    raceSelectButton = vgui.Create( "DButton", self )
+    raceSelectButton:SetText( "No Race Selected" )
+    raceSelectButton:SetPos( x, y )
+    raceSelectButton:SetSize( 192, 48 )
+    raceSelectButton:SetDisabled(true)
+    raceSelectButton.DoClick = function()
+        if(selectedRace) then
+            net.Start( "RACECHANGE" )
+                net.WriteString( selectedRace )
+                net.SendToServer()
+            panel:close()
+        end
+    end
 end
 
 vgui.Register('DRacePickMenu', PANEL, 'DSBMenu')

@@ -31,7 +31,7 @@ PLAYER.RunSpeed				= 400
 
 -- Set a Race specific colour, this will be used as an identifier
 PLAYER.RaceColor			= Color(20,120,225,200)
-PLAYER.PlayerColor          = Vector( "0.24 0.34 0.41" )
+PLAYER.PlayerColor          = Vector( 20/255, 120/255, 225/255 )
 PLAYER.WeaponColor          = Vector( "0.30 1.80 2.10" )
 
 -- Specify variable to store Race name
@@ -39,7 +39,7 @@ PLAYER.RaceName				= "Pendrouge"
 
 
 function PLAYER:Init()
-   self.Player.ls_suit = class.new("PlayerSuit", self.Player)
+   self.Player.ls_suit = class.new("PlayerSuit", self.Player, "oxygen", "co2")
 end
 
 GM:registerPlayerClass("player_pendrouge", PLAYER)

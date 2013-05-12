@@ -18,6 +18,9 @@
 AddCSLuaFile()
 DEFINE_BASECLASS( "player_default" )
 
+require("sbnet")
+local net = sbnet
+
 local GM = GM
 local class = GM.class
 
@@ -49,14 +52,23 @@ function PLAYER:getRace()
 
 end
 
+function PLAYER:getCredits()
+    return self.credits or 0
+end
 
---
--- Set up the network table accessors
---
-function PLAYER:SetupDataTables()
+function PLAYER:setCredits(credits)
+    self.credits = credits or 0
+    if SERVER then
+        net.Start( "CREDITSYNC" )
+        net.writeLong( self.credits )
+        net.Send(self.Player)
+    end
+end
 
-    -- as needed.
-
+if CLIENT then
+    net.Receive("CREDITSYNC", function(len)
+        player_manager.RunClass( LocalPlayer(), "setCredits", net.readLong() )
+    end)
 end
 
 function PLAYER:Init()
@@ -102,6 +114,7 @@ end
 -- Called when the player spawns
 --
 function PLAYER:Spawn()
+    BaseClass.Spawn(self)
 
     self.Player:SetPlayerColor( self.PlayerColor  )
     self.Player:SetWeaponColor( PLAYER.WeaponColor   )

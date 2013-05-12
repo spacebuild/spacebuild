@@ -14,6 +14,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+surface.CreateFont( "ChatText",
+	{
+		font = "coolvetica",
+		size = 20,
+		weight = 400
+	})
+
 surface.CreateFont("WorkshopLarge",
 	{
 		font = "Helvetica",
@@ -61,4 +68,20 @@ surface.CreateFont( "GModWorldtip",
 surface.CreateFont('SB_Menu_Heading', { font = 'Oleo Script', size = 64 })
 surface.CreateFont('SB_Menu_Heading2', { font = 'Oleo Script', size = 24 })
 surface.CreateFont('SB_Menu_Heading3', { font = 'Oleo Script', size = 19 })
+
+surface.CreateFont("StorePriceFont",
+    {
+        font = "Oleo Script",
+        size = 18,
+        antialias = true,
+        weight = 1000
+    })
+
+surface.CreateFont("StoreMenuFont",
+    {
+        font = "Oleo Script",
+        size = 14,
+        antialias = true,
+        weight = 1000
+    })
 

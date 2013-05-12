@@ -226,7 +226,7 @@ function C:getEntities()
 end
 
 function C:setEnvironmentOnEntity(ent, environment)
-	if ent.environment ~= environment then
+	if environment ~= nil and ent.environment ~= environment then
 		hook.Call("OnLeaveEnvironment", GM, ent.environment, ent)
 		ent.environment = environment
 		environment:updateEnvironmentOnEntity(ent)
