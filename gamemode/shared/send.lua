@@ -32,6 +32,7 @@ AddCSLuaFile("spacebuild.lua")
 AddCSLuaFile("util.lua")
 AddCSLuaFile("items.lua")
 
+AddCSLuaFile("sb4_model_list.lua")
 
 
 

@@ -57,7 +57,6 @@ function GM:GetBaseClass()
 	return BaseClass
 end
 
-
 include("shared/wrappers.lua")
 include("shared/const.lua")
 include("shared/util.lua")
@@ -71,6 +70,11 @@ include( "player_class/player_terran.lua" )
 include( "player_class/player_radijn.lua" )
 include( "player_class/player_pendrouge.lua" )
 
---- - Extension System ----
+----- Extension System ----
 include("shared/extensions.lua")
 --------------------------
+
+-------- Model List --------
+include("shared/sb4_model_list")
+----------------------------
+

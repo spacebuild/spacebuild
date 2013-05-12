@@ -17,8 +17,9 @@ TOOL.Category = "Spawner"
 TOOL.Name = "#Part Spawner"
 TOOL.Command = nil
 TOOL.ConfigName = ""
+TOOL.Tab = "Main"
 
-local SmallBridgeModels = list.Get("SB4_SmallBridgeModels")
+local SmallBridgeModels = list.Get("SB4_ModelParts")
 
 if CLIENT then
 	language.Add("Tool.sbep_part_spawner.name", "SB4 Part Spawner")
@@ -98,9 +99,9 @@ function TOOL.BuildCPanel(panel)
 	local SkinSelector = vgui.Create( "DComboBox", panel )
 	SkinSelector:Dock(TOP)
 	SkinSelector:DockMargin( 2,2,2,2 )
-	SkinSelector:SetValue( SkinTable[GetConVar("sbep_part_spawner_skin"):GetInt()] or SkinTable[1] )
+	SkinSelector:SetValue( SkinTable[GetConVar("sb4_partspawner_skin"):GetInt()] or SkinTable[1] )
 	SkinSelector.OnSelect = function( index, value, data )
-		RunConsoleCommand( "sbep_part_spawner_skin", value )
+		RunConsoleCommand( "sb4_partspawner_skin", value )
 	end
 	for k,v in pairs( SkinTable ) do
 		SkinSelector:AddChoice( v )
@@ -109,9 +110,9 @@ function TOOL.BuildCPanel(panel)
 	local GlassButton = vgui.Create( "DCheckBoxLabel", panel )
 	GlassButton:Dock(TOP)
 	GlassButton:DockMargin(2,2,2,2)
-	GlassButton:SetValue( GetConVar( "sbep_part_spawner_glass" ):GetBool() )
+	GlassButton:SetValue( GetConVar( "sb4_partspawner_glass" ):GetBool() )
 	GlassButton:SetText( "Glass:" )
-	GlassButton:SetConVar( "sbep_part_spawner_glass" )
+	GlassButton:SetConVar( "sb4_partspawner_glass" )
 
 	for Tab,v  in pairs( SmallBridgeModels ) do
 		for Category, models in pairs( v ) do
@@ -135,7 +136,7 @@ function TOOL.BuildCPanel(panel)
 				icon:SetToolTip( modelpath )
 				icon.DoClick = function( panel )
 
-					RunConsoleCommand( "sbep_part_spawner_model", modelpath )
+					RunConsoleCommand( "sb4_partspawner_model", modelpath )
 				end
 				--icon:SetIconSize( width )
 				grid:AddItem( icon )
