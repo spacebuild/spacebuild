@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/LifeSupport/SteelPlates"
+	"$normalmap" "models/LifeSupport/SteelPlates_normal"
+	"$surfaceprop" "Metal_Box"
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/LifeSupport/WhiteMetal"
+	"$normalmap" "models/LifeSupport/WhiteMetal_normal"
+	"$model" "1"
+}

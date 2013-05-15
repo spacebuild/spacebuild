@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "phoenix_storms/life_support/CEX_panel"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+//	"$basealphaenvmapmask" 1
+	"$envmaptint" "[ .4 .3 .3 ]"
+	"$envmapcontrast" 1
+	"$envmapsaturation" 0.2
+	"$phong" "1" 
+	"$phongboost" "0.35" 
+	"$phongfresnelranges" "[ 1 5 15]"
+	"$phongexponent" "20"
+	"$model" 1
+}
+
+

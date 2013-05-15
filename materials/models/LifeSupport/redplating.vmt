@@ -1,0 +1,13 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/LifeSupport/RedPlating"
+	"$surfaceprop" "MetalPanel"
+	"$envmap"	env_cubemap
+	"$envmapmask"	"models/LifeSupport/graymat"
+	"$envmaptint" "[ 0.8 0.6 0.6]"
+	"$phong" "1" 
+	"$phongboost" "0.3" 
+	"$phongfresnelranges" "[ 1 5 20]"
+	"$phongexponent" "1"
+	"$model" 1
+}
