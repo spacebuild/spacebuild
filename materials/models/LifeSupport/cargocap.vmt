@@ -1,6 +1,0 @@
-"VertexlitGeneric"
-{
-	"$basetexture" "models/LifeSupport/CargoCap"
-	"$normalmap" "models/LifeSupport/CargoCanister_normal"
-	"$surfaceprop" "Metal_Box"
-}
