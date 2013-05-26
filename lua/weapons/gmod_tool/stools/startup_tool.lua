@@ -1,4 +1,4 @@
-include("CAF/Core/shared/tool_manifest.lua")
+include("caf/core/shared/tool_manifest.lua")
 
 TOOL = ToolObj:Create()
 TOOL.Category = "CAF"

@@ -69,7 +69,7 @@ end
 
 AddCSLuaFile("autorun/client/cl_caf_autostart.lua")
 CAF2.CAF3 = CAF3;
-include("CAF/Core/shared/sh_general_caf.lua")
+include("caf/core/shared/sh_general_caf.lua")
 CAF2.CAF3 = nil;
 
 if (not sql.TableExists("CAF_AddonStatus")) then
@@ -479,10 +479,10 @@ CAF = CAF2
 
 --Core files
 
-local Files = file.Find( "CAF/Core/server/*.lua" , "LUA")
+local Files = file.Find( "caf/core/server/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg("Loading: "..File.."...")
-	local ErrorCheck, PCallError = pcall(include, "CAF/Core/server/"..File)
+	local ErrorCheck, PCallError = pcall(include, "caf/core/server/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -493,7 +493,7 @@ end
 Files = file.Find("CAF/Core/client/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Core/client/"..File)
+	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/core/client/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -504,7 +504,7 @@ end
 Files = file.Find("CAF/Core/shared/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Core/shared/"..File)
+	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/core/shared/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -512,10 +512,10 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/LanguageVars/*.lua", "LUA")
+Files = file.Find("caf/languagevars/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/LanguageVars/"..File)
+	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/languagevars/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -525,7 +525,7 @@ end
 
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(include, "CAF/LanguageVars/"..File)
+	local ErrorCheck, PCallError = pcall(include, "caf/languagevars/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -534,10 +534,10 @@ for k, File in ipairs(Files) do
 end
 
 --Main Addon
-local Files = file.Find( "CAF/Addons/server/*.lua" , "LUA")
+local Files = file.Find( "caf/addons/server/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg("Loading: "..File.."...")
-	local ErrorCheck, PCallError = pcall(include, "CAF/Addons/server/"..File)
+	local ErrorCheck, PCallError = pcall(include, "caf/addons/server/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -545,10 +545,10 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Addons/client/*.lua", "LUA")
+Files = file.Find("caf/addons/client/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Addons/client/"..File)
+	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/addons/client/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -556,10 +556,10 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Addons/shared/*.lua", "LUA")
+Files = file.Find("caf/addons/shared/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "CAF/Addons/shared/"..File)
+	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/addons/shared/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else

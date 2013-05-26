@@ -57,7 +57,7 @@ local function ErrorOffStuff(String)
 end
 
 CAF2.CAF3 = CAF3;
-include("CAF/Core/shared/sh_general_caf.lua")
+include("caf/core/shared/sh_general_caf.lua")
 CAF2.CAF3 = nil;
 
 local function OnAddonDestruct(name)
@@ -766,7 +766,7 @@ net.Receive("CAF_Addon_POPUP", ProccessMessage)
 local Files = file.Find( "CAF/Core/client/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
-	local ErrorCheck, PCallError = pcall(include, "CAF/Core/client/"..File)
+	local ErrorCheck, PCallError = pcall(include, "caf/core/client/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -777,7 +777,7 @@ end
 Files = file.Find("CAF/LanguageVars/*.lua", "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
-	local ErrorCheck, PCallError = pcall(include, "CAF/LanguageVars/"..File)
+	local ErrorCheck, PCallError = pcall(include, "caf/languagevars/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
@@ -789,7 +789,7 @@ end
 local Files = file.Find( "CAF/Addons/client/*.lua" , "LUA")
 for k, File in ipairs(Files) do
 	Msg(CAF.GetLangVar("Loading")..": "..File.."...")
-	local ErrorCheck, PCallError = pcall(include, "CAF/Addons/client/"..File)
+	local ErrorCheck, PCallError = pcall(include, "caf/addons/client/"..File)
 	if(not ErrorCheck) then
 		ErrorOffStuff(PCallError)
 	else
