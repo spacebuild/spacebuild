@@ -1,4 +1,4 @@
-include("CAF/Core/shared/CAF_Tools.lua")
+include("caf/core/shared/caf_tools.lua")
 CAFEnts = {}
 
 function CAFEnts.MakeEnt(tool, ply, Ang, Pos, class, type, sub_type, model, frozen, Extra_Data, Data)

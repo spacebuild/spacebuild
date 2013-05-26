@@ -2,7 +2,7 @@
 --	Custom Addon Framework Tab Module and Tool Helper
 --
 
-include("CAF/Core/shared/CAF_Tools.lua")
+include("caf/core/shared/caf_tools.lua")
 
 local usetab = CreateClientConVar("CAF_UseTab", "1", true, false)
 
