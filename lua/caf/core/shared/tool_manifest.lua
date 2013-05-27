@@ -1,5 +1,4 @@
 
-
 TOOL = nil
 
 
@@ -27,7 +26,7 @@ for key, val in pairs(file.Find("CAF/Stools/*.lua", "LUA")) do
 
 	CAFToolSetup.open( s_toolmode )
 	
-	addcsluafile( "caf/stools/"..val )
+	AddCSLuaFile( "caf/stools/"..val )
 	include( "caf/stools/"..val )
 	
 	CAFToolSetup.BaseCCVars()
