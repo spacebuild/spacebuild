@@ -297,9 +297,30 @@ local function RequestResourceData(ply, com, args)
 			data = {}
 			data.network = tmpdata.network
 			data.resources = {}
-			for k, v in pairs(tmpdata.resources) do
-				data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
-			end
+                        
+                        local OverlaySettings = list.Get("LSEntOverlayText")[tmpdata.ent:GetClass()]
+                        local num = OverlaySettings.num or 0
+                        local resnames = OverlaySettings.resnames
+                        local genresnames = OverlaySettings.genresnames
+                        
+                        if num != -1 then
+                            local v
+                            if resnames and table.Count(resnames) > 0 then
+                                for _, k in pairs(resnames) do
+                                    data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+                                end
+                            end
+                            if genresnames and table.Count(genresnames) > 0 then
+                                for _, k in pairs(genresnames) do
+                                    data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+                                end
+                            end
+                        else
+                            for k, v in pairs(tmpdata.resources) do
+                                data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+                            end
+                        end
+                        
 			rd_cache:add("entity_"..args[2], data)
 		end
 		sendEntityData(ply, tonumber(args[2]), data)
