@@ -292,37 +292,38 @@ local function RequestResourceData(ply, com, args)
 	if args[1] == "ENT" then
 		data = rd_cache:get("entity_"..args[2]);
 		if not data then
-		tmpdata = ent_table[tonumber(args[2])] 
-		if not tmpdata then ply:ChatPrint("RD BUG: INVALID ENTID") return end
-		data = {}
-		data.network = tmpdata.network
-		data.resources = {}
+			tmpdata = ent_table[tonumber(args[2])] 
+			if not tmpdata then ply:ChatPrint("RD BUG: INVALID ENTID") return end
+			data = {}
+			data.network = tmpdata.network
+			data.resources = {}
 
-		local OverlaySettings = list.Get("LSEntOverlayText")[tmpdata.ent:GetClass()]
-		local num = OverlaySettings.num or 0
-		local resnames = OverlaySettings.resnames
-		local genresnames = OverlaySettings.genresnames
+			local OverlaySettings = list.Get("LSEntOverlayText")[tmpdata.ent:GetClass()]
+			local num = OverlaySettings.num or 0
+			local resnames = OverlaySettings.resnames
+			local genresnames = OverlaySettings.genresnames
 
-		if num != -1 then
-			local v
-			if resnames and table.Count(resnames) > 0 then
-				for _, k in pairs(resnames) do
+			if num != -1 then
+				local v
+				if resnames and table.Count(resnames) > 0 then
+					for _, k in pairs(resnames) do
+						data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+					end
+				end
+				if genresnames and table.Count(genresnames) > 0 then
+					for _, k in pairs(genresnames) do
+						data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+					end
+				end
+			else
+				for k, v in pairs(tmpdata.resources) do
 					data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
 				end
 			end
-			if genresnames and table.Count(genresnames) > 0 then
-				for _, k in pairs(genresnames) do
-					data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
-				end
-			end
-		else
-			for k, v in pairs(tmpdata.resources) do
-				data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
-			end
-		end
 
-		rd_cache:add("entity_"..args[2], data)
+			rd_cache:add("entity_"..args[2], data)
 		end
+        
 		sendEntityData(ply, tonumber(args[2]), data)
 	elseif args[1] == "NET" then	
 		data = rd_cache:get("network_"..args[2]);
