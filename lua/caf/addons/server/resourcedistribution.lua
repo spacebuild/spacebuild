@@ -299,23 +299,29 @@ local function RequestResourceData(ply, com, args)
 			data.resources = {}
 
 			local OverlaySettings = list.Get("LSEntOverlayText")[tmpdata.ent:GetClass()]
-			local num = OverlaySettings.num or 0
-			local resnames = OverlaySettings.resnames
-			local genresnames = OverlaySettings.genresnames
-
-			if num != -1 then
-				local v
-				if resnames and table.Count(resnames) > 0 then
-					for _, k in pairs(resnames) do
-						data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+			local storage = true
+			if OverlaySettings then
+				local num = OverlaySettings.num or 0
+				local resnames = OverlaySettings.resnames
+				local genresnames = OverlaySettings.genresnames
+	
+				if num != -1 then
+					storage = false
+					local v
+					if resnames and table.Count(resnames) > 0 then
+						for _, k in pairs(resnames) do
+							data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+						end
+					end
+					if genresnames and table.Count(genresnames) > 0 then
+						for _, k in pairs(genresnames) do
+							data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
+						end
 					end
 				end
-				if genresnames and table.Count(genresnames) > 0 then
-					for _, k in pairs(genresnames) do
-						data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
-					end
-				end
-			else
+			end
+			
+			if storage then
 				for k, v in pairs(tmpdata.resources) do
 					data.resources[k] = {value = RD.GetResourceAmount(tmpdata.ent, k), maxvalue = RD.GetNetworkCapacity(tmpdata.ent, k)}
 				end
