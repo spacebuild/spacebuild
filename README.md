@@ -4,12 +4,12 @@ Spacebuild
 Garry's mod spacebuild project
 
 
-*Please do not upload to the workshop if we do upload it to the workshop, it will come from this repository and be synced with it if people get the community back up ;)*
+*Please do not upload to the workshop, if we do upload it to the workshop it will come from this repository and be synced with it if people get the community back up ;)*
 
 If you would like to help just drop a pull request in with your changes! 
 Please try to keep your coding clean!
 
-May 5th 2016 *Time to revive*
+May 18th 2016 *Time to revive*
 ============
 
 Some ideas have been floating around about reviving Spacebuild and I think its time we do something about it!
