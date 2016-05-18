@@ -4,7 +4,7 @@ Spacebuild
 Garry's mod spacebuild project
 
 
-DO NOT UPLOAD TO THE WORKSHOP UNDER ANY CIRCUMSTANCES!
+*Please do not upload to the workshop if we do upload it to the workshop, it will come from this repository and be synced with it if people get the community back up ;)*
 
 If you would like to help just drop a pull request in with your changes! 
 Please try to keep your coding clean!
