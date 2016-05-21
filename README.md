@@ -3,6 +3,7 @@ Spacebuild
 
 Garry's mod spacebuild project
 
+Facepunch Page: https://facepunch.com/showthread.php?t=1519499&p=50363396
 
 *Please do not upload to the workshop, we're creating an* **Official** *workshop version now and this repository will be synced with it.*
 
