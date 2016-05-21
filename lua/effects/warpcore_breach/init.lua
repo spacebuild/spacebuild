@@ -62,7 +62,6 @@ function EFFECT:Init( data )
 			particle:SetRoll( math.Rand( 20, 80 ) )
 			particle:SetRollDelta( math.random( -1, 1 ) )
 			particle:SetColor(20, math.random(20,60), math.random(100,255))
-			particle:VelocityDecay( true )
 			end
 	
 	end
@@ -83,7 +82,6 @@ function EFFECT:Init( data )
 			particle:SetRoll( math.Rand( 20, 80 ) )
 			particle:SetRollDelta( math.random( -1, 1 ) )
 			particle:SetColor(100, math.random(100,128), math.random(230,255))
-			particle:VelocityDecay( true )
 			end
 	
 	end
@@ -135,8 +133,6 @@ function EFFECT:Think( )
 					particle:SetRoll( math.Rand( 20, 80 ) )
 					particle:SetRollDelta( math.random( -1, 1 ) )
 					particle:SetColor(20, math.random(20,60), math.random(100,255))
-					particle:VelocityDecay( true )
-			
 			end
 		end
 		
@@ -157,7 +153,7 @@ function EFFECT:Render( )
 local startpos = self.Position
 
 	--Base glow
-	render.SetMaterial(tMats.Glow1)
+	render.SetMaterial(tMats.Glow3)
 	render.DrawSprite(startpos, 400*self.GSize,90*self.GSize,Color(80, math.random(80,90), math.random(230,255),self.GAlpha))
 	render.DrawSprite(startpos, 70*self.GSize,280*self.GSize,Color(80, math.random(80,90), math.random(240,255),0.7*self.GAlpha))
 	--shockwave
@@ -166,7 +162,7 @@ local startpos = self.Position
 		local Distance = EyePos():Distance( self:GetPos() )
 		local Pos = self:GetPos() + (EyePos() - self:GetPos()):GetNormal() * Distance * (self.Refract^(0.3)) * 0.8
 
-		matRefraction:SetMaterialFloat( "$refractamount", math.sin( self.Refract * math.pi ) * 0.1 )
+		matRefraction:SetFloat( "$refractamount", math.sin( self.Refract * math.pi ) * 0.1 )
 		render.SetMaterial( matRefraction )
 		render.UpdateRefractTexture()
 		render.DrawSprite( Pos, self.Size, self.Size )
