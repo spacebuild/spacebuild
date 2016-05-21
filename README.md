@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/SnakeSVx/spacebuild/badges/gpa.svg)](https://codeclimate.com/github/SnakeSVx/spacebuild) [![Issue Count](https://codeclimate.com/github/SnakeSVx/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/SnakeSVx/spacebuild)
+[![Issue Count](https://codeclimate.com/github/SnakeSVx/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/SnakeSVx/spacebuild)
 
 Spacebuild
 ==========
