@@ -1,0 +1,16 @@
+engines:
+  fixme:
+    enabled: true
+    config:
+      strings:
+        - TODO
+        - FIXME
+ratings:
+  paths:
+  - "**.lua"
+exclude_paths:
+- maps/**/*
+- materials/**/*
+- models/**/*
+- particles/**/*
+- sound/**/*
