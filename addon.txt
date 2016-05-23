@@ -1,9 +1,0 @@
-"AddonInfo"
-{
-	"name"		"Spacebuild"
-	"version"	"3.3.0"
-	"author_name"	"SnakeSVx"
-	"author_email"			"spacebuild.dev@gmail.com"
-	"author_url"	"http:--www.snakesvx.net/"
-	"info"		"Spacebuild Addon"
-}
