@@ -1,4 +1,4 @@
-[![Issue Count](https://codeclimate.com/github/SnakeSVx/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/SnakeSVx/spacebuild)
+[![Issue Count](https://codeclimate.com/github/spacebuild/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/spacebuild/spacebuild)
 
 Spacebuild
 ==========
@@ -37,7 +37,7 @@ Spacebuild will be soon available via the Steam Workshop! Go to [its Workshop pa
 Simply clone this repository into your `addons` folder:
 
     cd "%programfiles(x86)%/Steam/SteamApps/common/GarrysMod/garrysmod/addons"
-    git clone https://github.com/snakesvx/spacebuild.git spacebuild
+    git clone https://github.com/spacebuild/spacebuild.git spacebuild
 
 # License
 
