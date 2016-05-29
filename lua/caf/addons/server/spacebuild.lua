@@ -45,14 +45,26 @@ local Environments = {}
 local Planets = {}
 local Stars = {}
 local numenv = 0
+local MapEntities = { "base_sb_planet1", "base_sb_planet2", "base_sb_star1", "base_sb_star2", "nature_dev_tree", "sb_environment", "base_cube_environment"}
 
 local function PhysgunPickup(ply , ent)
-	local notallowed =  { "base_sb_planet1", "base_sb_planet2", "base_sb_star1", "base_sb_star2", "nature_dev_tree", "sb_environment", "base_cube_environment"}
+	local notallowed =  MapEntities
 	if table.HasValue(notallowed, ent:GetClass()) then
 		return false
 	end
 end
 hook.Add("PhysgunPickup", "SB_PhysgunPickup_Check", PhysgunPickup)
+
+--Don't remove environment on cleanup
+local originalCleanUpMap = game.CleanUpMap
+function game.CleanUpMap(dontSendToClients, ExtraFilters)
+	if ExtraFilters then
+		table.Add(ExtraFilters, MapEntities)
+	else
+		ExtraFilters = MapEntities
+	end
+	originalCleanUpMap(dontSendToClients, ExtraFilters)
+end
 
 local function OnEntitySpawn(ent)
 	--Msg("Spawn: "..tostring(ent).."\n")
