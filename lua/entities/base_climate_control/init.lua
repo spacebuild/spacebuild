@@ -251,22 +251,30 @@ function ENT:Climate_Control()
                     local actual = self:Convert(1, 0, air)
                     self:ConsumeResource("oxygen", actual)
                     local left = self:SupplyResource("carbon dioxide", actual)
-                    self.environment:Convert(-1, 1, left)
+                    if self.environment then
+                        self.environment:Convert(-1, 1, left)
+                    end
                 elseif self.sbenvironment.air.n > 0 then
                     local actual = self:Convert(2, 0, air)
                     self:ConsumeResource("oxygen", actual)
                     local left = self:SupplyResource("nitrogen", actual)
-                    self.environment:Convert(-1, 2, left)
+                    if self.environment then
+                        self.environment:Convert(-1, 2, left)
+                    end
                 elseif self.sbenvironment.air.h > 0 then
                     local actual = self:Convert(3, 0, air)
                     self:ConsumeResource("oxygen", actual)
                     local left = self:SupplyResource("hydrogen", actual)
-                    self.environment:Convert(-1, 1, left)
+                    if self.environment then
+                        self.environment:Convert(-1, 1, left)
+                    end
                 end
             elseif self.sbenvironment.air.o2 > self.sbenvironment.air.max then
                 local tmp = self.sbenvironment.air.o2 - self.sbenvironment.air.max
                 local left = self:SupplyResource("oxygen", tmp)
-                self.environment:Convert(-1, 0, left)
+                if self.environment then
+                    self.environment:Convert(-1, 0, left)
+                end
             end
             --Now let's check the pressure, if pressure is larger then 1 then we need some more power to keep the climate_controls environment stable. We don\' want any leaks do we?
             if pressure > 1 then
