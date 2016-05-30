@@ -34,7 +34,7 @@ function ENT:SetRDEntity(ent)
 	if ent then
 		self:SetNetworkedInt("entid", ent:EntIndex( ))
 	else
-		self:SetNetworkedInt("entid", nil)
+		self:SetNetworkedInt("entid", 0)
 	end
 end
 
@@ -54,7 +54,7 @@ function ENT:SetNode(node)
 	if node then
 		self:SetNetworkedInt("netid", node.netid)
 	else
-		self:SetNetworkedInt("netid", nil)
+		self:SetNetworkedInt("netid", 0)
 	end
 end
 
@@ -133,26 +133,26 @@ function ENT:Think()
 	-- Check if all ents are still valid!
 	if self.connected.ent and not IsValid(self.connected.ent) then 
 		self.connected.ent = nil 
-		self:SetNetworkedInt("entid", nil)
+		self:SetNetworkedInt("entid", 0)
 	end
 	if self.connected.node and not IsValid(self.connected.node) then 
 		self:TurnOff()
 		self.connected.node = nil 
-		self:SetNetworkedInt("netid", nil)
+		self:SetNetworkedInt("netid", 0)
 	end
 	-- Check if they are still in range!
 	if self.connected.ent then
 		if self.connected.ent:GetPos():Distance(self:GetPos()) > self.range then
 			self:TurnOff()
 			self.connected.ent = nil
-			self:SetNetworkedInt("entid", nil)
+			self:SetNetworkedInt("entid", 0)
 		end
 	end
 	if self.connected.node then
 		if self:GetPos():Distance(self.connected.node:GetPos()) > self.connected.node.range then
 			self:TurnOff()
 			self.connected.node = nil 
-			self:SetNetworkedInt("netid", nil)
+			self:SetNetworkedInt("netid", 0)
 		end
 	end
 	self:NextThink( CurTime() + 1 )

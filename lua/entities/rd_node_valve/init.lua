@@ -45,7 +45,7 @@ function ENT:SetNode1(node1)
 	if node1 then
 		self:SetNetworkedInt("netid1", node1.netid)
 	else
-		self:SetNetworkedInt("netid1", nil)
+		self:SetNetworkedInt("netid1", 0)
 	end
 end
 
@@ -62,7 +62,7 @@ function ENT:SetNode2(node2)
 	if node2 then
 		self:SetNetworkedInt("netid2", node2.netid)
 	else
-		self:SetNetworkedInt("netid2", nil)
+		self:SetNetworkedInt("netid2", 0)
 	end
 end
 
@@ -142,26 +142,26 @@ function ENT:Think()
 	if self.connected.node1 and not IsValid(self.connected.node1) then 
 		self:TurnOff()
 		self.connected.node1 = nil 
-		self:SetNetworkedInt("netid1", nil)
+		self:SetNetworkedInt("netid1", 0)
 	end
 	if self.connected.node2 and not IsValid(self.connected.node2) then 
 		self:TurnOff()
 		self.connected.node2 = nil 
-		self:SetNetworkedInt("netid2", nil)
+		self:SetNetworkedInt("netid2", 0)
 	end
 	-- Check if they are still in range!
 	if self.connected.node1 then
 		if self:GetPos():Distance(self.connected.node1:GetPos()) > self.connected.node1.range then
 			self:TurnOff()
 			self.connected.node1 = nil 
-			self:SetNetworkedInt("netid1", nil)
+			self:SetNetworkedInt("netid1", 0)
 		end
 	end
 	if self.connected.node2 then
 		if self:GetPos():Distance(self.connected.node2:GetPos()) > self.connected.node2.range then
 			self:TurnOff()
 			self.connected.node2 = nil 
-			self:SetNetworkedInt("netid2", nil)
+			self:SetNetworkedInt("netid2", 0)
 		end
 	end
 	self:NextThink( CurTime() + 1 )
