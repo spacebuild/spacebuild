@@ -14,7 +14,7 @@ Facepunch Page: [Located Here][facepunch]
 
     **Spacebuild 3** - Current Working Version
 
-    **Official**  Workshop version needs more testing before it can be put on the workshop. 
+    **Official** Workshop version: http://steamcommunity.com/sharedfiles/filedetails/?id=693838486
 
     **Spacebuild 2** - Not Supported Anymore
 
@@ -28,7 +28,7 @@ Facepunch Page: [Located Here][facepunch]
      If you would like to help just drop a pull request in with your changes! 
      Please try to keep your coding clean!
 
-# Workshop Installation -COMING SOON
+# Workshop Installation - Uploaded: In Testing Phase
 
 Spacebuild will be soon available via the Steam Workshop! Go to [its Workshop page][workshop] and press `Subscribe`, and it will automatically appear in Garry's Mod.
 
@@ -50,5 +50,5 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 [garrysmod]: <http://garrysmod.com/>
-[workshop]: <http://steamcommunity.com/sharedfiles/filedetails/?id=TO_FILL_IN>
+[workshop]: <http://steamcommunity.com/sharedfiles/filedetails/?id=693838486>
 [facepunch]: <https://facepunch.com/showthread.php?t=1519499&p=50363396>
