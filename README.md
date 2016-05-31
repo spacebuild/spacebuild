@@ -7,7 +7,7 @@ Spacebuild
 
 Facepunch Page: [Located Here][facepunch]
 
-*Please do not upload to the workshop, we're creating an* **Official** *workshop version now and this repository will be synced with it.*
+*Please do not upload to the workshop, use the* **Official** *workshop version, this repository will be synced with it.*
 
 
 # Status
@@ -28,9 +28,9 @@ Facepunch Page: [Located Here][facepunch]
      If you would like to help just drop a pull request in with your changes! 
      Please try to keep your coding clean!
 
-# Workshop Installation - Uploaded: In Testing Phase
+# Workshop Installation - Ready for public use!
 
-Spacebuild will be soon available via the Steam Workshop! Go to [its Workshop page][workshop] and press `Subscribe`, and it will automatically appear in Garry's Mod.
+Spacebuild 3 is available via the Steam Workshop! Go to [its Workshop page][workshop] and press `Subscribe`, and it will automatically appear in Garry's Mod.
 
 # Manual Installation
 
