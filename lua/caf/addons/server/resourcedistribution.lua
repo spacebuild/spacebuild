@@ -1042,9 +1042,49 @@ function RD.BuildDupeInfo( ent )
 			if nettable.nodeent then
 				local info = {}
 				info.node = nettable.nodeent:EntIndex()
+				duplicator.ClearEntityModifier( ent, "RDPumpDupeInfo" )
 				duplicator.StoreEntityModifier( ent, "RDPumpDupeInfo", info )
 			end
 		end
+		return
+	end
+
+	if ent.IsValve or ent.IsEntityValve then
+		local info = {}
+		--store active state
+		info.active = ent.Active
+				
+		--store node1 info
+		if ent.connected.node1 and ent.connected.node1.netid ~= 0 then
+			local nettable1 = RD.GetNetTable(ent.connected.node1.netid)
+			if nettable1.nodeent then
+				info.node1 = nettable1.nodeent:EntIndex()
+			end
+		end
+		
+		--store node2 info
+		if ent.connected.node2 and ent.connected.node2.netid ~= 0 then
+			local nettable2 = RD.GetNetTable(ent.connected.node2.netid)
+			if nettable2.nodeent then
+				info.node2 = nettable2.nodeent:EntIndex()
+			end
+		end
+		
+		--store node info
+		if ent.connected.node and ent.connected.node.netid ~= 0 then
+			local nettable = RD.GetNetTable(ent.connected.node.netid)
+			if nettable.nodeent then
+				info.node = nettable.nodeent:EntIndex()
+			end
+		end
+		
+		--store ent info
+		if ent.connected.ent then
+			info.ent = ent.connected.ent:EntIndex()
+		end
+
+		duplicator.ClearEntityModifier( ent, "RDValveDupeInfo")
+		duplicator.StoreEntityModifier( ent, "RDValveDupeInfo", info )
 		return
 	end
 	
@@ -1070,6 +1110,7 @@ function RD.BuildDupeInfo( ent )
 	info.entities = entids
 	info.cons = cons
 	if info.entities then
+		duplicator.ClearEntityModifier( ent, "RDDupeInfo" )
 		duplicator.StoreEntityModifier( ent, "RDDupeInfo", info )
 	end
 end
@@ -1101,6 +1142,47 @@ function RD.ApplyDupeInfo( ent, CreatedEntities )
 		if ent2 then
 			ent:SetNetwork(ent2.netid)
 			ent:SetResourceNode(ent2)
+		end
+	elseif ent.EntityMods and ent.EntityMods.RDValveDupeInfo and (ent.EntityMods.RDValveDupeInfo.node1 or ent.EntityMods.RDValveDupeInfo.node2 or ent.EntityMods.RDValveDupeInfo.node or ent.EntityMods.RDValveDupeInfo.ent) then
+		--This entity is a valve and has networks to connect to
+		
+		--restore node1 connection
+		if ent.EntityMods.RDValveDupeInfo.node1 then
+			local ent2 = CreatedEntities[ ent.EntityMods.RDValveDupeInfo.node1 ]
+			if ent2 then
+				ent:SetNode1(ent2)
+			end
+		end
+		
+		--restore node2 connection
+		if ent.EntityMods.RDValveDupeInfo.node2 then
+			local ent3 = CreatedEntities[ ent.EntityMods.RDValveDupeInfo.node2 ] --Get the new node2 entity
+			if ent3 then
+				ent:SetNode2(ent3)
+			end
+		end
+		
+		--restore node connection
+		if ent.EntityMods.RDValveDupeInfo.node then
+			local ent2 = CreatedEntities[ ent.EntityMods.RDValveDupeInfo.node ]
+			if ent2 then
+				ent:SetNode(ent2)
+			end
+		end
+		
+		--restore ent
+		if ent.EntityMods.RDValveDupeInfo.ent then
+			local ent3 = CreatedEntities[ ent.EntityMods.RDValveDupeInfo.ent ] --Get the new entity
+			if ent3 then
+				ent:SetRDEntity(ent3)
+			end
+		end		
+		
+		--restore active state
+		if ent.EntityMods.RDValveDupeInfo.active and ent.EntityMods.RDValveDupeInfo.active == 1 then
+			ent:TurnOn()
+		else
+			ent:TurnOff()
 		end
 	end
 
@@ -1361,6 +1443,7 @@ end
 function RD.Beam_dup_save( ent )
 	--the table to return
 	local beamTable = {}
+	duplicator.ClearEntityModifier( ent, "RDBeamDupeInfo")
 
 	--amount of beams to draw
 	beamTable.Beams = ent:GetNWInt( "Beams" )

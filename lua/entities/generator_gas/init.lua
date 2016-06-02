@@ -185,24 +185,28 @@ function ENT:Pump_Air()
             local SB = CAF.GetAddon("Spacebuild")
             if SB and SB.GetStatus() and table.HasValue(sb_resources, self.caf.custom.resource) then
                 local usage = ainc;
-                if self.caf.custom.resource == "oxygen" then
-                    usage = self.environment:Convert(0, -1, ainc)
-                elseif self.caf.custom.resource == "carbon dioxide" then
-                    usage = self.environment:Convert(1, -1, ainc)
-                elseif self.caf.custom.resource == "hydrogen" then
-                    usage = self.environment:Convert(3, -1, ainc)
-                elseif self.caf.custom.resource == "nitrogen" then
-                    usage = self.environment:Convert(2, -1, ainc)
+                if self.environment then
+                    if self.caf.custom.resource == "oxygen" then
+                        usage = self.environment:Convert(0, -1, ainc)
+                    elseif self.caf.custom.resource == "carbon dioxide" then
+                        usage = self.environment:Convert(1, -1, ainc)
+                    elseif self.caf.custom.resource == "hydrogen" then
+                        usage = self.environment:Convert(3, -1, ainc)
+                    elseif self.caf.custom.resource == "nitrogen" then
+                        usage = self.environment:Convert(2, -1, ainc)
+                    end
                 end
                 local left = self:SupplyResource(self.caf.custom.resource, usage)
-                if self.caf.custom.resource == "oxygen" then
-                    self.environment:Convert(-1, 0, left)
-                elseif self.caf.custom.resource == "carbon dioxide" then
-                    self.environment:Convert(-1, 1, left)
-                elseif self.caf.custom.resource == "hydrogen" then
-                    self.environment:Convert(-1, 3, left)
-                elseif self.caf.custom.resource == "nitrogen" then
-                    self.environment:Convert(-1, 2, left)
+                if self.environment then
+                    if self.caf.custom.resource == "oxygen" then
+                        self.environment:Convert(-1, 0, left)
+                    elseif self.caf.custom.resource == "carbon dioxide" then
+                        self.environment:Convert(-1, 1, left)
+                    elseif self.caf.custom.resource == "hydrogen" then
+                        self.environment:Convert(-1, 3, left)
+                    elseif self.caf.custom.resource == "nitrogen" then
+                        self.environment:Convert(-1, 2, left)
+                    end
                 end
             else
                 self:SupplyResource(self.caf.custom.resource, ainc)

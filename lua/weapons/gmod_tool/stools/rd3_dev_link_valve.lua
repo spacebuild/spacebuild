@@ -14,9 +14,9 @@ if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon
 if ( CLIENT ) then
 	language.Add( "tool.rd3_dev_link_valve.name", "Valve Link Tool" )
 	language.Add( "tool.rd3_dev_link_valve.desc", "Links a resource node to a 1 or 2 way Valve." )
-	language.Add( "tool.rd3_dev_link_valve_0", "Left Click: Link Resource Node 1 to the valve.  Right Click: Link Resource Node2 to the Valve.  Reload: Unlink Device from All." )
-	language.Add( "tool.rd3_dev_link_valve_1", "Click on the next device (Valve/Resource node)" )
-	language.Add( "tool.rd3_dev_link_valve_2", "Right-Click on the next device (Valve/Resource node)" )
+	language.Add( "tool.rd3_dev_link_valve.0", "Left Click: Link Resource Node 1 to the valve.  Right Click: Link Resource Node2 to the Valve.  Reload: Unlink Device from All." )
+	language.Add( "tool.rd3_dev_link_valve.1", "Click on the next device (Valve/Resource node)" )
+	language.Add( "tool.rd3_dev_link_valve.2", "Right-Click on the next device (Valve/Resource node)" )
 	language.Add( "rd3_dev_link_valve_addlength", "Add Length:" )
 	language.Add( "rd3_dev_link_valve_width", "Width:" )
 	language.Add( "rd3_dev_link_valve_material", "Material:" )
@@ -192,6 +192,7 @@ function TOOL:Reload(trace)
 			trace.Entity:SetNode1(nil)
 			trace.Entity:SetNode2(nil)
 		end
+		CAF.GetAddon("Resource Distribution").Beam_clear( trace.Entity )
 	elseif trace.Entity.IsPump then
 		trace.Entity.node = nil
 		trace.Entity:SetNetwork(0)
@@ -205,7 +206,7 @@ function TOOL:Reload(trace)
 end
 
 function TOOL.BuildCPanel( panel )
-	panel:AddControl( "Header", { Text = "#tool.rd3_dev_link.name", Description	= "#tool.rd3_dev_link.desc" }  )
+	panel:AddControl( "Header", { Text = "#tool.rd3_dev_link_valve.name", Description	= "#tool.rd3_dev_link_valve.desc" }  )
 
 	panel:AddControl("Slider", {
 		Label = "#rd3_dev_link_valve_width",

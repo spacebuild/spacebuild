@@ -278,6 +278,7 @@ function TOOL:Reload(trace)
 			trace.Entity:SetNode1(nil)
 			trace.Entity:SetNode2(nil)
 		end
+		CAF.GetAddon("Resource Distribution").Beam_clear( trace.Entity )
 	elseif trace.Entity.IsPump then
 		trace.Entity.node = nil
 		trace.Entity:SetNetwork(0)
