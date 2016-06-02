@@ -169,6 +169,7 @@ function ENT:Pump_Water()
     local energy = self:GetResourceAmount("energy")
     local einc = Energy_Increment + (self.overdrive * Energy_Increment * 3)
     local waterlevel = 0
+    islava = self.environment:GetTemperature(self) --Check to see if it's in lava
     if CAF then
         waterlevel = self:WaterLevel2()
     else
@@ -176,7 +177,7 @@ function ENT:Pump_Water()
     end
     einc = (math.ceil(einc * self:GetMultiplier())) * self.Multiplier
     if not (WireAddon == nil) then Wire_TriggerOutput(self, "EnergyUsage", math.Round(einc)) end
-    if (waterlevel > 0 and energy >= einc) then --seems to be problem when welding(/freezing when not with CAF)
+    if (waterlevel > 0 and energy >= einc and islava < 308) then --seems to be problem when welding(/freezing when not with CAF)
         local winc = (math.ceil(Pressure_Increment * (waterlevel / 3))) * self.Multiplier --Base water generation on the amount it is in the water
 
         if (self.overdrive == 1) then
