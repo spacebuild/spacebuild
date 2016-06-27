@@ -207,7 +207,7 @@ local function SendBloom(ent)
         umsg.Start("AddPlanet", ply)
         --umsg.Entity( ent ) --planet.num
         umsg.Short(ent:EntIndex())
-        umsg.Angle(ent:GetPos()) --planet.num
+        umsg.Angle(ent:GetPos():Angle()) --planet.num
         umsg.Float(ent.sbenvironment.size)
         umsg.Bool(false)
         if table.Count(ent.sbenvironment.bloom) > 0 then
@@ -233,7 +233,7 @@ local function SendColor(ent)
         umsg.Start("AddPlanet", ply)
         --umsg.Entity( ent )
         umsg.Short(ent:EntIndex())
-        umsg.Angle(ent:GetPos()) --planet.num
+        umsg.Angle(ent:GetPos():Angle()) --planet.num
         umsg.Float(ent.sbenvironment.size)
         if table.Count(ent.sbenvironment.color) > 0 then
             umsg.Bool(true)
