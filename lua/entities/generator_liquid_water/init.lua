@@ -173,6 +173,7 @@ function ENT:Pump_Water()
         islava = self.environment:GetTemperature(self) --Check to see if it's in lava
     else
         islava = 66 --any number below 308 would do, i picked nonzero to assert evaluation as a number
+    end
     if CAF then
         waterlevel = self:WaterLevel2()
     else
