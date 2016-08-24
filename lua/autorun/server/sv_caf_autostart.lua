@@ -86,14 +86,14 @@ local function UpdateAddonStatus(addon, status)
 	if not addon or not status then return false, "Missing parameter(s)" end
 	local id = sql.SQLStr(addon)
 	local stat = sql.SQLStr(status)
-	sql.Query("UPDATE CAF_AddonStatus SET status="..stat.." WHERE id='"..id.."';")
+	sql.Query("UPDATE CAF_AddonStatus SET status="..stat.." WHERE id="..id..";")
 end
 
 local function SaveAddonStatus(addon, status)
 	if not addon or not status then return false, "Missing parameter(s)" end
 	local id = sql.SQLStr(addon)
 	local stat = sql.SQLStr(status)
-	local data = sql.Query("INSERT INTO CAF_AddonStatus(id, status) VALUES('"..id.."', "..stat..");")
+	local data = sql.Query("INSERT INTO CAF_AddonStatus(id, status) VALUES("..id..", "..stat..");")
 	if data then 
 		Msg("Error making a profile for "..ply:Nick().."\n"..data.."\n") 
 	end
@@ -102,7 +102,7 @@ end
 local function LoadAddonStatus( addon, defaultstatus )
 	if not addon then return false, "No Addon Given" end
 	local id = sql.SQLStr(addon)
-	local data = sql.Query("SELECT * FROM CAF_AddonStatus WHERE id = '"..id.."';")
+	local data = sql.Query("SELECT * FROM CAF_AddonStatus WHERE id = "..id..";")
 	if defaultstatus == nil then
 		defaultstatus = 1;
 	else

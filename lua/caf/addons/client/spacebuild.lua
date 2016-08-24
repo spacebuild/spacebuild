@@ -250,7 +250,7 @@ usermessage.Hook( "AddStar", recvSun );
 function SB.__Construct()
 	hook.Add( "RenderScreenspaceEffects", "VFX_Render", Render );
 	hook.Add( "RenderScreenspaceEffects", "SunEffects", DrawSunEffects );
-	CAF.AddHook("think2", Space_Affect_Cl)
+	CAF.AddHook("think2", SB.Space_Affect_Cl)
 	status = true;
 	return true
 end
@@ -261,7 +261,7 @@ end
 function SB.__Destruct()
 	hook.Remove( "RenderScreenspaceEffects", "VFX_Render");
 	hook.Remove( "RenderScreenspaceEffects", "SunEffects");
-	CAF.RemoveHook("think2", Space_Affect_Cl)
+	CAF.RemoveHook("think2", SB.Space_Affect_Cl)
 	status = false;
 	return true
 end
