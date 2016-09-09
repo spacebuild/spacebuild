@@ -83,7 +83,7 @@ function RD.GetDescription()
     return {
         "Life Support 1",
         "",
-        "Original Liufe Support made by Shanjaq"
+        "Original Life Support made by Shanjaq"
     }
 end
 
