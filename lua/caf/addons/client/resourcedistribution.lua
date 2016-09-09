@@ -650,7 +650,7 @@ function RD.Beam_Render( ent )
 		local beamInfo = string.Explode(";", ent:GetNWString("BeamInfo"))
 
 		--get beam info from table (1: beamMaterial 2: beamSize 3: beamR 4: beamG 5: beamB 6: beamAlpha)
-		local beamMaterial, beamSize, color = (beamMat[beamInfo[1]] or Material("cable/xbeam")), (beamInfo[2] or 2), Color( beamInfo[3], beamInfo[4], beamInfo[5], beamInfo[6] )
+		local beamMaterial, beamSize, color = (beamMat[beamInfo[1]] or Material("cable/xbeam")), (beamInfo[2] or 2), Color( beamInfo[3] or 255, beamInfo[4] or 255, beamInfo[5] or 255, beamInfo[6] or 255 )
 
 		-- set material
 		render.SetMaterial( beamMaterial )
