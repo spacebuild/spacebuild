@@ -435,7 +435,7 @@ function CAF2.POPUP(ply, msg, location, color, displaytime)
 		location = location or "top"
 		color = color or CAF2.colors.white
 		displaytime = displaytime or 1
-		net.Start("CAF_Addon_POPUP", ply)
+		net.Start("CAF_Addon_POPUP")
 			net.WriteString(msg)
 			net.WriteString(location)
 			net.WriteUInt(color.r, 8)
@@ -443,7 +443,7 @@ function CAF2.POPUP(ply, msg, location, color, displaytime)
 			net.WriteUInt(color.b, 8)
 			net.WriteUInt(color.a, 8)
 			net.WriteUInt(displaytime, 16)
-		net.Broadcast()
+		net.Send(ply)
 	end
 end
 
