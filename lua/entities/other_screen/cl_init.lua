@@ -116,12 +116,12 @@ usermessage.Hook("LS_Open_Screen_Menu", OpenMenu)
 local function AddResource(um)
     local ent = um:ReadEntity()
     local res = um:ReadString()
-    if not ent then return end
+    if not ent or not ent.resources then return end
     table.insert(ent.resources, res)
     if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then
         local LeftTree = MainFrames[ent:EntIndex()].lefttree
         LeftTree.Items = {}
-        if ent.resources and table.Count(ent.resources) > 0 then
+        if table.Count(ent.resources) > 0 then
             for k, v in pairs(ent.resources) do
                 local title = v;
                 local node = LeftTree:AddNode(title)
