@@ -65,7 +65,7 @@ local function OpenMenu(um)
 	NameText:SetValue(ent:GetNetworkedString("name"))
 	
 	local nameButton = vgui.Create("DImageButton",RightPanel)
-	nameButton:SetImage("gui/silkicons/folder_go");
+	nameButton:SetImage("icon16/folder_go.png");
 	nameButton:SetPos(140, 25)
 	nameButton:SetSize(20, 20)
 	nameButton:SetToolTip("Update Pump Name")
