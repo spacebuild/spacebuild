@@ -100,7 +100,7 @@ function TOOL:RightClick( trace )
 		end
 		self:ClearObjects()
 	else
-		 self:GetOwner():SendLua( "GAMEMODE:AddNotify('You didn't click on a Resource node to link to!', NOTIFY_GENERIC, 7);" )
+		 self:GetOwner():SendLua( "GAMEMODE:AddNotify(\"You didn't click on a Resource node to link to!\", NOTIFY_GENERIC, 7);" )
 	end
 	return true
 end
