@@ -1,5 +1,5 @@
 TOOL.Category			= "Resource Distribution"
-TOOL.Name				= "#ResourceNodes"
+TOOL.Name				= "#Resource Nodes"
 
 TOOL.DeviceName			= "Resource Node"
 TOOL.DeviceNamePlural	= "Resource Nodes"
