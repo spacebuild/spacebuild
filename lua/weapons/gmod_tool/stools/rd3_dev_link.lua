@@ -73,7 +73,7 @@ function TOOL:LeftClick( trace )
 			if length <= Ent1.range or length <= Ent2.range then
 				CAF.GetAddon("Resource Distribution").linkNodes(Ent1.netid, Ent2.netid)
 			else
-				self:GetOwner():SendLua( "GAMEMODE:AddNotify('These 2 Nodes are to far appart!', NOTIFY_GENERIC, 7);" )
+				self:GetOwner():SendLua( "GAMEMODE:AddNotify('These 2 Nodes are too far apart!', NOTIFY_GENERIC, 7);" )
 
 				--clear beam points
 				CAF.GetAddon("Resource Distribution").Beam_clear( self:GetEnt(1) )
@@ -85,7 +85,7 @@ function TOOL:LeftClick( trace )
 			if length <= Ent1.range then
 				CAF.GetAddon("Resource Distribution").Link(Ent2, Ent1.netid)
 			else
-				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are to far appart!', NOTIFY_GENERIC, 7);" )
+				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 
 				--clear beam points
 				CAF.GetAddon("Resource Distribution").Beam_clear( self:GetEnt(1) )
@@ -97,7 +97,7 @@ function TOOL:LeftClick( trace )
 			if length <= Ent2.range then
 				CAF.GetAddon("Resource Distribution").Link(Ent1, Ent2.netid)
 			else
-				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are to far appart!', NOTIFY_GENERIC, 7);" )
+				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 
 				--clear beam points
 				CAF.GetAddon("Resource Distribution").Beam_clear( self:GetEnt(1) )
@@ -110,7 +110,7 @@ function TOOL:LeftClick( trace )
 				Ent2:SetNetwork(Ent1.netid)
 				Ent2:SetResourceNode(Ent1)
 			else
-				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are to far appart!', NOTIFY_GENERIC, 7);" )
+				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 
 				--clear beam points
 				CAF.GetAddon("Resource Distribution").Beam_clear( self:GetEnt(1) )
@@ -123,7 +123,7 @@ function TOOL:LeftClick( trace )
 				Ent1:SetNetwork(Ent2.netid)
 				Ent1.node = Ent2
 			else
-				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are to far appart!', NOTIFY_GENERIC, 7);" )
+				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 
 				--clear beam points
 				CAF.GetAddon("Resource Distribution").Beam_clear( self:GetEnt(1) )
