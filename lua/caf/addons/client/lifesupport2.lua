@@ -83,7 +83,7 @@ function RD.GetDescription()
     return {
         "Life Support 2",
         "",
-        "Life Support  made by the SB2 dev team"
+        "Life Support made by the SB2 dev team"
     }
 end
 

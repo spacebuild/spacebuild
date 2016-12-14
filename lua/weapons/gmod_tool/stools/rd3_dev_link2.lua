@@ -79,20 +79,20 @@ function TOOL:RightClick( trace )
 				if length <= Ent1.range or length <= Ent2.range then
 					CAF.GetAddon("Resource Distribution").linkNodes(Ent1.netid, Ent2.netid)
 				else
-					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The 2 Nodes are to far appart!', NOTIFY_GENERIC, 7);" )
+					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The two Nodes are too far apart!', NOTIFY_GENERIC, 7);" )
 				end
 			elseif table.Count(CAF.GetAddon("Resource Distribution").GetEntityTable(Ent1)) > 0 then
 				if length <= Ent2.range then
 					CAF.GetAddon("Resource Distribution").Link(Ent1, Ent2.netid)
 				else
-					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are to far appart!', NOTIFY_GENERIC, 7);" )
+					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 				end
 			elseif Ent1.IsPump then
 				if length <= Ent2.range then
 					Ent1:SetNetwork(Ent2.netid)
 					Ent1.node = Ent2
 				else
-					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are to far appart!', NOTIFY_GENERIC, 7);" )
+					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 				end
 			else
 		        self:GetOwner():SendLua( "GAMEMODE:AddNotify('Invalid Combination!', NOTIFY_GENERIC, 7);" )
@@ -100,7 +100,7 @@ function TOOL:RightClick( trace )
 		end
 		self:ClearObjects()
 	else
-		 self:GetOwner():SendLua( "GAMEMODE:AddNotify(\"You didn't click on a Resource node to link to!\", NOTIFY_GENERIC, 7);" )
+		self:GetOwner():SendLua( "GAMEMODE:AddNotify(\"You didn't click on a Resource node to link to!\", NOTIFY_GENERIC, 7);" )
 	end
 	return true
 end

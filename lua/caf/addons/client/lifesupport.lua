@@ -83,7 +83,7 @@ local function lifesupport_HUDPaint()
 			ls_sb_mode = true;
 		end
 		local ply = LocalPlayer()
-		if not ply or not ply:Alive() or (ply:GetActiveWeapon() and ply:GetActiveWeapon() == "Camera") then return end
+		if not ply or not ply:Alive() then return end
 		local hud_to_use = Display_hud:GetInt()
 		if hud_to_use ~= 0 then
 			if not ls_sb_mode then
