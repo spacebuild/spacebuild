@@ -139,7 +139,7 @@ local function OpenMenu(um)
 	local button = vgui.Create("DButton", MainFrame)
 	button:SetPos(210, 290)
 	button:SetSize(180, 30)
-local on = ent:GetOOO() == 1
+	local on = ent:GetOOO() == 1
 	local txt = on and "Turn off" or "Turn on"
 	button:SetText(txt)
 	button.turnOff = on
