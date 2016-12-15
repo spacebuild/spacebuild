@@ -25,17 +25,34 @@ local function OpenMenu(um)
     local button = vgui.Create("DButton", MainFrame)
     button:SetPos(225, 290)
     button:SetSize(180, 30)
-    if ent:GetOOO() == 1 then
-        button:SetText("Turn off")
-        function button:DoClick()
-            RunConsoleCommand("TFTurnOff", ent:EntIndex())
-        end
-    else
-        button:SetText("Turn on")
-        function button:DoClick()
-            RunConsoleCommand("TFTurnOn", ent:EntIndex())
-        end
-    end
+	local on = ent:GetOOO() == 1
+	local txt = on and "Turn off" or "Turn on"
+	button:SetText(txt)
+	button.turnOff = on
+	function button:DoClick()
+		if not IsValid(ent) then return MainFrame:Close() end
+		
+		if self.turnOff then
+			RunConsoleCommand("TFTurnOff", ent:EntIndex())
+		else
+			RunConsoleCommand("TFTurnOn", ent:EntIndex())
+		end
+	end
+	function button:Think()
+		if not IsValid(ent) then return MainFrame:Close() end
+		
+		self.turnOff = ent:GetOOO() == 1
+		
+		if self.turnOff then
+			self:SetText("Turn off")
+		else
+			self:SetText("Turn on")
+		end
+	end
+	function MainFrame:Think()
+		if not IsValid(ent) then return self:Close() end
+		DFrame.Think(self)
+	end
 
     MainFrame:MakePopup()
 end
