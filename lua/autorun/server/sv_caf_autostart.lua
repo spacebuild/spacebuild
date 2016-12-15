@@ -409,9 +409,9 @@ function CAF2.PlayerSpawn(ply)
 	timer.Simple(1, function()
 		for k, v in pairs(Addons) do
 			if v.GetStatus and v.GetStatus() then
-                net.Start("CAF_Addon_Construct", ply)
+                net.Start("CAF_Addon_Construct")
                     net.WriteString(k)
-                net.Broadcast()
+                net.Send(ply)
 			end
 		end
 	end)

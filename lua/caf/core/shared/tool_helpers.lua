@@ -250,7 +250,7 @@ function CAFToolSetup.MakeCP()
 					for _, dev in pairs(devlist.devices) do
 						if not dev.hide then
 							
-							local cnode = node:AddNode(dev.Name, dev.icon or "gui/silkicons/newspaper")
+							local cnode = node:AddNode(dev.Name, dev.icon or "icon16/newspaper.png")
 							cnode.caftext 		= dev.Name
 							cnode.var_model		= dev.model
 							util.PrecacheModel(dev.model)

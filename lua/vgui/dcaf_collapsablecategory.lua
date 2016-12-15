@@ -99,7 +99,7 @@ function PANEL:Setup(name, addon)
     if not LocalPlayer():IsAdmin() or (addon.CanChangeStatus and not addon.CanChangeStatus()) then
         self.Button:SetVisible(false)
     end
-    local image = "gui/silkicons/application";
+    local image = "icon16/application.png";
     if addon.GetDisplayImage then
         image = addon.GetDisplayImage()
     end
