@@ -635,6 +635,7 @@ end
 --START BEAMS BY MADDOG
 -----------------------------------------
 
+local xbeam = Material("cable/xbeam")
 -- Desc: draws beams on ents
 function RD.Beam_Render( ent )
 
@@ -650,7 +651,7 @@ function RD.Beam_Render( ent )
 		local beamInfo = string.Explode(";", ent:GetNWString("BeamInfo"))
 
 		--get beam info from table (1: beamMaterial 2: beamSize 3: beamR 4: beamG 5: beamB 6: beamAlpha)
-		local beamMaterial, beamSize, color = (beamMat[beamInfo[1]] or Material("cable/xbeam")), (beamInfo[2] or 2), Color( beamInfo[3] or 255, beamInfo[4] or 255, beamInfo[5] or 255, beamInfo[6] or 255 )
+		local beamMaterial, beamSize, color = (beamMat[beamInfo[1]] or xbeam), (beamInfo[2] or 2), Color( beamInfo[3] or 255, beamInfo[4] or 255, beamInfo[5] or 255, beamInfo[6] or 255 )
 
 		-- set material
 		render.SetMaterial( beamMaterial )
@@ -690,7 +691,7 @@ end
 
 --Alternate Use Code--
 
-function GenUseMenu(ent)
+local function GenUseMenu(ent)
 	local SmallFrame = vgui.Create("DFrame")
 	SmallFrame:SetPos( (ScrW()/2)-110,(ScrH()/2)-100)
 	SmallFrame:SetSize( 220, (#ent.Inputs*40)+90 )
@@ -732,7 +733,7 @@ function GenUseMenu(ent)
 	SmallFrame:MakePopup()
 end 
 
-function RecieveInputs(um)
+local function RecieveInputs(um)
 	local last = um:ReadBool()
 	local input = um:ReadString()
 	local index = um:ReadShort()
