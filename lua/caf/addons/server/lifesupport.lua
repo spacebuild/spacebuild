@@ -95,7 +95,7 @@ function LS.__Construct()
 	if not CAF.GetAddon("Resource Distribution") or not CAF.GetAddon("Resource Distribution").GetStatus() then return false, CAF.GetLangVar("Resource Distribution is Required and needs to be Active!") end
 	util.PrecacheSound( "vehicles/v8/skid_lowfriction.wav" )
 	util.PrecacheSound( "NPC_Stalker.BurnFlesh" )
-	util.PrecacheModel("models/player/charple01.mdl")
+	util.PrecacheModel("models/player/charple.mdl")
 	util.PrecacheSound( "streetwar.slimegurgle04" )
 	util.PrecacheSound( "Player.FallGib" )
 	LS.generators = {}
@@ -290,7 +290,7 @@ end
 function LS.LS_Immolate(ent)
 	if not ent then return end
 	ent:EmitSound( "NPC_Stalker.BurnFlesh" )
-	ent:SetModel("models/player/charple01.mdl")
+	ent:SetModel("models/player/charple.mdl")
 	timer.Simple(3, function() LS.Burn_Quiet(ent) end)
 end
 
