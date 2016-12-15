@@ -402,11 +402,16 @@ function CAF2.PlayerSpawn(ply)
 			end
 		end);
 	end
-	ply:ChatPrint("This server is using the Custom Addon Framework\n")
-	ply:ChatPrint("Report any bugs during the beta on http://www.snakesvx.net\n")
 	
-	ply:ChatPrint("\n\nIf you have any suggestions for future versions of CAF, SB, LS, RD, ... please report them on http://www.snakesvx.net\n\n")
+	ply:ChatPrint("This server is using the Custom Addon Framework\n")
+	ply:ChatPrint("Report any bugs during the beta at https://github.com/spacebuild/spacebuild/issues\n")
+	
+	ply:ChatPrint("\n\nIf you have any suggestions for future versions of CAF, SB, LS, RD, ... please report them at https://github.com/spacebuild/spacebuild/issues\n\n")
+	ply:ChatPrint("\n\nNOTE: If you encounter any issues with RD3.1 (alpha) report them at https://github.com/spacebuild/spacebuild/issues\n\n")
+	
 	timer.Simple(1, function()
+		if not IsValid(ply) then return end
+		
 		for k, v in pairs(Addons) do
 			if v.GetStatus and v.GetStatus() then
                 net.Start("CAF_Addon_Construct")
@@ -415,8 +420,6 @@ function CAF2.PlayerSpawn(ply)
 			end
 		end
 	end)
-	
-	ply:ChatPrint("\n\nNOTE: If you encounter any issues with RD3.1 (alpha) report them on http://www.snakesvx.net!!!!!\n\n")
 end
 hook.Add( "PlayerInitialSpawn", "CAF_In_Spawn", CAF2.PlayerSpawn )
 
