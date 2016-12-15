@@ -19,6 +19,7 @@ CAFToolSetup.SetLang("RD Resource Nodes","Create Resource Nodes attached to any 
 
 TOOL.ExtraCCVars = {
 	auto_link = 0,
+	custom = "",
 }
 
 function TOOL.ExtraCCVarsCP( tool, panel )
