@@ -229,8 +229,9 @@ local function ReadLong()
     return net.ReadInt(32);
 end
 
+local dev = GetConVar("developer")
 local function AddEntityToCache( nrofbytes )
-    print("RD_Entity_Data #", nrofbytes, " bytes received")
+    if dev:GetBool() then print("RD_Entity_Data #", nrofbytes, " bytes received") end
 	local data = {}
 
 	data.entid = ReadShort() --Key
@@ -289,7 +290,7 @@ umsg.Start("RD_Network_Data", ply)
 ]]
 
 local function AddNetworkToCache( nrofbytes )
-    print("RD_Network_Data #", nrofbytes, " bytes received")
+    if dev:GetBool() then print("RD_Network_Data #", nrofbytes, " bytes received") end
 	local data = {}
 	
 	data.netid = ReadShort() --network key
