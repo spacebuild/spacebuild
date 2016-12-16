@@ -520,8 +520,8 @@ function RD.GetNetworkCapacity(ent, resource)
 	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
-	local index=RD.GetEntityTable(ent)
-	if table.Count(index) then
+	local index = RD.GetEntityTable(ent)
+	if table.Count(index) > 0 then
 		if index.resources[resource] then
 			amount = index.resources[resource].maxvalue
 		end
