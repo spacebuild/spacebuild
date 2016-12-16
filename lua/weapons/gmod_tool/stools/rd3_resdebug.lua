@@ -22,7 +22,7 @@ end
 
 function TOOL:RightClick( trace )
 	if ( !trace.Entity:IsValid() ) then return false end
-	if (SERVER) then return true end
+	if (SERVER or not IsFirstTimePredicted()) then return true end
 	CAF.GetAddon("Resource Distribution").PrintDebug(trace.Entity)
 	return true
 end
