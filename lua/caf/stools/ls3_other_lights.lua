@@ -66,7 +66,7 @@ TOOL.Devices = {
         devices = {
             small = {
                 Name = "Default Lamp",
-                model = "models/props_wasteland/light_spotlight01_lamp.mdl",
+                model = "models/props_wasteland/prison_lamp001c.mdl",
             },
         }
     },
