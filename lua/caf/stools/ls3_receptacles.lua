@@ -33,8 +33,8 @@ function TOOL.EnableFunc()
 end
 
 function TOOL.ExtraCCVarsCP(tool, panel)
-    panel:NumSlider("Extra Number", "receptacles_extra_num", 0, 10, 0)
-    panel:CheckBox("Extra Bool", "receptacles_extra_bool")
+    panel:NumSlider("Extra Number", "ls3_receptacles_extra_num", 0, 10, 0)
+    panel:CheckBox("Extra Bool", "ls3_receptacles_extra_bool")
 end
 
 function TOOL:GetExtraCCVars()

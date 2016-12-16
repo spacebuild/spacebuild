@@ -139,16 +139,33 @@ local function OpenMenu(um)
 	local button = vgui.Create("DButton", MainFrame)
 	button:SetPos(210, 290)
 	button:SetSize(180, 30)
-	if ent:GetOOO() == 1 then
-		button:SetText("Turn off")
-		function button:DoClick()
+	local on = ent:GetOOO() == 1
+	local txt = on and "Turn off" or "Turn on"
+	button:SetText(txt)
+	button.turnOff = on
+	function button:DoClick()
+		if not IsValid(ent) then return MainFrame:Close() end
+		
+		if self.turnOff then
 			RunConsoleCommand("PumpTurnOff", ent:EntIndex())
-		end
-	else
-		button:SetText("Turn on")
-		function button:DoClick()
+		else
 			RunConsoleCommand("PumpTurnOn", ent:EntIndex())
 		end
+	end
+	function button:Think()
+		if not IsValid(ent) then return MainFrame:Close() end
+		
+		self.turnOff = ent:GetOOO() == 1
+		
+		if self.turnOff then
+			self:SetText("Turn off")
+		else
+			self:SetText("Turn on")
+		end
+	end
+	function MainFrame:Think()
+		if not IsValid(ent) then return self:Close() end
+		DFrame.Think(self)
 	end
 	local netid = ent:GetNetworkedInt("netid")
 	local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(netid)

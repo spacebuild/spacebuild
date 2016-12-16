@@ -87,27 +87,36 @@ local function OpenMenu(um)
 
     button:SetPos(225, 290)
     button:SetSize(140, 30)
-    if ent:GetOOO() == 1 then
-        button:SetText("Turn off")
-        function button:DoClick()
-            RunConsoleCommand("LSScreenTurnOff", ent:EntIndex())
-        end
-    else
-        button:SetText("Turn on")
-        function button:DoClick()
-            RunConsoleCommand("LSScreenTurnOn", ent:EntIndex())
-        end
-    end
-    if ent.resources and table.Count(ent.resources) > 0 then
-        for k, v in pairs(ent.resources) do
-            local title = v;
-            local node = LeftTree:AddNode(title)
-            node.res = v
-            function node:DoClick()
-                MainFrame.SelectedNode = self
-            end
-        end
-    end
+	
+	local on = ent:GetOOO() == 1
+	local txt = on and "Turn off" or "Turn on"
+	button:SetText(txt)
+	button.turnOff = on
+	function button:DoClick()
+		if not IsValid(ent) then return MainFrame:Close() end
+		
+		if self.turnOff then
+			RunConsoleCommand("LSScreenTurnOff", ent:EntIndex())
+		else
+			RunConsoleCommand("LSScreenTurnOn", ent:EntIndex())
+		end
+	end
+	function button:Think()
+		if not IsValid(ent) then return MainFrame:Close() end
+		
+		self.turnOff = ent:GetOOO() == 1
+		
+		if self.turnOff then
+			self:SetText("Turn off")
+		else
+			self:SetText("Turn on")
+		end
+	end
+	function MainFrame:Think()
+		if not IsValid(ent) then return self:Close() end
+		DFrame.Think(self)
+	end
+	
     MainFrame:MakePopup()
 end
 
@@ -139,7 +148,7 @@ usermessage.Hook("LS_Add_ScreenResource", AddResource)
 local function RemoveResource(um)
     local ent = um:ReadEntity()
     local res = um:ReadString()
-    if not ent then return end
+    if not ent or not ent.resources then return end
     for k, v in pairs(ent.resources) do
         if v == res then
             table.remove(ent.resources, k)
@@ -149,7 +158,7 @@ local function RemoveResource(um)
     if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then
         local LeftTree = MainFrames[ent:EntIndex()].lefttree
         LeftTree.Items = {}
-        if ent.resources and table.Count(ent.resources) > 0 then
+        if table.Count(ent.resources) > 0 then
             for k, v in pairs(ent.resources) do
                 local title = v;
                 local node = LeftTree:AddNode(title)
@@ -231,7 +240,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
         surface.SetFont("Flavour")
         surface.SetTextColor(200, 200, 255, 255)
         surface.SetTextPos(textStartPos + 15, TempY)
-        surface.DrawText("Resource: amount/maxamount\t[where amount/maxamount from other nodes]")
+        surface.DrawText("Resource: amount/maxamount\t[amount/maxamount in other nodes]")
         TempY = TempY + (70 / mul)
 
         if (table.Count(self.resources) > 0) then

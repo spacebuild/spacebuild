@@ -129,7 +129,7 @@ function ENT:Destruct()
                 if found:IsNPC() then --ugh, messy
                     util.BlastDamage(self, self:GetPlayer(), found:GetPos(), 256, 512)
                 elseif found:IsPlayer() then
-                    found:SetModel("models/player/charple01.mdl")
+                    found:SetModel("models/player/charple.mdl")
                     util.BlastDamage(self, self:GetPlayer(), found:GetPos(), 256, 512)
                 elseif found:IsValid() then
 

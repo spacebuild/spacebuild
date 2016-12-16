@@ -453,7 +453,7 @@ local function AddCAFInfoToStatus(List)
 	end
 	
 	function v.GetDisplayImage()
-		return "gui/silkicons/application"; --Change to something else later on?
+		return "icon16/application.png"; --Change to something else later on?
 	end
 	
 	local cat = vgui.Create("DCAFCollapsibleCategory") 
@@ -711,13 +711,13 @@ function CAF2.OpenMainMenu()
 	MainFrame:Center()
 	local ContentPanel = vgui.Create( "DPropertySheet", MainFrame )
 	ContentPanel:Dock(FILL)
-	ContentPanel:AddSheet( CAF.GetLangVar("Installed Addons"), GetStatusPanel(ContentPanel), "gui/silkicons/application", true, true )
-	ContentPanel:AddSheet( CAF.GetLangVar("Info and Help"), GetHelpPanel(ContentPanel), "gui/silkicons/box", true, true )
+	ContentPanel:AddSheet( CAF.GetLangVar("Installed Addons"), GetStatusPanel(ContentPanel), "icon16/application.png", true, true )
+	ContentPanel:AddSheet( CAF.GetLangVar("Info and Help"), GetHelpPanel(ContentPanel), "icon16/box.png", true, true )
 	if LocalPlayer():IsAdmin() then
-		ContentPanel:AddSheet( CAF.GetLangVar("Server Settings"), GetServerSettingsPanel(ContentPanel), "gui/silkicons/wrench", true, true )
+		ContentPanel:AddSheet( CAF.GetLangVar("Server Settings"), GetServerSettingsPanel(ContentPanel), "icon16/wrench.png", true, true )
 	end
-	ContentPanel:AddSheet( CAF.GetLangVar("Message Log"), GetMessageLogPanel(ContentPanel), "gui/silkicons/wrench", true, true )
-	ContentPanel:AddSheet( CAF.GetLangVar("About"), GetAboutPanel(ContentPanel), "gui/silkicons/group", true, true )
+	ContentPanel:AddSheet( CAF.GetLangVar("Message Log"), GetMessageLogPanel(ContentPanel), "icon16/wrench.png", true, true )
+	ContentPanel:AddSheet( CAF.GetLangVar("About"), GetAboutPanel(ContentPanel), "icon16/group.png", true, true )
 	MainFrame:MakePopup()
 end
 concommand.Add("Main_CAF_Menu", CAF2.OpenMainMenu)

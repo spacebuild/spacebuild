@@ -1380,7 +1380,7 @@ end
 --	beamColor - the beam color (default: Color(255, 255, 255, 255)
 function RD.Beam_settings( ent, beamMaterial, beamSize, beamColor )
 	--get beam color
-	local beamR, beamG, beamB, beamA = beamColor.R or 255, beamColor.G or 255, beamColor.B or 255, beamColor.A or 255
+	local beamR, beamG, beamB, beamA = beamColor.r or 255, beamColor.g or 255, beamColor.b or 255, beamColor.a or 255
 
 	--send beam info to ent/clientside
 	ent:SetNWString( "BeamInfo", ((beamMaterial or "cable/cable2") .. ";" .. tostring(beamSize or 2) .. ";" .. tostring(beamR or 255) .. ";" .. tostring(beamG or 255) .. ";" .. tostring(beamB or 255) .. ";" .. tostring(beamA or 255)) )
