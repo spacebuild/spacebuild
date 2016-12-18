@@ -354,7 +354,7 @@ end
 
 function LS.RemoveEnt( ent )
 	constraint.RemoveAll( ent )
-	timer.Simple( 1, RemoveEntity, ent )
+	timer.Simple( 1, function() if IsValid(ent) then SafeRemoveEntity(ent) end end)
 	ent:SetNotSolid( true )
 	ent:SetMoveType( MOVETYPE_NONE )
 	ent:SetNoDraw( true )
