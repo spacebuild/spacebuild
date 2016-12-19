@@ -469,25 +469,23 @@ function RD.GetNetResourceAmount(netid, resource)
 	if not resource then return 0, "No resource given" end
 	local data = RD.GetNetTable(netid);
 	if not data then return 0, "Not a valid network" end
-	
+	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
+	if not data.resources[resource] then return 0, "Resource not available" end
+
 	local amount = 0;
-	if data.resources[resource] then
-		amount = data.resources[resource].value
-	end
+	amount = data.resources[resource].value
 	return amount
 end
 
 function RD.GetResourceAmount(ent, resource)
 	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
+	local data=RD.GetEntityTable(ent)
+	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
+	if not data.resources[resource] then return 0, "Resource not available" end
+
 	local amount = 0
-	
-	local index=RD.GetEntityTable(ent)
-	if table.Count(index)>0 then
-		if index.resources[resource] then
-			amount = index.resources[resource].value
-		end
-	end
+	amount = data.resources[resource].value
 	return amount
 end
 
@@ -508,23 +506,25 @@ function RD.GetNetNetworkCapacity(netid, resource)
 	if not resource then return 0, "No resource given" end
 	local data = RD.GetNetTable(netid);
 	if not data then return 0, "Not a valid network" end
-	
+	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
+	if not data.resources[resource] then return 0, "Resource not available" end
+
 	local amount = 0;
-	if data.resources[resource] then
-		amount = data.resources[resource].maxvalue
-	end
+	amount = data.resources[resource].maxvalue
 	return amount
 end
 
 function RD.GetNetworkCapacity(ent, resource)
 	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
+	local data = RD.GetEntityTable(ent)
+	if not data then return 0, "Not a valid network" end
+	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
+	if not data.resources[resource] then return 0, "Resource not available" end
+
 	local amount = 0
-	local index = RD.GetEntityTable(ent)
-	if table.Count(index) > 0 then
-		if index.resources[resource] then
-			amount = index.resources[resource].maxvalue
-		end
+	if data.resources[resource] then
+		amount = data.resources[resource].maxvalue
 	end
 	return amount
 end
