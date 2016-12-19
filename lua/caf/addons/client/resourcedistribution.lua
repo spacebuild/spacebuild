@@ -467,7 +467,7 @@ end]]
 
 function RD.GetNetResourceAmount(netid, resource)
 	if not resource then return 0, "No resource given" end
-	local data = GetNetTable(netid);
+	local data = RD.GetNetTable(netid);
 	if not data then return 0, "Not a valid network" end
 	
 	local amount = 0;
@@ -506,7 +506,7 @@ end]]
 
 function RD.GetNetNetworkCapacity(netid, resource)
 	if not resource then return 0, "No resource given" end
-	local data = GetNetTable(netid);
+	local data = RD.GetNetTable(netid);
 	if not data then return 0, "Not a valid network" end
 	
 	local amount = 0;
