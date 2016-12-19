@@ -7,8 +7,8 @@ function ENT:Initialize()
     self.resources = {}
 end
 
-local function OpenMenu(um)
-    local ent = um:ReadEntity()
+local function OpenMenu()
+    local ent = net:ReadEntity()
     if not ent then return end
     if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then MainFrames[ent:EntIndex()]:Close() end
     local MainFrame = vgui.Create("DFrame")
@@ -120,11 +120,11 @@ local function OpenMenu(um)
     MainFrame:MakePopup()
 end
 
-usermessage.Hook("LS_Open_Screen_Menu", OpenMenu)
+net.Receive("LS_Open_Screen_Menu", OpenMenu)
 
-local function AddResource(um)
-    local ent = um:ReadEntity()
-    local res = um:ReadString()
+local function AddResource()
+    local ent = net:ReadEntity()
+    local res = net:ReadString()
     if not ent or not ent.resources then return end
     table.insert(ent.resources, res)
     if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then
@@ -143,11 +143,11 @@ local function AddResource(um)
     end
 end
 
-usermessage.Hook("LS_Add_ScreenResource", AddResource)
+net.Receive("LS_Add_ScreenResource", AddResource)
 
-local function RemoveResource(um)
-    local ent = um:ReadEntity()
-    local res = um:ReadString()
+local function RemoveResource()
+    local ent = net:ReadEntity()
+    local res = net:ReadString()
     if not ent or not ent.resources then return end
     for k, v in pairs(ent.resources) do
         if v == res then
@@ -171,7 +171,7 @@ local function RemoveResource(um)
     end
 end
 
-usermessage.Hook("LS_Remove_ScreenResource", RemoveResource)
+net.Receive("LS_Remove_ScreenResource", RemoveResource)
 
 
 function ENT:DoNormalDraw(bDontDrawModel)

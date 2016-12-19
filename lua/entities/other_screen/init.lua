@@ -1,6 +1,9 @@
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 
+util.AddNetworkString( "LS_Open_Screen_Menu" )
+util.AddNetworkString( "LS_Add_ScreenResource" )
+util.AddNetworkString( "LS_Remove_ScreenResource" )
 util.PrecacheSound( "Buttons.snd17" )
 
 include('shared.lua')
@@ -43,10 +46,10 @@ local function AddResource(ply, com, args)
 	if ent.IsScreen and ent.resources then
 		if not table.HasValue(ent.resources, args[2]) then
 			table.insert(ent.resources, args[2])
-			umsg.Start("LS_Add_ScreenResource")
-				umsg.Entity(ent)
-				umsg.String(args[2])
-			umsg.End()
+			net.Start("LS_Add_ScreenResource")
+				net.WriteEntity(ent)
+				net.WriteString(args[2])
+			net.Broadcast()
 		end
 	end
 end
@@ -65,10 +68,10 @@ local function RemoveResource(ply, com, args)
 					break
 				end
 			end
-			umsg.Start("LS_Remove_ScreenResource")
-				umsg.Entity(ent)
-				umsg.String(args[2])
-			umsg.End()
+			net.Start("LS_Remove_ScreenResource")
+				net.WriteEntity(ent)
+				net.WriteString(args[2])
+			net.Broadcast()
 		end
 	end
 end
@@ -80,10 +83,10 @@ local function UserConnect(ply)
 			if IsValid(v) then
 				if table.Count(v.resources) > 0 then
 					for l, w in pairs(v.resources) do
-						umsg.Start("LS_Add_ScreenResource", ply)
-							umsg.Entity(v)
-							umsg.String(w)
-						umsg.End()
+						net.Start("LS_Add_ScreenResource", ply)
+							net.WriteEntity(v)
+							net.WriteString(w)
+						net.Send(ply)
 					end
 				end
 			end
@@ -146,9 +149,9 @@ end
 --override to do overdrive
 --AcceptInput (use action) calls this function with value = nil
 function ENT:SetActive( value, caller )
-	umsg.Start("LS_Open_Screen_Menu", caller)
-		umsg.Entity(self)
-	umsg.End()
+	net.Start("LS_Open_Screen_Menu", caller)
+		net.WriteEntity(self)
+	net.Send(caller)
 end
 
 function ENT:Damage()
