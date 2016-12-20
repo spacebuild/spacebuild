@@ -38,7 +38,12 @@ local function link_in_range(ent, range)
 	if ent ~= NULL and IsValid(ent) then
 		for k, v in pairs(ents.FindInSphere( ent:GetPos(), range)) do
 			local enttable = CAF.GetAddon("Resource Distribution").GetEntityTable(v)
-			if table.Count(enttable) > 0 and enttable.network == 0 and ent:GetPlayerName() == v:GetPlayerName() then
+			if CPPI and CPPI.GetOwner and IsValid(ent) and IsValid(v) then
+				if CPPI.GetOwner(ent) ~= CPPI.GetOwner(v) then
+					return
+				end
+			end
+			if table.Count(enttable) > 0 and enttable.network == 0 then
 				CAF.GetAddon("Resource Distribution").Link(v, ent.netid)
 			end
 		end
