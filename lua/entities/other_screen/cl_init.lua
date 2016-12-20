@@ -249,27 +249,25 @@ function ENT:DoNormalDraw(bDontDrawModel)
                 surface.SetFont("Flavour")
                 surface.SetTextColor(200, 200, 255, 255)
                 surface.SetTextPos(textStartPos + 15, TempY)
-                local othernetworks = 0
-                local othernetworksres = 0
+                local firstNetworkCapacity = 0
+                local firstNetworkAmount = 0
+                local otherNetworksCapacity = 0
+                local otherNetworksAmount = 0
                 if enttable.network and enttable.network ~= 0 then
                     local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(enttable.network)
                     if table.Count(nettable) > 0 then
                         if nettable.resources and nettable.resources[v] then
-                            local currentnet = nettable.resources[v].maxvalue
-                            local currentnet2 = nettable.resources[v].value
-                            if currentnet then
-                                othernetworks = CAF.GetAddon("Resource Distribution").GetNetworkCapacity(self, v) - (currentnet or 0)
-                            end
-                            if currentnet2 then
-                                othernetworksres = CAF.GetAddon("Resource Distribution").GetResourceAmount(self, v) - (currentnet2 or 0)
-                            end
+                            firstNetworkCapacity = nettable.resources[v].localmaxvalue or 0
+                            firstNetworkAmount = nettable.resources[v].localvalue or 0
+                            otherNetworksCapacity = CAF.GetAddon("Resource Distribution").GetNetNetworkCapacity(enttable.network, v) - firstNetworkCapacity
+                            otherNetworksAmount = CAF.GetAddon("Resource Distribution").GetNetResourceAmount(enttable.network, v) - firstNetworkAmount
                         else
-                            othernetworks = CAF.GetAddon("Resource Distribution").GetNetworkCapacity(self, v)
-                            othernetworksres = CAF.GetAddon("Resource Distribution").GetResourceAmount(self, v)
+                            otherNetworksCapacity = CAF.GetAddon("Resource Distribution").GetNetNetworkCapacity(enttable.network, v)
+                            otherNetworksAmount = CAF.GetAddon("Resource Distribution").GetNetResourceAmount(enttable.network, v)
                         end
                     end
                 end
-                surface.DrawText(tostring(CAF.GetAddon("Resource Distribution").GetProperResourceName(v)) .. ": " .. tostring(CAF.GetAddon("Resource Distribution").GetResourceAmount(self, v)) .. "/" .. tostring(CAF.GetAddon("Resource Distribution").GetNetworkCapacity(self, v)) .. "\t[" .. tostring(othernetworksres) .. "/" .. tostring(othernetworks) .. "]")
+                surface.DrawText(tostring(CAF.GetAddon("Resource Distribution").GetProperResourceName(v)) .. ": " .. tostring(firstNetworkAmount) .. "/" .. tostring(firstNetworkCapacity) .. "\t[" .. tostring(otherNetworksAmount) .. "/" .. tostring(otherNetworksCapacity) .. "]")
                 TempY = TempY + (70 / mul)
                 i = i + 1
                 if i >= 8 * mul then break end

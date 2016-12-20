@@ -252,6 +252,8 @@ local function sendNetworkData(ply, netid, rddata)
                 net.WriteString(l)
                 WriteLong(w.maxvalue)
                 WriteLong(w.value)
+                WriteLong(w.localmaxvalue)
+                WriteLong(w.localvalue)
 			end
 		end
 		
@@ -339,7 +341,7 @@ local function RequestResourceData(ply, com, args)
 			data = {}
 			data.resources = {}
 			for k, v in pairs(tmpdata.resources) do
-				data.resources[k] = {value = RD.GetNetResourceAmount(tonumber(args[2]), k), maxvalue = RD.GetNetNetworkCapacity(tonumber(args[2]), k)}
+				data.resources[k] = {value = RD.GetNetResourceAmount(tonumber(args[2]), k), maxvalue = RD.GetNetNetworkCapacity(tonumber(args[2]), k), localvalue = RD.GetNetResourceAmount(tonumber(args[2]), k, false), localmaxvalue = RD.GetNetNetworkCapacity(tonumber(args[2]), k, false)}
 			end
 			data.cons = {}
 			for k, v in pairs(tmpdata.cons) do
@@ -1217,13 +1219,14 @@ function RD.getConnectedNets(netid)
 end
 
 
-function RD.GetNetResourceAmount(netid, resource)
+function RD.GetNetResourceAmount(netid, resource, sumconnectednets)
 	if not nettable[netid] then return 0, "Not a valid network" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
 	local index = {}
+	sumconnectednets = sumconnectednets or (sumconnectednets == nil)
 	index.network = netid
-	if table.Count(nettable[index.network].cons) > 0 then
+	if sumconnectednets and table.Count(nettable[index.network].cons) > 0 then
 		for k, v in pairs(RD.getConnectedNets(index.network)) do
 			if nettable[v] and nettable[v].resources and nettable[v].resources[resource]  then
 				amount = amount + nettable[v].resources[resource].value
@@ -1237,10 +1240,11 @@ function RD.GetNetResourceAmount(netid, resource)
 	return amount
 end
 
-function RD.GetResourceAmount(ent, resource)
+function RD.GetResourceAmount(ent, resource, sumconnectednets)
 	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
+	sumconnectednets = sumconnectednets or (sumconnectednets == nil)
 	if ent_table[ent:EntIndex( )] then
 		local index = ent_table[ent:EntIndex( )];
 		if index.network == 0 then
@@ -1248,7 +1252,7 @@ function RD.GetResourceAmount(ent, resource)
 				amount = index.resources[resource].value
 			end
 		else
-			amount = RD.GetNetResourceAmount(index.network, resource)
+			amount = RD.GetNetResourceAmount(index.network, resource, sumconnectednets)
 		end
 	end
 	return amount
@@ -1267,13 +1271,14 @@ function RD.GetUnitCapacity(ent, resource)
 	return amount
 end
 
-function RD.GetNetNetworkCapacity(netid, resource)
+function RD.GetNetNetworkCapacity(netid, resource, sumconnectednets)
 	if not nettable[netid] then return 0, "Not a valid Network" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
 	local index = {}
+	sumconnectednets = sumconnectednets or (sumconnectednets == nil)
 	index.network = netid
-	if table.Count(nettable[index.network].cons) > 0 then
+	if sumconnectednets and table.Count(nettable[index.network].cons) > 0 then
 		for k, v in pairs(RD.getConnectedNets(index.network)) do
 			if nettable[v] and nettable[v].resources and nettable[v].resources[resource]  then
 				amount = amount + nettable[v].resources[resource].maxvalue
@@ -1287,10 +1292,11 @@ function RD.GetNetNetworkCapacity(netid, resource)
 	return amount
 end
 
-function RD.GetNetworkCapacity(ent, resource)
+function RD.GetNetworkCapacity(ent, resource, sumconnectednets)
 	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	local amount = 0
+	sumconnectednets = sumconnectednets or (sumconnectednets == nil)
 	if ent_table[ent:EntIndex( )] then
 		local index = ent_table[ent:EntIndex( )];
 		if index.network == 0 then
@@ -1298,7 +1304,7 @@ function RD.GetNetworkCapacity(ent, resource)
 				amount = index.resources[resource].maxvalue
 			end
 		else
-			amount = RD.GetNetNetworkCapacity(index.network, resource)
+			amount = RD.GetNetNetworkCapacity(index.network, resource, sumconnectednets)
 		end
 	end
 	return amount

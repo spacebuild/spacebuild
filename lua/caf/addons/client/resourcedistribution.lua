@@ -307,13 +307,17 @@ local function AddNetworkToCache( nrofbytes )
 		local resource 
 		local maxvalue 
 		local value
+		local localmaxvalue
+		local localvalue
 		for i = 1, nr_of_resources do
 			--print(i)
 			resource = net.ReadString()
 			maxvalue = ReadLong()
 			value = ReadLong()
+			localmaxvalue = ReadLong()
+			localvalue = ReadLong()
 			
-			data.resources[resource] = {value = value, maxvalue = maxvalue}
+			data.resources[resource] = {value = value, maxvalue = maxvalue, localvalue = localvalue, localmaxvalue = localmaxvalue}
 		end
 	end
 	
