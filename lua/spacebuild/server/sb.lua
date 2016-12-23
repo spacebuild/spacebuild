@@ -26,6 +26,8 @@ local class = SB.class
 local internal = SB.internal
 local time_to_next_sb_sync = SB.constants.TIME_TO_NEXT_SB_SYNC
 local config = SB.config
+require("sbnet")
+local net = sbnet
 
 local function AllowAdminNoclip(ply)
     if (ply:IsAdmin() or ply:IsSuperAdmin()) and config.adminspacenoclip.get() then return true end
@@ -244,6 +246,19 @@ local function OnEntitySpawn(ent)
     end
 end
 hook.Add("OnEntityCreated", "SB_OnEntitySpawn", OnEntitySpawn)
+
+local function onEnterEnvironment(environmentThatNotifies, ent, environment, oldenvironment)
+    net.Start("sbee")
+    net.writeShort(ent:EntIndex())
+    net.writeShort(environment:getID())
+    if oldenvironment then
+        net.writeShort(oldenvironment:getID())
+    else
+        net.writeShort(-1)
+    end
+    net.Broadcast()
+end
+hook.Add("OnEnterEnvironment", "SB_OnEnterEnvironment", onEnterEnvironment)
 
 function internal.getSpawnedEntities()
     return spawned_entities

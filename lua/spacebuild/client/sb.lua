@@ -44,4 +44,53 @@ end)
 
 net.Receive( "sbmu", function(length, ply)
     log.debug("Receiving environment effect data")
+    local bloomOrColor = net.readTiny()
+    local class = net.ReadString()
+    local id = net.ReadString()
+
+    local envData;
+    if bloomOrColor == 1 then
+        envData = SB:getEnvironmentColor(id)
+        if not envData then
+            envData = class.new("sb/LegacyColorInfo", {})
+            SB:addEnvironmentColor(envData)
+        end
+    elseif bloomOrColor == 2 then
+        envData = SB:getEnvironmentBloom(id)
+        if not envData then
+            envData = class.new("sb/LegacyBloomInfo", {})
+            SB:addEnvironmentBloom(envData)
+        end
+    end
+    envData:receive()
 end)
+
+net.Receive( "sbee", function(length, ply)
+    log.debug("Receiving ent changed environment")
+    local entId = net.readShort()
+    local environmentId = net.readShort()
+    local oldEnvironmentId = net.readShort()
+    local ent = ents.GetByIndex(entId)
+    if ent:IsPlayer() then
+        local newEnvironment = SB:getEnvironment(environmentId)
+        local oldEnvironment = SB:getEnvironment(oldEnvironmentId)
+        ent.environment = newEnvironment
+        log.debug("player ", ent:GetName(), " joined environment ", newEnvironment:getName(), " left environment ", oldEnvironment:getName())
+    end
+end)
+
+local function RenderColorAndBloom( )
+    local environment = LocalPlayer().environment;
+    if environment then
+        local bloom = environment.getEnvironmentBloom and environment:getEnvironmentBloom();
+        local color = environment.getEnvironmentColor and environment:getEnvironmentColor();
+        if bloom then
+            bloom:render();
+        end
+        if color then
+            color:render();
+        end
+    end
+end
+hook.Add( "RenderScreenspaceEffects", "VFX_Render", RenderColorAndBloom );
+--hook.Add( "RenderScreenspaceEffects", "SunEffects", DrawSunEffects );

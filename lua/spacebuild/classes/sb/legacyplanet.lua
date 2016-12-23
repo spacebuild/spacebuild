@@ -225,9 +225,11 @@ function C:addEntity(ent)
 end
 
 function C:removeEntity(ent)
+	local oldEnvironment = ent.environment
 	if self.entities[ent:EntIndex()] then
 		self:setEnvironmentOnEntity(ent, GM:getSpace())
 		self.entities[ent:EntIndex()] = nil
+		hook.Call("OnEnterEnvironment", GM, self, ent, GM:getSpace(), oldEnvironment)
 	end
 end
 
@@ -240,6 +242,7 @@ function C:getEntities()
 end
 
 function C:setEnvironmentOnEntity(ent, environment)
+	local oldEnvironment = ent.environment
 	if ent.environment ~= environment then
 		hook.Call("OnLeaveEnvironment", GM, ent.environment, ent)
 		ent.environment = environment
@@ -247,7 +250,7 @@ function C:setEnvironmentOnEntity(ent, environment)
 		if ent.ls_suit then
 			ent.ls_suit:setEnvironment(environment)
 		end
-		hook.Call("OnEnterEnvironment", GM, self, ent)
+		hook.Call("OnEnterEnvironment", GM, self, ent, environment, oldEnvironment)
 	end
 end
 

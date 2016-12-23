@@ -24,7 +24,7 @@ local SB = SPACEBUILD
 local log = SB.log
 local core = SB.core
 
-local net_pools = { "sbru", "sbrpu", "sbmu", "sbeu" }
+local net_pools = { "sbru", "sbrpu", "sbmu", "sbeu", "sbee" }
 for _, v in pairs(net_pools) do
     log.debug("Pooling ", v, " for net library")
     util.AddNetworkString(v)
