@@ -7,6 +7,21 @@ function ENT:Initialize()
     self.resources = {}
 end
 
+local function loadSelectedResourcesTree(ent)
+    local RD = CAF.GetAddon("Resource Distribution")
+    if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsVisible() then
+        local LeftTree = MainFrames[ent:EntIndex()].lefttree
+        LeftTree:Clear()
+        if table.Count(ent.resources) > 0 then
+            for k, v in pairs(ent.resources) do
+                local title = RD.GetProperResourceName(v)
+                local node = LeftTree:AddLine(title)
+                node.res = v
+            end
+        end
+    end	
+end
+
 local function OpenMenu()
     local ent = net:ReadEntity()
     if not ent then return end
@@ -37,6 +52,7 @@ local function OpenMenu()
     LeftTree:SetPos(20, 25)
     LeftTree:AddColumn("monitored resources")
     MainFrame.lefttree = LeftTree
+    loadSelectedResourcesTree(ent)
 
     local RightTree = vgui.Create("DListView", MainFrame)
     RightTree:SetMultiSelect(false)
@@ -129,20 +145,7 @@ local function AddResource()
     local res = net:ReadString()
     if not ent or not ent.resources then return end
     table.insert(ent.resources, res)
-    if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then
-        local LeftTree = MainFrames[ent:EntIndex()].lefttree
-        LeftTree.Items = {}
-        if table.Count(ent.resources) > 0 then
-            for k, v in pairs(ent.resources) do
-                local title = v;
-                local node = LeftTree:AddNode(title)
-                node.res = v
-                function node:DoClick()
-                    MainFrames[ent:EntIndex()].SelectedNode = self
-                end
-            end
-        end
-    end
+    loadSelectedResourcesTree(ent)
 end
 
 net.Receive("LS_Add_ScreenResource", AddResource)
@@ -157,20 +160,7 @@ local function RemoveResource()
             break
         end
     end
-    if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then
-        local LeftTree = MainFrames[ent:EntIndex()].lefttree
-        LeftTree.Items = {}
-        if table.Count(ent.resources) > 0 then
-            for k, v in pairs(ent.resources) do
-                local title = v;
-                local node = LeftTree:AddNode(title)
-                node.res = v
-                function node:DoClick()
-                    MainFrames[ent:EntIndex()].SelectedNode = self
-                end
-            end
-        end
-    end
+    loadSelectedResourcesTree(ent)
 end
 
 net.Receive("LS_Remove_ScreenResource", RemoveResource)
