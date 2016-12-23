@@ -7,6 +7,8 @@ Spacebuild
 
 Facepunch Page: [Located Here][facepunch]
 
+Discord Server: [Located Here][discord]
+
 *Please do not upload to the workshop, use the* **Official** *workshop version, this repository will be synced with it.*
 
 
@@ -21,14 +23,17 @@ Facepunch Page: [Located Here][facepunch]
     **Spacebuild 4** - WiP ( Yes its still in development )
 
 
-# Contributions
-
-     Spacebuild was revived on May 18th 2016 and we need more coders and modelers!
-
+# Contributors
+    @snakesvx
+    @generalwrex
+    @X-Coder
+    @CaveeJohnson
+   
+   
      If you would like to help just drop a pull request in with your changes! 
      Please try to keep your coding clean!
 
-# Workshop Installation - Ready for public use!
+# Workshop Installation
 
 Spacebuild 3 is available via the Steam Workshop! Go to [its Workshop page][workshop] and press `Subscribe`, and it will automatically appear in Garry's Mod.
 
@@ -52,3 +57,4 @@ Unless required by applicable law or agreed to in writing, software distributed 
 [garrysmod]: <http://garrysmod.com/>
 [workshop]: <http://steamcommunity.com/sharedfiles/filedetails/?id=693838486>
 [facepunch]: <https://facepunch.com/showthread.php?t=1519499&p=50363396>
+[discord]: <https://discord.gg/3A4dPhD>
