@@ -31,19 +31,21 @@ local function OpenMenu()
     end
 
     MainFrame.SelectedNode = nil
-    local LeftTree = vgui.Create("DTree", MainFrame)
+    local LeftTree = vgui.Create("DListView", MainFrame)
+    LeftTree:SetMultiSelect(false)
     LeftTree:SetSize(180, 300)
-    LeftTree:SetPos(20, 25);
-    LeftTree:SetShowIcons(false)
+    LeftTree:SetPos(20, 25)
+    LeftTree:AddColumn("monitored resources")
     MainFrame.lefttree = LeftTree
 
-    local RightTree = vgui.Create("DTree", MainFrame)
+    local RightTree = vgui.Create("DListView", MainFrame)
+    RightTree:SetMultiSelect(false)
     RightTree:SetSize(180, 300)
-    RightTree:SetPos(400, 25);
-    RightTree:SetShowIcons(false)
+    RightTree:SetPos(400, 25)
+    RightTree:AddColumn("available resources")
 
     local RightPanel = vgui.Create("DPanel", MainFrame)
-    RightPanel:SetSize(180, 250);
+    RightPanel:SetSize(180, 250)
     RightPanel:SetPos(210, 25)
 
     local RText2 = vgui.Create("DTextEntry", RightPanel)
@@ -54,8 +56,8 @@ local function OpenMenu()
 
     if resources and table.Count(resources) > 0 then
         for k, v in pairs(resources) do
-            local title = RD.GetProperResourceName(v);
-            local node = RightTree:AddNode(title)
+            local title = RD.GetProperResourceName(v)
+            local node = RightTree:AddLine(title)
             node.res = v
             function node:DoClick()
                 RText2:SetValue(tostring(self.res))
