@@ -64,21 +64,18 @@ local function OpenMenu()
     RightPanel:SetSize(180, 250)
     RightPanel:SetPos(210, 25)
 
-    local RText2 = vgui.Create("DTextEntry", RightPanel)
-    RText2:SetPos(20, 25)
-    RText2:SetSize(140, 30)
-    RText2:AllowInput(true)
-    RText2:SetValue("")
-
     if resources and table.Count(resources) > 0 then
         for k, v in pairs(resources) do
             local title = RD.GetProperResourceName(v)
             local node = RightTree:AddLine(title)
             node.res = v
-            function node:DoClick()
-                RText2:SetValue(tostring(self.res))
-            end
         end
+    end
+    function LeftTree:OnRowSelected(rowIndex, row)
+       MainFrame.SelectedNode = row
+    end
+    function RightTree:OnRowSelected(rowIndex, row)
+       MainFrame.SelectedNode = row
     end
 
     local RButton2 = vgui.Create("DButton", RightPanel)
@@ -86,7 +83,7 @@ local function OpenMenu()
     RButton2:SetSize(140, 30)
     RButton2:SetText("Remove Selected Resource")
     function RButton2:DoClick()
-        if MainFrame.SelectedNode then
+        if MainFrame.SelectedNode and MainFrame.SelectedNode.res then
             RunConsoleCommand("RemoveLSSCreenResource", ent:EntIndex(), tostring(MainFrame.SelectedNode.res))
         end
     end
@@ -96,8 +93,8 @@ local function OpenMenu()
     RButton3:SetSize(140, 30)
     RButton3:SetText("Add Resource")
     function RButton3:DoClick()
-        if RText2:GetValue() ~= "" then
-            RunConsoleCommand("AddLSSCreenResource", ent:EntIndex(), tostring(RText2:GetValue()))
+        if MainFrame.SelectedNode and MainFrame.SelectedNode.res then
+            RunConsoleCommand("AddLSSCreenResource", ent:EntIndex(), tostring(MainFrame.SelectedNode.res))
         end
     end
 
