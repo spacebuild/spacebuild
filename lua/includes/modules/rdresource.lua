@@ -4,7 +4,7 @@
 --			Version: 0.1
 --
 --  A module for ResourceData for use with both RDEntityData as an RDNetwork
---
+-- @Deprecated 4.0.0
 --=============================================================================--
 
 local table 	= table

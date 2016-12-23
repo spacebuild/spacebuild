@@ -4,7 +4,7 @@
 --			Version: 1.0
 --
 --  Module to create RDNetworks
---
+-- @Deprecated 4.0.0
 --=============================================================================--
 
 local table 	= table

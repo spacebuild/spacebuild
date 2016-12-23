@@ -67,7 +67,7 @@ local function ErrorOffStuff(String)
 	Msg(tostring(String).."\n")
 end
 
-AddCSLuaFile("autorun/client/cl_caf_autostart.lua")
+AddCSLuaFile("caf/autostart/client/cl_caf_autostart.lua")
 CAF2.CAF3 = CAF3;
 include("caf/core/shared/sh_general_caf.lua")
 CAF2.CAF3 = nil;

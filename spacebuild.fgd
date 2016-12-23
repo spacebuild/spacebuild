@@ -1,0 +1,57 @@
+@include "base.fgd"
+@include "halflife2.fgd"
+@include "garrysmod.fgd"
+//====== Copyright © 2012, SnakeSVx =======
+
+@SolidClass = simple_planet : "A planet with simple settings."
+[
+     Gravity(choices) : "Gravity" : 2 : "What kind of gravity does this planet have?" =
+     [
+         0 : "No gravity"
+         1 : "Low gravity"
+         2 : "Regular gravity"
+         3 : "High gravity"
+     ]
+
+     Earthquakes : "Earthquakes" : 0 : "Does this planet have earthquakes?" =
+     [
+        0 : "No"
+        1 : "Yes"
+     ]
+
+     Temperature : "Temperature" : 1 : "What kind of temperature does this planet have?" =
+     [
+        0 : "Low temperature"
+        1 : "Regular temperature"
+        2 : "High temperature"
+     ]
+
+     HasBloom(choices) : "Bloom" : 0 : "Does this planet have bloom effect?" =
+     [
+        0 : "False"
+        1 : "True"
+     ]
+     Bloom_R(float) : "Bloom: Red" : 1 : "Bloom: Red component."
+     Bloom_G(float) : "Bloom: Green" : 1 : "Bloom: Blue component."
+     Bloom_B(float) : "Bloom: Blue" : 1 : "Bloom: Green component."
+     Bloom_X(float) : "Bloom: Size X" : 1 : "Bloom: X size."
+     Bloom_Y(float) : "Bloom: Size Y" : 1 : "Bloom: Y size"
+     Bloom_Passes(float) : "Bloom: Passes" : 1 : "Bloom: Number of passes."
+     Bloom_Darken(float) : "Bloom: Darken" : 1 : "Bloom: Darken by this amount."
+     Bloom_Multi(float) : "Bloom: Multiply" : 1 : "Bloom: Multiply by this amount."
+
+     Colour_Mod(choices) : "Colour Mod" : 0 : "Does this brush have a colour modification?" =
+     [
+        0 : "False"
+        1 : "True"
+     ]
+     Colour_Mod_R(float) : "Colour: Add Red" : 1 : "Colour: Red component."
+     Colour_Mod_G(float) : "Colour: Add Green" : 1 : "Colour: Blue component."
+     Colour_Mod_B(float) : "Colour: Add Blue" : 1 : "Colour: Green component."
+     Colour_Mod_M_R(float) : "Colour: Multi Red" : 1 : "Colour: Red multiplication component."
+     Colour_Mod_M_G(float) : "Colour: Multi Green" : 1 : "Colour: Blue multiplication component."
+     Colour_Mod_M_B(float) : "Colour: Multi Blue" : 1 : "Colour: Green multiplication component."
+     Colour_Mod_Brightness(float) : "Colour: Brightness" : 1 : "Colour: Brightness setting."
+     Colour_Mod_Contrast(float) : "Colour: Contrast" : 1 : "Colour: Contrast setting."
+
+]

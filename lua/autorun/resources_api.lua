@@ -12,7 +12,7 @@ RESOURCES = {}
 
 
 if (SERVER) then
-    AddCSLuaFile("autorun/resources_api.lua")
+    AddCSLuaFile() -- send this file to the client
 end
 
 

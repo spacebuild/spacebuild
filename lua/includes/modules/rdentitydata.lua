@@ -4,7 +4,7 @@
 --			Version: 1.0
 --
 --  Module to create the data required for an entity for use in an RDNetwork
---
+-- @Deprecated 4.0.0
 --=============================================================================--
 
 local table 	= table
