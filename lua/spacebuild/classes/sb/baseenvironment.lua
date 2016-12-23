@@ -263,7 +263,7 @@ end
 --
 function C:send(modified, ply)
 	if self.modified > modified then
-		net.Start("SBEU")
+		net.Start("sbeu")
 		net.WriteString(self:getClass())
 		net.writeShort(self.entid)
 		self:_sendContent(modified)
@@ -304,9 +304,9 @@ function C:receive()
 	local id
 	for am = 1, nrRes do
 		id = net.readTiny()
-		name = GM:getResourceInfoFromID(id):getName()
+		name = self.resourceRegistry:getResourceInfoFromID(id):getName()
 		if not self.resources[name] then
-			self.resources[name] = self.classLoader.new("rd/Resource", name, nil, nil, self.resourceRegistry)
+			self.resources[name] = self.classLoader.new("rd/Resource", name, 0, 0, self.resourceRegistry)
 		end
 		self.resources[name]:receive()
 	end

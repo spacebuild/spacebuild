@@ -29,6 +29,7 @@ CreateConVar("SB_PlanetNoClipOnly", "1") -- Make it so admins can let players no
 
 CreateConVar("SB_EnableDrag", "1") -- Make it drag also gets affected, on by default.
 CreateConVar("SB_InfiniteResources", "0") -- Makes it so that a planet can't run out of resources, off by default.
+CreateConVar("SB_StaticEnvironment", "0") -- @DEPRECATED, use SB_InfiniteResources instead
 
 SB.config = {
 
@@ -53,7 +54,7 @@ SB.config = {
         set = function(val) game.ConsoleCommand("SB_EnableDrag", val:toNumber()) end
     },
     resources = {
-        get = function() return GetConVar("SB_InfiniteResources"):GetBool() end,
+        get = function() return GetConVar("SB_InfiniteResources"):GetBool() or GetConVar("SB_StaticEnvironment"):GetBool() end,
         set = function(val) game.ConsoleCommand("SB_InfiniteResources", val:toNumber()) end
     }
 }

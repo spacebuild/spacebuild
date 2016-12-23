@@ -82,7 +82,7 @@ end
 --
 function C:send(modified, ply)
 	if self.modified > modified then
-		net.Start("SBMU")
+		net.Start("sbmu")
 		net.writeTiny(2)
 		net.WriteString(self:getClass())
 		net.WriteString(self.id)

@@ -50,7 +50,7 @@ SB.constants = {}
 SB.config = {}
 SB.internal = {}
 
-log.info("Starting up spacebuild " + version.fullVersion());
+log.info("Starting up spacebuild " .. version:fullVersion());
 
 include("spacebuild/classes/include.lua")
 include("spacebuild/shared/include.lua")

@@ -43,14 +43,24 @@ local function JeepFix(ply)
     end
 end
 
+local function isNoclippingWhenNotAllowed(ply)
+    return SB.onSBMap() and ply.environment and ply.environment == SB.getSpace() and config.noclip.get() and not AllowAdminNoclip(ply) and config.planetnocliponly.get() and ply:GetMoveType() == MOVETYPE_NOCLIP
+end
+
 --- Prevent players from noclipping in space if isn't not allowed
 -- @param ply
 --
 local function NoClipCheck(ply)
-    if SB.onSBMap() and ply.environment and ply.environment == SB.getSpace() and config.noclip.get() and not AllowAdminNoclip(ply) and config.planetnocliponly.get() and ply:GetMoveType() == MOVETYPE_NOCLIP then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
-    ply:SetMoveType(MOVETYPE_WALK)
+    if isNoclippingWhenNotAllowed(ply) then -- Now set their movetype to walk if in noclip and only admins allowed noclip.
+        ply:SetMoveType(MOVETYPE_WALK)
     end
 end
+
+local function PlayerNoClip( ply, on )
+    if isNoclippingWhenNotAllowed(ply) then return false end
+    -- Don't return, let the gamemode or other hooks take care of it
+end
+hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
 
 local sun
 
@@ -67,8 +77,6 @@ local function addSun(data)
     local ent = data.ent
     sun = class.new("SunEnvironment", ent:EntIndex(), data, SB:getResourceRegistry())
 end
-
-
 
 local function spawnEnvironmentEnt(name, pos, angles)
     local ent = ents.Create(name)
@@ -176,6 +184,40 @@ local ignoredClasses = {}
 ignoredClasses["func_door"] = true
 ignoredClasses["prop_combine_ball"] = true
 
+-- TODO check if this block is still needed!
+
+local protectedEnvironmentEntities = {}
+protectedEnvironmentEntities["LegacyPlanet"] = true
+protectedEnvironmentEntities["base_environment_entity"] = true
+
+--Don't remove environment on cleanup
+local originalCleanUpMap = game.CleanUpMap
+function game.CleanUpMap(dontSendToClients, ExtraFilters)
+    local MapEntities = {}
+    for className, _ in pairs(protectedEnvironmentEntities) do
+       table.insert(MapEntities, className)
+    end
+
+    if ExtraFilters then
+        table.Add(ExtraFilters, MapEntities)
+    else
+        ExtraFilters = MapEntities
+    end
+    originalCleanUpMap(dontSendToClients, ExtraFilters)
+end
+
+local function PhysgunPickup(ply , ent)
+    local entClass = ent:GetClass()
+    return not protectedEnvironmentEntities[entClass];
+end
+hook.Add("PhysgunPickup", "SB_PhysgunPickup_Check", PhysgunPickup)
+
+function SB:addProtectedEnvironmentEntityClass(className)
+    protectedEnvironmentEntities[className] = true
+end
+
+-- end block
+
 function SB:isValidSBEntity(ent)
     return IsValid(ent)
             and not ent:IsWorld()
@@ -222,13 +264,13 @@ SB.core.sb = {
                     v:send(ply.lastsbupdate or 0, ply)
                 end
                 ply.lastsbupdate = time
-            else
+            elseif not ply.lastsbupdate then
                 ply.lastsbupdate = (-time_to_next_sb_sync)
             end
             -- Noclip from planets check?
             if ply.environment and ply.environment == SB:getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
-            JeepFix(ply)
-            NoClipCheck(ply)
+                JeepFix(ply)
+                NoClipCheck(ply)
             end
         end
     },

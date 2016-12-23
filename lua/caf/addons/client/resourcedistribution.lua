@@ -5,6 +5,7 @@ local resourcenames = {}
 local resources = {}
 local status = false
 
+require("cache")
 local rd_cache = cache.create(1, false) --Store data for 1 second
 --[[
 

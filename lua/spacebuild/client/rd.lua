@@ -21,3 +21,14 @@
 --
 
 local SB = SPACEBUILD
+local log = SB.log
+require("sbnet")
+local net = sbnet
+
+net.Receive( "sbru", function(length, ply)
+    log.debug("sbru received ", v, " for net library")
+end)
+
+net.Receive( "sbrpu", function(length, ply)
+
+end)

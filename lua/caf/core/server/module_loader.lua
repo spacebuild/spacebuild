@@ -5,8 +5,6 @@ AddCSLuaFile("includes/modules/cache.lua")
 
 require("ArrayList")
 require("HashMap")
-require("caf_util")
-require("Json")
 require("CustomAttack")
 require("CustomArmor")
 require("cache")
