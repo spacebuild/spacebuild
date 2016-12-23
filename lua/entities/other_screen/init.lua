@@ -186,3 +186,44 @@ function ENT:Think()
 	return true
 end
 
+function ENT:PreEntityCopy()
+	local RD = CAF.GetAddon("Resource Distribution")
+	local info = {}
+	info.Active = self.Active
+	info.damaged = self.damaged
+	info.resources = self.resources
+	
+	RD.BuildDupeInfo(self)
+	if not (WireAddon == nil) then
+		local DupeInfo = WireLib.BuildDupeInfo(self)
+		if DupeInfo then
+			duplicator.StoreEntityModifier(self, "WireDupeInfo", DupeInfo)
+		end
+	end
+	duplicator.ClearEntityModifier(ent, "SBOtherScreen")
+	duplicator.StoreEntityModifier(self, "SBOtherScreen", info)
+end
+duplicator.RegisterEntityModifier("SBOtherScreen" , function() end)
+
+function ENT:PostEntityPaste(ply, ent, CreatedEntities)
+	local RD = CAF.GetAddon("Resource Distribution")
+	RD.ApplyDupeInfo(ent, CreatedEntities)
+	if not (WireAddon == nil) and (ent.EntityMods) and (ent.EntityMods.WireDupeInfo) then
+		WireLib.ApplyDupeInfo(ply, ent, ent.EntityMods.WireDupeInfo, function(id) return CreatedEntities[id] end)
+	end
+	
+	if ent.EntityMods and ent.EntityMods.SBOtherScreen then
+		local info = ent.EntityMods.SBOtherScreen
+		ent.resources = info.resources
+		if table.Count(ent.resources) > 0 then
+			for _, res in pairs(ent.resources) do
+				net.Start("LS_Add_ScreenResource")
+					net.WriteEntity(ent)
+					net.WriteString(res)
+				net.Broadcast()
+			end
+		end
+		if info.Active ==1 and ent.IsScreen then ent:TurnOn() end
+		if info.damaged==1 then ent:Damage() end
+	end
+end
