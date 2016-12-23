@@ -357,7 +357,7 @@ TOOL.Devices = {
         },
     },
     generator_liquid_hvywater = {
-        Name = "Heay Water Electrolyzor",
+        Name = "Heavy Water Electrolyzer",
         type = "generator_liquid_hvywater",
         class = "generator_liquid_hvywater",
         func = liquid_generator_func,
