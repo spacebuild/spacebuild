@@ -66,26 +66,36 @@ hook.Add("PlayerNoClip", "SB_PlayerNoClip_Check", PlayerNoClip)
 
 local sun
 
-local function init()
-    if not sun then
-        sun = class.new("sb/SunEnvironment", nil, SB:getResourceRegistry())
-    end
-end
-hook.Add("Initialize", "spacebuild.init.server.sun", init)
-
-local function addSun(data)
-    log.debug("Spawn Sun")
-    --TODO spawn sunEntity
-    local ent = data.ent
-    sun = class.new("SunEnvironment", ent:EntIndex(), data, SB:getResourceRegistry())
-end
-
 local function spawnEnvironmentEnt(name, pos, angles)
     local ent = ents.Create(name)
     ent:SetAngles(angles)
     ent:SetPos(pos)
     ent:Spawn()
     return ent
+end
+
+local function spawnSun(pos, angle, data)
+    local ent = spawnEnvironmentEnt("sun", pos, angle)
+    local environment = class.new("sb/SunEnvironment", ent:EntIndex(), data, SB:getResourceRegistry())
+    ent.envobject = environment
+    SB:addEnvironment(environment)
+    return environment
+end
+
+local function initSun()
+    if not sun then
+        --TODO create an ent and spawn the sun! but what location and what angle?
+        --spawnSun(Vector(0, 0, 0), Angle(0, 0, -1), {}) --Crashes gmod
+    end
+end
+hook.Add("Initialize", "spacebuild.init.server.sun", initSun)
+
+local function addSun(data)
+    log.debug("Spawn Sun")
+    local environment = spawnSun(data.ent:GetPos(), data.ent:GetAngles(), data)
+    if not sun then
+        sun = environment
+    end
 end
 
 local function addLegacyEnvironment(data)
@@ -235,12 +245,15 @@ end
 local spawned_entities = {}
 
 local function OnEntitySpawn(ent)
-    if not table.HasValue(spawned_entities, ent) then
+    if not SB:getSpace() then
+        timer.Simple(0.1, function() OnEntitySpawn(ent) end)
+    elseif not table.HasValue(spawned_entities, ent) then
         table.insert(spawned_entities, ent)
         timer.Simple(0.1, function()
+
             if SB:onSBMap() and not ent.environment and SB:isValidSBEntity(ent) then
                 ent.environment = SB:getSpace()
-                SB:getSpace():updateEnvironmentOnEntity(ent)
+                ent.environment:updateEnvironmentOnEntity(ent)
             end
         end)
     end

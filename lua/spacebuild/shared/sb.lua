@@ -53,6 +53,14 @@ function SB:removeEnvironmentFromEntity(ent)
     internal.environments[ent:EntIndex()] = nil
 end
 
+function SB:getEnvironments()
+    local environments = {}
+    for _, v in pairs(internal.environments) do
+       table.insert(environments, v)
+    end
+    return environments
+end
+
 
 function SB:getEnvironment(id)
     if id == -1 then

@@ -39,26 +39,28 @@ net.Receive( "sbeu", function(length, ply)
         SB:addEnvironment(environment)
     end
     environment:receive()
-    log.table(environment, log.DEBUG, "loaded environment update")
+    --log.table(environment, log.DEBUG, "loaded environment update")
 end)
 
 net.Receive( "sbmu", function(length, ply)
     log.debug("Receiving environment effect data")
     local bloomOrColor = net.readTiny()
-    local class = net.ReadString()
+    local className = net.ReadString()
     local id = net.ReadString()
 
     local envData;
     if bloomOrColor == 1 then
         envData = SB:getEnvironmentColor(id)
         if not envData then
-            envData = class.new("sb/LegacyColorInfo", {})
+            envData = class.new(className)
+            envData:setID(id)
             SB:addEnvironmentColor(envData)
         end
     elseif bloomOrColor == 2 then
         envData = SB:getEnvironmentBloom(id)
         if not envData then
-            envData = class.new("sb/LegacyBloomInfo", {})
+            envData = class.new(className)
+            envData:setID(id)
             SB:addEnvironmentBloom(envData)
         end
     end
@@ -93,4 +95,84 @@ local function RenderColorAndBloom( )
     end
 end
 hook.Add( "RenderScreenspaceEffects", "VFX_Render", RenderColorAndBloom );
---hook.Add( "RenderScreenspaceEffects", "SunEffects", DrawSunEffects );
+
+local function DrawSunEffects( )
+    -- no pixel shaders? no sun effects!
+    if( not render.SupportsPixelShaders_2_0() ) then return; end
+    -- render each star.
+    for ent, Sun in pairs( SB:getEnvironments() ) do
+        if Sun:isA("SunEnvironment") then
+            -- calculate brightness.
+            local entpos = Sun:getPosition() --Sun.ent:LocalToWorld( Vector(0,0,0) )
+            local normVec = Vector( entpos - EyePos() )
+            normVec:Normalize()
+            local dot = math.Clamp( EyeAngles():Forward():DotProduct( normVec ), -1, 1 );
+            dot = math.abs(dot)
+            --local dist = Vector( entpos - EyePos() ):Length();
+            local dist = entpos:Distance(EyePos())/1.5
+            -- draw sunbeams.
+            local sunpos = EyePos() + normVec * ( dist * 0.5 );
+            local scrpos = sunpos:ToScreen();
+            if( dist <= Sun:getBeamRadius() and dot > 0 ) then
+                local frac = ( 1 - ( ( 1 / ( Sun:getBeamRadius() ) ) * dist ) ) * dot;
+                -- draw sun.
+                --DrawSunbeams( darken, multiply, sunsize, sunx, suny )
+                DrawSunbeams(
+                    0.95,
+                    frac,
+                    0.255,
+                    scrpos.x / ScrW(),
+                    scrpos.y / ScrH()
+                );
+            end
+            -- can the sun see us?
+            local trace = {
+                start = entpos,
+                endpos = EyePos(),
+                filter = LocalPlayer(),
+            };
+            local tr = util.TraceLine( trace );
+            -- draw!
+            if( dist <= Sun:getRadius() and dot > 0 and tr.Fraction >= 1 ) then
+                -- calculate brightness.
+                local frac = ( 1 - ( ( 1 / Sun:getRadius() ) * dist ) ) * dot;
+                -- draw bloom.
+                DrawBloom(
+                    0.428,
+                    3 * frac,
+                    15 * frac, 15 * frac,
+                    5,
+                    0,
+                    1,
+                    1,
+                    1
+                );
+                --[[DrawBloom(
+                    0,
+                    0.75 * frac,
+                    3 * frac, 3 * frac,
+                    2,
+                    3,
+                    1,
+                    1,
+                    1
+                );]]
+                -- draw color.
+                local tab = {
+                    ['$pp_colour_addr']		= 0.35 * frac,
+                    ['$pp_colour_addg']		= 0.15 * frac,
+                    ['$pp_colour_addb']		= 0.05 * frac,
+                    ['$pp_colour_brightness']	= 0.8 * frac,
+                    ['$pp_colour_contrast']		= 1 + ( 0.15 * frac ),
+                    ['$pp_colour_colour']		= 1,
+                    ['$pp_colour_mulr']		= 0,
+                    ['$pp_colour_mulg']		= 0,
+                    ['$pp_colour_mulb']		= 0,
+                };
+                -- draw colormod.
+                DrawColorModify( tab );
+            end
+        end
+    end
+end
+hook.Add( "RenderScreenspaceEffects", "SunEffects", DrawSunEffects );

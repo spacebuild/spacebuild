@@ -88,6 +88,11 @@ function C:getEntity()
 	return self.entid and Entity(self.entid) or nil
 end
 
+function C:getPosition()
+	local ent = self:getEntity()
+	return (ent and ent:GetPos()) or nil
+end
+
 --- Gets the temperature on this environment for the given entity
 -- @return an integer
 function C:getTemperature()

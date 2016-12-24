@@ -25,6 +25,8 @@ include("baseenvironment.lua")
 
 -- Class Specific
 local C = CLASS
+require("sbnet")
+local net = sbnet
 
 -- Function Refs
 local funcRef = {
@@ -47,5 +49,66 @@ end
 
 function C:getPos()
 	return (self:getEntity() and self:getEntity():GetPos()) or DEFAULT_SUN_POSITION
+end
+
+function C:init(entid, data, resourceRegistry)
+	funcRef.init(self, entid, data, resourceRegistry)
+	self.radius = data.radius or 1500
+	self.beamRadius = self.radius * 1.5
+	local ent = self:getEntity()
+	local SunAngle
+	for key, value in pairs(data) do
+		if ((key == "target") and (string.len(value) > 0)) then
+			local targets = ents.FindByName( "sun_target" )
+			for _, target in pairs( targets ) do
+				SunAngle = (target:GetPos() - ent:GetPos()):Normalize()
+				break --Sunangle set, all that was needed
+			end
+		end
+	end
+	if not SunAngle then
+		--Sun angle still not set, but sun found
+		local ang = ent:GetAngles()
+		ang.p = ang.p - 180
+		ang.y = ang.y - 180
+		--get within acceptable angle values no matter what...
+		ang.p = math.NormalizeAngle( ang.p )
+		ang.y = math.NormalizeAngle( ang.y )
+		ang.r = math.NormalizeAngle( ang.r )
+		SunAngle = ang:Forward()
+	end
+	self.sunAngle = SunAngle
+end
+
+function C:getRadius()
+	return self.radius;
+end
+
+function C:getBeamRadius()
+	return self.beamRadius;
+end
+
+--- Sync function to send data from the client to the server, contains the specific data transfer
+-- @param modified timestamp the client received information about this environment last
+--
+function C:_sendContent(modified)
+	funcRef.sendContent(self, modified)
+	net.writeShort(self.radius)
+	net.writeShort(self.beamRadius)
+	net.writeShort(self.sunAngle.p or 0)
+	net.writeShort(self.sunAngle.y or 0)
+	net.writeShort(self.sunAngle.r or -1)
+end
+
+--- Sync function to receive data from the server to this client
+--
+function C:receive()
+	funcRef.receiveSignal(self)
+	self.radius = net.readShort()
+	self.beamRadius = net.readShort()
+	local p = net.readShort()
+	local y = net.readShort()
+	local r = net.readShort()
+	self.sunAngle = Angle(p, y, r)
 end
 

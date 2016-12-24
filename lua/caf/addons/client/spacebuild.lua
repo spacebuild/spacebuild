@@ -248,6 +248,6 @@ function SB.GetDescription()
 			}
 end
 
-CAF.RegisterAddon("Spacebuild",  SB, "0")
+CAF.RegisterAddon("Spacebuild",  SB, "1")
 
 
