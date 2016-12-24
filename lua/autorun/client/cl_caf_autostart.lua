@@ -60,6 +60,9 @@ CAF2.CAF3 = CAF3;
 include("caf/core/shared/sh_general_caf.lua")
 CAF2.CAF3 = nil;
 
+-- Synchronize language with gmod interface
+CAF2.SaveVar("CAF_LANGUAGE", GetConVar("gmod_language"):GetString())
+
 local function OnAddonDestruct(name)
 	if not name then return end
 	if(CAF2.GetAddonStatus(name)) then
