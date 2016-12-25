@@ -184,4 +184,91 @@ t["Not on a Spacebuild Map!"] = "Niet op een Spacebuild Kaart!"
 
 CAF.LANGUAGE["nl"] = t;
 
+local t = CAF.LANGUAGE["de"] or {}
+
+--Custom Addon Framework
+t["caf_menu_title"] = "Custom Addon Framework Menü"
+t["caf_menu_tab_title"] = "Custom Addon Framework"
+
+--Life Support
+t["sb_dev_plants_title"] = "Spacebuild Dev-Pflanzen"
+t["sb_dev_plants_desc"] = "Erstelle Dev-Pflanzen auf jeder Oberfläche."
+t["sb_dev_plants_desc2"] = "Links-Klick: Erstelle eine Dev-Pflanze.(nur Admins)  Nachladen: Pflanze aufpäppeln."
+
+t["O2 Refresh Rate"] = "O2 Aktualisierungs-Rate"
+t["Dev Plants (Auto O2 Refresher)"] = "Dev-Pflanzen (Automatische O2 Auffrischung)"
+t["#Dev Plants"] = "Admin-Pflanzen"
+t["Air"] = "Sauerstoff"
+t["Temperature"] = "Temperatur"
+t["Coolant"] = "Kühlmittel"
+t["Energy"] = "Energie"
+t["Water"] = "Wasser"
+t["Nitrogen"] = "Stickstoff"
+t["Hydrogen"] = "Wasserstoff"
+t["Oxygen"] = "Sauerstoff"
+t["Carbon Dioxide"] = "Kohlendioxid"
+t["Steam"] = "Dampf"
+t["Heavy Water"] = "Schweres Wasser"
+t["Liquid Nitrogen"] = "Flüssiger Stickstoff"
+t["Some Language Changes will only Show after a map reload!"] = "Änderungen der Spracheinstellungen sind erst nach einem Mapwechsel sichtbar!"
+t["Language"] = "Sprache"
+t["Clientside CAF Options"] = "Clientseitige CAF-Einstellungen"
+--Shared 
+t["No Implementation yet"] = "Noch nicht implementiert"
+t["Beta"] = "Beta"
+t["This Addon is already Active!"] = "Dieses Addon ist bereits aktiv!"
+t["Resource Distribution is Required and needs to be Active!"] = "Resource Distribution wird benötigt und muss aktiv sein!"
+t["This addon wasn't on in the first place"] = "Dieses Addon war noch nicht aktiv"
+
+--CAF Stuff
+t["Error unloading Addon"] = "Fehler beim Entladen des Addons"
+t["Error loading Addon"] = "Fehler beim Laden des Addons"
+t["Addon"] = "Addon"
+t["got disabled"] = "wurde deaktiviert"
+t["An error occured when trying to disable Addon"] = "Beim Versuch das Addon zu deaktivieren trat ein Fehler auf"
+t["got enabled"] = "wurde aktiviert"
+t["An error occured when trying to enable Addon"] = "Beim Versuch das Addon zu aktivieren trat ein Fehler auf"
+t["Missing Argument"] = "Fehlendes Argument"
+t["No HookName given"] = "Kein HookName angegeben"
+t["No function given"] = "Keine Funktion angegeben"
+t["This hook doesn't exist"] = "Dieser Hook existiert nicht"
+t["No AddonName given"] = "Kein AddonName angegeben"
+t["No OptionName given"] = "Kein OptionName angegeben"
+t["This option wasn't found for this Addon"] = "Diese Einstellung wurde für dieses Addon nicht gefunden"
+t["No Extra options found for this Addon"] = "Keine weiteren Einstellungen für dieses gefunden"
+t["Addon Not Found"] = "Addon nicht gefunden"
+t["No Status Info Found"] = "Keine Statusinformationen gefunden"
+t["No Custom Status Info Found"] = "Keine benutzerdefinierten Statusinformationen gefunden"
+t["No Version Info Found"] = "Keine Versionsinformationen gefunden"
+t["No AddonClass given"] = "Keine AddonClass (table) übergeben"
+t["CAF: Client has Internet. Enabled Online-Help"] = "CAF: Clientseitige Internetanbindung gefunden. Online-Hilfe eingeschaltet"
+t["Your version is out of date. Please update to version "] = "Deine Version ist veraltet. Bitte auf diese Version updaten "
+t["No Description"] = "Keine Beschreibung"
+t["Description"] = "Beschreibung"
+t["Installed Addons"] = "Installierte Addons"
+t["Info and Help"] = "Infos und Hilfe"
+t["Server Settings"] = "Server Einstellungen"
+t["Client Settings"] = "Client Einstellungen"
+t["About"] = "Über"
+t["Unknown"] = "Unbekannt"
+t["Loading"] = "Lade"
+
+--New CAF Stuff
+t["This Addon is up to date"] = "Dieses Addon ist aktuell";
+t["This Addon is out of date"] = "Dieses Addon ist veraltet";
+t["No Update Information Available"] = "Keine Update-Informationen verfügbar";
+
+--Default Stool Stuff
+t["caf_stool_disabled"] = "Dieses Stool ist deaktiviert"
+t["caf_stool_entity_disabled"] = "Dieses Stool Entity ist deaktiviert"
+t["caf_stool_entity_model_disabled"] = "Dieses Stool Entity Model ist deaktiviert"
+t["caf_stool_admin_required"] = "Dieses Stool benötigt Adminrechte";
+t["caf_stool_entity_admin_required"] = "Dieses Stool Entity benötigt Adminrechte";
+t["caf_stool_entity_model_admin_required"] = "Dieses Stool Entity Model benötigt Adminrechte";
+
+t["This Addon is already Active!"] = "Dieses Addon ist bereits aktiv!"
+t["This Addon is already disabled!"] = "Dieses Addon ist bereits deaktiviert!"
+t["Not on a Spacebuild Map!"] = "Dieses ist keine Spacebuild-Map!"
+
+CAF.LANGUAGE["de"] = t;
 
