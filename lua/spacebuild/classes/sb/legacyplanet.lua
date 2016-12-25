@@ -200,8 +200,8 @@ function C:getVolume()
 	return math.Round((4 / 3) * math.pi * self.radius * self.radius)
 end
 
-function C:getTemperature()
-	return util.calculateTemperate(self.nighttemperature, self.temperature)
+function C:getTemperature(ent)
+	return self.temperature -- TODO util.calculateTemperate(self.nighttemperature, self.temperature)
 end
 
 function C:getEnvironmentColor()

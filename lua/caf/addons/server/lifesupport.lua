@@ -1,3 +1,6 @@
+local SPACEBUILD = SPACEBUILD
+local log = SPACEBUILD.log
+
 local LS = {}
 
 local status = false
@@ -402,36 +405,9 @@ function Ply:LsCheck()
 		local SB = CAF.GetAddon("Spacebuild")
 		if SB and SB.GetStatus() then
 			local space = SB.GetSpace()
-			local environment = space --restore to default before doing the Environment checks
-			local oldenvironment = self.environment
-        for k, v in pairs(SB.GetPlanets()) do
-                if v and v:IsValid() then
-					--Msg("Checking planet\n")
-					environment = v:OnEnvironment(self, environment, space) or environment
-				end
-			end
-			if environment == space then
-				for k, v in pairs(SB.GetStars()) do
-					if v and v:IsValid() then
-						environment = v:OnEnvironment(self, environment, space) or environment
-					end
-				end
-			end
-			for k, v in pairs(SB.GetEnvironments()) do
-				if v and v:IsValid() then
-					environment = v:OnEnvironment(self, environment, space) or environment
-				end
-			end
-			if oldenvironment ~= environment then
-				self.environment = environment
-				SB.OnEnvironmentChanged(self)
-			elseif oldenvironment ~= self.environment then
-				self.environment = oldenvironment
-			end
-			self.environment:UpdateGravity(self)
 			
-			if self.environment:GetPressure() > 1.5 and not pod:IsValid() then
-				local pressure = self.environment:GetPressure() - 1.5
+			if self.environment:getPressure() > 1.5 and not pod:IsValid() then
+				local pressure = self.environment:getPressure() - 1.5
 				for k, v in pairs(LS.GetAirRegulators()) do
 					if v and IsValid(v) and v:IsActive() and self:GetPos():Distance(v:GetPos()) < v:GetRange() then
 						pressure = v:UsePersonPressure(pressure)
@@ -457,7 +433,7 @@ function Ply:LsCheck()
 					end
 				end
 			end
-			self.caf.custom.ls.temperature = self.environment:GetTemperature(self)
+			self.caf.custom.ls.temperature = self.environment:getTemperature(self)
 			if self.caf.custom.ls.temperature < 283 or self.caf.custom.ls.temperature > 308 then
 				if pod and pod:IsValid() then
 					if self.caf.custom.ls.temperature < 283 then
@@ -502,7 +478,7 @@ function Ply:LsCheck()
 					local dec = 0
 					if self.caf.custom.ls.temperature < 283 then
 						dam = (283 - self.caf.custom.ls.temperature) / 5
-						if (self.environment:GetPressure() > 0) then
+						if (self.environment:getPressure() > 0) then
 							dec = math.ceil(5 * (4 - (self.caf.custom.ls.temperature / 72)))
 						else
 							dec = 5
@@ -511,7 +487,7 @@ function Ply:LsCheck()
 							self.suit.energy = self.suit.energy - dec
 						else
 							self.suit.energy = 0
-							if (self.environment:GetPressure() > 0) then
+							if (self.environment:getPressure() > 0) then
 								if (self:Health() <= dam) then
 									if self:Health() > 0 then
 										self:TakeDamage( dam, 0 )
@@ -555,7 +531,7 @@ function Ply:LsCheck()
 					end
 				end
 			end
-			if self.environment:GetO2Percentage() * self.environment:GetAtmosphere() < 5 then
+			if self.environment:getResourceAmount("oxygen") * self.environment:getAtmosphere() < 5 then
 				self.caf.custom.ls.air = false
 				self.caf.custom.ls.airused = false
 				if pod and pod:IsValid() then
@@ -601,9 +577,9 @@ function Ply:LsCheck()
 				self.caf.custom.ls.air = true
 				if self:WaterLevel() <= 2 then
 					if self.suit.air < 100  then
-						self.suit.air = self.suit.air + self.environment:Convert(SB_AIR_O2, SB_AIR_CO2, 100-self.suit.air)
+						self.suit.air = self.suit.air + self.environment:convertResource("oxygen", "co2", 100-self.suit.air)
 					end
-					self.environment:Convert(SB_AIR_O2, SB_AIR_CO2, 5)
+					self.environment:convertResource("oxygen", "co2", 5)
 				end
 			end
 		end
@@ -677,9 +653,9 @@ function Ply:UpdateLSClient()
 	local SB = CAF.GetAddon("Spacebuild");
 	if SB and SB.GetStatus() then
 		umsg.Start("LS_umsg1", self)
-			umsg.Float( self.environment:GetO2Percentage() or -1)
+			umsg.Float( self.environment:getResourceAmount("oxygen") or -1)
 			umsg.Short( self.suit.air or -1 )
-			umsg.Short( self.environment:GetTemperature(self) or -1)
+			umsg.Short( self.environment:getTemperature(self) or -1)
 			umsg.Short( self.suit.coolant or -1)
 			umsg.Short( self.suit.energy  or -1)
 		umsg.End() 

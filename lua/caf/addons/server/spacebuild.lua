@@ -21,8 +21,6 @@ SB_DEBUG = true
 
 --local NextUpdateTime
 
-local SB_InSpace = 0
---SetGlobalInt("InSpace", 0)
 TrueSun = {}
 SunAngle = nil
 
@@ -100,13 +98,10 @@ end
 ]]
 function SB.__Construct()
 	if status then return false , CAF.GetLangVar("This Addon is already Active!") end
-	if SB_InSpace == 1 then
+	if SPACEBUILD:onSBMap() then
 		hook.Add("PlayerSay", "SB_PlayerSay_Check", PlayerSay)
 		hook.Add("PlayerSetModel", "SB_Force_Model_Check", ForcePlyModel)
 		ResetGravity()
-		for k, v in pairs(player.GetAll()) do
-			PlayerInitialSpawn(v);
-		end
 		CAF.AddServerTag("SB")
 		status = true;
 		return true
