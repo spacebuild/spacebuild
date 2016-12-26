@@ -9,15 +9,6 @@ require("CustomArmor")
 
 local meta = FindMetaTable("Entity")
 
-function meta:getCustomArmor()
-    return self.caf.custom.armor
-end
-
-function meta:setCustomArmor(armor)
-    self.caf.custom.armor = armor
-end
-
-
 function meta:WaterLevel2()
     local waterlevel = self:WaterLevel()
     if (self:GetPhysicsObject():IsValid() and self:GetPhysicsObject():IsMoveable()) then

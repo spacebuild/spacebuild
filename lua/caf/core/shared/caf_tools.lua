@@ -16,7 +16,7 @@ if ( SERVER ) then
 	function CAF_MakeCAFEnt( ply, Ang, Pos, system_type, system_class, model, frozen )
 		
 		local ent = ents.Create( system_class )
-		if !ent:IsValid() then return false end
+		if not ent:IsValid() then return false end
 		ent:SetModel( model )
 		ent:SetAngles(Ang)
 		ent:SetPos(Pos)
@@ -47,7 +47,7 @@ if ( SERVER ) then
 			
 			--Msg("found MakeCAFEntSupFunction for "..system_class.."\n")
 			local noerror, rt, mh, ma = pcall( SupFunction, ply, ent, system_type, system_class, model )
-			if (!noerror) then
+			if not noerror  then
 				CAF.WriteToDebugFile("caf_tool_error", "MakeCAFEntSupFunction errored: '"..tostring(rt).."'. Removing.\n")
 				list.Get( "CAF_MakeCAFEnt" )[system_class] = nil --nuke that shit, someone fucked up
 			else --saftey
@@ -105,7 +105,7 @@ if ( SERVER ) then
 	
 	function CAF_SetToolMakeFunc( ToolName, EntClass, EntMakeFunct )
 		if not (ToolName and EntClass) then return end
-		if (!EntMakeFunct) then
+		if not EntMakeFunct then
 			EntMakeFunct = CAF_GenerateMakeFunction( ToolName ) -- Thats checks to see if a function already exists for this tool or it will make a new one
 			duplicator.RegisterEntityClass( EntClass, EntMakeFunct, "Ang", "Pos", "Class", "model", "frozen" )
 		else
@@ -185,7 +185,7 @@ function CAF_ToolRegister( TOOL, Models_List, MakeFunc, ToolName, ToolLimit, Mak
 	end
 	
 	function TOOL:RightClick( trace )
-		if (!trace.Entity:IsValid()) then return false end
+		if not trace.Entity:IsValid() then return false end
 		if (CLIENT) then return true end
 		if (not trace.Entity:GetTable().Repair) then
 	        self:GetOwner():SendLua("GAMEMODE:AddNotify('Object cannot be repaired!', NOTIFY_GENERIC, 7); surface.PlaySound(\"ambient/water/drip"..math.random(1, 4)..".wav\")")
@@ -229,7 +229,7 @@ if ( SERVER ) then
 		local AllowWorldWeld		= tool:GetClientNumber('AllowWorldWeld') == 1
 		local DontWeld			= tool:GetClientNumber('DontWeld') == 1
 		local Frozen			= (tool:GetClientNumber('Frozen') == 1) or (AllowWorldWeld and not trace.Entity:IsValid())
-		if (!type or type == '') then
+		if (not type) or type == '' then
 			CAF.WriteToDebugFile("caf_tool_error", "CAF: GetClientInfo('type') is nil!\n")
 			return false
 		end
@@ -240,7 +240,7 @@ if ( SERVER ) then
 		ent:SetPos( trace.HitPos - trace.HitNormal * ent:OBBMins().z)
 		--CAF.OnEntitySpawn(ent , "SENT" , ply) --Calls the CAF SentSpawn Hook
 		local const
-		if (!DontWeld) and ( trace.Entity:IsValid() or AllowWorldWeld ) then
+		if (not DontWeld) and ( trace.Entity:IsValid() or AllowWorldWeld ) then
 			local const = constraint.Weld(ent, trace.Entity,0, trace.PhysicsBone, 0, true ) --add true to turn DOR on
 		end
 		
@@ -255,21 +255,21 @@ if ( SERVER ) then
 	end
 end
 
-if (game.SinglePlayer() and SERVER) or (!game.SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
+if (game.SinglePlayer() and SERVER) or (not game.SinglePlayer() and CLIENT) then --server side in singleplayer, client side in multiplayer
 	function CAF_UpdateToolGhost( tool, model, min, GetOffset, offset )
 		local model = model or tool:GetClientInfo('model')
 		if (model == '') then return end
 		
-		if (!tool.GhostEntity or !tool.GhostEntity:IsValid() or tool.GhostEntity:GetModel() ~= model) then
+		if (not tool.GhostEntity or not tool.GhostEntity:IsValid() or tool.GhostEntity:GetModel() ~= model) then
 			tool:MakeGhostEntity( model, Vector(0,0,0), Angle(0,0,0) )
 		end
 		
-		if ( !tool.GhostEntity ) then return end
-		if ( !tool.GhostEntity:IsValid() ) then return end
+		if ( not tool.GhostEntity ) then return end
+		if ( not tool.GhostEntity:IsValid() ) then return end
 		
 		local tr = util.GetPlayerTrace( tool:GetOwner(), tool:GetOwner():GetAimVector() )
 		local trace = util.TraceLine( tr )
-		if (!trace.Hit) then return end
+		if not trace.Hit then return end
 		
 		if ( trace.Entity:IsPlayer() ) then
 			tool.GhostEntity:SetNoDraw( true )
@@ -277,7 +277,7 @@ if (game.SinglePlayer() and SERVER) or (!game.SinglePlayer() and CLIENT) then --
 		end
 		
 		local Ang = trace.HitNormal:Angle()
-		if (!min or min == "z") then
+		if (not min or min == "z") then
 			Ang.pitch = Ang.pitch + 90
 		end
 		tool.GhostEntity:SetAngles( Ang )

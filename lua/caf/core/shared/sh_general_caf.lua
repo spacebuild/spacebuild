@@ -31,50 +31,7 @@ CAF2.colors.white = Color(255, 255, 255, 255)
 
 --END COLOR Settings
 
--- CAF Custom Status Saving
-
-if (not sql.TableExists("CAF_Custom_Vars")) then
-	sql.Query("CREATE TABLE IF NOT EXISTS CAF_Custom_Vars ( varname VARCHAR(255) , varvalue VARCHAR(255));")
-end
-
-local vars = {}
-
-local function InsertVar(name, value)
-	if not name or not value then return false, "Problem with the Parameters" end
-	name = sql.SQLStr(name)
-	value = sql.SQLStr(value)
-	sql.Query("INSERT INTO CAF_Custom_Vars(varname, varvalue) VALUES("..name..", "..value..");")
-end
-
-function CAF2.SaveVar(name, value)
-	if not name or not value then return false, "Problem with the Parameters" end
-	CAF2.LoadVar(name, value);
-	name = sql.SQLStr(name)
-	value = sql.SQLStr(value)
-	sql.Query("UPDATE CAF_Custom_Vars SET varvalue="..value.." WHERE varname="..name..";")
-	vars[name] = value;
-end
-
-function CAF2.LoadVar(name, defaultvalue)
-	if not defaultvalue then defaultvalue = "0" end
-	if not name then return false, "Problem with the Parameters" end
-	if vars[name] then return vars[name] end
-	local data = sql.Query("SELECT * FROM CAF_Custom_Vars WHERE varname = '"..name.."';")
-	if (not data) then
-		print(sql.LastError())
-		InsertVar(name, defaultvalue);
-		
-	else
-		defaultvalue = string.TrimRight(data[1]["varvalue"])
-	end
-	Msg("-"..tostring(defaultvalue).."-\n")
-	vars[name] = defaultvalue
-	return defaultvalue;
-end
-
--- END CAF Custom Status Saving
-
-CAF2.currentlanguage = CAF2.LoadVar("CAF_LANGUAGE", DefaultLang)
+CAF2.currentlanguage = GetConVar("gmod_language"):GetString()
 
 function CAF3.Think()
 	if CAF ~= CAF2 then

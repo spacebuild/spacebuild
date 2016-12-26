@@ -57,9 +57,6 @@ CAF2.CAF3 = CAF3;
 include("caf/core/shared/sh_general_caf.lua")
 CAF2.CAF3 = nil;
 
--- Synchronize language with gmod interface
-CAF2.SaveVar("CAF_LANGUAGE", GetConVar("gmod_language"):GetString())
-
 local function OnAddonDestruct(name)
 	if not name then return end
 	if(CAF2.GetAddonStatus(name)) then
@@ -409,23 +406,6 @@ local function GetClientMenu(contentpanel)
 	lbl:SetPos(x, y);
 	
 	x = x + lbl:GetWide() + 2;
-	
-	--[[local selection = vgui.Create("DMultiChoice", panel)
-	selection:SetPos(x, y);
-	for k, v in pairs(CAF.LANGUAGE) do
-		selection:AddChoice( k ) 
-	end
-	function selection:OnSelect( index, value, data ) 
-		CAF2.currentlanguage = value;
-		CAF2.SaveVar("CAF_LANGUAGE", value)
-		CAF2.Notice(CAF2.GetLangVar("Some Language Changes will only Show after a map reload!"));
-	end
-	selection:SetWide( 150 )
-	
-	
-	y = y + 15
-	x = x - lbl:GetWide() - 5
-	--Other options here]]
 	
 	panel:SetSize(contentpanel:GetWide(), y + 10);
 	return panel;
