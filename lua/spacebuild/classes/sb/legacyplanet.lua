@@ -184,6 +184,8 @@ function C:init(entid, data, resourceRegistry)
 			self.temperature = 10000
 		elseif data[1] == "star2" then
 			self.radius = tonumber(data[2])
+			self.gravity = 0
+			self.atmosphere = 0
 			self.nighttemperature = tonumber(data[3])
 			self.temperature = tonumber(data[5])
 			self.name = (string.len(data[6]) > 0 and data[6]) or self.name
@@ -281,6 +283,10 @@ end
 function C:_sendContent(modified)
 	funcRef.sendContent(self, modified)
 	net.WriteString(self.name)
+	net.writeLong(self.radius)
+	net.WriteFloat(self.gravity)
+	net.WriteFloat(self.atmosphere)
+	net.writeShort(self.temperature)
 	net.writeShort(self.nighttemperature)
 	if self.color_id then
 		net.WriteBool(true)
@@ -301,6 +307,10 @@ end
 function C:receive()
 	funcRef.receiveSignal(self)
 	self.name = net.ReadString()
+	self.radius = net.readLong()
+	self.gravity = net.ReadFloat()
+	self.atmosphere = net.ReadFloat()
+	self.temperature = net.readShort()
 	self.nighttemperature = net.readShort()
 	if net.ReadBool() then
 		self.color_id = net.ReadString()

@@ -1,3 +1,4 @@
+local SPACEBUILD = SPACEBUILD
 local RD = {}
 local nettable = {};
 local ent_table = {};
@@ -6,6 +7,7 @@ local resources = {}
 
 local status = false
 
+require("cache")
 local rd_cache = cache.create(1, true) --Store data for 1 second
 
 --Local functions/variables
@@ -307,7 +309,7 @@ local function RequestResourceData(ply, com, args)
 				local resnames = OverlaySettings.resnames
 				local genresnames = OverlaySettings.genresnames
 	
-				if num != -1 then
+				if num ~= -1 then
 					storage = false
 					local v
 					if resnames and table.Count(resnames) > 0 then
@@ -398,7 +400,6 @@ function RD.__Construct()
 	for k, ply in pairs(player.GetAll( )) do
 		SendEntireNetWorkToClient(ply)
 	end
-	CAF.AddServerTag("RD")
 	status = true
 	return true
 end
@@ -415,7 +416,6 @@ function RD.__Destruct()
 	ent_table = {};
 	CAF.RemoveHook("think3", UpdateNetworksAndEntities)
 	hook.Remove( "PlayerInitialSpawn", "RD_Initial_Spawn")
-	CAF.RemoveServerTag("RD")
 	status = false
 	return true
 end
@@ -438,7 +438,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function RD.GetVersion()
-	return 3.1, "Alpha"
+	return SPACEBUILD.version:longVersion(), "Alpha"
 end
 
 --[[

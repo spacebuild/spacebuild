@@ -1,3 +1,4 @@
+local SPACEBUILD = SPACEBUILD
 local LS = {}
 
 local this = LS
@@ -20,7 +21,6 @@ local Temp_Max = 546
 --Hook Values
 
 local ls_environment = {}
-ls_environment.o2 = 0
 ls_environment.temperature = 0
 
 local ls_suit = {}
@@ -98,7 +98,7 @@ local function lifesupport_HUDPaint()
 					draw.DrawText( tostring(Air).."% ("..tostring(air_time_left).."s)",		hud.Font, hud.Right,hud.H2 + 5, valcol,	2 )
 				end
 			else
-				if ply:WaterLevel() > 2 or ls_environment.o2 < 5 or (ls_environment.temperature > 0 and not (ls_environment.temperature >= FairTemp_Min and ls_environment.temperature <= FairTemp_Max)) or (ply.LSHudOn and ply.LSHudOn == true) then
+				if ply:WaterLevel() > 2 or ply.environment:getResourcePercentage("oxygen") < 5 or (ls_environment.temperature > 0 and not (ls_environment.temperature >= FairTemp_Min and ls_environment.temperature <= FairTemp_Max)) or (ply.LSHudOn and ply.LSHudOn == true) then
 					if hud_to_use == 2 then
 						local hud = huds[2]
 						--[[
@@ -283,7 +283,7 @@ local function lifesupport_HUDPaint()
 						draw.DrawText( CAF.GetLangVar("Habitable"), hud.Font2, hud.Left + hud.HalfWidth + 16, top , colors.White,	0 )
 						top = top + 16
 						
-						local o2 = ls_environment.o2
+						local o2 = ply.environment:getResourcePercentage("oxygen")
 						top = top + 4
 						
 						draw.RoundedBox( 0, hud.Left + 16 + hud.HalfWidth , top , 4, 10, colors.Hot) -- 0 -> 5
@@ -348,7 +348,6 @@ local function lifesupport_HUDPaint()
 end 
 
 local function LS_umsg_hook1( um )
-	ls_environment.o2 = um:ReadFloat()
 	ls_suit.o2 = um:ReadShort()
 	ls_environment.temperature = um:ReadShort()
 	ls_suit.coolant = um:ReadShort()
@@ -412,7 +411,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function LS.GetVersion()
-	return 3.1, CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
 end
 
 

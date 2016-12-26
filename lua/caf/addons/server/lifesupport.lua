@@ -131,7 +131,6 @@ function LS.__Construct()
 	hook.Add( "PlayerSpawn", "LS_Core_ResetSpawnFunc", LSResetSpawnFunc )
 	CAF.AddHook("think3", PlayerLSThink)
 	CAF.AddHook("OnAddonDestruct", AddonDisabled)
-	CAF.AddServerTag("LSC")
 	status = true
 	return true
 end
@@ -154,7 +153,6 @@ function LS.__Destruct()
 	LS.generators = {}
 	LS.generators.air = {}
 	LS.generators.temperature = {}
-	CAF.RemoveServerTag("LSC")
 	status = false
 	return true
 end
@@ -177,7 +175,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function LS.GetVersion()
-	return 3.08, CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
 end
 
 --[[
@@ -653,7 +651,6 @@ function Ply:UpdateLSClient()
 	local SB = CAF.GetAddon("Spacebuild");
 	if SB and SB.GetStatus() then
 		umsg.Start("LS_umsg1", self)
-			umsg.Float( self.environment:getResourceAmount("oxygen") or -1)
 			umsg.Short( self.suit.air or -1 )
 			umsg.Short( self.environment:getTemperature(self) or -1)
 			umsg.Short( self.suit.coolant or -1)

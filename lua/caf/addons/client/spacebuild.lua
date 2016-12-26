@@ -1,8 +1,9 @@
-list.Set( "PlayerOptionsModel",  "MedicMarine", "models/player/samzanemesis/MarineMedic.mdl" ) 
+list.Set( "PlayerOptionsModel",  "MedicMarine", "models/player/samzanemesis/MarineMedic.mdl" )
 list.Set( "PlayerOptionsModel",  "SpecialMarine", "models/player/samzanemesis/MarineSpecial.mdl" ) 
 list.Set( "PlayerOptionsModel",  "OfficerMarine", "models/player/samzanemesis/MarineOfficer.mdl" ) 
-list.Set( "PlayerOptionsModel",  "TechMarine", "models/player/samzanemesis/MarineTech.mdl" ) 
+list.Set( "PlayerOptionsModel",  "TechMarine", "models/player/samzanemesis/MarineTech.mdl" )
 
+local SPACEBUILD = SPACEBUILD
 local SB = {}
 
 local status = false
@@ -211,7 +212,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function SB.GetVersion()
-	return 3.5, CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
 end
 
 --[[

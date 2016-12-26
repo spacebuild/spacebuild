@@ -1,3 +1,4 @@
+local SPACEBUILD = SPACEBUILD
 local RD = {}
 
 local status = false
@@ -6,7 +7,6 @@ local status = false
 	The Constructor for this Custom Addon Class
 ]]
 function RD.__Construct()
-    CAF.AddServerTag("LSE")
     status = true
     return true, "No Implementation yet"
 end

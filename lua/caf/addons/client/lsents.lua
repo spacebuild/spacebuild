@@ -1,3 +1,4 @@
+local SPACEBUILD = SPACEBUILD
 local RD = {}
 
 local status = false

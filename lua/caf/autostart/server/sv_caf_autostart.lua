@@ -1,8 +1,3 @@
-local gmod_version_required = 145;
-if ( VERSION < gmod_version_required ) then
-	error("CAF: Your gmod is out of date: found version ", VERSION, "required ", gmod_version_required)
-end
-
 local net = net
 
 local net_pools = {"CAF_Addon_Construct", "CAF_Addon_Destruct", "CAF_Start_true", "CAF_Start_false", "CAF_Addon_POPUP"};
@@ -266,7 +261,6 @@ function CAF2.Start()
 	CAF2.StartingUp = true
 	net.Start("CAF_Start_true")
 	net.Broadcast()
-	CAF2.AddServerTag("CAF")
 	for level, tab in pairs(addonlevel) do
 		print("Loading Level "..tostring(level).." Addons\n")
 		for k, v in pairs(tab) do
@@ -390,19 +384,10 @@ local function AddonDestruct(ply, com, args)
 end
 concommand.Add( "CAF_Addon_Destruct", AddonDestruct ) 
 
-local kickgarry = false;
 --[[
 	This function will update the Client with all active addons
 ]]
 function CAF2.PlayerSpawn(ply)
-	if kickgarry then
-		pcall(function()
-			if ply:SteamID() == "STEAM_0:1:7099" then
-				ply:Kick("We don't want you here!");
-			end
-		end);
-	end
-	
 	ply:ChatPrint("This server is using the Custom Addon Framework\n")
 	ply:ChatPrint("Report any bugs during the beta at https://github.com/spacebuild/spacebuild/issues\n")
 	
@@ -447,29 +432,6 @@ function CAF2.POPUP(ply, msg, location, color, displaytime)
 			net.WriteUInt(color.a, 8)
 			net.WriteUInt(displaytime, 16)
 		net.Send(ply)
-	end
-end
-
-local servertags = nil;
-function CAF2.AddServerTag(tag)
-	if not servertags or not CAF2.StartingUp then
-		servertags = GetConVarString("sv_tags")
-	end
-	if servertags == nil then
-		RunConsoleCommand("sv_tags", tag)
-	elseif not string.find(servertags, tag) then
-		servertags = servertags .. ","..tag
-		RunConsoleCommand("sv_tags", servertags)
-	end
-end
-
-function CAF2.RemoveServerTag(tag)
-	if not servertags or not CAF2.StartingUp then
-		servertags = GetConVarString("sv_tags")
-	end
-	if servertags then
-		servertags = string.Replace(servertags, ","..tag, "" )
-		RunConsoleCommand("sv_tags", servertags)
 	end
 end
 

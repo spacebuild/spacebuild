@@ -102,7 +102,6 @@ function SB.__Construct()
 		hook.Add("PlayerSay", "SB_PlayerSay_Check", PlayerSay)
 		hook.Add("PlayerSetModel", "SB_Force_Model_Check", ForcePlyModel)
 		ResetGravity()
-		CAF.AddServerTag("SB")
 		status = true;
 		return true
 	end
@@ -120,7 +119,6 @@ function SB.__Destruct()
 	hook.Remove("PlayerSay", "SB_PlayerSay_Check")
 	hook.Remove("PlayerSetModel", "SB_Force_Model_Check")
 	ResetGravity()
-	CAF.RemoveServerTag("SB")
 	status = false;
 	return true;
 end
@@ -151,7 +149,7 @@ end
 	Optional (but should be put it in most cases!)
 ]]
 function SB.GetVersion()
-	return 3.5, CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
 end
 
 --[[

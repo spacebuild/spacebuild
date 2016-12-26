@@ -1,8 +1,5 @@
-local gmod_version_required = 145;
-if ( VERSION < gmod_version_required ) then
-	error("SB CORE: Your gmod is out of date: found version ", VERSION, "required ", gmod_version_required)
-end
-
+local SPACEBUILD = SPACEBUILD
+local log = SPACEBUILD.log
 local net = net
 
 --Variable Declarations
@@ -689,6 +686,28 @@ local function GetAboutPanel(frame)
 	return panel
 end
 
+local function getHtmlPanel(frame)
+	local panel = vgui.Create("DPanel")
+	local html = vgui.Create("DHTML", panel)
+	panel:Dock( FILL )
+	html:Dock( FILL )
+	html:SetAllowLua(true)
+	html:AddFunction( "caf", "print", function( str )
+		MsgC(  Color( 0, 255, 0 ), str ) -- Print the given string
+	end )
+	html:OpenURL( "asset://garrysmod/data/sb/menu.txt" )
+	for k, addon in pairs(Addons) do
+		local name = k
+		local descList = addon.GetDescription();
+		local desc = descList and descList[0] or "no description";
+		local version = addon.GetVersion()
+		local javascript = "updateAddon(\""..name.."\",\""..desc.."\","..version.." )";
+		log.debug(javascript);
+		html:QueueJavascript(javascript)
+	end
+	return panel
+end
+
 local MainFrame = nil;
 
 function CAF2.CloseMainMenu()
@@ -718,6 +737,7 @@ function CAF2.OpenMainMenu()
 	end
 	ContentPanel:AddSheet( CAF.GetLangVar("Message Log"), GetMessageLogPanel(ContentPanel), "icon16/wrench.png", true, true )
 	ContentPanel:AddSheet( CAF.GetLangVar("About"), GetAboutPanel(ContentPanel), "icon16/group.png", true, true )
+	ContentPanel:AddSheet( "Html", getHtmlPanel(ContentPanel), "icon16/group.png", false, false )
 	MainFrame:MakePopup()
 end
 concommand.Add("Main_CAF_Menu", CAF2.OpenMainMenu)

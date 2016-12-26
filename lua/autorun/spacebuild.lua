@@ -24,13 +24,16 @@
 AddCSLuaFile() -- send this file to the client
 
 local version = {
-    major = 0,
-    minor = 1,
-    patch = 1,
-    date = 20160613,
-    requiredGmodVersion = 160424,
+    major = 4,
+    minor = 0, -- never more then 99 minors
+    patch = 0, -- never more then 99 patches
+    date = 20161226,
+    requiredGmodVersion = 161220,
     fullVersion = function(self)
         return self.major .. "." .. self.minor .. ".".. self.patch
+    end,
+    longVersion = function(self)
+        return self.major + (self.minor/100) + (self.patch/10000)
     end
 }
 if VERSION < version.requiredGmodVersion then
@@ -71,6 +74,7 @@ if SERVER then
 end
 
 if CLIENT then
+    include("spacebuild/documentation/menu.lua")
     include("spacebuild/client/include.lua")
 end
 
@@ -117,8 +121,8 @@ end
 -- End load legacy auto loader files
 
 -- Prevent outside access to internal tables
-SB.log = nil
-SB.version = nil
+SB.log = createReadOnlyTable(SB.log)
+SB.version = createReadOnlyTable(SB.version)
 SB.core = nil
 SB.plugins = nil
 SB.constants = createReadOnlyTable(SB.constants)
