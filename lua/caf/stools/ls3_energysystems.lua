@@ -238,7 +238,7 @@ TOOL.Devices = {
             },
         },
     },
-    --[[generator_liquid_nitrogen = {
+    generator_liquid_nitrogen = {
          Name	= "Liquid Nitrogen Generator",
          type	= "generator_liquid_nitrogen",
          class	= "generator_liquid_nitrogen",
@@ -251,7 +251,7 @@ TOOL.Devices = {
                  legacy	= false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
              },
          },
-     },]]
+     },
     generator_gas_co2 = {
         Name = "Carbon Dioxide Compressor",
         type = "generator_gas_co2",
