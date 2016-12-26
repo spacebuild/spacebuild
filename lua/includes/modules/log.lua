@@ -48,7 +48,7 @@ DEBUG = 4
 local level = DEBUG
 
 local function levelToString(lvl)
-	return "[" .. ((lvl == INFO and "INFO") or (lvl == WARN and "WARN") or (lvl == ERROR and "ERROR") or "DEBUG") .. "]"
+	return "[" .. ((lvl == INFO and "INFO ") or (lvl == WARN and "WARN ") or (lvl == ERROR and "ERROR") or "DEBUG") .. "]"
 end
 
 local function levelToColor(lvl)

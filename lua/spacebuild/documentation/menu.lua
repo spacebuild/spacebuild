@@ -8,25 +8,21 @@
 local SPACEBUILD = SPACEBUILD
 
 local menuCss = [===[
-    body {
-      padding-top: 5rem;
-    }
+
 ]===]
 
 local menuJs = [===[
-var addons = {};
 var previousButton = null;
 
-function updateAddon(name, description, version) {
-	var addon = addons[name] || {};
-	addon.name = name;
-	addon.description = description;
-	addon.version = version;
-	addons[name] = addon
+function addAddon(name, description, version) {
 	caf.print(name);
 	caf.print(description);
 	caf.print(version);
-	caf.print(addons);
+}
+
+function addMessage(time, message){
+    caf.print(time);
+    caf.print(message);
 }
 
 function hideAllViews(){
@@ -42,6 +38,7 @@ function openAddonMenu(){
     previousButton.addClass("active");
     var previousView = $("#addon_view");
     previousView.show();
+    caf.updateAddons();
 }
 
 function openInfoAndHelp(){
@@ -66,6 +63,7 @@ function openMessageLog(){
     previousButton.addClass("active");
     var previousView = $("#log_view");
     previousView.show();
+    caf.updateMessages();
 }
 
 function openAbout(){
@@ -95,11 +93,10 @@ local menuHtml = [===[
     <link rel="stylesheet" type="text/css" href="bootstrap.txt">
     <link rel="stylesheet" type="text/css" href="css.txt">
     <script type="text/javascript" src="jquery.txt"></script>
-    <script type="text/javascript" src="js_bootstrap.txt"></script>
     <script type="text/javascript" src="js.txt"></script>
 </head>
 <body>
-<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+<nav class="navbar navbar-dark bg-inverse">
     <a class="navbar-brand" href="#">Spacebuild</a>
     <ul class="nav navbar-nav">
         <li class="nav-item">
@@ -130,7 +127,7 @@ local menuHtml = [===[
         <h1>Addons</h1>
     </div>
 
-    <div id="info_view" class="view row" data-spy="scroll" data-target="#nav-info" data-offset="150" style="position: relative;">
+    <div id="info_view" class="view row" data-spy="scroll" data-target="#nav-info">
         <div class="col-sm-9">
             <h1>Info and help</h1>
             <h2 id="info_sb">Spacebuild</h2>
@@ -250,7 +247,7 @@ file.Write( "sb/css.txt", menuCss)
 
 -- JS
 file.Write( "sb/jquery.txt", jquery)
-file.Write( "sb/js_bootstrap.txt", bootstrapCss)
+file.Write( "sb/js_bootstrap.txt", bootstrapJs)
 file.Write( "sb/js.txt", menuJs)
 
 file.Append( "sb/menu.txt", "<!--"..SPACEBUILD.version:fullVersion().."-->" )

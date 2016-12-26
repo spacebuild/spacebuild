@@ -637,58 +637,35 @@ function GetMessageLogPanel(frame)
 	return panel;
 end
 
-local function GetServerSettingsPanel(frame)
-	local panel = vgui.Create("DPanel", frame)
-	panel:StretchToParent( 6, 36, 6, 6 )
-	return panel
-end
+local html
 
-local function GetAboutPanel(frame)
-	local panel = vgui.Create("DPanel", frame)
-	panel:StretchToParent( 6, 36, 6, 6 )
-	--
-	local mylist = vgui.Create("DListView", panel)
-	mylist:SetMultiSelect(false)
-	mylist:SetPos(1,1)
-	mylist:SetSize(panel:GetWide()- 2, panel:GetTall()-2)
-	local colum =  mylist:AddColumn( "")
-	colum:SetFixedWidth(5)
-	local colum1 =  mylist:AddColumn( "About")
-	colum1:SetFixedWidth(mylist:GetWide() - 5)
-	mylist.SortByColumn = function()
+local function updateMessages()
+	for k, v in pairs(MessageLog) do
+		local javascript = "addMessage(\""..CurTime().."\",\""..v.message.."\")";
+		html:QueueJavascript(javascript)
 	end
-	----------
-	--Text--
-	----------
-	mylist:AddLine( "", "Custom Addon Framework" )
-	mylist:AddLine( "", "More info to be added" )
-	mylist:AddLine( "", "" )
-	mylist:AddLine( "", "Made By SnakeSVx" )
-	mylist:AddLine( "", "Official website: http://www.snakesvx.net" )
-	--
-	return panel
 end
 
-local function getHtmlPanel(frame)
-	local panel = vgui.Create("DPanel")
-	local html = vgui.Create("DHTML", panel)
-	panel:Dock( FILL )
-	html:Dock( FILL )
-	html:SetAllowLua(false)
-	html:AddFunction( "caf", "print", function( str )
-		MsgC(  Color( 0, 255, 0 ), str ) -- Print the given string
-	end )
-	html:OpenURL( "asset://garrysmod/data/sb/menu.txt" )
+local function updateAddons()
 	for k, addon in pairs(Addons) do
 		local name = k
 		local descList = addon.GetDescription();
-		local desc = descList and descList[0] or "no description";
+		local desc = (descList and descList[0]) or "no description";
 		local version = addon.GetVersion()
-		local javascript = "updateAddon(\""..name.."\",\""..desc.."\","..version.." )";
-		log.debug(javascript);
+		local javascript = "addAddon(\""..name.."\",\""..desc.."\","..version.." )";
 		html:QueueJavascript(javascript)
 	end
-	return panel
+end
+
+local function getHtmlPanel(frame)
+	html = vgui.Create("DHTML", frame)
+	html:Dock( FILL )
+	html:SetAllowLua(false)
+	html:AddFunction( "caf", "print", log.warn)
+	html:AddFunction( "caf", "updateMessages", updateMessages)
+	html:AddFunction( "caf", "updateAddons", updateAddons)
+	html:OpenURL( "asset://garrysmod/data/sb/menu.txt" )
+	return html
 end
 
 local MainFrame = nil;
@@ -711,16 +688,19 @@ function CAF2.OpenMainMenu()
 	MainFrame:SetTitle("Custom Addon Framework Main Menu")
 	MainFrame:SetSize(ScrW() * 0.8, ScrH() * 0.9)
 	MainFrame:Center()
-	local ContentPanel = vgui.Create( "DPropertySheet", MainFrame )
-	ContentPanel:Dock(FILL)
-	ContentPanel:AddSheet( CAF.GetLangVar("Installed Addons"), GetStatusPanel(ContentPanel), "icon16/application.png", true, true )
-	ContentPanel:AddSheet( CAF.GetLangVar("Info and Help"), GetHelpPanel(ContentPanel), "icon16/box.png", true, true )
-	if LocalPlayer():IsAdmin() then
-		ContentPanel:AddSheet( CAF.GetLangVar("Server Settings"), GetServerSettingsPanel(ContentPanel), "icon16/wrench.png", true, true )
-	end
-	ContentPanel:AddSheet( CAF.GetLangVar("Message Log"), GetMessageLogPanel(ContentPanel), "icon16/wrench.png", true, true )
-	ContentPanel:AddSheet( CAF.GetLangVar("About"), GetAboutPanel(ContentPanel), "icon16/group.png", true, true )
-	ContentPanel:AddSheet( "Html", getHtmlPanel(ContentPanel), "icon16/group.png", false, false )
+	getHtmlPanel(MainFrame)
+	--[[
+		local ContentPanel = vgui.Create( "DPropertySheet", MainFrame )
+		ContentPanel:Dock(FILL)
+		ContentPanel:AddSheet( CAF.GetLangVar("Installed Addons"), GetStatusPanel(ContentPanel), "icon16/application.png", true, true )
+		ContentPanel:AddSheet( CAF.GetLangVar("Info and Help"), GetHelpPanel(ContentPanel), "icon16/box.png", true, true )
+		if LocalPlayer():IsAdmin() then
+			ContentPanel:AddSheet( CAF.GetLangVar("Server Settings"), GetServerSettingsPanel(ContentPanel), "icon16/wrench.png", true, true )
+		end
+		ContentPanel:AddSheet( CAF.GetLangVar("Message Log"), GetMessageLogPanel(ContentPanel), "icon16/wrench.png", true, true )
+		ContentPanel:AddSheet( CAF.GetLangVar("About"), GetAboutPanel(ContentPanel), "icon16/group.png", true, true )
+		ContentPanel:AddSheet( "Html", getHtmlPanel(ContentPanel), "icon16/group.png", false, false )
+	]]
 	MainFrame:MakePopup()
 end
 concommand.Add("Main_CAF_Menu", CAF2.OpenMainMenu)
