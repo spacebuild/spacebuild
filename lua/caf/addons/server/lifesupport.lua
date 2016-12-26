@@ -401,9 +401,8 @@ function Ply:LsCheck()
 		local pod = self:GetParent()
 		local RD = CAF.GetAddon("Resource Distribution")
 		local SB = CAF.GetAddon("Spacebuild")
-		if SB and SB.GetStatus() then
+		if SB and SB.GetStatus() and self.environment ~= nil then
 			local space = SB.GetSpace()
-			
 			if self.environment:getPressure() > 1.5 and not pod:IsValid() then
 				local pressure = self.environment:getPressure() - 1.5
 				for k, v in pairs(LS.GetAirRegulators()) do
@@ -652,7 +651,7 @@ function Ply:UpdateLSClient()
 	if SB and SB.GetStatus() then
 		umsg.Start("LS_umsg1", self)
 			umsg.Short( self.suit.air or -1 )
-			umsg.Short( self.environment:getTemperature(self) or -1)
+			umsg.Short( self.environment and self.environment:getTemperature(self) or -1)
 			umsg.Short( self.suit.coolant or -1)
 			umsg.Short( self.suit.energy  or -1)
 		umsg.End() 

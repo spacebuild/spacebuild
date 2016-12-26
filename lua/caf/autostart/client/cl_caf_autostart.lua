@@ -691,7 +691,7 @@ local function getHtmlPanel(frame)
 	local html = vgui.Create("DHTML", panel)
 	panel:Dock( FILL )
 	html:Dock( FILL )
-	html:SetAllowLua(true)
+	html:SetAllowLua(false)
 	html:AddFunction( "caf", "print", function( str )
 		MsgC(  Color( 0, 255, 0 ), str ) -- Print the given string
 	end )
