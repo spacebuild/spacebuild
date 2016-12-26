@@ -40,9 +40,9 @@ local clientColor = Color(255, 222, 102)
 local serverColor = Color(137, 222, 255)
 
 NONE = 0
-INFO = 1
+INFO = 3
 WARN = 2
-ERROR = 3
+ERROR = 1
 DEBUG = 4
 
 local level = DEBUG
