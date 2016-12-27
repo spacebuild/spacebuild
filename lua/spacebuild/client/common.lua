@@ -40,6 +40,11 @@ hook.Add( "HUDPaint", "sb.ui.hud", function()
     local ply = LocalPlayer()
     if ( not IsValid( ply ) ) then return end
 
+    -- Version
+    draw.DrawText("Spacebuild "..SB.version:fullVersion(), "DebugFixed", 5, 5, color_white, TEXT_ALIGN_LEFT)
+
+    if not ply:Alive() then return end
+
     -- Health
     draw.DrawText( utf8.char( 0xf21e ) , "FABig", 20, ScrH() - 200, color_white, TEXT_ALIGN_LEFT )
     draw.DrawText( ply:Health() , "FANormal", 100, ScrH() - 184, color_white, TEXT_ALIGN_LEFT )

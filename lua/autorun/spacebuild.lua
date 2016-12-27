@@ -21,18 +21,17 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-local IS_DEVELOPMENT = true
-
 AddCSLuaFile() -- send this file to the client
 
 local version = {
     major = 4,
     minor = 0, -- never more then 99 minors
     patch = 0, -- never more then 99 patches
+    tag = "alpha1",
     date = 20161226,
     requiredGmodVersion = 161220,
     fullVersion = function(self)
-        return self.major .. "." .. self.minor .. ".".. self.patch
+        return self.major .. "." .. self.minor .. ".".. self.patch.."-"..self.tag
     end,
     longVersion = function(self)
         return self.major + (self.minor/100) + (self.patch/10000)
@@ -45,7 +44,7 @@ end
 require("log")
 local log = log
 
-if not IS_DEVELOPMENT then
+if version.tag == "release" then
     log.setLevel(log.INFO)
 end
 
