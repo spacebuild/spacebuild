@@ -24,13 +24,13 @@ local SB = SPACEBUILD
 
 surface.CreateFont( "FABig", {
     font = "FontAwesome",
-    size = 64,
+    size = 32,
     extended = true
 })
 
 surface.CreateFont( "FANormal", {
     font = "FontAwesome",
-    size = 32,
+    size = 20,
     extended = true
 })
 
@@ -45,24 +45,70 @@ hook.Add( "HUDPaint", "sb.ui.hud", function()
 
     if not ply:Alive() then return end
 
+    draw.RoundedBox( 10, 20, ScrH() - 200, 240, 180, Color(112, 138, 144, 100) )
+
+    draw.DrawText( "Player" , "FANormal", 28, ScrH() - 196, color_white, TEXT_ALIGN_LEFT )
+    draw.DrawText( "Weapon" , "FANormal", 100, ScrH() - 196, color_white, TEXT_ALIGN_LEFT )
+
     -- Health
-    draw.DrawText( utf8.char( 0xf21e ) , "FABig", 20, ScrH() - 200, color_white, TEXT_ALIGN_LEFT )
-    draw.DrawText( ply:Health() , "FANormal", 100, ScrH() - 184, color_white, TEXT_ALIGN_LEFT )
+    draw.DrawText( utf8.char( 0xf21e ) , "FANormal", 28, ScrH() - 176, color_white, TEXT_ALIGN_LEFT )
+    draw.DrawText( ply:Health() , "FANormal", 54, ScrH() - 176, color_white, TEXT_ALIGN_LEFT )
 
     -- Armor
-    draw.DrawText( utf8.char( 0xf132 ) , "FABig", 28, ScrH() - 120, color_white, TEXT_ALIGN_LEFT )
-    draw.DrawText( ply:Armor() , "FANormal", 100, ScrH() - 104, color_white, TEXT_ALIGN_LEFT )
+    draw.DrawText( utf8.char( 0xf132 ) , "FANormal", 32, ScrH() - 156, color_white, TEXT_ALIGN_LEFT )
+    draw.DrawText( ply:Armor() , "FANormal", 54, ScrH() - 156, color_white, TEXT_ALIGN_LEFT )
 
     local wep = ply:GetActiveWeapon()
-    if ( not IsValid( wep ) ) then return end
+    if IsValid( wep ) then
+        local hasDrawn = false
+        -- Ammo
+        if wep:Clip1() > -1 then
+            hasDrawn = true
+            draw.DrawText( utf8.char( 0xf1b2 ) , "FANormal", 108, ScrH() - 176, color_white, TEXT_ALIGN_LEFT )
+            draw.DrawText( wep:Clip1().."/"..ply:GetAmmoCount( wep:GetPrimaryAmmoType() ) , "FANormal", 136, ScrH() - 176, color_white, TEXT_ALIGN_LEFT )
+        end
+        -- Secondary Ammo
+        if wep:Clip2() > -1 or ply:GetAmmoCount( wep:GetSecondaryAmmoType() ) > 0 then
+            hasDrawn = true
+            draw.DrawText( utf8.char( 0xf1e2 ) , "FANormal", 108, ScrH() - 156, color_white, TEXT_ALIGN_LEFT )
+            draw.DrawText( wep:Clip2().."/"..ply:GetAmmoCount( wep:GetSecondaryAmmoType() )  , "FANormal", 136, ScrH() - 156, color_white, TEXT_ALIGN_LEFT )
+        end
+        if not hasDrawn then
+            draw.DrawText( utf8.char( 0xf05e ) , "FABig", 108, ScrH() - 170, color_white, TEXT_ALIGN_LEFT )
+        end
+    else
+        draw.DrawText( utf8.char( 0xf05e ) , "FABig", 108, ScrH() - 170, color_white, TEXT_ALIGN_LEFT )
+    end
 
-    -- Ammo
-    draw.DrawText( utf8.char( 0xf1ad ) , "FABig", ScrW() - 20, ScrH() - 200, color_white, TEXT_ALIGN_RIGHT )
-    draw.DrawText( ply:GetAmmoCount( wep:GetPrimaryAmmoType() ) , "FANormal", ScrW() - 100, ScrH() - 184, color_white, TEXT_ALIGN_RIGHT )
+    draw.DrawText( "Suit" , "FANormal", 28, ScrH() - 136, color_white, TEXT_ALIGN_LEFT )
+    draw.DrawText( "Environment" , "FANormal", 100, ScrH() - 136, color_white, TEXT_ALIGN_LEFT )
 
-    -- Secondary Ammo
-    draw.DrawText( utf8.char( 0xf0f7 ) , "FABig", ScrW() - 28, ScrH() - 120, color_white, TEXT_ALIGN_RIGHT )
-    draw.DrawText( ply:GetAmmoCount( wep:GetSecondaryAmmoType() ) , "FANormal", ScrW() - 100, ScrH() - 104, color_white, TEXT_ALIGN_RIGHT )
+    if ply.suit then
+        draw.DrawText( "TODO" , "FABig", 36, ScrH() - 110, color_white, TEXT_ALIGN_LEFT )
+    else
+        draw.DrawText( utf8.char( 0xf05e ) , "FABig", 36, ScrH() - 110, color_white, TEXT_ALIGN_LEFT )
+    end
+
+    if ply.environment then
+        -- Temperature
+        draw.DrawText( utf8.char( 0xf2c7 ) , "FANormal", 112, ScrH() - 116, color_white, TEXT_ALIGN_LEFT )
+        local temperatureText = ""
+        if ply.environment.getNightTemperature then
+            temperatureText = ply.environment:getNightTemperature().."K - "
+        end
+        temperatureText = temperatureText..ply.environment:getTemperature().."K"
+        draw.DrawText( temperatureText  , "FANormal", 136, ScrH() - 116, color_white, TEXT_ALIGN_LEFT )
+
+        -- Gravity
+        draw.DrawText( utf8.char( 0xf2d6 ) , "FANormal", 108, ScrH() - 92, color_white, TEXT_ALIGN_LEFT )
+        draw.DrawText( ply.environment:getGravity().."g"  , "FANormal", 136, ScrH() - 92, color_white, TEXT_ALIGN_LEFT )
+        -- Oxygen
+        draw.DrawText( utf8.char( 0xf1bb ) , "FANormal", 108, ScrH() - 68, color_white, TEXT_ALIGN_LEFT )
+        draw.DrawText( ply.environment:getResourcePercentage("oxygen").."%"  , "FANormal", 136, ScrH() - 68, color_white, TEXT_ALIGN_LEFT )
+
+    else
+        draw.DrawText( utf8.char( 0xf05e ) , "FABig", 108, ScrH() - 110, color_white, TEXT_ALIGN_LEFT )
+    end
 
 end )
 

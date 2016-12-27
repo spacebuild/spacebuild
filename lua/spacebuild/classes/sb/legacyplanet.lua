@@ -203,7 +203,12 @@ function C:getVolume()
 end
 
 function C:getTemperature(ent)
+	if not ent then return self.temperature end
 	return self.temperature -- TODO util.calculateTemperate(self.nighttemperature, self.temperature)
+end
+
+function C:getNightTemperature()
+	return self.nighttemperature
 end
 
 function C:getEnvironmentColor()
