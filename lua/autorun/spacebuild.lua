@@ -21,6 +21,8 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+local IS_DEVELOPMENT = true
+
 AddCSLuaFile() -- send this file to the client
 
 local version = {
@@ -42,6 +44,10 @@ end
 
 require("log")
 local log = log
+
+if not IS_DEVELOPMENT then
+    log.setLevel(log.INFO)
+end
 
 SPACEBUILD = {}
 local SB = SPACEBUILD
