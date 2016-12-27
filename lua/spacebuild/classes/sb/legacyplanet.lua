@@ -34,7 +34,7 @@ local net = sbnet
 -- Class Specific
 local C = CLASS
 local GM = SPACEBUILD
-local util = GM.util
+local log = GM.log
 
 -- Function Refs
 local funcRef = {

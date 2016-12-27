@@ -16,41 +16,16 @@ local SB = {}
 
 local status = false
 
---Local stuff
-SB_DEBUG = true
-
 --local NextUpdateTime
-
-TrueSun = {}
-SunAngle = nil
 
 SB.Override_PlayerHeatDestroy = 0
 SB.Override_EntityHeatDestroy = 0
 SB.Override_PressureDamage = 0
 SB.PlayerOverride = 0
-local sb_spawned_entities = {}
 local volumes = {}
 
 local VolCheckIterations = CreateConVar( "SB_VolumeCheckIterations", "11",{ FCVAR_CHEAT, FCVAR_ARCHIVE } )
 local ForceModel = CreateConVar( "SB_Force_Model", "0",{ FCVAR_ARCHIVE } )
-
---Think + Environments
-local Environments = {}
-local Planets = {}
-local Stars = {}
-local numenv = 0
-
-
-local function PlayerSay( ply, txt )
-	if not ply:IsAdmin() then return --[[tostring(txt)]] end
-	if (string.sub(txt, 1, 10 ) == "!freespace") then
-		SB.RemoveSBProps()
-	elseif (string.sub(txt, 1, 10 ) == "!freeworld") then
-		SB.RemoveSBProps(true)
-	end
-	--if not txt then txt = "" end
-	--return tostring(txt)
-end
 
 local function ForcePlyModel(ply)
 	if ForceModel:GetInt() == 1 then
@@ -73,22 +48,6 @@ end
   
 --End Local Stuff
 
-local function ResetGravity()
-	for k, ent in ipairs( sb_spawned_entities) do
-		if ent and IsValid(ent) then
-			local phys = ent:GetPhysicsObject()
-			if phys:IsValid() and not (ent.IgnoreGravity and ent.IgnoreGravity == true) then
-				ent:SetGravity(1)
-				ent.gravity = 1
-				phys:EnableGravity( true )
-				phys:EnableDrag( true )
-			end
-		else
-			table.remove(sb_spawned_entities, k)
-		end
-	end
-end
-
 
 --[[
 	The Constructor for this Custom Addon Class
@@ -99,9 +58,7 @@ end
 function SB.__Construct()
 	if status then return false , CAF.GetLangVar("This Addon is already Active!") end
 	if SPACEBUILD:onSBMap() then
-		hook.Add("PlayerSay", "SB_PlayerSay_Check", PlayerSay)
 		hook.Add("PlayerSetModel", "SB_Force_Model_Check", ForcePlyModel)
-		ResetGravity()
 		status = true;
 		return true
 	end
@@ -116,9 +73,7 @@ end
 ]]
 function SB.__Destruct()
 	if not status then return false , CAF.GetLangVar("This Addon is already disabled!") end
-	hook.Remove("PlayerSay", "SB_PlayerSay_Check")
 	hook.Remove("PlayerSetModel", "SB_Force_Model_Check")
-	ResetGravity()
 	status = false;
 	return true;
 end
@@ -235,135 +190,54 @@ end
 
 -- Environment Functions
 
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.GetPlanets()
-	local tmp = {}
-	if table.Count(Planets) > 0 then
-		for k, v in pairs(Planets) do
-			--if v.IsPlanet and v:IsPlanet() then
-			table.insert(tmp, v)
-			--end
-		end
-	end
-	return tmp
+	return SPACEBUILD:getPlanets()
 end
 
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.GetStars()
-	local tmp = {}
-	if table.Count(Stars) > 0 then
-		for k, v in pairs(Stars) do
-			--if v.IsStar and v:IsStar() then
-			table.insert(tmp, v)
-			--end
-		end
-	end
-	return tmp
+	return SPACEBUILD:getStars()
 end
 
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.GetArtificialEnvironments() --not 100 sure this is correct
-	local tmp = {}
-	if table.Count(Environments) > 0 then
-		for k, v in pairs(Environments) do
-			--if v.IsStar and not v:IsStar() and v.IsPlanet and not v:IsPlanet() then
-				table.insert(tmp, v)
-			--end
-		end
-	end
-	return tmp
+	return SPACEBUILD:getOtherEnvironments()
 end
 
-function SB.OnEnvironmentChanged(ent)
-	if not ent.oldsbtmpenvironment or ent.oldsbtmpenvironment ~= ent.environment then
-		local tmp = ent.oldsbtmpenvironment
-		ent.oldsbtmpenvironment = ent.environment
-		if tmp then
-			gamemode.Call( "OnEnvironmentChanged", ent, tmp, ent.environment )
-		end
-	end
-end
-
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.GetSpace()
 	return SPACEBUILD:getSpace()
 end
 
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.AddEnvironment(env)
-	if not env or not env.GetEnvClass or env:GetEnvClass() ~= "SB ENVIRONMENT" then return 0 end
-	--if v.IsStar and not v:IsStar() and v.IsPlanet and not v:IsPlanet() then
-	if env.IsStar and env:IsStar() then
-		if not table.HasValue(Stars, env) then
-			table.insert(Stars, env)
-			numenv = numenv + 1
-			env:SetEnvironmentID(numenv)
-			return numenv
-		end
-	elseif env.IsPlanet and env:IsPlanet() then
-		if not table.HasValue(Planets, env) then
-			table.insert(Planets, env)
-			numenv = numenv + 1
-			env:SetEnvironmentID(numenv)
-			return numenv
-		end
-	elseif not table.HasValue(Environments, env) then
-			table.insert(Environments, env)
-			numenv = numenv + 1
-			env:SetEnvironmentID(numenv)
-			return numenv
-	end
-	return env:GetEnvironmentID()
+	SPACEBUILD:addEnvironment(env)
+	return env:getID()
 end
 
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.RemoveEnvironment(env)
-	if not env or not env.GetEnvClass or env:GetEnvClass() ~= "SB ENVIRONMENT" then return end
-	if env.IsStar and env:IsStar() then
-		for k, v in pairs(Stars) do
-			if env == v then
-				table.remove(Stars, k)
-			end
-		end
-	elseif env.IsPlanet and env:IsPlanet() then
-		for k, v in pairs(Planets) do
-			if env == v then
-				table.remove(Planets, k)
-			end
-		end
-	else
-		for k, v in pairs(Environments) do
-			if env == v then
-				table.remove(Environments, k)
-			end
-		end
-	end
-	
+	SPACEBUILD:removeEnvironment(env)
 end
 
+---
+--
+-- @deprecated use the new spacebuild methods for this!
 function SB.GetEnvironments()
-	local tmp = {}
-	for k, v in pairs(Planets) do
-		table.insert(tmp, v)
-	end
-	for k, v in pairs(Stars) do
-		table.insert(tmp, v)
-	end
-	for k, v in pairs(Environments) do
-		table.insert(tmp, v)
-	end
-
-	return tmp
-end
-
---Chat Commands
-
-function SB.RemoveSBProps(world)
-	for _, ent in pairs( sb_spawned_entities ) do
-		if world and ent.environment and ent.environment:IsPlanet() then
-			if not (ent:IsPlayer() or (ent.IsPlanet and ent:IsPlanet()) or (ent.IsStar and ent:IsStar())) then
-				ent:Remove()
-			end
-		elseif not world and (not ent.environment or ent.environment:IsSpace()) then
-			if not (ent:IsPlayer() or (ent.IsPlanet and ent:IsPlanet()) or (ent.IsStar and ent:IsStar())) then
-				ent:Remove()
-			end
-		end
-	end
+	return SPACEBUILD:getEnvironments()
 end
 
 --Volume Functions
@@ -382,7 +256,7 @@ end
 * @param radius
 * @return Volume(table) or ( false + errormessage)
 *
-* Notes: If the volume name already exists, that volume is returned! 
+* Notes: If the volume name already exists, that volume is returned!
 *
 ]]
 function SB.CreateVolume(name, radius)
@@ -408,19 +282,28 @@ function SB.FindVolume(name, radius)
 		local found = 0
 		while ( ( found == 0 ) and ( tries > 0 ) ) do
 			tries = tries - 1
-			pos = VectorRand()*16384
+			local pos = VectorRand()*16384
 			if (util.IsInWorld( pos ) == true) then
 				found = 1
 				for k, v in pairs(volumes) do
 					--if v and v.pos and (v.pos == pos or v.pos:Distance(pos) < v.radius) then -- Hur hur. This is why i had planetary collisions.
-					if v and v.pos and (v.pos == pos or v.pos:Distance(pos) < v.radius+radius) then
+					if v and v.pos and (v.pos == pos or v.pos:Distance(pos) < v:getRadius()+radius) then
 						found = 0
 					end
 				end
 				if found == 1 then
-					for k, v in pairs(Environments) do
-						if v and IsValid(v) and ((v.IsPlanet and v.IsPlanet()) or (v.IsStar and v.IsStar())) and (v:GetPos() == pos or v:GetPos():Distance(pos) < v:GetSize()) then
+					for k, v in pairs(SPACEBUILD:getPlanets()) do
+						local ent = v:getEntity()
+						if ent:GetPos() == pos or ent:GetPos():Distance(pos) < v:getRadius() then
 							found = 0
+							break
+						end
+					end
+					for k, v in pairs(SPACEBUILD:getStars()) do
+						local ent = v:getEntity()
+						if ent:GetPos() == pos or ent:GetPos():Distance(pos) < v:getRadius() then
+							found = 0
+							break
 						end
 					end
 				end
@@ -492,29 +375,20 @@ function SB.AddCustomVolume(name, pos, radius)
 end
 
 function SB.FindClosestPlanet(pos, starsto)
-	local closestplanet = nil
+	local closestplanet
+	local Planets = SPACEBUILD:getPlanets()
+	if starsto then
+		table.Add(Planets, SPACEBUILD:getStars())
+	end
 	if table.Count(Planets) > 0 then
 		for k, v in pairs(Planets) do
-			if v and IsValid(v) and v.IsPlanet and v.IsPlanet() then
-				if not closestplanet then
+			if not closestplanet then
+				closestplanet = v
+			else
+				local ent = v:getEntity()
+				local entClosest = closestplanet:getEntity()
+				if (ent:GetPos():Distance(pos) - v:getRadius() < entClosest:GetPos():Distance(pos) - closestplanet:getRadius()) then
 					closestplanet = v
-				else
-					if (v:GetPos():Distance(pos) - v:GetSize() < closestplanet:GetPos():Distance(pos) - closestplanet:GetSize()) then
-						closestplanet = v
-					end
-				end
-			end
-		end
-	end
-	if starsto and table.Count(Stars) > 0 then
-		for k, v in pairs(Stars) do
-			if v and IsValid(v) and v.IsStar and v.IsStar() then
-				if not closestplanet then
-					closestplanet = v
-				else
-					if (v:GetPos():Distance(pos) - v:GetSize() < closestplanet:GetPos():Distance(pos) - closestplanet:GetSize()) then
-						closestplanet = v
-					end
 				end
 			end
 		end
@@ -523,26 +397,11 @@ function SB.FindClosestPlanet(pos, starsto)
 end
 
 function SB.FindEnvironmentOnPos(pos)
-	local env = nil
-	if table.Count(Planets) > 0 then
-		for k, v in pairs(Planets) do
-			if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
-				env = v:PosInEnvironment(pos, env)
-			end
-		end
-	end
-	if not env and table.Count(Stars) > 0 then
-		for k, v in pairs(Stars) do
-			if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
-				env = v:PosInEnvironment(pos, env)
-			end
-		end
-	end
-	if table.Count(Environments) > 0 then
-		for k, v in pairs(Environments) do
-			if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
-				env = v:PosInEnvironment(pos, env)
-			end
+	local env
+	local environments = SPACEBUILD:getEnvironments()
+	if table.Count(environments) > 0 then
+		for k, v in pairs(environments) do
+			env = v:containsPosition(pos, env)
 		end
 	end
 	return env or SB.GetSpace()

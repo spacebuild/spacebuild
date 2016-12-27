@@ -33,6 +33,7 @@ local net = sbnet
 local C = CLASS
 
 local GM = SPACEBUILD
+local log = GM.log
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
@@ -91,6 +92,14 @@ end
 function C:getPosition()
 	local ent = self:getEntity()
 	return (ent and ent:GetPos()) or nil
+end
+
+--- Does the current environment contain the position
+-- @param pos the position to check
+-- @param currentClosestEnvironment An environment, planet, star, artificial, ...
+-- @return the closest environment that contains that position, either self or currentClosestEnvironment or nil
+function C:containsPosition(pos, currentClosestEnvironment)
+	error("not implemented yet")
 end
 
 --- Gets the temperature on this environment for the given entity

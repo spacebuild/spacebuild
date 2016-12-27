@@ -40,11 +40,13 @@ SB.onSBMap = function() return table.Count(internal.environments) > 0 end
 SB.getSpace = function() return space end
 
 function SB:addEnvironment(environment)
+    if not environment or not environment.isA or not environment:isA("BaseEnvironment") then error("not a valid environment class!") end
     internal.environments[environment:getID()] = environment
     hook.Call("onEnvironmentAdded", GAMEMODE, environment)
 end
 
 function SB:removeEnvironment(environment)
+    if not environment or not environment.isA or not environment:isA("BaseEnvironment") then error("not a valid environment class!") end
     internal.environments[environment:getID()] = nil
     hook.Call("onEnvironmentRemoved", GAMEMODE, environment)
 end
@@ -61,6 +63,35 @@ function SB:getEnvironments()
     return environments
 end
 
+function SB:getPlanets()
+    local planets = {}
+    for _, v in pairs(internal.environments) do
+        if v:isA("LegacyCube") or v:isA("LegacyPlanet") then
+            table.insert(planets, v)
+        end
+    end
+    return planets
+end
+
+function SB:getStars()
+    local stars = {}
+    for _, v in pairs(internal.environments) do
+        if v:isA("SunEnvironment") then
+            table.insert(stars, v)
+        end
+    end
+    return stars
+end
+
+function SB:getOtherEnvironments()
+    local environments = {}
+    for _, v in pairs(internal.environments) do
+        if not (v:isA("LegacyCube") or v:isA("LegacyPlanet") or v:isA("SunEnvironment")) then
+            table.insert(environments, v)
+        end
+    end
+    return environments
+end
 
 function SB:getEnvironment(id)
     if id == -1 then
@@ -70,6 +101,7 @@ function SB:getEnvironment(id)
 end
 
 function SB:addEnvironmentColor(env_color)
+    if not env_color or not env_color.isA or not env_color:isA("LegacyColorInfo") then error("not a valid color effect class!") end
     internal.mod_tables.color[env_color:getID()] = env_color
 end
 
@@ -78,6 +110,7 @@ function SB:getEnvironmentColor(id)
 end
 
 function SB:addEnvironmentBloom(env_bloom)
+    if not env_bloom or not env_bloom.isA or not env_bloom:isA("LegacyBloomInfo") then error("not a valid bloom effect class!") end
     internal.mod_tables.bloom[env_bloom:getID()] = env_bloom
 end
 
