@@ -15,6 +15,5 @@
 local base = "spacebuild/tests/shared/"
 
 include(base.."class.lua")
-include(base.."globaltest.lua")
 include(base.."rd.lua")
 

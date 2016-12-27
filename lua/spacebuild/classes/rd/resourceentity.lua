@@ -15,6 +15,9 @@
 
 include("resourcecontainer.lua")
 
+local SB = SPACEBUILD
+local log = SB.log
+
 -- Lua Specific
 local type = type
 
@@ -49,6 +52,10 @@ function C:isA(className)
 	return funcRef.isA(self, className) or className == "ResourceEntity"
 end
 
+--- Constructor for this container class
+-- @param entID The entity id we will be using for linking and syncing
+-- @param resourceRegistry The resource registry which contains all resource data.
+--
 function C:init(entID, resourceRegistry)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceEntity") end
 	funcRef.init(self, entID, resourceRegistry)
@@ -70,6 +77,11 @@ function C:removeResource(name, maxAmount, amount)
 	end
 end
 
+--- Supply a certain amount of resources
+-- @param name The resource to use
+-- @param amount The amount to supply, must be a number > 0
+-- @return the amount that wasn't able to be supplied to the network
+--
 function C:supplyResource(name, amount)
 	if self.network then
 		return self.network:supplyResource(name, amount)
@@ -77,6 +89,11 @@ function C:supplyResource(name, amount)
 	return funcRef.supplyResource(self, name, amount)
 end
 
+--- Consume a certain amount of resources
+-- @param name The resource to use
+-- @param amount The amount to use, must be a number > 0
+-- @return the amount that wasn't able to be used
+--
 function C:consumeResource(name, amount)
 	if self.network then
 		return self.network:consumeResource(name, amount)
@@ -84,6 +101,10 @@ function C:consumeResource(name, amount)
 	return funcRef.consumeResource(self, name, amount)
 end
 
+--- Retrieve the resource amount this container or its network actually has of a specified resource
+-- @param name The resource to check
+-- @param visited a table of visited nodes, internal use!
+--
 function C:getResourceAmount(name)
 	if self.network then
 		return self.network:getResourceAmount(name)
@@ -91,6 +112,10 @@ function C:getResourceAmount(name)
 	return funcRef.getResourceAmount(self, name)
 end
 
+--- Retrieve the max resource amount this container or its network can hold of a specified resource
+-- @param name The resource to check
+-- @param visited a table of visited nodes, internal use!
+--
 function C:getMaxResourceAmount(name, visited)
 	if self.network then
 		return self.network:getMaxResourceAmount(name, visited)
@@ -98,6 +123,10 @@ function C:getMaxResourceAmount(name, visited)
 	return funcRef.getMaxResourceAmount(self, name)
 end
 
+--- Link a device to this network
+-- @param container a resource device (container or network) or nil to disconnect all
+-- @param dont_unlink don't call the other device's unlink method, prevents infinite loops, used internally!
+--
 function C:link(container, dont_link)
 	if not self:canLink(container) then return end
 	if not dont_link then
@@ -108,6 +137,10 @@ function C:link(container, dont_link)
 	self.modified = CurTime()
 end
 
+--- Unlink a device (or all devices) from this container
+-- @param container a resource device (container or network) or nil to disconnect all
+-- @param dont_unlink don't call the other device's unlink method, prevents infinite loops, used internally!
+--
 function C:unlink(container, dont_unlink)
 	if not self.network then return end -- no network, so no reason to unlink anything
 	if not container then
@@ -121,10 +154,16 @@ function C:unlink(container, dont_unlink)
 	self.modified = CurTime()
 end
 
+--- Can the specified container connect to this container?
+-- @param container an rd container/network
+--
 function C:canLink(container)
 	return container ~= nil and self ~= container and self:getNetwork() == nil and container.isA and container:isA("ResourceNetwork")
 end
 
+--- Get the network connected to this device
+-- @return a ResourceNetwork or nil
+--
 function C:getNetwork()
 	return self.network
 end

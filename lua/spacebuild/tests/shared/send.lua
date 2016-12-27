@@ -16,7 +16,6 @@ local base = "spacebuild/tests/shared/"
 
 AddCSLuaFile(base.."include.lua")
 AddCSLuaFile(base.."class.lua")
-AddCSLuaFile(base.."globaltest.lua")
 AddCSLuaFile(base.."rd.lua")
 
 

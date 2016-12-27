@@ -47,24 +47,31 @@ function C:isA(className)
 	return funcRef.isA(self, className) or className == "ResourceNetwork"
 end
 
-
+--- Constructor for this network class
+-- @param entID The entity id we will be using for linking and syncing
+-- @param resourceRegistry The resource registry which contains all resource data.
+--
 function C:init(entID, resourceRegistry)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceNetwork") end
 	funcRef.init(self, entID, resourceRegistry)
 	self.containers = {}
 	self.networks = {}
 	self.busy = false
-	self.canCheckConstraints = true
 	self.containersmodified = CurTime()
 	self.networksmodified = CurTime()
 end
 
--- Are we already using this network (prevent loops when looking up)
+--- Are we already using this network (prevent loops when looking up), internal method!
+-- @return boolean
 function C:isBusy()
 	return self.busy
 end
 
-
+--- Supply a certain amount of resources
+-- @param name The resource to use
+-- @param amount The amount to supply, must be a number > 0
+-- @return the amount that wasn't able to be supplied to the network
+--
 function C:supplyResource(name, amount)
 	local to_much = funcRef.supplyResource(self, name, amount)
 	if to_much > 0 then
@@ -82,6 +89,11 @@ function C:supplyResource(name, amount)
 	return to_much
 end
 
+--- Consume a certain amount of resources
+-- @param name The resource to use
+-- @param amount The amount to use, must be a number > 0
+-- @return the amount that wasn't able to be used
+--
 function C:consumeResource(name, amount)
 	local to_little = funcRef.consumeResource(self, name, amount)
 	if to_little > 0 then
@@ -99,6 +111,10 @@ function C:consumeResource(name, amount)
 	return to_little
 end
 
+--- Retrieve the resource amount this network actually has of a specified resource
+-- @param name The resource to check
+-- @param visited a table of visited nodes, internal use!
+--
 function C:getResourceAmount(name, visited)
 	visited = visited or {}
 	local amount, tmp = funcRef.getResourceAmount(self, name), nil
@@ -114,6 +130,10 @@ function C:getResourceAmount(name, visited)
 	return amount, visited
 end
 
+--- Retrieve the max resource amount this network can hold of a specified resource
+-- @param name The resource to check
+-- @param visited a table of visited nodes, internal use!
+--
 function C:getMaxResourceAmount(name, visited)
 	visited = visited or {}
 	local amount, tmp = funcRef.getMaxResourceAmount(self, name), nil
@@ -129,6 +149,10 @@ function C:getMaxResourceAmount(name, visited)
 	return amount, visited
 end
 
+--- Link a device to this network
+-- @param container a resource device (container or network) or nil to disconnect all
+-- @param dont_unlink don't call the other device's unlink method, prevents infinite loops, used internally!
+--
 function C:link(container, dont_link)
 	if not self:canLink(container) then return end
 	if container:isA("ResourceNetwork") then
@@ -149,26 +173,38 @@ function C:link(container, dont_link)
 	self.modified = CurTime()
 end
 
+--- Unlink a device (or all devices) from this network
+-- @param container a resource device (container or network) or nil to disconnect all
+-- @param dont_unlink don't call the other device's unlink method, prevents infinite loops, used internally!
+--
 function C:unlink(container, dont_unlink)
+	-- We are not unlinking a specific device, unlink ALL!
 	if not container then
+		-- unlink from each container device seperatly
 		for k, v in pairs(self.containers) do
 			v:unlink(self, true)
 		end
+		self.containers = {}
+		-- unlink from each network device seperatly
 		for k, v in pairs(self.networks) do
 			v:unlink(self, true)
 		end
+		self.networks = {}
+		-- update modified times
 		self.networksmodified = CurTime()
 		self.containersmodified = CurTime()
-	else
+	else --unlink a specific device
 		if not self:canLink(container, true) then return end
+		-- call unlink on the container (if needed)
 		if not dont_unlink then
 			container:unlink(self, true)
 		end
+		-- if the device is a resource network
 		if container:isA("ResourceNetwork") then
 			if not self.networks[container:getID()] then return end
 			self.networks[container:getID()] = nil
 			self.networksmodified = CurTime()
-		else
+		else -- if the device is not a resource network but a container
 			if not self.containers[container:getID()] then return end
 			self.containers[container:getID()] = nil
 			local percent, amount = 0, 0
@@ -184,28 +220,26 @@ function C:unlink(container, dont_unlink)
 	self.modified = CurTime()
 end
 
+--- Retrieve all connected networks
+-- @return the table of network devices connected to this network
+--
 function C:getConnectedNetworks()
 	return self.networks
 end
 
+--- Retrieve all connected containers
+-- @return the table of container devices connected to this network
+--
 function C:getConnectedEntities()
 	return self.containers
 end
 
+--- Can the specified container connect to this network?
+-- @param container an rd container/network
+-- @param checkforSelf also check if the current network is the network of the container
+--
 function C:canLink(container, checkforSelf)
 	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and (container:getNetwork() == nil or (checkforSelf and container:getNetwork() == self))))
-end
-
-function C:canCheck()
-	return self.canCheckConstraints
-end
-
-function C:disableCheck()
-	self.canCheckConstraints = false
-end
-
-function C:enableCheck()
-	self.canCheckConstraints = true
 end
 
 --- Sync function to send data from the client to the server, contains the specific data transfer
