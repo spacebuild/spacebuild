@@ -124,6 +124,7 @@ end
 if CLIENT then
     include("caf/autostart/client/cl_caf_autostart.lua")
 end
+include("caf/autostart/resources_api.lua")
 -- End load legacy auto loader files
 
 -- Prevent outside access to internal tables
