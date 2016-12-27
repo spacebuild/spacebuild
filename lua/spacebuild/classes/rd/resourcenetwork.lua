@@ -41,15 +41,15 @@ local funcRef = {
 }
 
 --- General class function to check is this class is of a certain type
--- @param className the classname to check against
+-- @param className [string] the classname to check against
 --
 function C:isA(className)
 	return funcRef.isA(self, className) or className == "ResourceNetwork"
 end
 
 --- Constructor for this network class
--- @param entID The entity id we will be using for linking and syncing
--- @param resourceRegistry The resource registry which contains all resource data.
+-- @param entID [number] The entity id we will be using for linking and syncing
+-- @param resourceRegistry [ResourceRegistry] The resource registry which contains all resource data.
 --
 function C:init(entID, resourceRegistry)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceNetwork") end
@@ -68,9 +68,9 @@ function C:isBusy()
 end
 
 --- Supply a certain amount of resources
--- @param name The resource to use
--- @param amount The amount to supply, must be a number > 0
--- @return the amount that wasn't able to be supplied to the network
+-- @param name [String] The resource to use
+-- @param amount [number] The amount to supply, must be a number > 0
+-- @return [number] the amount that wasn't able to be supplied to the network
 --
 function C:supplyResource(name, amount)
 	local to_much = funcRef.supplyResource(self, name, amount)
@@ -90,9 +90,9 @@ function C:supplyResource(name, amount)
 end
 
 --- Consume a certain amount of resources
--- @param name The resource to use
--- @param amount The amount to use, must be a number > 0
--- @return the amount that wasn't able to be used
+-- @param name [string] The resource to use
+-- @param amount [number] The amount to use, must be a number > 0
+-- @return [number] the amount that wasn't able to be used
 --
 function C:consumeResource(name, amount)
 	local to_little = funcRef.consumeResource(self, name, amount)
@@ -112,8 +112,9 @@ function C:consumeResource(name, amount)
 end
 
 --- Retrieve the resource amount this network actually has of a specified resource
--- @param name The resource to check
--- @param visited a table of visited nodes, internal use!
+-- @param name [string] The resource to check
+-- @param visited [table:ResourceContainer] a table of visited nodes, internal use!
+-- @return [number] the amount of this resource that is available
 --
 function C:getResourceAmount(name, visited)
 	visited = visited or {}
@@ -131,8 +132,9 @@ function C:getResourceAmount(name, visited)
 end
 
 --- Retrieve the max resource amount this network can hold of a specified resource
--- @param name The resource to check
--- @param visited a table of visited nodes, internal use!
+-- @param name [string] The resource to check
+-- @param visited [table:ResourceContainer] a table of visited nodes, internal use!
+-- @return [number] the max amount of this resource that can be stored
 --
 function C:getMaxResourceAmount(name, visited)
 	visited = visited or {}
@@ -150,8 +152,8 @@ function C:getMaxResourceAmount(name, visited)
 end
 
 --- Link a device to this network
--- @param container a resource device (container or network) or nil to disconnect all
--- @param dont_unlink don't call the other device's unlink method, prevents infinite loops, used internally!
+-- @param container [ResourceContainer] a resource device (container or network) or nil to disconnect all
+-- @param dont_unlink [boolean] don't call the other device's unlink method, prevents infinite loops, used internally!
 --
 function C:link(container, dont_link)
 	if not self:canLink(container) then return end
@@ -174,8 +176,8 @@ function C:link(container, dont_link)
 end
 
 --- Unlink a device (or all devices) from this network
--- @param container a resource device (container or network) or nil to disconnect all
--- @param dont_unlink don't call the other device's unlink method, prevents infinite loops, used internally!
+-- @param container [ResourceContainer] a resource device (container or network) or nil to disconnect all
+-- @param dont_unlink [boolean] don't call the other device's unlink method, prevents infinite loops, used internally!
 --
 function C:unlink(container, dont_unlink)
 	-- We are not unlinking a specific device, unlink ALL!
@@ -221,29 +223,29 @@ function C:unlink(container, dont_unlink)
 end
 
 --- Retrieve all connected networks
--- @return the table of network devices connected to this network
+-- @return [table:ResourceNetwork] the table of network devices connected to this network
 --
 function C:getConnectedNetworks()
 	return self.networks
 end
 
 --- Retrieve all connected containers
--- @return the table of container devices connected to this network
+-- @return [table:ResourceContainer|not ResourceNetwork]the table of container devices connected to this network
 --
 function C:getConnectedEntities()
 	return self.containers
 end
 
 --- Can the specified container connect to this network?
--- @param container an rd container/network
--- @param checkforSelf also check if the current network is the network of the container
+-- @param container [ResourceContainer] an rd container/network
+-- @param checkforSelf [boolean] also check if the current network is the network of the container
 --
 function C:canLink(container, checkforSelf)
 	return container ~= nil and self ~= container and container.isA and (container:isA("ResourceNetwork") or (container:isA("ResourceEntity") and (container:getNetwork() == nil or (checkforSelf and container:getNetwork() == self))))
 end
 
 --- Sync function to send data from the client to the server, contains the specific data transfer
--- @param modified timestamp the client received information about this environment last
+-- @param modified [number] the client received information about this environment last
 --
 function C:_sendContent(modified)
 	if self.containersmodified > modified then
