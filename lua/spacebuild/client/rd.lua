@@ -36,6 +36,21 @@ net.Receive( "sbru", function(length, ply)
     container:receive()
 end)
 
+list.Add( "BeamMaterials", "cable/rope_icon" )
+list.Add( "BeamMaterials", "cable/cable2" )
+list.Add( "BeamMaterials", "cable/xbeam" )
+list.Add( "BeamMaterials", "cable/redlaser" )
+list.Add( "BeamMaterials", "cable/blue_elec" )
+list.Add( "BeamMaterials", "cable/physbeam" )
+list.Add( "BeamMaterials", "cable/hydra" )
+
+--holds the materials
+local beamMat = {}
+
+for _,mat in pairs(list.Get( "BeamMaterials" )) do
+    beamMat[mat] = Material(mat)
+end
+
 local xbeam = Material("cable/xbeam")
 function SB:drawBeams(ent)
     if ent.rdobject  then
@@ -44,8 +59,8 @@ function SB:drawBeams(ent)
             local texcoord, targetcoord, startPos, endPos
             for _, beam in pairs(ent.rdobject:getBeams()) do
                 -- set material
-                render.SetMaterial( beam:getMaterial() or xbeam )
-                startPos = self:GetPos()
+                render.SetMaterial( beamMat[beam:getMaterial()] or xbeam )
+                startPos = ent:GetPos()
                 endPos = beam:getTargetEntity():GetPos()
                 texcoord = math.Rand( 0, 1 )
                 targetcoord = texcoord + ((startPos - endPos):Length() /10)

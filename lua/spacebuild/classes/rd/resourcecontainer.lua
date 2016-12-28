@@ -214,10 +214,16 @@ function C:_sendContent(modified)
 	for _, v in pairs(self.resources) do
 		v:send(modified)
 	end
-	net.writeTiny(table.Count(self.beams))
-	for _, v in pairs(self.beams) do
-		v:send(modified)
+	if self.beamsmodified > modified then
+		net.WriteBool(true)
+		net.writeShort(table.Count(self.beams))
+		for _, v in pairs(self.beams) do
+			v:send(modified)
+		end
+	else
+		net.WriteBool(false)
 	end
+
 end
 
 --- Sync function to receive data from the server to this client
@@ -239,7 +245,7 @@ function C:receive()
 	if beamUpdate then
 		self.beams = {}
 		local beam
-		local nrBeams = net.readTiny()
+		local nrBeams = net.readShort()
 		for am = 1, nrBeams do
 			beam = self:addBeam()
 			beam:receive()
