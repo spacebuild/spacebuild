@@ -14,6 +14,7 @@
 
 include("resourcecontainer.lua")
 
+local SB = SPACEBUILD
 -- Lua Specific
 local type = type
 local pairs = pairs
@@ -53,7 +54,7 @@ end
 --
 function C:init(entID, resourceRegistry)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceNetwork") end
-	funcRef.init(self, entID, resourceRegistry)
+	funcRef.init(self, entID, SB.RDTYPES.NETWORK, resourceRegistry)
 	self.containers = {}
 	self.networks = {}
 	self.busy = false

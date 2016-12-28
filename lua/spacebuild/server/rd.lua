@@ -29,14 +29,13 @@ require("sbnet")
 local net = sbnet
 
 local to_sync
-net.Receive("SBRU", function(bitsreceived, ply)
+net.Receive("sbru", function(bitsreceived, ply)
     local syncid = net.readShort()
     to_sync = internal.device_table[syncid] --- TODO got a sync issue occasionally :/
     to_sync:send(0, ply) -- Send fully to client on request :)
 end)
 
 SB.core.rd = {
-
     player = {
         think = function(ply, time)
             -- RD

@@ -267,7 +267,7 @@ end
 function C:send(modified)
 	if self.modified > modified then
 		self.firstSync = false
-		net.Start("SBRPU")
+		net.Start("sbrpu")
 		net.WriteBool(self.active)
 		net.writeTiny(self.breath)
 		if self.active then

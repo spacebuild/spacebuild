@@ -59,9 +59,9 @@ function ENT:DoNormalDraw(bDontDrawModel)
         local genresnames = OverlaySettings.genresnames
         --End overlaysettings
         local trace = LocalPlayer():GetEyeTrace()
-        if (not bDontDrawModel) then self:DrawModel() end
-        local nettable = {} --TODO CAF.GetAddon("Resource Distribution").GetEntityTable(self)
-        if table.Count(nettable) == 0 then return end
+        if not bDontDrawModel then self:DrawModel() end
+        local obj = self.rdobject
+        if not obj then return end
         local playername = self:GetPlayerName()
         if playername == "" then
             playername = "World"
@@ -69,14 +69,13 @@ function ENT:DoNormalDraw(bDontDrawModel)
         -- 0 = no overlay!
         -- 1 = default overlaytext
         -- 2 = new overlaytext
-        local empty_value = { value = 0, maxvalue = 0 }
         if not mode or mode ~= 2 then
             local OverlayText = ""
             OverlayText = OverlayText .. self.PrintName .. "\n"
-            if nettable.network == 0 then
+            if not obj:getNetwork() then
                 OverlayText = OverlayText .. "Not connected to a network\n"
             else
-                OverlayText = OverlayText .. "Network " .. nettable.network .. "\n"
+                OverlayText = OverlayText .. "Network " .. obj:getNetwork():getID() .. "\n"
             end
             OverlayText = OverlayText .. "Owner: " .. playername .. "\n"
             if HasOOO then
@@ -87,11 +86,11 @@ function ENT:DoNormalDraw(bDontDrawModel)
                 OverlayText = OverlayText .. "Mode: " .. runmode .. "\n"
             end
             OverlayText = OverlayText .. "\n"
-            local resources = nettable.resources
+            local resources = obj:getResources()
             if num == -1 then
                 if (table.Count(resources) > 0) then
                     for k, v in pairs(resources) do
-                        OverlayText = OverlayText .. CAF.GetAddon("Resource Distribution").GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "\n"
+                        OverlayText = OverlayText .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "\n"
                     end
                 else
                     OverlayText = OverlayText .. "No Resources Connected\n"
@@ -100,15 +99,23 @@ function ENT:DoNormalDraw(bDontDrawModel)
                 local v
                 if resnames and table.Count(resnames) > 0 then
                     for _, k in pairs(resnames) do
-                        v = resources[k] or empty_value
-                        OverlayText = OverlayText .. CAF.GetAddon("Resource Distribution").GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "\n"
+                        v = obj:getResource(k) or (obj:getNetwork() and obj:getNetwork():getResource(k))
+                        if not v then
+                            OverlayText = OverlayText .. "Resource " .. k .. " not found.\n"
+                        else
+                            OverlayText = OverlayText .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "\n"
+                        end
                     end
                 end
                 if genresnames and table.Count(genresnames) > 0 then
                     OverlayText = OverlayText .. "\nGenerates:\n"
                     for _, k in pairs(genresnames) do
-                        v = resources[k] or empty_value
-                        OverlayText = OverlayText .. CAF.GetAddon("Resource Distribution").GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "\n"
+                        v = obj:getResource(k) or (obj:getNetwork() and obj:getNetwork():getResource(k))
+                        if not v then
+                            OverlayText = OverlayText .. "Resource " .. k .. " not found.\n"
+                        else
+                            OverlayText = OverlayText .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "\n"
+                        end
                     end
                 end
             end
@@ -157,10 +164,10 @@ function ENT:DoNormalDraw(bDontDrawModel)
                 surface.SetFont("Flavour")
                 surface.SetTextColor(155, 155, 255, 255)
                 surface.SetTextPos(textStartPos + 15, TempY)
-                if nettable.network == 0 then
+                if not obj:getNetwork() then
                     surface.DrawText("Not connected to a network")
                 else
-                    surface.DrawText("Network " .. nettable.network)
+                    surface.DrawText("Network " .. obj:getNetwork():getID())
                 end
                 TempY = TempY + 70
 
@@ -178,8 +185,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
 
                 -- Print the used resources
                 local stringUsage = ""
-                local resources = nettable.resources
-                local RD = CAF.GetAddon("Resource Distribution");
+                local resources = obj:getResources()
                 if (table.Count(resources) > 0) then
                     local i = 0
                     surface.SetFont("Flavour")
@@ -189,7 +195,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                     TempY = TempY + 70
                     if num == -1 then
                         for k, v in pairs(resources) do
-                            stringUsage = stringUsage .. "[" .. RD.GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "] "
+                            stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "] "
                             i = i + 1
                             if i == 3 then
                                 surface.SetTextPos(textStartPos + 15, TempY)
@@ -203,8 +209,12 @@ function ENT:DoNormalDraw(bDontDrawModel)
                         local v
                         if resnames and table.Count(resnames) > 0 then
                             for _, k in pairs(resnames) do
-                                v = resources[k] or empty_value
-                                stringUsage = stringUsage .. "[" .. RD.GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "] "
+                                v = obj:getResource(k) or (obj:getNetwork() and obj:getNetwork():getResource(k))
+                                if not v then
+                                   stringUsage = stringUsage .. "Resource " .. k .. " not found"
+                                else
+                                    stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getAmount() .. "] "
+                                end
                                 i = i + 1
                                 if i == 3 then
                                     surface.SetTextPos(textStartPos + 15, TempY)
@@ -226,8 +236,12 @@ function ENT:DoNormalDraw(bDontDrawModel)
                             surface.DrawText("Generates: ")
                             TempY = TempY + 70
                             for _, k in pairs(genresnames) do
-                                v = resources[k] or empty_value
-                                stringUsage = stringUsage .. "[" .. RD.GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "] "
+                                v = obj:getResource(k) or (obj:getNetwork() and obj:getNetwork():getResource(k))
+                                if not v then
+                                    stringUsage = stringUsage .. "Resource " .. k .. " not found"
+                                else
+                                    stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getAmount() .. "] "
+                                end
                                 i = i + 1
                                 if i == 3 then
                                     surface.SetTextPos(textStartPos + 15, TempY)
@@ -252,8 +266,12 @@ function ENT:DoNormalDraw(bDontDrawModel)
                     stringUsage = ""
                     local v
                     for _, k in pairs(genresnames) do
-                        v = resources[k] or empty_value
-                        stringUsage = stringUsage .. "[" .. RD.GetProperResourceName(k) .. ": " .. v.value .. "/" .. v.maxvalue .. "] "
+                        v = obj:getResource(k) or (obj:getNetwork() and obj:getNetwork():getResource(k))
+                        if not v then
+                            stringUsage = stringUsage .. "Resource " .. k .. " not found"
+                        else
+                            stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getAmount() .. "] "
+                        end
                         i = i + 1
                         if i == 3 then
                             surface.SetTextPos(textStartPos + 15, TempY)

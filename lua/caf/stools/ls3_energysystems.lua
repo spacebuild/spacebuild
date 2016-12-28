@@ -170,7 +170,7 @@ local function energy_generator_func(ent, type, sub_type, devinfo, Extra_Data, e
     local base_health = 50
     local phys = ent:GetPhysicsObject()
     local volume = -1;
-    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.GENERATOR)
+    local obj = ent.rdobject or SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.GENERATOR)
     if phys:IsValid() and phys.GetVolume then
         local vol = phys:GetVolume()
         --MsgN("Ent Physics Object Volume: ",vol)

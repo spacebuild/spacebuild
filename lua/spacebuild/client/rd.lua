@@ -26,9 +26,12 @@ require("sbnet")
 local net = sbnet
 
 net.Receive( "sbru", function(length, ply)
-    log.debug("sbru received ", v, " for net library")
-end)
-
-net.Receive( "sbrpu", function(length, ply)
-
+    local id = net.readShort()
+    local rdtype = net.readShort()
+    log.debug("Receiving rd entity update", id)
+    local container = SB:getDeviceInfo(id)
+    if not container then
+        container =SB:registerDevice(Entity(id), rdtype)
+    end
+    container:receive()
 end)

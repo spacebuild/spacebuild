@@ -33,12 +33,13 @@ function C:isA(className)
 	return className == "ResourceContainer"
 end
 
-function C:init(syncid, resourceRegistry)
+function C:init(syncid, rdtype, resourceRegistry)
 	if not resourceRegistry then error("Resource requires a reference to the resourceRegistry!") end
 	self.resourceRegistry = resourceRegistry
 	self.syncid = syncid
 	self.resources = {}
 	self.delta = 0
+	self.rdtype = rdtype
 	self.modified = CurTime()
 end
 
@@ -153,8 +154,9 @@ end
 --
 function C:send(modified, ply)
 	if self.modified > modified then
-		net.Start("SBRU")
+		net.Start("sbru")
 		net.writeShort(self.syncid)
+		net.writeShort(self.rdtype)
 		self:_sendContent(modified)
 		if ply then
 			net.Send(ply)
@@ -185,7 +187,7 @@ function C:receive()
 		id = net.readTiny()
 		name = self.resourceRegistry:getResourceInfoFromID(id):getName()
 		if not self.resources[name] then
-			self.resources[name] = self.classLoader.new("rd/Resource", name, nil, nil, self.resourceRegistry)
+			self.resources[name] = self.classLoader.new("rd/Resource", name, 0, 0, self.resourceRegistry)
 		end
 		self.resources[name]:receive()
 	end

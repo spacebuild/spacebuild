@@ -53,7 +53,7 @@ end
 function SB:registerDevice(ent, rdtype)
     local entid, obj = ent:EntIndex(), nil
     if rdtype == self.RDTYPES.STORAGE or rdtype == self.RDTYPES.GENERATOR then
-        obj = class.new("rd/ResourceEntity", entid, resourceRegistry, class)
+        obj = class.new("rd/ResourceEntity", entid, rdtype, resourceRegistry, class)
     elseif rdtype == self.RDTYPES.NETWORK then
         obj = class.new("rd/ResourceNetwork", entid, resourceRegistry, class)
     else
@@ -65,13 +65,6 @@ function SB:registerDevice(ent, rdtype)
 
     if not ent.rdobject then
         log.error("Something went wrong registering the device")
-    end
-    -- TODO move this to client!!
-    if CLIENT and missing_devices[entid] then
-        missing_devices[entid] = nil
-        net.Start("sbru")
-        net.writeShort(entid)
-        net.SendToServer()
     end
     hook.Call("onDeviceAdded", GAMEMODE, ent)
     return obj

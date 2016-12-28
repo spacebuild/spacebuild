@@ -21,3 +21,7 @@
 --
 
 local SB = SPACEBUILD
+
+net.Receive( "sbrpu", function(length, ply)
+    log.debug("sbrpu received ", " for net library")
+end)

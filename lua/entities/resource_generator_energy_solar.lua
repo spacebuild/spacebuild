@@ -11,6 +11,8 @@ ENT.Instructions = ""
 ENT.Spawnable = true
 ENT.AdminOnly = false
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
 	BaseClass.Initialize(self)
 	if SERVER then
@@ -50,7 +52,7 @@ if SERVER then
 		local trace = {}
 		local util = util
 		local up = up or self:GetAngles():Up() or nil
-		local sun = sun or GAMEMODE:getSun() or nil
+		local sun = sun or SB:getSun() or nil
 
 		if up == nil or sun == nil then return true end
 
@@ -76,7 +78,7 @@ if SERVER then
 	function ENT:getRate()
 
 		local up = self:GetAngles():Up()
-		local sun = GAMEMODE:getSun() or nil
+		local sun = SB:getSun() or nil
 
 		local sunAngle = Vector(0, 0, -1)
 
@@ -89,7 +91,8 @@ if SERVER then
 
 		if n >= 0 and not self:getBlocked(up, sun) then
 			return math.Round(self.energygen * n)
-		else return 0
+		else
+			return 0
 		end
 	end
 

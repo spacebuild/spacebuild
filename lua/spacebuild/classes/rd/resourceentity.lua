@@ -56,9 +56,9 @@ end
 -- @param entID The entity id we will be using for linking and syncing
 -- @param resourceRegistry The resource registry which contains all resource data.
 --
-function C:init(entID, resourceRegistry)
+function C:init(entID, rdtype, resourceRegistry)
 	if entID and type(entID) ~= "number" then error("You have to supply the entity id or nil to create a ResourceEntity") end
-	funcRef.init(self, entID, resourceRegistry)
+	funcRef.init(self, entID, rdtype, resourceRegistry)
 	self.network = nil
 end
 
@@ -183,7 +183,7 @@ end
 --- Sync function to receive data from the server to this client
 --
 function C:receive()
-	self.network = self.resourceRegistry:getDeviceInfo(net.readShort())
+	self.network = SB:getDeviceInfo(net.readShort())
 	funcRef.receiveSignal(self)
 end
 
