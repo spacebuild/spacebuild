@@ -13,7 +13,7 @@ ENT.Spawnable = false
 ENT.AdminSpawnable = false
 
 function ENT:GetResourceAmount(resource)
-    return self.rdoject and self.rdobject:getResourceAmount(resource) or 0
+    return self.rdobject and self.rdobject:getResourceAmount(resource) or 0
 end
 
 ---
