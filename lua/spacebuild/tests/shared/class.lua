@@ -27,7 +27,7 @@ function TestClasses:setUp()
 	self.resourceRegistry:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
 	self.resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
 	self.resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
-	self.resourceRegistry:registerResourceInfo(6, "co2", "Carbon Dioxide", { "GAS" })
+	self.resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", { "GAS" })
 end
 
 function TestClasses:tearDown()

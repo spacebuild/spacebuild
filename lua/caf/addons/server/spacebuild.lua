@@ -104,7 +104,7 @@ end
 	Optional (but should be put it in most cases!)
 ]]
 function SB.GetVersion()
-	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), SPACEBUILD.version.tag
 end
 
 --[[

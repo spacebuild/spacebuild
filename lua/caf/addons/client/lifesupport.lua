@@ -369,15 +369,6 @@ function LS.__Construct()
 	status = true
 	CAF.AddHook("think3", lifesupport_think)
 	local RD = CAF.GetAddon("Resource Distribution")
-	RD.AddProperResourceName("energy", CAF.GetLangVar("Energy"))
-	RD.AddProperResourceName("water", CAF.GetLangVar("Water"))
-	RD.AddProperResourceName("nitrogen", CAF.GetLangVar("Nitrogen"))
-	RD.AddProperResourceName("hydrogen", CAF.GetLangVar("Hydrogen"))
-	RD.AddProperResourceName("oxygen", CAF.GetLangVar("Oxygen"))
-	RD.AddProperResourceName("carbon dioxide", CAF.GetLangVar("Carbon Dioxide"))
-	RD.AddProperResourceName("steam", CAF.GetLangVar("Steam"))
-	RD.AddProperResourceName("heavy water", CAF.GetLangVar("Heavy Water"))
-	RD.AddProperResourceName("liquid nitrogen", CAF.GetLangVar("Liquid Nitrogen"))
 	return true
 	--return false , CAF.GetLangVar("No Implementation yet")
 end
@@ -411,7 +402,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function LS.GetVersion()
-	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), SPACEBUILD.version.tag
 end
 
 

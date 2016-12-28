@@ -35,13 +35,16 @@ resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
 resourceRegistry:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
 resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
 resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
-resourceRegistry:registerResourceInfo(6, "co2", "Carbon Dioxide", { "GAS" })
+resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", { "GAS" })
+resourceRegistry:registerResourceInfo(7, "steam", "Steam", { "GAS" })
+resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water", { "LIQUID" })
+resourceRegistry:registerResourceInfo(9, "liquid nitrogen", "Liquid Nitrogen", { "LIQUID" })
 
-SB.RDTYPES = {
+SB.RDTYPES = SB.internal.readOnlyTable({
     STORAGE = 1,
     GENERATOR = 2,
     NETWORK = 3
-}
+})
 
 function SB:getResourceRegistry()
     return resourceRegistry
@@ -50,9 +53,9 @@ end
 function SB:registerDevice(ent, rdtype)
     local entid, obj = ent:EntIndex(), nil
     if rdtype == self.RDTYPES.STORAGE or rdtype == self.RDTYPES.GENERATOR then
-        obj = class.new("ResourceEntity", entid, resourceRegistry, class)
+        obj = class.new("rd/ResourceEntity", entid, resourceRegistry, class)
     elseif rdtype == self.RDTYPES.NETWORK then
-        obj = class.new("ResourceNetwork", entid, resourceRegistry, class)
+        obj = class.new("rd/ResourceNetwork", entid, resourceRegistry, class)
     else
         error("type is not supported")
     end
@@ -66,11 +69,12 @@ function SB:registerDevice(ent, rdtype)
     -- TODO move this to client!!
     if CLIENT and missing_devices[entid] then
         missing_devices[entid] = nil
-        net.Start("SBRU")
+        net.Start("sbru")
         net.writeShort(entid)
         net.SendToServer()
     end
     hook.Call("onDeviceAdded", GAMEMODE, ent)
+    return obj
 end
 
 function SB:removeDevice(ent)

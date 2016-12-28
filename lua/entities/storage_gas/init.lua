@@ -15,7 +15,7 @@ function ENT:Initialize()
         self.Inputs = { { Name = "Vent" } }
     end
     self.caf.custom.masschangeoverride = true
-    self.caf.custom.resource = "oxygen"
+    self.resource = "oxygen"
 end
 
 function ENT:TriggerInput(iname, value)
@@ -30,15 +30,15 @@ end
 
 function ENT:OnRemove()
     self.BaseClass.OnRemove(self)
-    local air = self:GetResourceAmount(self.caf.custom.resource)
+    local air = self:GetResourceAmount(self.resource)
     if self.environment then
-        if self.caf.custom.resource == "oxygen" then
+        if self.resource == "oxygen" then
             self.environment:Convert(-1, 0, air)
-        elseif self.caf.custom.resource == "carbon dioxide" then
+        elseif self.resource == "carbon dioxide" then
             self.environment:Convert(-1, 1, air)
-        elseif self.caf.custom.resource == "hydrogen" then
+        elseif self.resource == "hydrogen" then
             self.environment:Convert(-1, 3, air)
-        elseif self.caf.custom.resource == "nitrogen" then
+        elseif self.resource == "nitrogen" then
             self.environment:Convert(-1, 2, air)
         end
     end
@@ -66,32 +66,32 @@ function ENT:Destruct()
 end
 
 function ENT:Leak()
-    local air = self:GetResourceAmount(self.caf.custom.resource)
+    local air = self:GetResourceAmount(self.resource)
     local mul = air / self.MAXRESOURCE
     local am = math.Round(mul * 1000);
     if (air >= am) then
-        self:ConsumeResource(self.caf.custom.resource, am)
+        self:ConsumeResource(self.resource, am)
         if self.environment then
-            if self.caf.custom.resource == "oxygen" then
+            if self.resource == "oxygen" then
                 self.environment:Convert(-1, 0, am)
-            elseif self.caf.custom.resource == "carbon dioxide" then
+            elseif self.resource == "carbon dioxide" then
                 self.environment:Convert(-1, 1, am)
-            elseif self.caf.custom.resource == "hydrogen" then
+            elseif self.resource == "hydrogen" then
                 self.environment:Convert(-1, 3, am)
-            elseif self.caf.custom.resource == "nitrogen" then
+            elseif self.resource == "nitrogen" then
                 self.environment:Convert(-1, 2, am)
             end
         end
     else
-        self:ConsumeResource(self.caf.custom.resource, air)
+        self:ConsumeResource(self.resource, air)
         if self.environment then
-            if self.caf.custom.resource == "oxygen" then
+            if self.resource == "oxygen" then
                 self.environment:Convert(-1, 0, air)
-            elseif self.caf.custom.resource == "carbon dioxide" then
+            elseif self.resource == "carbon dioxide" then
                 self.environment:Convert(-1, 1, air)
-            elseif self.caf.custom.resource == "hydrogen" then
+            elseif self.resource == "hydrogen" then
                 self.environment:Convert(-1, 3, air)
-            elseif self.caf.custom.resource == "nitrogen" then
+            elseif self.resource == "nitrogen" then
                 self.environment:Convert(-1, 2, air)
             end
         end
@@ -101,17 +101,17 @@ end
 
 function ENT:UpdateMass()
     local mul = 0.02
-    if self.caf.custom.resource == "oxygen" then
+    if self.resource == "oxygen" then
         mul = 0.02
-    elseif self.caf.custom.resource == "carbon dioxide" then
+    elseif self.resource == "carbon dioxide" then
         mul = 0.02
-    elseif self.caf.custom.resource == "hydrogen" then
+    elseif self.resource == "hydrogen" then
         mul = 0.02
-    elseif self.caf.custom.resource == "nitrogen" then
+    elseif self.resource == "nitrogen" then
         mul = 0.02
     end
-    local div = math.Round(self:GetNetworkCapacity(self.caf.custom.resource) / self.MAXRESOURCE)
-    local mass = self.mass + ((self:GetResourceAmount(self.caf.custom.resource) * mul) / div) -- self.mass = default mass + need a good multiplier
+    local div = math.Round(self:GetNetworkCapacity(self.resource) / self.MAXRESOURCE)
+    local mass = self.mass + ((self:GetResourceAmount(self.resource) * mul) / div) -- self.mass = default mass + need a good multiplier
     local phys = self:GetPhysicsObject()
     if (phys:IsValid()) then
         if phys:GetMass() ~= mass then
@@ -135,8 +135,8 @@ function ENT:Think()
 end
 
 function ENT:UpdateWireOutput()
-    local air = self:GetResourceAmount(self.caf.custom.resource)
-    local maxair = self:GetNetworkCapacity(self.caf.custom.resource)
+    local air = self:GetResourceAmount(self.resource)
+    local maxair = self:GetNetworkCapacity(self.resource)
     Wire_TriggerOutput(self, "Storage", air)
     Wire_TriggerOutput(self, "Max Storage", maxair)
 end

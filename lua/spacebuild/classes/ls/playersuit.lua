@@ -189,7 +189,7 @@ function C:processEnvironment()
 			if self.ply:WaterLevel() < 3 and (GM:onSBMap() and env and env:hasEnoughOxygen()) then
 				req_oxygen = const.suit.MAX_OXYGEN - self:getOxygen()
 				if  req_oxygen > 0  then
-					self:setOxygen(self:getOxygen() + req_oxygen - env:convertResource("oxygen", "co2", req_oxygen))
+					self:setOxygen(self:getOxygen() + req_oxygen - env:convertResource("oxygen", "carbon dioxide", req_oxygen))
 				end
 			else
 				if self:getOxygen() >= req_oxygen then

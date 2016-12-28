@@ -36,7 +36,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function SB.GetVersion()
-	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), SPACEBUILD.version.tag
 end
 
 --[[

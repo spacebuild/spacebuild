@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     --self.BaseClass.Initialize(self) --use this in all ents
     self:PhysicsInit(SOLID_VPHYSICS)
@@ -11,8 +13,9 @@ function ENT:Initialize()
     self:SetNetworkedInt("overlaymode", 1)
     self:SetNetworkedInt("OOO", 0)
     self.Active = 0
-    self.caf = self.caf or {}
-    self.caf.custom = self.caf.custom or {}
+    -- TODO remove this custom stuff
+    self.caf = {}
+    self.caf.custom = {}
 end
 
 --use this to set self.active
@@ -74,11 +77,6 @@ end
 
 
 function ENT:OnTakeDamage(DmgInfo) --should make the damage go to the shield if the shield is installed(CDS)
-    if self.Shield then
-        self.Shield:ShieldDamage(DmgInfo:GetDamage())
-        CDS_ShieldImpact(self:GetPos())
-        return
-    end
     if CAF and CAF.GetAddon("Life Support") then
         CAF.GetAddon("Life Support").DamageLS(self, DmgInfo:GetDamage())
     end
@@ -86,8 +84,9 @@ end
 
 function ENT:OnRemove()
     --self.BaseClass.OnRemove(self) --use this if you have to use OnRemove
-    CAF.GetAddon("Resource Distribution").Unlink(self)
-    CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
+    self.rdobject:unlink()
+    SB:removeDevice(self)
+
     if WireLib then WireLib.Remove(self) end
     if self.InputsBeingTriggered then
         for k, v in pairs(self.InputsBeingTriggered) do
@@ -99,93 +98,28 @@ end
 
 --NEW Functions 
 function ENT:RegisterNonStorageDevice()
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        RD.RegisterNonStorageDevice(self);
-    end
+    SB:registerDevice(self, SB.RDTYPES.GENERATOR)
 end
 
 function ENT:AddResource(resource, maxamount, defaultvalue)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.AddResource(self, resource, maxamount, defaultvalue)
-    end
+    self.rdobject:addResource(resource, maxamount, defaultvalue)
 end
 
 function ENT:ConsumeResource(resource, amount)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.ConsumeResource(self, resource, amount)
-    end
+    self.rdobject:consumeResource(resource, amount)
 end
 
 function ENT:SupplyResource(resource, amount)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.SupplyResource(self, resource, amount)
-    end
+    self.rdobject:supplyResource(resource, amount)
 end
 
 function ENT:Link(netid)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        RD.Link(self, netid)
-    end
+    local network = SB:getDeviceInfo(netid)
+    network:link(self)
 end
 
 function ENT:Unlink()
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        RD.Unlink(self)
-    end
-end
-
-function ENT:GetResourceAmount(resource)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetResourceAmount(self, resource);
-    end
-end
-
-function ENT:GetUnitCapacity(resource)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetUnitCapacity(self, resource)
-    end
-end
-
-function ENT:GetNetworkCapacity(resource)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetNetworkCapacity(self, resource)
-    end
-end
-
-function ENT:GetEntityTable()
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetEntityTable(self)
-    end
+    self.rdobject:unlink()
 end
 
 --END NEW Functions

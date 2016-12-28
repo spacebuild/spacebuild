@@ -14,7 +14,7 @@ function ENT:Initialize()
         self.WireDebugName = self.PrintName
         self.Outputs = Wire_CreateOutputs(self, { "Out" })
     end
-    self.caf.custom.resource = "hydrogen"
+    self.resource = "hydrogen"
 end
 
 function ENT:TurnOn()
@@ -59,7 +59,7 @@ function ENT:Extract_Energy()
         else
             inc = 1
         end
-        self:SupplyResource(self.caf.custom.resource, inc)
+        self:SupplyResource(self.resource, inc)
     end
     if not (WireAddon == nil) then Wire_TriggerOutput(self, "Out", inc) end
 end

@@ -117,16 +117,6 @@ function LS.__Construct()
 	for k, ply in pairs(player.GetAll( )) do
 		LSSpawnFunc( ply );
 	end
-	local RD = CAF.GetAddon("Resource Distribution")
-	RD.AddProperResourceName("energy", CAF.GetLangVar("Energy"))
-	RD.AddProperResourceName("water", CAF.GetLangVar("Water"))
-	RD.AddProperResourceName("nitrogen", CAF.GetLangVar("Nitrogen"))
-	RD.AddProperResourceName("hydrogen", CAF.GetLangVar("Hydrogen"))
-	RD.AddProperResourceName("oxygen", CAF.GetLangVar("Oxygen"))
-	RD.AddProperResourceName("carbon dioxide", CAF.GetLangVar("Carbon Dioxide"))
-	RD.AddProperResourceName("steam", CAF.GetLangVar("Steam"))
-	RD.AddProperResourceName("heavy water", CAF.GetLangVar("Heavy Water"))
-	RD.AddProperResourceName("liquid nitrogen", CAF.GetLangVar("Liquid Nitrogen"))
 	hook.Add( "PlayerInitialSpawn", "LS_Core_SpawnFunc", LSSpawnFunc )
 	hook.Add( "PlayerSpawn", "LS_Core_ResetSpawnFunc", LSResetSpawnFunc )
 	CAF.AddHook("think3", PlayerLSThink)
@@ -175,7 +165,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function LS.GetVersion()
-	return SPACEBUILD.version:longVersion(), CAF.GetLangVar("Beta")
+	return SPACEBUILD.version:longVersion(), SPACEBUILD.version.tag
 end
 
 --[[
@@ -574,9 +564,9 @@ function Ply:LsCheck()
 				self.caf.custom.ls.air = true
 				if self:WaterLevel() <= 2 then
 					if self.suit.air < 100  then
-						self.suit.air = self.suit.air + self.environment:convertResource("oxygen", "co2", 100-self.suit.air)
+						self.suit.air = self.suit.air + self.environment:convertResource("oxygen", "carbon dioxide", 100-self.suit.air)
 					end
-					self.environment:convertResource("oxygen", "co2", 5)
+					self.environment:convertResource("oxygen", "carbon dioxide", 5)
 				end
 			end
 		end

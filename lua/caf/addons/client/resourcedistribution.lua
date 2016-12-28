@@ -1,16 +1,6 @@
 local SPACEBUILD = SPACEBUILD
 local RD = {}
---local nettable = {};
---local ent_table = {};
-local resourcenames = {}
-local resources = {}
 local status = false
-
-require("cache")
-local rd_cache = cache.create(1, false) --Store data for 1 second
---[[
-
-]]
 
 --local functions
 
@@ -18,118 +8,6 @@ RD_OverLay_Distance = CreateClientConVar("rd_overlay_distance", "512", false, fa
 RD_OverLay_Mode = CreateClientConVar("rd_overlay_mode", "-1", false, false)
 local client_chosen_number = CreateClientConVar("number_to_send", "1", false, false)
 local client_chosen_hold = CreateClientConVar("number_to_hold", "0", false, false)
-
-----------NetTable functions
-
-local function CreateNetTable(netid)
-	nettable[netid] = {}
-	local index = nettable[netid]
-	index.resources = {}
-	index.cons = {}
-end
-
------- nettable and ent_table
-local function ClearNets( um )
-	--nettable = {}
-	--ent_table = {}
-	rd_cache:clear();
-end
-usermessage.Hook("RD_ClearNets", ClearNets)
-
-local function ReadBool()
-   return net.ReadBit() == 1
-end
-
-local function ReadShort()
-   return net.ReadInt(16);
-end
-
-local function ReadLong()
-    return net.ReadInt(32);
-end
-
-local dev = GetConVar("developer")
-local function AddEntityToCache( nrofbytes )
-    if dev:GetBool() then print("RD_Entity_Data #", nrofbytes, " bytes received") end
-	local data = {}
-
-	data.entid = ReadShort() --Key
-	local up_to_date = ReadBool();
-	if up_to_date then
-		rd_cache:update("entity_"..tostring(data.entid))
-	end
-	data.network = ReadShort() --network key
-	
-	data.resources = {}
-	local i = 0;
-	local nr_of_resources = ReadShort();
-	if (nr_of_resources > 0) then
-		--print("nr_of_sources", nr_of_resources)
-		local resource 
-		local maxvalue 
-		local value
-		for i = 1, nr_of_resources do
-			--print(i)
-			resource = net.ReadString()
-			maxvalue = ReadLong()
-			value = ReadLong()
-			
-			data.resources[resource] = {value = value, maxvalue = maxvalue}
-		end
-	end
-	
-	rd_cache:add("entity_"..tostring(data.entid), data)
-end
-net.Receive("RD_Entity_Data", AddEntityToCache)
-
-local function AddNetworkToCache( nrofbytes )
-    if dev:GetBool() then print("RD_Network_Data #", nrofbytes, " bytes received") end
-	local data = {}
-	
-	data.netid = ReadShort() --network key
-	local up_to_date = ReadBool();
-	if up_to_date then
-		rd_cache:update("network_"..tostring(data.netid))
-	end
-	
-	data.resources = {}
-	local i = 0;
-	local nr_of_resources = ReadShort();
-	if (nr_of_resources > 0) then
-		--print("nr_of_sources", nr_of_resources)
-		local resource 
-		local maxvalue 
-		local value
-		local localmaxvalue
-		local localvalue
-		for i = 1, nr_of_resources do
-			--print(i)
-			resource = net.ReadString()
-			maxvalue = ReadLong()
-			value = ReadLong()
-			localmaxvalue = ReadLong()
-			localvalue = ReadLong()
-			
-			data.resources[resource] = {value = value, maxvalue = maxvalue, localvalue = localvalue, localmaxvalue = localmaxvalue}
-		end
-	end
-	
-	data.cons = {}
-	local nr_of_cons = ReadShort();
-	if (nr_of_cons > 0) then
-		--print("nr_of_cons", nr_of_cons)
-		for i = 1, nr_of_cons do
-			--print(i)
-			con = ReadShort()
-			table.insert(data.cons, con);
-		end
-	end
-	
-	rd_cache:add("network_"..tostring(data.netid), data)
-end
-net.Receive("RD_Network_Data", AddNetworkToCache)
-
---end local functions
 
 --The Class
 --[[
@@ -168,7 +46,7 @@ end
 	Get the Version of this Custom Addon Class
 ]]
 function RD.GetVersion()
-	return SPACEBUILD.version:longVersion(), "Alpha"
+	return SPACEBUILD.version:longVersion(), SPACEBUILD.version.tag
 end
 
 local isuptodatecheck;
@@ -183,21 +61,6 @@ function RD.IsUpToDate(callBackfn)
 		callBackfn(isuptodatecheck);
 		return
 	end
-	--[[http.Get("http://www.snakesvx.net/versions/rd.txt","",
-		function(html,size)
-			local version = tonumber(html);
-			if(version) then
-				local latest = version;
-				if(latest > RD.GetVersion()) then
-					isuptodatecheck = false;
-					callBackfn(false)
-				else
-					isuptodatecheck = true;
-					callBackfn(true)
-				end
-			end
-		end
-	); ]]
 end
 
 --[[
@@ -236,183 +99,48 @@ CAF.RegisterAddon("Resource Distribution", RD, "1")
 
 --[[ Shared stuff ]]
 
---TODO UPDATE FROM HERE
-
---RD.GetEntityTable(ent)
---RD.GetNetTable(netid)
-
---[[function RD.getConnectedNets(netid) -- NEEDED ANYWHERE?
-	local contable = {}
-	local tmpcons = { netid}
-	while(table.Count(tmpcons) > 0) do
-		for k, v in pairs(tmpcons) do
-			if not table.HasValue(contable, v) then
-				table.insert(contable, v)
-				if nettable[v] and nettable[v].cons then
-					if table.Count(nettable[v].cons) > 0 then
-						for l, w in pairs(nettable[v].cons) do
-							table.insert(tmpcons, w)
-						end
-					end
-				end
-			end
-			table.remove(tmpcons, k)
-		end
-	end
-	return contable
-end]]
-
 function RD.GetNetResourceAmount(netid, resource)
 	if not resource then return 0, "No resource given" end
-	local data = RD.GetNetTable(netid);
-	if not data then return 0, "Not a valid network" end
-	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
-	if not data.resources[resource] then return 0, "Resource not available" end
-
-	local amount = 0;
-	amount = data.resources[resource].value
-	return amount
+	local ent = SPACEBUILD:getDeviceInfo(netid)
+	if not ent or not ent:isA("ResourceNetwork") then return 0, "Not a valid network" end
+	return ent:getResourceAmount(resource)
 end
 
 function RD.GetResourceAmount(ent, resource)
-	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
-	local data=RD.GetEntityTable(ent)
-	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
-	if not data.resources[resource] then return 0, "Resource not available" end
-
-	local amount = 0
-	amount = data.resources[resource].value
-	return amount
+	if not ent.rdobject then return 0, "Not a valid resource container" end
+	return ent.rdobject:getResourceAmount(resource)
 end
-
---[[function RD.GetUnitCapacity(ent, resource)
-	if not IsValid( ent ) then return 0, "Not a valid entity" end
-	if not resource then return 0, "No resource given" end
-	local amount = 0
-	if ent_table[ent:EntIndex( )] then
-		local index = ent_table[ent:EntIndex( )];
-		if index.resources[resource] then
-			amount = index.resources[resource].maxvalue
-		end
-	end
-	return amount
-end]]
 
 function RD.GetNetNetworkCapacity(netid, resource)
 	if not resource then return 0, "No resource given" end
-	local data = RD.GetNetTable(netid);
-	if not data then return 0, "Not a valid network" end
-	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
-	if not data.resources[resource] then return 0, "Resource not available" end
-
-	local amount = 0;
-	amount = data.resources[resource].maxvalue
-	return amount
+	local ent = SPACEBUILD:getDeviceInfo(netid)
+	if not ent or not ent:isA("ResourceNetwork") then return 0, "Not a valid network" end
+	return ent:getMaxResourceAmount(resource)
 end
 
 function RD.GetNetworkCapacity(ent, resource)
-	if not IsValid( ent ) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
-	local data = RD.GetEntityTable(ent)
-	if not data then return 0, "Not a valid network" end
-	if not data.resources or (data.resources and table.Count(data.resources)==0) then return 0, "No resources available" end
-	if not data.resources[resource] then return 0, "Resource not available" end
-
-	local amount = 0
-	if data.resources[resource] then
-		amount = data.resources[resource].maxvalue
-	end
-	return amount
+	local ent = SPACEBUILD:getDeviceInfo(netid)
+	if not ent or not ent:isA("ResourceNetwork") then return 0, "Not a valid network" end
+	return ent:getMaxResourceAmount(resource)
 end
-
-local requests = {}
-local ttl = 0.2; --Wait 0.2 second before doing a new request
-
-function RD.GetEntityTable(ent)
-	local entid = ent:EntIndex( )
-	local id = "entity_"..tostring(entid)
-	local data, needs_update = rd_cache:get(id);
-	if not data or needs_update then
-		if not requests[id] or requests[id] < CurTime() then
-			--Do (new) request
-			requests[id] = CurTime() + ttl;
-			RunConsoleCommand("RD_REQUEST_RESOURCE_DATA", "ENT", entid, needs_update and "UPDATE");
-		end
-	end
-	--PrintTable(data)
-	return data or {}
-end
-
-function RD.GetNetTable(netid)
-	local id = "network_"..tostring(netid)
-	local data, needs_update = rd_cache:get(id);
-	if not data or needs_update then
-		if not requests[id] or requests[id] < CurTime() then
-			--Do (new) request
-			requests[id] = CurTime() + ttl;
-			RunConsoleCommand("RD_REQUEST_RESOURCE_DATA", "NET", netid, needs_update and "UPDATE");
-		end
-	end
-	return data or {}
-end
-
---TODO UPDATE TO HERE
 
 function RD.AddProperResourceName(resource, name)
+	local registry = SPACEBUILD:getResourceRegistry()
 	if not resource or not name then return end
-	if not table.HasValue(resources, resource) then
-		table.insert(resources, resource)
-	end
-	resourcenames[resource] = name
+	local resObj = registry:getResourceInfoFromName(resource)
+	if not resObj then error("Use SPACEBUILD:getResourceRegistry():registerResourceInfo(UNIQUE_ID, resource , name, ATTRIBUTES) instead.") end
 end
 
 function RD.GetProperResourceName(resource)
-	if not resource then return "" end
-	if resourcenames[resource] then
-		return resourcenames[resource]
-	end
-	return resource
+	local registry = SPACEBUILD:getResourceRegistry()
+	if not resource then return end
+	local resObj = registry:getResourceInfoFromName(resource)
+	return resObj:getDisplayName()
 end
 
-function RD.GetAllRegisteredResources()
-	if not resourcenames or table.Count(resourcenames) < 0 then
-		return {}
-	end
-	return table.Copy(resourcenames)
-end
-
-function RD.GetRegisteredResources()
-	return table.Copy(resources)
-end
-
---[[function RD.GetNetworkIDs() --NEEDED FOR SOMEONE?
-	local ids = {}
-	if table.Count(nettable) > 0 then
-		for k, v in pairs(nettable) do
-			if not v.clear then
-				table.insert(ids, k)
-			end
-		end
-	end
-	return ids
-end]]
-
-function RD.PrintDebug(ent)
-	if ent then
-		if ent.IsNode then
-			local nettable = RD.GetNetTable(ent.netid)
-			PrintTable(nettable)
-		elseif ent.IsValve then
-			--
-		elseif ent.IsPump then
-			--
-		else
-			local enttable = RD.GetEntityTable(ent)
-			PrintTable(enttable)
-		end
-	end
-end
+-- end shared stuff
 
 list.Add( "BeamMaterials", "cable/rope_icon" )
 list.Add( "BeamMaterials", "cable/cable2" )
@@ -423,7 +151,7 @@ list.Add( "BeamMaterials", "cable/physbeam" )
 list.Add( "BeamMaterials", "cable/hydra" )
 
 --holds the materials
-beamMat = {}
+local beamMat = {}
 
 for _,mat in pairs(list.Get( "BeamMaterials" )) do
 	beamMat[mat] = Material(mat)

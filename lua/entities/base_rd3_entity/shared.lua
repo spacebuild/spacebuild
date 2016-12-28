@@ -11,3 +11,33 @@ ENT.Instructions = ""
 
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
+
+function ENT:GetResourceAmount(resource)
+    return self.rdoject and self.rdobject:getResourceAmount(resource) or 0
+end
+
+---
+-- @param resource [string] Resource name
+-- @return [number] the max network capacity this resources has
+-- @deprecated use ENT:GetCapacity(resource)
+--
+function ENT:GetUnitCapacity(resource)
+    return self:GetCapacity(resource)
+end
+
+---
+-- @param resource [string] Resource name
+-- @return [number] the max network capacity this resources has
+-- @deprecated use ENT:GetCapacity(resource)
+--
+function ENT:GetNetworkCapacity(resource)
+    return self:GetCapacity(resource)
+end
+
+---
+-- @param resource [string] Resource name
+-- @return [number] the max (network) capacity this resources has
+--
+function ENT:GetCapacity(resource)
+    return self.rdobject and self.rdobject:getResourceAmount(resource) or 0
+end

@@ -60,7 +60,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
         --End overlaysettings
         local trace = LocalPlayer():GetEyeTrace()
         if (not bDontDrawModel) then self:DrawModel() end
-        local nettable = CAF.GetAddon("Resource Distribution").GetEntityTable(self)
+        local nettable = {} --TODO CAF.GetAddon("Resource Distribution").GetEntityTable(self)
         if table.Count(nettable) == 0 then return end
         local playername = self:GetPlayerName()
         if playername == "" then

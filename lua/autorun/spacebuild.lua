@@ -60,6 +60,19 @@ SB.internal = {}
 
 log.info("Starting up spacebuild " .. version:fullVersion());
 
+-- Prevent outside access to the SB table, to prevent any modifications to it!!
+local function createReadOnlyTable(t)
+    return setmetatable({}, {
+        __index = t,
+        __newindex = function(t, k, v)
+            error("Attempt to update a read-only table")
+            --print(tostring(debug.traceback()))
+        end,
+        __metatable = false
+    })
+end
+SB.internal.readOnlyTable = createReadOnlyTable
+
 include("spacebuild/classes/include.lua")
 include("spacebuild/shared/include.lua")
 
@@ -101,18 +114,6 @@ if CLIENT then
         include("spacebuild/tests/client/include.lua")
         MsgN("Tests completed: "..lu.LuaUnit.run('-v'))
     end)
-end
-
--- Prevent outside access to the SB table, to prevent any modifications to it!!
-local function createReadOnlyTable(t)
-    return setmetatable({}, {
-        __index = t,
-        __newindex = function(t, k, v)
-            error("Attempt to update a read-only table")
-            --print(tostring(debug.traceback()))
-        end,
-        __metatable = false
-    })
 end
 
 -- Load legacy auto loader files

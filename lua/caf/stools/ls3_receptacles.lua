@@ -1,3 +1,5 @@
+local SPACEBUILD = SPACEBUILD
+
 TOOL.Category = "Life Support"
 TOOL.Name = "#Storage Devices"
 
@@ -132,9 +134,11 @@ local function gas_tank_func(ent, type, sub_type, devinfo, Extra_Data, ent_extra
     elseif type == "storage_gas_steam" then
         res = "steam"
     end
-    ent.caf.custom.resource = res;
-    CAF.GetAddon("Resource Distribution").AddResource(ent, res, math.Round(4600 * volume_mul))
-    ent.MAXRESOURCE = math.Round(4600 * volume_mul)
+    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.STORAGE)
+    local max =  math.Round(4600 * volume_mul)
+    obj:addResource( res, max)
+    ent.resource = res
+    ent.MAXRESOURCE = max
     local mass = math.Round(base_mass * volume_mul)
     ent.mass = mass
     local maxhealth = math.Round(base_health * volume_mul)
@@ -152,8 +156,11 @@ local function energy_func(ent, type, sub_type, devinfo, Extra_Data, ent_extras)
         vol = math.Round(vol)
         volume_mul = vol / base_volume
     end
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "energy", math.Round(3600 * volume_mul))
-    ent.MAXRESOURCE = math.Round(3600 * volume_mul)
+    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.STORAGE)
+    local max =  math.Round(3600 * volume_mul)
+    obj:addResource( "energy", max)
+    ent.resource = "energy"
+    ent.MAXRESOURCE = max
     local mass = math.Round(base_mass * volume_mul)
     ent.mass = mass
     local maxhealth = math.Round(base_health * volume_mul)
@@ -171,8 +178,11 @@ local function liquid_tank_func(ent, type, sub_type, devinfo, Extra_Data, ent_ex
         vol = math.Round(vol)
         volume_mul = vol / base_volume
     end
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "water", math.Round(3600 * volume_mul))
-    ent.MAXRESOURCE = math.Round(3600 * volume_mul)
+    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.STORAGE)
+    local max =  math.Round(3600 * volume_mul)
+    obj:addResource( "water", max)
+    ent.resource = "water"
+    ent.MAXRESOURCE = max
     local mass = math.Round(base_mass * volume_mul)
     ent.mass = mass
     local maxhealth = math.Round(base_health * volume_mul)
@@ -190,27 +200,11 @@ local function liquid_nitrogen_tank_func(ent, type, sub_type, devinfo, Extra_Dat
         vol = math.Round(vol)
         volume_mul = vol / base_volume
     end
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "liquid nitrogen", math.Round(3000 * volume_mul))
+    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.STORAGE)
+    local max =  math.Round(4600 * volume_mul)
+    obj:addResource( "liquid nitrogen", max)
     ent.MAXRESOURCE = math.Round(3000 * volume_mul)
-    local mass = math.Round(base_mass * volume_mul)
-    ent.mass = mass
-    local maxhealth = math.Round(base_health * volume_mul)
-    return mass, maxhealth
-end
-
-local function hot_liquid_nitrogen_tank_func(ent, type, sub_type, devinfo, Extra_Data, ent_extras)
-    local volume_mul = 1
-    local base_volume = 4084
-    local base_mass = 20
-    local base_health = 200
-    local phys = ent:GetPhysicsObject()
-    if phys:IsValid() and phys.GetVolume then
-        local vol = phys:GetVolume()
-        vol = math.Round(vol)
-        volume_mul = vol / base_volume
-    end
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "hot liquid nitrogen", math.Round(2500 * volume_mul))
-    ent.MAXRESOURCE = math.Round(2500 * volume_mul)
+    ent.resource = "liquid nitrogen"
     local mass = math.Round(base_mass * volume_mul)
     ent.mass = mass
     local maxhealth = math.Round(base_health * volume_mul)
@@ -228,8 +222,11 @@ local function heavywater_tank_func(ent, type, sub_type, devinfo, Extra_Data, en
         vol = math.Round(vol)
         volume_mul = vol / base_volume
     end
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "heavy water", math.Round(3600 * volume_mul))
-    ent.MAXRESOURCE = math.Round(3600 * volume_mul)
+    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.STORAGE)
+    local max =  math.Round(3600 * volume_mul)
+    obj:addResource( "heavy water", max)
+    ent.resource = "heavy water"
+    ent.MAXRESOURCE = max
     local mass = math.Round(base_mass * volume_mul)
     ent.mass = mass
     local maxhealth = math.Round(base_health * volume_mul)
@@ -247,14 +244,15 @@ local function cache_func(ent, type, sub_type, devinfo, Extra_Data, ent_extras)
         vol = math.Round(vol)
         volume_mul = vol / base_volume
     end
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "energy", math.Round(5500 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "oxygen", math.Round(6000 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "hydrogen", math.Round(3000 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "carbon dioxide", math.Round(5000 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "nitrogen", math.Round(7000 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "liquid nitrogen", math.Round(7000 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "water", math.Round(4000 * volume_mul))
-    CAF.GetAddon("Resource Distribution").AddResource(ent, "heavy water", math.Round(360 * volume_mul))
+    local obj = SPACEBUILD:registerDevice(ent, SPACEBUILD.RDTYPES.STORAGE)
+    obj:addResource("energy", math.Round(5500 * volume_mul))
+    obj:addResource("oxygen", math.Round(6000 * volume_mul))
+    obj:addResource("hydrogen", math.Round(3000 * volume_mul))
+    obj:addResource("carbon dioxide", math.Round(5000 * volume_mul))
+    obj:addResource("nitrogen", math.Round(7000 * volume_mul))
+    obj:addResource("liquid nitrogen", math.Round(7000 * volume_mul))
+    obj:addResource("water", math.Round(4000 * volume_mul))
+    obj:addResource("heavy water", math.Round(360 * volume_mul))
     local mass = math.Round(base_mass * volume_mul)
     ent.mass = mass
     local maxhealth = math.Round(base_health * volume_mul)
