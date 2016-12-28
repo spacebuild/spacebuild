@@ -62,6 +62,17 @@ function C:init(entID, resourceRegistry)
 	self.networksmodified = CurTime()
 end
 
+function C:removeBeams()
+	for k, v in pairs(self.containers) do
+		v:removeBeam(self:getID())
+	end
+	for k, v in pairs(self.networks) do
+		v:removeBeam(self:getID())
+	end
+	self.beams = {}
+	self.beamsmodified = CurTime()
+end
+
 --- Are we already using this network (prevent loops when looking up), internal method!
 -- @return boolean
 function C:isBusy()
@@ -171,6 +182,7 @@ function C:link(container, dont_link)
 		self.containersmodified = CurTime()
 	end
 	if not dont_link then
+		SB.log.debug("linking entity from network")
 		container:link(self, true)
 	end
 	self.modified = CurTime()

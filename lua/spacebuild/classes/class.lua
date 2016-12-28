@@ -88,6 +88,7 @@ end
 
 -- PreLoad
 class.new("rd/ResourceRegistry")
+class.new("rd/Beam")
 class.new("rd/Resource")
 class.new("rd/ResourceContainer")
 class.new("rd/ResourceEntity")

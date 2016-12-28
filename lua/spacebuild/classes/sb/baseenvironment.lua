@@ -47,6 +47,7 @@ end
 -- @param data the basic data used for populating this environment (or reset it with)
 --
 function C:init(entid, data, resourceRegistry)
+	if not resourceRegistry then error("Resource requires a reference to the resourceRegistry!") end
 	self.entid = entid
 	self.data = data
 	self.resourceRegistry = resourceRegistry
@@ -154,6 +155,18 @@ end
 -- @return a String
 function C:getName()
 	return ""
+end
+
+function C:isPlanet()
+	return false
+end
+
+function C:isStar()
+	return false
+end
+
+function C:isSpace()
+	return false
 end
 
 -- Resource stuff

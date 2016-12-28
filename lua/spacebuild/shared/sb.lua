@@ -66,7 +66,7 @@ end
 function SB:getPlanets()
     local planets = {}
     for _, v in pairs(internal.environments) do
-        if v:isA("LegacyCube") or v:isA("LegacyPlanet") then
+        if v:isPlanet() then
             table.insert(planets, v)
         end
     end
@@ -76,7 +76,7 @@ end
 function SB:getStars()
     local stars = {}
     for _, v in pairs(internal.environments) do
-        if v:isA("SunEnvironment") then
+        if v:isStar() then
             table.insert(stars, v)
         end
     end
@@ -86,7 +86,7 @@ end
 function SB:getOtherEnvironments()
     local environments = {}
     for _, v in pairs(internal.environments) do
-        if not (v:isA("LegacyCube") or v:isA("LegacyPlanet") or v:isA("SunEnvironment")) then
+        if not v:isPlanet() and not v:isStar() then
             table.insert(environments, v)
         end
     end

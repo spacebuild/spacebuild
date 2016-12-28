@@ -39,6 +39,10 @@ function C:isA(className)
 	return funcRef.isA(self, className) or className == "LegacyCube"
 end
 
+function C:isPlanet()
+	return true
+end
+
 function C:updateEntities()
 	for k, ent in pairs(self.entities) do
 		if GM:isValidSBEntity(ent) then

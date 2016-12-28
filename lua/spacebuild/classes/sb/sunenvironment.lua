@@ -47,6 +47,10 @@ function C:isA(className)
 	return funcRef.isA(self, className) or className == "SunEnvironment"
 end
 
+function C:isStar()
+	return true
+end
+
 function C:getPos()
 	return (self:getEntity() and self:getEntity():GetPos()) or DEFAULT_SUN_POSITION
 end

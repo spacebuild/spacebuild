@@ -35,3 +35,22 @@ net.Receive( "sbru", function(length, ply)
     end
     container:receive()
 end)
+
+local xbeam = Material("cable/xbeam")
+function SB:drawBeams(ent)
+    if ent.rdobject  then
+        local beamCount = table.Count(ent.rdobject:getBeams())
+        if beamCount > 0 then
+            local texcoord, targetcoord, startPos, endPos
+            for _, beam in pairs(ent.rdobject:getBeams()) do
+                -- set material
+                render.SetMaterial( beam:getMaterial() or xbeam )
+                startPos = self:GetPos()
+                endPos = beam:getTargetEntity():GetPos()
+                texcoord = math.Rand( 0, 1 )
+                targetcoord = texcoord + ((startPos - endPos):Length() /10)
+                render.DrawBeam(startPos, endPos, beam:getWidth(), texcoord, targetcoord, beam:getColor())
+            end
+        end
+    end
+end

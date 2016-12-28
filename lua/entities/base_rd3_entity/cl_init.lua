@@ -2,6 +2,8 @@ include('shared.lua')
 
 ENT.RenderGroup = RENDERGROUP_BOTH
 
+local SB = SPACEBUILD
+
 local OOO = {}
 OOO[0] = "Off"
 OOO[1] = "On"
@@ -13,8 +15,7 @@ local client_chosen_hold = CreateClientConVar("number_to_hold", "1", true, false
 function ENT:Draw(bDontDrawModel)
     self:DoNormalDraw()
 
-    --draw beams by MadDog
-    CAF.GetAddon("Resource Distribution").Beam_Render(self)
+    SB:drawBeams(self)
 
     if (Wire_Render) then
         Wire_Render(self)
@@ -90,7 +91,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
             if num == -1 then
                 if (table.Count(resources) > 0) then
                     for k, v in pairs(resources) do
-                        OverlayText = OverlayText .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "\n"
+                        OverlayText = OverlayText .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "\n"
                     end
                 else
                     OverlayText = OverlayText .. "No Resources Connected\n"
@@ -103,7 +104,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                         if not v then
                             OverlayText = OverlayText .. "Resource " .. k .. " not found.\n"
                         else
-                            OverlayText = OverlayText .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "\n"
+                            OverlayText = OverlayText .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "\n"
                         end
                     end
                 end
@@ -114,7 +115,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                         if not v then
                             OverlayText = OverlayText .. "Resource " .. k .. " not found.\n"
                         else
-                            OverlayText = OverlayText .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "\n"
+                            OverlayText = OverlayText .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "\n"
                         end
                     end
                 end
@@ -195,7 +196,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                     TempY = TempY + 70
                     if num == -1 then
                         for k, v in pairs(resources) do
-                            stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getMaxAmount() .. "] "
+                            stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "] "
                             i = i + 1
                             if i == 3 then
                                 surface.SetTextPos(textStartPos + 15, TempY)
@@ -213,7 +214,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                                 if not v then
                                    stringUsage = stringUsage .. "Resource " .. k .. " not found"
                                 else
-                                    stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getAmount() .. "] "
+                                    stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "] "
                                 end
                                 i = i + 1
                                 if i == 3 then
@@ -240,7 +241,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                                 if not v then
                                     stringUsage = stringUsage .. "Resource " .. k .. " not found"
                                 else
-                                    stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getAmount() .. "] "
+                                    stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "] "
                                 end
                                 i = i + 1
                                 if i == 3 then
@@ -270,7 +271,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
                         if not v then
                             stringUsage = stringUsage .. "Resource " .. k .. " not found"
                         else
-                            stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. v:getAmount() .. "/" .. v:getAmount() .. "] "
+                            stringUsage = stringUsage .. "[" .. v:getDisplayName() .. ": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "] "
                         end
                         i = i + 1
                         if i == 3 then

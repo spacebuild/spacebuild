@@ -231,6 +231,10 @@ function C:addEntity(ent)
 	self.entities[ent:EntIndex()] = ent
 end
 
+function C:isPlanet()
+	return true
+end
+
 function C:removeEntity(ent)
 	local oldEnvironment = ent.environment
 	if self.entities[ent:EntIndex()] then

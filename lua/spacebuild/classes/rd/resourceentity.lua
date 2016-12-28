@@ -62,6 +62,12 @@ function C:init(entID, rdtype, resourceRegistry)
 	self.network = nil
 end
 
+function C:removeBeams()
+	if self.network then self.network:removeBeam(self:getID()) end
+	self.beams = {}
+	self.beamsmodified = CurTime()
+end
+
 function C:addResource(name, maxAmount, amount)
 	local res = funcRef.addResource(self, name, maxAmount, amount)
 	if self.network then

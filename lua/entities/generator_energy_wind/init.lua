@@ -67,9 +67,8 @@ function ENT:Extract_Energy()
     local inc = 0
     if (self.damaged == 0) then --or (math.random(1, 10) < 6)
         if self.environment then
-            local planet = self.environment:IsOnPlanet()
-            if planet and planet:GetAtmosphere() > 0.2 then
-                inc = math.random(1, (Energy_Increment * planet:GetAtmosphere()))
+            if self.environment:isPlanet() and self.environment:getAtmosphere() > 0.2 then
+                inc = math.random(1, Energy_Increment * self.environment:getAtmosphere())
             end
         else
             inc = 1
@@ -112,9 +111,9 @@ function ENT:Think()
         local SB = CAF.GetAddon("Spacebuild")
         if SB and SB.GetStatus() then
             if self.environment then
-                local planet = self.environment:IsOnPlanet()
-                if (planet and planet:GetAtmosphere() > 0) then
-                    self:SetPlaybackRate(planet:GetAtmosphere())
+                local planet = self.environment:isPlanet()
+                if self.environment:isPlanet() and self.environment:getAtmosphere() > 0 then
+                    self:SetPlaybackRate(self.environment:getAtmosphere())
                     self:TurnOn()
                 else
                     self:TurnOff()

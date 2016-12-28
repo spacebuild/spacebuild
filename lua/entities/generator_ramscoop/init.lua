@@ -83,16 +83,8 @@ function ENT:Think()
     self.BaseClass.Think(self)
     self.thinkcount = self.thinkcount + 1
     if self.thinkcount == 10 then
-        local SB = CAF.GetAddon("Spacebuild")
-        if SB and SB.GetStatus() then
-            if self.environment then
-                local planet = self.environment:IsOnPlanet()
-                if not (planet) then
-                    self:TurnOn()
-                else
-                    self:TurnOff()
-                end
-            end
+        if self.environment and self.environment:isPlanet() then
+            self:TurnOn()
         else
             self:TurnOff()
         end

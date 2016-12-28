@@ -18,6 +18,7 @@ AddCSLuaFile(base.."class.lua")
 
 AddCSLuaFile(base.."/ls/playersuit.lua")
 
+AddCSLuaFile(base.."/rd/beam.lua")
 AddCSLuaFile(base.."/rd/resource.lua")
 AddCSLuaFile(base.."/rd/resourcecontainer.lua")
 AddCSLuaFile(base.."/rd/resourceentity.lua")

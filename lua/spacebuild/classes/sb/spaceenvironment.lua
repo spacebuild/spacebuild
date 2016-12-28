@@ -43,7 +43,7 @@ function C:isA(className)
 end
 
 function C:init(resourceRegistry)
-	funcRef.init(self, -1, resourceRegistry)
+	funcRef.init(self, -1, {}, resourceRegistry)
 	self.temperature = 14 -- in K
 end
 
@@ -57,5 +57,9 @@ end
 
 function C:getName()
 	return "Space"
+end
+
+function C:isSpace()
+	return true
 end
 

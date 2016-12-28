@@ -34,6 +34,8 @@ function C:isA(className)
 end
 
 function C:init(syncid, rdtype, resourceRegistry)
+	if not syncid then error("syncid is required") end
+	if not rdtype then error("Requires an RDType") end
 	if not resourceRegistry then error("Resource requires a reference to the resourceRegistry!") end
 	self.resourceRegistry = resourceRegistry
 	self.syncid = syncid
@@ -41,6 +43,44 @@ function C:init(syncid, rdtype, resourceRegistry)
 	self.delta = 0
 	self.rdtype = rdtype
 	self.modified = CurTime()
+	self.beamsmodified = CurTime()
+	self.beams = {}
+end
+
+function C:addBeam(target, material, width, color)
+	for k, beam in pairs(self.beams) do
+		if beam:getTarget() == target then
+			return beam
+		end
+	end
+	-- Only add a beam if we don't have an existing beam yet
+	local beam = self.classLoader.new("rd/Beam", target, material, width, color)
+	table.insert(self.beams, beam)
+	self.beamsmodified = CurTime()
+	return beam
+end
+
+function C:removeBeam(target)
+	local foundBeam
+	for k, beam in pairs(self.beams) do
+		if beam:getTarget() == target then
+			foundBeam = beam
+			break
+		end
+	end
+	if foundBeam then
+		table.RemoveByValue( self.beams, foundBeam )
+		self.beamsmodified = CurTime()
+	end
+end
+
+function C:removeBeams()
+	self.beams = {}
+	self.beamsmodified = CurTime()
+end
+
+function C:getBeams()
+	return self.beams
 end
 
 function C:getID()
@@ -174,6 +214,10 @@ function C:_sendContent(modified)
 	for _, v in pairs(self.resources) do
 		v:send(modified)
 	end
+	net.writeTiny(table.Count(self.beams))
+	for _, v in pairs(self.beams) do
+		v:send(modified)
+	end
 end
 
 --- Sync function to receive data from the server to this client
@@ -190,6 +234,16 @@ function C:receive()
 			self.resources[name] = self.classLoader.new("rd/Resource", name, 0, 0, self.resourceRegistry)
 		end
 		self.resources[name]:receive()
+	end
+	local beamUpdate = net.ReadBool()
+	if beamUpdate then
+		self.beams = {}
+		local beam
+		local nrBeams = net.readTiny()
+		for am = 1, nrBeams do
+			beam = self:addBeam()
+			beam:receive()
+		end
 	end
 end
 

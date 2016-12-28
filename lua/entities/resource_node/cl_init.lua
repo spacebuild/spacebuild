@@ -1,5 +1,6 @@
 include('shared.lua')
 
+local SB = SPACEBUILD
 ENT.RenderGroup = RENDERGROUP_BOTH
 
 surface.CreateFont( "ConflictText", {font = "Verdana", size = 60, weight = 600} )
@@ -9,7 +10,7 @@ function ENT:Draw( bDontDrawModel )
 	self:DoNormalDraw()
 
 	--draw beams by MadDog
-	CAF.GetAddon("Resource Distribution").Beam_Render( self )
+	SB:drawBeams(self)
 
 	if (Wire_Render) then
 		Wire_Render(self)
@@ -77,7 +78,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 				local resources = obj:getResources()
 				if ( table.Count(resources) > 0 ) then
 					for k, v in pairs(resources) do
-						OverlayText = OverlayText ..v:getDisplayName()..": "..v:getAmount().."/"..v:getMaxAmount().."\n"
+						OverlayText = OverlayText ..v:getDisplayName()..": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "\n"
 					end
 				else
 					OverlayText = OverlayText .. "No Resources Connected\n"
@@ -169,6 +170,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 					stringUsage = ""
 					local resources = obj:getResources()
 					if ( table.Count(resources) > 0 ) then
+						local amt, value, h, amount
 						local i = 0
 						surface.SetFont("Flavour")
 						surface.SetTextColor(200,200,255,255)
@@ -184,18 +186,19 @@ function ENT:DoNormalDraw( bDontDrawModel )
 								surface.DrawOutlinedRect(-20, TempY-5, -2*(textStartPos)+20, 40)
 								surface.DrawRect(-20, TempY-5, ((-2*textStartPos)+20)*amt, 40)
 								TempY = TempY + 50
-									value,h = surface.GetTextSize(tostring(v:getAmount()))
+								amount = obj:getResourceAmount(v:getName())
+								value,h = surface.GetTextSize(tostring(amount))
 								if amt < 0.5 then
 									surface.SetTextColor(200,200,255,255)
 									surface.SetTextPos(-2*(textStartPos)*amt-5,TempY-15-h)
-									surface.DrawText(v:getAmount())
+									surface.DrawText(amount)
 								else
 									surface.SetTextColor(0,0,0,255)
 									surface.SetTextPos(-2*(textStartPos)*amt-15-value,TempY-15-h)
-									surface.DrawText(v:getAmount())
+									surface.DrawText(amount)
 								end
 							else
-								stringUsage = stringUsage.."["..v:getDisplayName()..": "..v:getAmount().."/"..v:getMaxAmount().."] "
+								stringUsage = stringUsage.."["..v:getDisplayName()..": " .. obj:getResourceAmount(v:getName()) .. "/" .. obj:getMaxResourceAmount(v:getName()) .. "] "
 								i = i + 1
 								if i == 3 then
 									surface.SetTextPos(textStartPos+15,TempY)
