@@ -30,6 +30,7 @@ local resourceRegistry = class.new("rd/ResourceRegistry", class)
 
 internal.device_table = device_table
 
+resourceRegistry:registerResourceInfo(1, "vacuum", "Vacuum", { })
 resourceRegistry:registerResourceInfo(1, "energy", "Energy", { "ENERGY" })
 resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
 resourceRegistry:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })

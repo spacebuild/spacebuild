@@ -281,7 +281,7 @@ function C:receive()
 		for am = 1, nrofcontainers do
 			id = net.readShort()
 			--TODO how to get this
-			self.containers[id] = GM:getDeviceInfo(id)
+			self.containers[id] = SB:getDeviceInfo(id)
 		end
 	end
 	local hasNetworksUpdate = net.ReadBool()
@@ -292,7 +292,7 @@ function C:receive()
 		for am = 1, nrofnetworks do
 			id = net.readShort()
 			-- TODO how to get this
-			self.networks[id] = GM:getDeviceInfo(id)
+			self.networks[id] = SB:getDeviceInfo(id)
 		end
 	end
 	funcRef.receiveSignal(self)
@@ -304,11 +304,11 @@ function C:applyDupeInfo(data, newent, CreatedEntities)
 	--funcRef.applyDupeInfo(self, data, newent, CreatedEntities) -- Don't restore resource info, this will happen by relinking below
 	for k, v in pairs(data.networks) do
 		-- TODO how to get this
-		self:link(GM:getDeviceInfo(CreatedEntities[k]:EntIndex()))
+		self:link(SB:getDeviceInfo(CreatedEntities[k]:EntIndex()))
 	end
 	for k, v in pairs(data.containers) do
 		-- TODO how to get this
-		self:link(GM:getDeviceInfo(CreatedEntities[k]:EntIndex()))
+		self:link(SB:getDeviceInfo(CreatedEntities[k]:EntIndex()))
 	end
 end
 
@@ -318,11 +318,11 @@ function C:onLoad(data)
 	timer.Simple(0.1, function()
 		for k, v in pairs(data.networks) do
 			-- TODO how to get this
-			ent.networks[v] = GM:getDeviceInfo(k)
+			ent.networks[v] = SB:getDeviceInfo(k)
 		end
 		for k, v in pairs(data.containers) do
 			--TODO how to get this
-			ent.containers[v] = GM:getDeviceInfo(k)
+			ent.containers[v] = SB:getDeviceInfo(k)
 		end
 	end)
 end

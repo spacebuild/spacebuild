@@ -1,3 +1,4 @@
+local SB = SPACEBUILD
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
@@ -9,8 +10,7 @@ function ENT:Initialize()
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
-	self.netid = CAF.GetAddon("Resource Distribution").CreateNetwork(self)
-	self:SetNetworkedInt( "netid", self.netid )
+	SB:registerDevice(self, SPACEBUILD.RDTYPES.NETWORK)
 	self:SetNetworkedInt( "overlaymode", 2 )
 	self.range = self.range or 512
 	self:SetNetworkedInt( "range", self.range )
@@ -51,35 +51,32 @@ function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if t
 end
 
 function ENT:Think()
-	local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(self.netid)
-	if table.Count(nettable) > 0 then
-		local entities = nettable.entities
+	if self.rdobject then
+		local entities = self.rdobject:getConnectedEntities()
 		if table.Count(entities) > 0 then
-			for k, ent in pairs(entities) do
+			for k, container in pairs(entities) do
+				local ent = container:getEntity()
 				if ent and IsValid(ent) then
 					local pos = ent:GetPos()
 					if pos:Distance(self:GetPos()) > self.range then
-						CAF.GetAddon("Resource Distribution").Unlink(ent)
-						self:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500) 
+						self.rdobject:unlink(container)
+						self:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 						ent:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 					end
 				end
 			end
 		end
-		local cons = nettable.cons
+		local cons = self.rdobject:getConnectedNetworks()
 		if table.Count(cons) > 0 then
 			for k, v in pairs(cons) do
-				local tab = CAF.GetAddon("Resource Distribution").GetNetTable(v)
-				if tab and table.Count(tab) > 0 then
-					local ent = tab.nodeent
-					if ent and IsValid(ent) then
-						local pos = ent:GetPos()
-						local range = pos:Distance(self:GetPos())
-						if range > self.range and range > ent.range then
-							CAF.GetAddon("Resource Distribution").UnlinkNodes(self.netid, ent.netid)
-							self:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500) 
-							ent:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
-						end
+				local ent = v:getEntity()
+				if ent and IsValid(ent) then
+					local pos = ent:GetPos()
+					local range = pos:Distance(self:GetPos())
+					if range > self.range and range > ent.range then
+						self.rdobject:unlink(v)
+						self:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
+						ent:EmitSound("physics/metal/metal_computer_impact_bullet"..math.random(1,3)..".wav", 500)
 					end
 				end
 			end
@@ -91,8 +88,7 @@ end
 
 
 function ENT:OnRemove()
-	CAF.GetAddon("Resource Distribution").UnlinkAllFromNode(self.netid)
-	CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
+	SB:removeDevice(self)
 	if not (WireAddon == nil) then Wire_Remove(self) end
 end
 

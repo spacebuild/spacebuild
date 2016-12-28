@@ -32,11 +32,11 @@ TOOL.ClientConVar[ "color_a" ] = "255"
 
 function TOOL:LeftClick( trace )
 	--if not valid or player, exit
-	if ( trace.Entity:IsValid() and trace.Entity:IsPlayer() ) then return end
+	if trace.Entity:IsValid() and trace.Entity:IsPlayer() then return end
 	--if client exit
-	if ( CLIENT ) then return true end
+	if CLIENT  then return true end
 	-- If there's no physics object then we can't constraint it!
-	if ( !util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone ) ) then return false end
+	if not util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone )  then return false end
 
 	--how many objects stored
 	local iNum = self:NumObjects() + 1
@@ -71,7 +71,7 @@ function TOOL:LeftClick( trace )
 
 		if Ent1.IsNode and Ent2.IsNode then
 			if length <= Ent1.range or length <= Ent2.range then
-				CAF.GetAddon("Resource Distribution").linkNodes(Ent1.netid, Ent2.netid)
+				Ent1.rdobject:link(Ent2.rdobject)
 			else
 				self:GetOwner():SendLua( "GAMEMODE:AddNotify('These 2 Nodes are too far apart!', NOTIFY_GENERIC, 7);" )
 
@@ -81,9 +81,9 @@ function TOOL:LeftClick( trace )
 				self:ClearObjects()	--clear objects
 				return			--failure
 			end
-		elseif Ent1.IsNode and table.Count(CAF.GetAddon("Resource Distribution").GetEntityTable(Ent2)) > 0 then
+		elseif Ent1.IsNode and Ent2.rdobject then
 			if length <= Ent1.range then
-				CAF.GetAddon("Resource Distribution").Link(Ent2, Ent1.netid)
+				Ent1.rdobject:link(Ent2.rdobject)
 			else
 				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 
@@ -93,9 +93,9 @@ function TOOL:LeftClick( trace )
 				self:ClearObjects()	--clear objects
 				return			--failure
 			end
-		elseif Ent2.IsNode and table.Count(CAF.GetAddon("Resource Distribution").GetEntityTable(Ent1)) > 0 then
+		elseif Ent2.IsNode and Ent2.rdobject then
 			if length <= Ent2.range then
-				CAF.GetAddon("Resource Distribution").Link(Ent1, Ent2.netid)
+				Ent1.rdobject:link(Ent2.rdobject)
 			else
 				self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
 

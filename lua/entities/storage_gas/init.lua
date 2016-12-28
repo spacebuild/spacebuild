@@ -32,15 +32,7 @@ function ENT:OnRemove()
     self.BaseClass.OnRemove(self)
     local air = self:GetResourceAmount(self.resource)
     if self.environment then
-        if self.resource == "oxygen" then
-            self.environment:Convert(-1, 0, air)
-        elseif self.resource == "carbon dioxide" then
-            self.environment:Convert(-1, 1, air)
-        elseif self.resource == "hydrogen" then
-            self.environment:Convert(-1, 3, air)
-        elseif self.resource == "nitrogen" then
-            self.environment:Convert(-1, 2, air)
-        end
+        self.environment:convertResource(nil, self.resource, air)
     end
     self:StopSound("PhysicsCannister.ThrusterLoop")
 end
@@ -72,28 +64,12 @@ function ENT:Leak()
     if (air >= am) then
         self:ConsumeResource(self.resource, am)
         if self.environment then
-            if self.resource == "oxygen" then
-                self.environment:Convert(-1, 0, am)
-            elseif self.resource == "carbon dioxide" then
-                self.environment:Convert(-1, 1, am)
-            elseif self.resource == "hydrogen" then
-                self.environment:Convert(-1, 3, am)
-            elseif self.resource == "nitrogen" then
-                self.environment:Convert(-1, 2, am)
-            end
+            self.environment:convertResource(nil, self.resource, air)
         end
     else
         self:ConsumeResource(self.resource, air)
         if self.environment then
-            if self.resource == "oxygen" then
-                self.environment:Convert(-1, 0, air)
-            elseif self.resource == "carbon dioxide" then
-                self.environment:Convert(-1, 1, air)
-            elseif self.resource == "hydrogen" then
-                self.environment:Convert(-1, 3, air)
-            elseif self.resource == "nitrogen" then
-                self.environment:Convert(-1, 2, air)
-            end
+            self.environment:convertResource(nil, self.resource, air)
         end
         self:StopSound("PhysicsCannister.ThrusterLoop")
     end

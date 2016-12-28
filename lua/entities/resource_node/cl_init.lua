@@ -42,9 +42,8 @@ function ENT:DoNormalDraw( bDontDrawModel )
 	end
 	if ( EyePos():Distance( self:GetPos() ) < rd_overlay_dist and mode ~= 0 ) and ( (mode ~= 1 and not string.find(self:GetModel(),"s_small_res") ) or LocalPlayer():GetEyeTrace().Entity == self) then
 		local trace = LocalPlayer():GetEyeTrace()
-		if ( !bDontDrawModel ) then self:DrawModel() end
-		local netid = self:GetNetworkedInt("netid")
-		local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(netid)
+		if not bDontDrawModel  then self:DrawModel() end
+		local obj = self.rdobject
 		
 		local range = self:GetNetworkedInt("range")
 		local playername = self:GetPlayerName()
@@ -58,27 +57,27 @@ function ENT:DoNormalDraw( bDontDrawModel )
 
 		if not mode or mode == 1 or string.find(self:GetModel(),"s_small_res") then
 			local OverlayText = ""
-			OverlayText = OverlayText .. "Network " .. netid .."\n"
+			OverlayText = OverlayText .. "Network " .. obj:getID() .."\n"
 			if nodename ~= "" then
 				OverlayText = OverlayText .. "Networkname " .. nodename .."\n"
 			end
 			OverlayText = OverlayText .. "Owner: " .. playername .."\n"
 			OverlayText = OverlayText .. "Range: " .. range .."\n"
-			if table.Count(nettable) <= 0 then 
+			if not obj then
 				OverlayText = OverlayText .. "Loading network data...\n"
 			else
-				local cons = nettable.cons
+				local cons = obj:getConnectedNetworks()
 				if (table.Count(cons) > 0 ) then
 					OverlayText = OverlayText .. "Connected to networks: "
 					for k, v in pairs(cons) do
-						OverlayText = OverlayText .. tostring(v) .." "
+						OverlayText = OverlayText .. tostring(v:getID()) .." "
 					end
 					OverlayText = OverlayText .. "\n"
 				end
-				local resources = nettable.resources
+				local resources = obj:getResources()
 				if ( table.Count(resources) > 0 ) then
 					for k, v in pairs(resources) do
-						OverlayText = OverlayText ..CAF.GetAddon("Resource Distribution").GetProperResourceName(k)..": "..v.value.."/"..v.maxvalue.."\n"
+						OverlayText = OverlayText ..v:getDisplayName()..": "..v:getAmount().."/"..v:getMaxAmount().."\n"
 					end
 				else
 					OverlayText = OverlayText .. "No Resources Connected\n"
@@ -110,21 +109,25 @@ function ENT:DoNormalDraw( bDontDrawModel )
 
 			cam.Start3D2D(pos,angle,0.05)
 
-					surface.SetDrawColor(0,0,0,255)
-					surface.DrawRect( textStartPos, 0, 1250, 675 )
+				surface.SetDrawColor(0,0,0,255)
+				surface.DrawRect( textStartPos, 0, 1250, 675 )
 
-					surface.SetDrawColor(155,155,155,255)
-					surface.DrawRect( textStartPos, 0, -5, 675 )
-					surface.DrawRect( textStartPos, 0, 1250, -5 )
-					surface.DrawRect( textStartPos, 675, 1250, -5 )
-					surface.DrawRect( textStartPos+1250, 0, 5, 675 )
+				surface.SetDrawColor(155,155,155,255)
+				surface.DrawRect( textStartPos, 0, -5, 675 )
+				surface.DrawRect( textStartPos, 0, 1250, -5 )
+				surface.DrawRect( textStartPos, 675, 1250, -5 )
+				surface.DrawRect( textStartPos+1250, 0, 5, 675 )
 
-					TempY = TempY + 10
-					surface.SetFont("ConflictText")
-					surface.SetTextColor(255,255,255,255)
-					surface.SetTextPos(textStartPos+15,TempY)
+				TempY = TempY + 10
+				surface.SetFont("ConflictText")
+				surface.SetTextColor(255,255,255,255)
+				surface.SetTextPos(textStartPos+15,TempY)
 
-					surface.DrawText("Network " .. netid)
+				if not obj then
+					surface.DrawText("Loading network data...")
+				else
+
+					surface.DrawText("Network " .. obj:getID())
 					TempY = TempY + 70
 					local extra = 70
 					if mode == 3 then
@@ -148,86 +151,79 @@ function ENT:DoNormalDraw( bDontDrawModel )
 					surface.SetTextPos(textStartPos+15,TempY)
 					surface.DrawText("Range: "..range)
 					TempY = TempY + extra
-					
-					if table.Count(nettable) <= 0 then 
-						surface.SetFont("Flavour")
-						surface.SetTextColor(200,200,255,255)
-						surface.SetTextPos(textStartPos+15,TempY)
-						surface.DrawText("Loading data...")
-						TempY = TempY + extra
-					else
-						-- Print the used resources
-						local stringUsage = ""
-						local cons = nettable.cons
-						if ( table.Count(cons) > 0 ) then
-								local i = 0
-								surface.SetFont("Flavour")
-								surface.SetTextColor(200,200,255,255)
-								for k, v in pairs(cons) do
-										stringUsage = stringUsage..tostring(v).. " "
-								end
-								surface.SetTextPos(textStartPos+15,TempY)
-								surface.DrawText("Connected to networks: "..stringUsage)
-								TempY = TempY + extra
-						end
-						stringUsage = ""
-						local resources = nettable.resources
-						if ( table.Count(resources) > 0 ) then
+
+					-- Print the used resources
+					local stringUsage = ""
+					local cons = obj:getConnectedNetworks()
+					if ( table.Count(cons) > 0 ) then
 							local i = 0
 							surface.SetFont("Flavour")
 							surface.SetTextColor(200,200,255,255)
+							for k, v in pairs(cons) do
+									stringUsage = stringUsage..tostring(v:getID()).. " "
+							end
 							surface.SetTextPos(textStartPos+15,TempY)
-							surface.DrawText("Resources: ")
+							surface.DrawText("Connected to networks: "..stringUsage)
 							TempY = TempY + extra
-							for k, v in pairs(resources) do
-								if mode == 3 then
+					end
+					stringUsage = ""
+					local resources = obj:getResources()
+					if ( table.Count(resources) > 0 ) then
+						local i = 0
+						surface.SetFont("Flavour")
+						surface.SetTextColor(200,200,255,255)
+						surface.SetTextPos(textStartPos+15,TempY)
+						surface.DrawText("Resources: ")
+						TempY = TempY + extra
+						for k, v in pairs(resources) do
+							if mode == 3 then
+								surface.SetTextColor(200,200,255,255)
+								amt = v.value/v.maxvalue
+								surface.SetTextPos(textStartPos+15, TempY)
+								surface.DrawText("   "..v:getDisplayName())
+								surface.DrawOutlinedRect(-20, TempY-5, -2*(textStartPos)+20, 40)
+								surface.DrawRect(-20, TempY-5, ((-2*textStartPos)+20)*amt, 40)
+								TempY = TempY + 50
+									value,h = surface.GetTextSize(tostring(v:getAmount()))
+								if amt < 0.5 then
 									surface.SetTextColor(200,200,255,255)
-									amt = v.value/v.maxvalue
-									surface.SetTextPos(textStartPos+15, TempY)
-									surface.DrawText("   "..CAF.GetAddon("Resource Distribution").GetProperResourceName(k))
-									surface.DrawOutlinedRect(-20, TempY-5, -2*(textStartPos)+20, 40)
-									surface.DrawRect(-20, TempY-5, ((-2*textStartPos)+20)*amt, 40)
-									TempY = TempY + 50
-										value,h = surface.GetTextSize(tostring(v.value))
-									if amt < 0.5 then
-										surface.SetTextColor(200,200,255,255)
-										surface.SetTextPos(-2*(textStartPos)*amt-5,TempY-15-h)
-										surface.DrawText(v.value)
-									else
-										surface.SetTextColor(0,0,0,255)
-										surface.SetTextPos(-2*(textStartPos)*amt-15-value,TempY-15-h)
-										surface.DrawText(v.value)
-									end
+									surface.SetTextPos(-2*(textStartPos)*amt-5,TempY-15-h)
+									surface.DrawText(v:getAmount())
 								else
-									stringUsage = stringUsage.."["..CAF.GetAddon("Resource Distribution").GetProperResourceName(k)..": "..v.value.."/"..v.maxvalue.."] "
-									i = i + 1
-									if i == 3 then
-										surface.SetTextPos(textStartPos+15,TempY)
-										surface.DrawText("   "..stringUsage)
-										TempY = TempY + 70
-										stringUsage = ""
-										i = 0
-									end
+									surface.SetTextColor(0,0,0,255)
+									surface.SetTextPos(-2*(textStartPos)*amt-15-value,TempY-15-h)
+									surface.DrawText(v:getAmount())
+								end
+							else
+								stringUsage = stringUsage.."["..v:getDisplayName()..": "..v:getAmount().."/"..v:getMaxAmount().."] "
+								i = i + 1
+								if i == 3 then
+									surface.SetTextPos(textStartPos+15,TempY)
+									surface.DrawText("   "..stringUsage)
+									TempY = TempY + 70
+									stringUsage = ""
+									i = 0
 								end
 							end
-							if mode ~= 3 then
-								surface.SetTextPos(textStartPos+15,TempY)
-								surface.DrawText("   "..stringUsage)
-								TempY = TempY + 70
-							end
-						else
-							surface.SetFont("Flavour")
-							surface.SetTextColor(200,200,255,255)
+						end
+						if mode ~= 3 then
 							surface.SetTextPos(textStartPos+15,TempY)
-							surface.DrawText("No resources connected")
+							surface.DrawText("   "..stringUsage)
 							TempY = TempY + 70
 						end
+					else
+						surface.SetFont("Flavour")
+						surface.SetTextColor(200,200,255,255)
+						surface.SetTextPos(textStartPos+15,TempY)
+						surface.DrawText("No resources connected")
+						TempY = TempY + 70
 					end
+				end
 			--Stop rendering
 			cam.End3D2D()
 		end
 	else
-		if ( !bDontDrawModel ) then self:DrawModel() end
+		if not bDontDrawModel  then self:DrawModel() end
 	end
 end
 
