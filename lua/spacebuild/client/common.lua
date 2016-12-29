@@ -157,13 +157,21 @@ local function drawEnvironment(ply, width, height)
     surface.DrawRect( 20, 72, 150, 20 )
 
     draw.DrawText( utf8.char( 0xf2d6 ) , "FANormal", 24, 74, whiteColor, TEXT_ALIGN_LEFT )
-    draw.DrawText( string.format("%6.2f", ply.environment:getGravity()).."g"  , "FANormal", 158, 76, whiteColor, TEXT_ALIGN_RIGHT )
-    -- Oxygen
+    draw.DrawText( string.format("%6.2f", ply.environment:getGravity()).."G"  , "FANormal", 158, 76, whiteColor, TEXT_ALIGN_RIGHT )
+
+    -- Pressure
     surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
     surface.DrawRect( 20, 94, 150, 20 )
 
-    draw.DrawText( utf8.char( 0xf1bb ) , "FANormal", 24, 96, whiteColor, TEXT_ALIGN_LEFT )
-    draw.DrawText( string.format("%6.2f", ply.environment:getResourcePercentage("oxygen")).."%"  , "FANormal", 158, 98, whiteColor, TEXT_ALIGN_RIGHT )
+    draw.DrawText( utf8.char( 0xf2da ) , "FANormal", 24, 96, whiteColor, TEXT_ALIGN_LEFT )
+    draw.DrawText( string.format("%6.2f", ply.environment:getPressure()).."P"  , "FANormal", 158, 98, whiteColor, TEXT_ALIGN_RIGHT )
+
+    -- Oxygen
+    surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
+    surface.DrawRect( 20, 116, 150, 20 )
+
+    draw.DrawText( utf8.char( 0xf1bb ) , "FANormal", 24, 118, whiteColor, TEXT_ALIGN_LEFT )
+    draw.DrawText( string.format("%6.2f", ply.environment:getResourcePercentage("oxygen")).."%"  , "FANormal", 158, 120, whiteColor, TEXT_ALIGN_RIGHT )
 end
 
 local function drawSuit(ply, width, height)

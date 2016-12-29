@@ -31,6 +31,7 @@ require("sbnet")
 local net = sbnet
 -- Class specific
 local C = CLASS
+local hook = hook
 
 local GM = SPACEBUILD
 local log = GM.log
@@ -267,7 +268,7 @@ function C:updateEnvironmentOnEntity(ent)
 			if self.gravity <= 0 then
 				ent:SetGravity(0.00001) -- if gravity is 0, put gravity to 0.00001
 			else
-				ent:SetGravity(self.gravity) -- if gravity is 0, put gravity to 0.00001
+				ent:SetGravity(self.gravity)
 			end
 			if self.gravity > 0.01 then
 				phys:EnableGravity(true)
@@ -279,6 +280,13 @@ function C:updateEnvironmentOnEntity(ent)
 			else
 				phys:EnableDrag(false)
 			end
+		end
+		local temperature = self:getTemperature(ent)
+		local pressure = self:getPressure()
+		if temperature > 5000 and not hook.Call( "SBPreventHeatDamage", GAMEMODE, ent, temperature, self) then
+			ent:SilentKill()
+		elseif pressure > 1.5 and not hook.Call( "SBPreventPressureDamage", GAMEMODE, ent, pressure, self) then
+			ent:TakeDamage((pressure - 1.5) * 10)
 		end
 	end
 end
