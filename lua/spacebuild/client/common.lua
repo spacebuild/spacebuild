@@ -130,7 +130,17 @@ local function drawEnvironment(ply, width, height)
 
     surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
     surface.DrawRect( 20, 28, 150, 20 )
-    draw.DrawText( utf8.char( 0xf0ac) , "FANormal", 24, 30, whiteColor, TEXT_ALIGN_LEFT )
+    local envSymbol
+    if ply.environment:isPlanet() then
+        envSymbol = utf8.char( 0xf0ac)
+    elseif ply.environment:isStar() then
+        envSymbol = utf8.char( 0xf005)
+    elseif ply.environment:isSpace() then
+        envSymbol = utf8.char( 0xf197)
+    else
+        envSymbol = utf8.char( 0xf299)
+    end
+    draw.DrawText( envSymbol , "FANormal", 24, 30, whiteColor, TEXT_ALIGN_LEFT )
 
     local name = "Environment"
     if  ply.environment:hasName() then
