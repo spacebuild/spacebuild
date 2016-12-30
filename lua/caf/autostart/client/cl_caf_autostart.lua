@@ -22,12 +22,7 @@ local Addons = {}
 CAF3.Addons = Addons
 
 --Derma stuff
-local MainInfoMenuData = nil;
---local MainStatusMenuData = nil;
---local TopFrame = nil;
---local TopFrameHasText = false;
---local TopLabel = nil
---End Derma stuff
+local MainInfoMenuData;
 
 local addonlevel = {}
 CAF3.addonlevel = addonlevel
@@ -708,16 +703,16 @@ concommand.Add("Main_CAF_Menu", CAF2.OpenMainMenu)
 --Panel
 local function BuildMenu( Panel )
 	Panel:ClearControls( )
-	Panel:AddControl( "Header", { Text = "Custom Addon Framework", Description   = "Custom Addon Framework" }  )
+	Panel:AddControl( "Header", { Text = "Spacebuild", Description   = "Spacebuild menu" }  )
 	Panel:AddControl( "Button", {
 		Label = "Open Menu",
-		Text = "Custom Addon Framework",
+		Text = "Open spacebuild help menu",
 		Command = "Main_CAF_Menu"
 		} )
 end
 
 local function CreateMenu( )
-	spawnmenu.AddToolMenuOption( "Custom Addon Framework", "Custom Addon Framework", "MainInfoMenu", "Main Info Menu", "", "", BuildMenu, { } )
+	spawnmenu.AddToolMenuOption( "Spacebuild", "Spacebuild", "MainInfoMenu", "Main Info Menu", "", "", BuildMenu, { } )
 end
 hook.Add( "PopulateToolMenu", "Caf_OpenMenu_AddMenu", CreateMenu )
 

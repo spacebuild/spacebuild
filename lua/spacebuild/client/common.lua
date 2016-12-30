@@ -51,6 +51,29 @@ end
 
 local function drawHealth(ply, width, height)
     if hook.Call( "HUDShouldDraw", GAMEMODE, "SBHudHealth" ) == false then return end
+
+    -- Draw breath
+    if ply.suit then
+        surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
+        surface.DrawRect( 20, height - 94, 200, 20 )
+
+        draw.DrawText( utf8.char( 0xf1bb ) , "FANormal", 24, height - 92, whiteColor, TEXT_ALIGN_LEFT )
+        local breath = ply.suit:getBreath()
+        surface.SetDrawColor( whiteColor.r, whiteColor.g, whiteColor.b, whiteColor.a )
+
+        surface.DrawRect( 40, height - 88, breath * 1.6, 8 )
+
+        if breath < 20 then
+            local col = orangeColor
+            if breath < 5 then
+                col = redColor
+            end
+            draw.DrawText( utf8.char( 0xf071 ) , "FANormal", 218, height - 92, col, TEXT_ALIGN_RIGHT )
+        else
+            draw.DrawText( utf8.char( 0xf00c ) , "FANormal", 218, height - 92, greenColor, TEXT_ALIGN_RIGHT )
+        end
+    end
+
     -- Draw health
     surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
     surface.DrawRect( 20, height - 50, 130, 20 )
@@ -109,8 +132,8 @@ local function drawAmmo(ply, width, height)
 end
 
 local function getTemperatureColor(temperature)
-    if		temperature < 283 then return blueColor
-    elseif	temperature > 308 then return redColor
+    if		temperature < SB.constants.TEMPERATURE_SAFE_MIN then return blueColor
+    elseif	temperature > SB.constants.TEMPERATURE_SAFE_MAX then return redColor
     else return whiteColor end
 end
 
@@ -187,6 +210,22 @@ end
 local function drawSuit(ply, width, height)
     if hook.Call( "HUDShouldDraw", GAMEMODE, "SBHudSuit" ) == false then return end
     if not ply.suit then return end
+
+    surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
+    surface.DrawRect( width - 170, 28, 150, 20 )
+
+    local name = "Helmet off"
+    local col = orangeColor
+    if ply.suit:isActive() then
+        name = "Helmet on"
+        col = greenColor
+    end
+
+    draw.DrawText( utf8.char( 0xf183 ) , "FANormal", width - 24, 30, col, TEXT_ALIGN_RIGHT )
+    draw.DrawText( name, "FANormal", width - 168, 32, whiteColor, TEXT_ALIGN_LEFT)
+
+    if not ply.suit:isActive() then return end
+
 end
 
 local function drawRdInfo(ply, width, height)

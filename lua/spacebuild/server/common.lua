@@ -43,13 +43,11 @@ local time
 local function Think( )
     time = CurTime()
     for _, ply in pairs(player.GetAll()) do
-
         for _, part in pairs(core) do
             if part.player and part.player.think then
                 part.player.think(ply, time)
             end
         end
-
     end
 end
 hook.Add("Think", "spacebuild.common.Think", Think)

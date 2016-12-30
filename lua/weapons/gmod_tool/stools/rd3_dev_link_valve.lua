@@ -9,7 +9,7 @@ TOOL.Name		= "#Valve Link Tool"
 TOOL.Command		= nil
 TOOL.ConfigName	= ''
 
-if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon Framework" end
+TOOL.Tab = "Spacebuild"
 
 if ( CLIENT ) then
 	language.Add( "tool.rd3_dev_link_valve.name", "Valve Link Tool" )

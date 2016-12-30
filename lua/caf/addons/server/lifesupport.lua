@@ -36,16 +36,6 @@ local function LS_Reg_Veh(ply, ent)
 	RD.RegisterNonStorageDevice(ent)
 end
 
-local function LSSpawnFunc( ply )
-	if not ply:Ls_Init() then
-		ErrorNoHalt("Error initializing player\n")
-	end
-end
-
-local function LSResetSpawnFunc( ply )
-	ply:LsResetSuit()
-end
-
 
 local function RemoveEntity( ent )
 	if (ent:IsValid()) then
@@ -71,19 +61,6 @@ local function Explode2( ent )
 			Effect:SetMagnitude(100)
 		util.Effect("Explosion", Effect, true, true)
 		RemoveEntity( ent )
-	end
-end
-
-local function PlayerLSThink()
-	for k, ply in pairs(player.GetAll( )) do
-		ply:LsCheck()
-	end
-end
-
-local function AddonDisabled(addon)
-	if not addon then return false end
-	if addon == "Resource Distribution" then 
-		CAF.Destruct("Life Support")
 	end
 end
 
@@ -113,14 +90,6 @@ function LS.__Construct()
 	--SB_PlayerOverride = true
 	--SB_Override_PlayerHeatDestroy = true
 	hook.Add( "PlayerSpawnedVehicle", "LS_vehicle_spawn", LS_Reg_Veh )
-	if (SunAngle == nil) then SunAngle = Vector(0,0,-1) end
-	for k, ply in pairs(player.GetAll( )) do
-		LSSpawnFunc( ply );
-	end
-	hook.Add( "PlayerInitialSpawn", "LS_Core_SpawnFunc", LSSpawnFunc )
-	hook.Add( "PlayerSpawn", "LS_Core_ResetSpawnFunc", LSResetSpawnFunc )
-	CAF.AddHook("think3", PlayerLSThink)
-	CAF.AddHook("OnAddonDestruct", AddonDisabled)
 	status = true
 	return true
 end
@@ -130,16 +99,7 @@ end
 ]]
 function LS.__Destruct()
 	if not status then return false, CAF.GetLangVar("This addon wasn't on in the first place") end
-	hook.Remove( "PlayerInitialSpawn", "LS_Core_SpawnFunc")
-	hook.Remove( "PlayerSpawn", "LS_Core_ResetSpawnFunc")
 	hook.Remove( "PlayerSpawnedVehicle", "LS_vehicle_spawn")
-	CAF.RemoveHook("think3", PlayerLSThink)
-	CAF.RemoveHook("OnAddonDestruct", AddonDisabled)
-	local SB = CAF.GetAddon("Spacebuild")
-	if SB then
-		SB.RemovePlayerOverride()
-		SB.RemoveOverride_PlayerHeatDestroy()
-	end
 	LS.generators = {}
 	LS.generators.air = {}
 	LS.generators.temperature = {}
@@ -151,7 +111,7 @@ end
 	Get the required Addons for this Addon Class
 ]]
 function LS.GetRequiredAddons()
-	return {"Resource Distribution"}
+	return {}
 end
 
 --[[
@@ -353,40 +313,8 @@ end
 
 --End Extra Methodes
 
---Extensions on MetaTable
 
-local Ply = FindMetaTable( "Player" )
-
-function Ply:Ls_Init()
-	if LS.GetVersion and LS.GetVersion() >= 0.1 then
-		self.suit = self.suit or {}
-		self.caf = self.caf or {}
-		self.caf.custom = self.caf.custom or {}
-		self.caf.custom.ls = {}
-		self:LsResetSuit()
-		return true
-	end
-	return false
-end
-
-function Ply:LsResetSuit()
-	local hash = self.suit
-	hash.env = {}
-	hash.air = 200 --100
-	hash.energy = 200 --100
-	hash.coolant = 200 --100
-	hash.recover = 0
-	self.suit = hash
-	hash = {}
-	hash.temperature = 288
-	hash.air = true
-	hash.inspace = false
-	self.airused = false
-	self.highpressure = false
-	self.caf.custom.ls = hash
-end
-
-function Ply:LsCheck()
+local function LsCheck() --TODO compare to class ls/playersuit code
 	if self:IsValid() and self:Alive() and LS.GetStatus() then
 		local pod = self:GetParent()
 		local RD = CAF.GetAddon("Resource Distribution")
@@ -633,22 +561,6 @@ function Ply:LsCheck()
 		self.caf.custom.ls.airused = false
 		self.caf.custom.ls.air = true
 		self:UpdateLSClient()
-	end
-end
-
-function Ply:UpdateLSClient()
-	local SB = CAF.GetAddon("Spacebuild");
-	if SB and SB.GetStatus() then
-		umsg.Start("LS_umsg1", self)
-			umsg.Short( self.suit.air or -1 )
-			umsg.Short( self.environment and self.environment:getTemperature(self) or -1)
-			umsg.Short( self.suit.coolant or -1)
-			umsg.Short( self.suit.energy  or -1)
-		umsg.End() 
-	else
-		umsg.Start("LS_umsg2", self)
-			umsg.Short( self.suit.air or -1 )
-		umsg.End() 
 	end
 end
 

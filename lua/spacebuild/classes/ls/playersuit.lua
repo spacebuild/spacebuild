@@ -21,7 +21,6 @@ local net = sbnet
 local C = CLASS
 local GM = SPACEBUILD
 local const = GM.constants
-local util = GM.util
 
 --- General class function to check is this class is of a certain type
 -- @param className the classname to check against
@@ -38,6 +37,7 @@ end
 
 function C:reset()
 	self.environment = nil
+	-- is the helmet on, meaning the suit is active an can do it's job
 	self.active = false
 	self.oxygen = 0
 	self.breath = 100
@@ -45,16 +45,12 @@ function C:reset()
 	self.coolant = 0
 	self.energy = 0
 	self.temperature = 293
-	self.modified = CurTime()
-end
-
-function C:setEnvironment(environment)
-	self.environment = environment
+	self.environmentTemperature = 293
 	self.modified = CurTime()
 end
 
 function C:getEnvironment()
-	return self.environment
+	return self.ply.environment
 end
 
 function C:setActive(active)
@@ -106,6 +102,17 @@ function C:getTemperature()
 	return self.temperature
 end
 
+function C:setEnvironmentTemperature(temperature)
+	self.environmentTemperature = temperature
+	self.modified = CurTime()
+end
+
+function C:getEnvironmentTemperature()
+	return self.environmentTemperature
+end
+
+
+
 function C:getBreath()
 	return self.breath
 end
@@ -119,49 +126,63 @@ function C:getMaxBreath()
 	return self.maxbreath
 end
 
-local env, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
+local function calculateOxygenRequired(pressure)
+	local required = 5
+	if pressure > 0 then
 
-local calcQ_radiation = function(body_temp,env_temp)
-	--local t1 = (body_temp*body_temp)+(env_temp*env_temp)
-	--local t2 = (body_temp)+(env_temp)
-	--local tt = t1*t2
-	--local hr = const.BOLTZMAN * ((const.EMISSIVITY.aluminium*0.2)+(const.EMISSIVITY.plastic*0.8)) * tt
-	return ( const.BOLTZMANN * (body_temp*body_temp*body_temp*body_temp) * const.BODY_SURFACE_AREA ) * const.EMISSIVITY.plastic * (500000/(body_temp-env_temp))  -- Last part is constant tweaks.
-	--return hr * const.BODY_SURFACE_AREA  * (body_temp - env_temp)
-end
-
-local calcdT_radiation = function(self)
-	local rtnQ = calcQ_radiation(self:getTemperature(), self:getEnvironment():getTemperature(self.ply)) / (const.PLY_MASS * const.SPECIFIC_HEAT_CAPACITY.aluminium)
-	if rtnQ >= 0 then
-		return calcQ_radiation(self:getTemperature(), self:getEnvironment():getTemperature(self.ply)) / (const.PLY_MASS * const.SPECIFIC_HEAT_CAPACITY.aluminium)
-	else
-		return 0
 	end
+	return required
 end
 
+local function calculateSuitTemperature(suitTemperature, environmentTemperature)
+	if suitTemperature ~= environmentTemperature then
+		local dif = suitTemperature - environmentTemperature
+		suitTemperature = suitTemperature - (dif * 0.05) -- 5% temperature difference every update
+	end
+	return suitTemperature
+end
+
+local function calculateEnergyRequired(suitTemperature)
+	local required = 5
+	if suitTemperature < const.TEMPERATURE_SAFE_MIN then
+
+	end
+	return required
+end
+
+local function calculateCoolantRequired(suitTemperature)
+	local required = 5
+	if suitTemperature > const.TEMPERATURE_SAFE_MAX then
+
+	end
+	return required
+end
+
+-- TODO add support for environmental devices: air regulators, temperature regulators, ...
+-- TODO add support for vehicles (= pod)
 function C:processEnvironment()
+	local env, pod, req_oxygen, env_temperature, req_energy, req_coolant, suit_temp, diff_temp, used_energy
 	if not self.ply:Alive() then return end
 	env = self:getEnvironment()
+	pod = self.ply:GetParent()
+	if GM:isValidRDEntity(pod) then
+		pod = pod.rdobject
+	else
+		pod = nil
+	end
 	if self:isActive() then
-		req_oxygen = util.calculateOxygenRequired((env and env:getPressure()) or 0)
+		req_oxygen = calculateOxygenRequired((env and env:getPressure()) or 0)
 		if GM:onSBMap() and env then
-			env_temperature = env:getTemperature()
+			env_temperature = env:getTemperature(self.ply)
 			suit_temp = self:getTemperature()
-			if env == GM:getSpace() and suit_temp ~= env_temperature then -- Use radiation
-				local T = calcdT_radiation(self) -- Ramp up the value as we're not actually in real life here ...
-				suit_temp = suit_temp - T
-				self:setTemperature(suit_temp)
-			else -- Use convection/conduction
-				diff_temp = env_temperature - suit_temp
-				diff_temp = math.floor(diff_temp * const.SUIT_THERMAL_CONDUCTIVITY)
-				suit_temp = suit_temp + diff_temp
-				self:setTemperature(suit_temp)
-			end
-			req_energy = util.calculateEnergyRequired(suit_temp)
-			req_coolant = util.calculateCoolantRequired(suit_temp)
+			suit_temp = calculateSuitTemperature(suit_temp, env_temperature)
+			self:setTemperature(suit_temp)
+			self:setEnvironmentTemperature(env_temperature)
+			req_energy = calculateEnergyRequired(suit_temp)
+			req_coolant = calculateCoolantRequired(suit_temp)
 		else
-			req_energy = util.calculateEnergyRequired(const.TEMPERATURE_SAFE_MIN)
-			req_coolant = 0 --sb.core.util.calculateCoolantRequired(const.TEMPERATURE_SAFE_MAX)
+			req_energy = calculateEnergyRequired(const.TEMPERATURE_SAFE_MIN)
+			req_coolant = 0
 		end
 		if req_energy > 0 then
 			if self:getEnergy() >= req_energy then
@@ -200,7 +221,7 @@ function C:processEnvironment()
 						self:setBreath(self:getMaxBreath())
 					end
 				elseif self:getOxygen() > 0 then
-					self.ply:TakeDamage((req_oxygen - self:getOxygen()) * sb.core.const.BASE_LS_DAMAGE, 0)
+					self.ply:TakeDamage((req_oxygen - self:getOxygen()) * const.BASE_LS_DAMAGE, 0)
 					if self:getBreath() <= self:getMaxBreath() - (req_oxygen - self:getOxygen()) then
 						self:setBreath(self:getBreath() + (req_oxygen - self:getOxygen()))
 					elseif self:getBreath() < self:getMaxBreath() then
@@ -222,8 +243,8 @@ function C:processEnvironment()
 		if self:getOxygen() < 100 and used_energy then
 			self.ply:EmitSound("common/warning.wav")
 		end
-	else
-		if env and env == GM:getSpace() then --If in space, we'll deduct a random amount between 20 and 70
+	else -- no active suit, means we can only hold our breath for a little bit
+		if env and env:isSpace() then --If in space, we'll deduct a random amount between 20 and 70
 			local rand = math.random(20, 70)
 			if self:getBreath() >= rand then
 				self:setBreath(self:getBreath() - rand)
@@ -249,13 +270,16 @@ function C:processEnvironment()
 		end
 		if GM:onSBMap() and env then
 			env_temperature = env:getTemperature(self.ply)
-			req_energy = util.calculateEnergyRequired(env_temperature) - const.BASE_ENERGY_USE
-			req_coolant = util.calculateCoolantRequired(env_temperature) - const.BASE_COOLANT_USE
-			if req_energy > 0 then
-				self.ply:TakeDamage(req_energy * const.BASE_LS_DAMAGE, 0)
-			end
-			if req_coolant > 0 then
-				self.ply:TakeDamage(req_coolant * const.BASE_LS_DAMAGE, 0)
+			-- Take temperature damage if the outside temperature is unsafe
+			if env_temperature < const.TEMPERATURE_SAFE_MIN or env_temperature > const.TEMPERATURE_SAFE_MAX then
+				req_energy = calculateEnergyRequired(env_temperature) - const.BASE_ENERGY_USE
+				req_coolant = calculateCoolantRequired(env_temperature) - const.BASE_COOLANT_USE
+				if req_energy > 0 then
+					self.ply:TakeDamage(req_energy * const.BASE_LS_DAMAGE, 0)
+				end
+				if req_coolant > 0 then
+					self.ply:TakeDamage(req_coolant * const.BASE_LS_DAMAGE, 0)
+				end
 			end
 		end
 	end
@@ -276,12 +300,6 @@ function C:send(modified)
 			net.writeShort(self.energy)
 			net.writeShort(self.temperature)
 		end
-		if self.environment then
-			net.WriteBool(true)
-			net.writeShort(self.environment:getID())
-		else
-			net.WriteBool(false)
-		end
 		net.Send(self.ply)
 	end
 end
@@ -296,9 +314,5 @@ function C:receive()
 		self.coolant = net.readShort()
 		self.energy = net.readShort()
 		self.temperature = net.readShort()
-	end
-	local hasenvironment = net.ReadBool()
-	if hasenvironment then
-		self.environment = GM:getEnvironment(net.readShort())
 	end
 end

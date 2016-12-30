@@ -1,13 +1,13 @@
 include("caf/core/shared/tool_manifest.lua")
 
 TOOL = ToolObj:Create()
-TOOL.Category = "CAF"
+TOOL.Category = "Spacebuild"
 TOOL.Mode = "startup_tool"
 TOOL.Name = "CAF Tools Startup"
 TOOL.Command = nil
 TOOL.ConfigName = nil
 TOOL.AddToMenu = false
-if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then TOOL.Tab = "Custom Addon Framework" end
+TOOL.Tab = "Spacebuild"
 
 
 function TOOL:LeftClick(trace)

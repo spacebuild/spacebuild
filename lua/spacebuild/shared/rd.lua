@@ -86,7 +86,7 @@ function SB:getDeviceInfo(entid)
 end
 
 function SB:isValidRDEntity(ent)
-    return ent.rdobject ~= nil
+    return ent and ent.rdobject ~= nil
 end
 
 function SB:canLink(ent1, ent2)

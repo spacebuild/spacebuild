@@ -8,7 +8,7 @@ local usetab = CreateClientConVar("CAF_UseTab", "1", true, false)
 
 local function CAFTab()
     if usetab:GetBool() then
-        spawnmenu.AddToolTab("Custom Addon Framework", "CAF")
+        spawnmenu.AddToolTab("Spacebuild", "Spacebuild")
     end
 end
 

@@ -265,17 +265,20 @@ function C:updateEnvironmentOnEntity(ent)
 	if ent.environment == self then
 		local phys = ent:GetPhysicsObject()
 		if IsValid(phys) then -- the physobject can become NULL somehow :s
-			if self.gravity <= 0 then
+			local newGravity, newPressure = hook.Call( "SBOverrideEnvironmentGravity", GAMEMODE, ent, self:getGravity(), self:getPressure(), self)
+			if not newGravity then newGravity = self:getGravity() end
+			if not newPressure then newPressure = self:getPressure() end
+			if newGravity <= 0 then
 				ent:SetGravity(0.00001) -- if gravity is 0, put gravity to 0.00001
 			else
-				ent:SetGravity(self.gravity)
+				ent:SetGravity(newGravity)
 			end
-			if self.gravity > 0.01 then
+			if newGravity > 0.01 then
 				phys:EnableGravity(true)
 			else
 				phys:EnableGravity(false)
 			end
-			if self:getPressure() > 0.1 then
+			if newPressure > 0.1 then
 				phys:EnableDrag(true)
 			else
 				phys:EnableDrag(false)
@@ -283,9 +286,9 @@ function C:updateEnvironmentOnEntity(ent)
 		end
 		local temperature = self:getTemperature(ent)
 		local pressure = self:getPressure()
-		if temperature > 5000 and not hook.Call( "SBPreventHeatDamage", GAMEMODE, ent, temperature, self) then
+		if temperature > GM.constants.TEMPERATURE_DESTROY_MIN and not hook.Call( "SBPreventHeatDamage", GAMEMODE, ent, temperature, self) then
 			ent:SilentKill()
-		elseif pressure > 1.5 and not hook.Call( "SBPreventPressureDamage", GAMEMODE, ent, pressure, self) then
+		elseif pressure > GM.constants.PRESSURE_SAFE_MAX and not hook.Call( "SBPreventPressureDamage", GAMEMODE, ent, pressure, self) then
 			ent:TakeDamage((pressure - 1.5) * 10)
 		end
 	end

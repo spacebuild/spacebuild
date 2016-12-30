@@ -21,23 +21,37 @@
 --
 
 local SB = SPACEBUILD
+local class= SB.class
+local log = SB.log
 local time_to_next_ls_sync = SB.constants.TIME_TO_NEXT_LS_SYNC
 local time_to_next_ls_env = SB.constants.TIME_TO_NEXT_LS_ENV
 
-SB.plugins.ls = {
 
+local function LSSpawnFunc( ply )
+    log.debug("Adding playersuit")
+    ply.suit = class.new("ls/Playersuit", ply)
+end
+hook.Add( "PlayerInitialSpawn", "LS_Core_SpawnFunc", LSSpawnFunc )
+
+local function LSResetSpawnFunc( ply )
+    log.debug("Resetting playersuit")
+    ply.suit:reset()
+end
+hook.Add( "PlayerSpawn", "LS_Core_ResetSpawnFunc", LSResetSpawnFunc )
+
+SB.core.ls = {
     player = {
         think = function(ply, time)
             --LS
             if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
-                if ply.ls_suit then
-                    ply.ls_suit:processEnvironment()
+                if ply.suit then
+                    ply.suit:processEnvironment()
                     ply.lastlsEnvupdate = time
                 end
             end
             if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
-                if ply.ls_suit --[[and ply:Alive()]] then
-                    ply.ls_suit:send(ply.lastlsupdate or 0)
+                if ply.suit then
+                    ply.suit:send(ply.lastlsupdate or 0)
                     ply.lastlsupdate = time
                 end
             end
