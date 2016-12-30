@@ -30,13 +30,27 @@ internal.mod_tables.color = {}
 internal.mod_tables.bloom = {}
 
 local space
+local isSBMap
 
 local function init()
     space = class.new("sb/SpaceEnvironment", SB:getResourceRegistry())
 end
 hook.Add("Initialize", "spacebuild.init.shared", init)
 
-SB.onSBMap = function() return table.Count(internal.environments) > 0 end
+SB.onSBMap = function()
+    -- We only check
+    if isSBMap == nil then
+        local count =  table.Count(internal.environments)
+        local isOnlyEnvironmentAStar = false
+        if count == 1 then
+            for _, v in pairs(internal.environments) do
+                isOnlyEnvironmentAStar = v:isStar()
+            end
+        end
+        isSBMap =  count > 0 and not isOnlyEnvironmentAStar
+    end
+    return isSBMap
+end
 SB.getSpace = function() return space end
 
 function SB:addEnvironment(environment)

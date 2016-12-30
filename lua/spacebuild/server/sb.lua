@@ -172,8 +172,12 @@ local function SpawnEnvironments()
     end
 end
 
-local function InitPostEntity( )
-    log.debug("Registering environment info")
+local function InitPostEntity()
+    if not GAMEMODE.SPACEBUILD and GAMEMODE.Name ~= "Sandbox" then
+        log.info("Not starting Spacebuild because the gamemode does not suppor it")
+        return
+    end
+    log.debug("Start spacebuild environment load")
     local entities
     local data
     local values
