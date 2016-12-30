@@ -26,7 +26,6 @@ local PrintTable = PrintTable
 local os = os
 local Color = Color
 local pairs = pairs
-local type = type
 local isClient = CLIENT
 local isServer = SERVER
 
@@ -86,13 +85,9 @@ function log(lvl, ...)
 		print(color, levelToString(lvl).." ")
 		printServerOrClient()
 		print(color, prettyTime().." ")
-		if type(...) == "table" then
-			for k, v in pairs(...) do
-				print(color, v)
-				print(color, "\n")
-			end
-		else
-			print(color, ...)
+		for k, v in pairs({...}) do
+			print(color, v)
+			print(color, " ")
 		end
 		print(color, "\n")
 	end

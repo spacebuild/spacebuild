@@ -174,7 +174,7 @@ end
 
 local function InitPostEntity()
     if not GAMEMODE.SPACEBUILD and GAMEMODE.Name ~= "Sandbox" then
-        log.info("Not starting Spacebuild because the gamemode does not suppor it")
+        log.info("Not starting Spacebuild because the gamemode does not support it")
         return
     end
     log.debug("Start spacebuild environment load")
