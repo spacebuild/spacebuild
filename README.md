@@ -1,5 +1,5 @@
 [![Issue Count](https://codeclimate.com/github/spacebuild/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/spacebuild/spacebuild)
-[![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=master)](https://travis-ci.org/spacebuild/spacebuild)
+[![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb4)](https://travis-ci.org/spacebuild/spacebuild)
 
 Spacebuild
 ==========
