@@ -1,0 +1,82 @@
+"spacebuild"
+{
+	"base"		"base"
+	"title"		"Spacebuild"
+	"maps"		"^sb_"
+	"menusystem"	"1"
+
+	"settings"
+	{
+	    1
+        {
+            "name"		"SB_Log"
+            "text"		"Enable logging"
+            "help"		"Should logging be enabled?"
+            "type"		"CheckBox"
+            "default"	"1"
+        }
+
+        2
+        {
+            "name"		"SB_NoClip"
+            "text"		"Enable Noclip"
+            "help"		"Should noclip be enabled? (TODO)"
+            "type"		"CheckBox"
+            "default"	"1"
+        }
+
+        3
+        {
+            "name"		"SB_AdminSpaceNoclip"
+            "text"		"Enable Noclip for admins"
+            "help"		"Should noclip be enabled for admins?"
+            "type"		"CheckBox"
+            "default"	"1"
+        }
+
+        4
+        {
+            "name"		"SB_SuperAdminSpaceNoclip"
+            "text"		"Enable Noclip for superadmins"
+            "help"		"Should noclip be enabled for superadmins?"
+            "type"		"CheckBox"
+            "default"	"1"
+        }
+
+        5
+        {
+            "name"		"SB_PlanetNoClipOnly"
+            "text"		"Enable Noclip only on planets"
+            "help"		"Should noclip be enabled only on planets?(TODO)"
+            "type"		"CheckBox"
+            "default"	"1"
+        }
+
+        6
+        {
+            "name"		"SB_EnableDrag"
+            "text"		"Enable drag"
+            "help"		"Should drag be enabled?"
+            "type"		"CheckBox"
+            "default"	"1"
+        }
+
+        7
+        {
+            "name"		"SB_InfiniteResources"
+            "text"		"Infinite resources on planets"
+            "help"		"Should resources on planets always stay the same?"
+            "type"		"CheckBox"
+            "default"	"0"
+        }
+
+        8
+        {
+            "name"		"SB_TemperatureScale"
+            "text"		"How should temperature be displayed? "
+            "help"		"(Client-only) options: K, C, F. (Kelvin, Celius, Fahrenheit)"
+            "type"		"Text"
+            "default"	"K"
+        }
+	}
+}

@@ -10,6 +10,7 @@
 		"*.svn*",
 		"*.txt",
 		".git*",
+		"docs/*",
 		"spacebuild.iml",
 		"spacebuild.ipr",
 		"LICENSE",
