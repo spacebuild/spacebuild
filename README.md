@@ -11,18 +11,24 @@ Discord Server: [Located Here][discord]
 
 *Please do not upload to the workshop, use the* **Official** *workshop version, this repository will be synced with it.*
 
+# Build Status
+* Master [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=master)](https://travis-ci.org/spacebuild/spacebuild)
+* SB2 [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb2)](https://travis-ci.org/spacebuild/spacebuild)
+* SB2.5 [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb2.5)](https://travis-ci.org/spacebuild/spacebuild)
+* SB3 [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb3)](https://travis-ci.org/spacebuild/spacebuild)
+* SB4 [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb4)](https://travis-ci.org/spacebuild/spacebuild)
 
 # Status
 
-    **Master branch, current release version (sb3) [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=master)](https://travis-ci.org/spacebuild/spacebuild)
+    **Master branch, current release version (sb3)
 
-    **Spacebuild 3** - Current Working Version [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb3)](https://travis-ci.org/spacebuild/spacebuild)
+    **Spacebuild 3** - Current Working Version
 
     **Official** Workshop version: http://steamcommunity.com/sharedfiles/filedetails/?id=693838486
 
     **Spacebuild 2** - Not Supported Anymore 
 
-    **Spacebuild 4** - WiP ( Yes its still in development ) [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb4)](https://travis-ci.org/spacebuild/spacebuild)
+    **Spacebuild 4** - WiP ( Yes its still in development ) 
 
 
 # Contributors
