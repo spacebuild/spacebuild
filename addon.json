@@ -17,6 +17,8 @@
 		"NOTICE",
 		"*.md",
 		"*.gma",
-		"*.jpg"
+		"*.jpg",
+		".luacheckrc",
+		"*.yml"
 	]
 }
