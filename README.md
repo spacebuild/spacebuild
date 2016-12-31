@@ -26,9 +26,9 @@ Discord Server: [Located Here][discord]
 
     **Official** Workshop version: http://steamcommunity.com/sharedfiles/filedetails/?id=693838486
 
-    **Spacebuild 2** - Not Supported Anymore 
+    **Spacebuild 2** - Not Supported Anymore
 
-    **Spacebuild 4** - WiP ( Yes its still in development ) 
+    **Spacebuild 4** - WiP ( Yes its still in development )
 
 
 # Contributors
