@@ -1,5 +1,4 @@
 [![Issue Count](https://codeclimate.com/github/spacebuild/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/spacebuild/spacebuild)
-[![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=master)](https://travis-ci.org/spacebuild/spacebuild)
 
 Spacebuild
 ==========
@@ -15,13 +14,15 @@ Discord Server: [Located Here][discord]
 
 # Status
 
-    **Spacebuild 3** - Current Working Version
+    **Master branch, current release version (sb3) [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=master)](https://travis-ci.org/spacebuild/spacebuild)
+
+    **Spacebuild 3** - Current Working Version [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb3)](https://travis-ci.org/spacebuild/spacebuild)
 
     **Official** Workshop version: http://steamcommunity.com/sharedfiles/filedetails/?id=693838486
 
-    **Spacebuild 2** - Not Supported Anymore
+    **Spacebuild 2** - Not Supported Anymore 
 
-    **Spacebuild 4** - WiP ( Yes its still in development )
+    **Spacebuild 4** - WiP ( Yes its still in development ) [![Build Status](https://travis-ci.org/spacebuild/spacebuild.svg?branch=sb4)](https://travis-ci.org/spacebuild/spacebuild)
 
 
 # Contributors
