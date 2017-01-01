@@ -32,7 +32,7 @@ function TOOL:LeftClick( tr )
 	if ( CLIENT ) then return true end
 
 	-- If there's no physics object then we can't constraint it!
-	if ( !util.IsValidPhysicsObject( tr.Entity, tr.PhysicsBone ) ) then return false end
+	if ( not util.IsValidPhysicsObject( tr.Entity, tr.PhysicsBone ) ) then return false end
 
 	--how many objects stored
 	local iNum = self:NumObjects() + 1
@@ -156,12 +156,12 @@ end
 
 function TOOL:RightClick( tr )
 	--if not valid, exit
-	if (!tr.Entity) or (!tr.Entity:IsValid()) or (tr.Entity:IsPlayer()) or (tr.Entity:IsWorld()) then return false end
+	if not tr.Entity or not tr.Entity:IsValid() or tr.Entity:IsPlayer() or (tr.Entity:IsWorld()) then return false end
 	--if client exit
 	if ( CLIENT ) then return true end
 
 	-- If there's no physics object then we can't constraint it!
-	if ( !util.IsValidPhysicsObject( tr.Entity, tr.PhysicsBone ) ) then return false end
+	if ( not util.IsValidPhysicsObject( tr.Entity, tr.PhysicsBone ) ) then return false end
 
 	--how many objects stored
 	local iNum = self:NumObjects() + 1

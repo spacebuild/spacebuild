@@ -355,7 +355,11 @@ stds.garrysmod = {
     -- other globals during creation (entity and gm), ...
     GM = true,
     ENT = true,
-    "NULL"
+    "NULL",
+    "VERSION",
+    "SERVER",
+    "CLIENT"
+    TOOL = true
 }
 
 -- string keys mean read-write globals

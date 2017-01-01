@@ -38,7 +38,7 @@ local function link_in_range(ent, range)
 end
 
 function TOOL:LeftClick( trace )
-	if (!trace.Entity:IsValid()) or (trace.Entity:IsPlayer()) then return end
+	if not trace.Entity:IsValid() or trace.Entity:IsPlayer() then return end
 	if (CLIENT) then return true end
 	if trace.Entity.IsNode then
 		local ent = trace.Entity
@@ -52,7 +52,7 @@ function TOOL:LeftClick( trace )
 	--local Phys = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
 	--self:SetObject( iNum + 1, trace.Entity, trace.HitPos, Phys, trace.PhysicsBone, trace.HitNormal )
 	
-	/*if ( iNum > 0 ) then
+	--[[if ( iNum > 0 ) then
 		-- Get client's CVars
 		--local addlength	 = self:GetClientNumber( "addlength" )
 		local material	= self:GetClientInfo( "material" )
@@ -116,7 +116,7 @@ function TOOL:LeftClick( trace )
 		self:ClearObjects()	
 	else
 		self:SetStage( iNum+1 )
-	end*/
+	end]]
 	return true
 end
 
@@ -126,7 +126,7 @@ function TOOL:RightClick( trace )
 	--if client exit
 	if ( CLIENT ) then return true end
 	-- If there's no physics object then we can't constraint it!
-	if ( SERVER and !util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone ) ) then return false end
+	if ( SERVER and not util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone ) ) then return false end
 
 	--how many objects stored
 	local iNum = self:NumObjects() + 1

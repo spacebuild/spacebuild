@@ -244,7 +244,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 		local HasOOO = OverlaySettings.HasOOO
 		--End overlaysettings
 		local trace = LocalPlayer():GetEyeTrace()
-		if ( !bDontDrawModel ) then self:DrawModel() end
+		if not bDontDrawModel  then self:DrawModel() end
 		local netid = self:GetNetworkedInt("netid")
 		local playername = self:GetPlayerName()
 		if playername == "" then
@@ -387,7 +387,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			cam.End3D2D()
 		end
 	else
-		if ( !bDontDrawModel ) then self:DrawModel() end
+		if not bDontDrawModel then self:DrawModel() end
 	end
 end
 

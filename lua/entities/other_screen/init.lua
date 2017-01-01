@@ -124,7 +124,7 @@ end
 
 function ENT:TurnOff(warn)
 	if self.Active == 1 then
-		if (!warn) then self:EmitSound( "Buttons.snd17" ) end
+		if not warn then self:EmitSound( "Buttons.snd17" ) end
 		self.Active = 0
 		self:SetOOO(0)
 		if not (WireAddon == nil) then
