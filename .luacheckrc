@@ -358,7 +358,7 @@ stds.garrysmod = {
     "NULL",
     "VERSION",
     "SERVER",
-    "CLIENT"
+    "CLIENT",
     TOOL = true
 }
 
