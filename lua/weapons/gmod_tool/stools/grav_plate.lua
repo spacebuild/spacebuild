@@ -61,12 +61,18 @@ function TOOL.BuildCPanel( CPanel )
 	CPanel:AddControl( "Header", { Text = "#tool.grav_plate.name", Description	= "#tool.grav_plate.desc" }  )
 end
 
-local function OverrideCanTool(pl, rt, toolmode)
-	-- We don't want any addons denying use of this tool. Even when using
-	-- PropDefender, people should be able to use this tool on other people's
-	-- stuff.
-	if toolmode == "grav_plate" then
-		return true
+local function overrideGravity(ent, gravity, pressure, environment)
+	if gravity == 0 then
+		local trace = {}
+		local pos = ent:GetPos()
+		trace.start = pos
+		trace.endpos = pos - Vector(0,0,512)
+		trace.filter = { ent }
+		local tr = util.TraceLine( trace )
+		if tr.Hit and tr.sb and tr.sb.grav_plate == 1 then
+			return 1, pressure
+		end
 	end
+	-- Else no return, let other hooks handle this
 end
-hook.Add( "CanTool", "grav_plate_CanTool", OverrideCanTool );
+hook.Add( "SBOverrideEnvironmentGravity", "spacebuild.override.gravity_plating", overrideGravity );

@@ -35,6 +35,29 @@ net.Receive("sbru", function(bitsreceived, ply)
     to_sync:send(0, ply) -- Send fully to client on request :)
 end)
 
+local dupeFactories = {}
+
+function SB:registerDupeFunctions(className, buildDupeFunction, applyDupeFunction)
+    dupeFactories[className] = {
+        build = buildDupeFunction,
+        apply = applyDupeFunction
+    }
+end
+
+function SB:buildDupeInfo(ent)
+    local className = ent.rdobject and ent.rdobject:getClass()
+    if className and dupeFactories[className] then
+        duplicator.StoreEntityModifier( ent, "rdinfo", {class = className, data = dupeFactories[className].build(ent, ent.rdobject) })
+    end
+end
+
+function SB:applyDupeInfo(ent, createdEntities)
+    local data = ent.EntityMods and ent.EntityMods.rdinfo
+    if data then
+        dupeFactories[data.class].apply(ent, createdEntities, data.data)
+    end
+end
+
 SB.core.rd = {
     player = {
         think = function(ply, time)

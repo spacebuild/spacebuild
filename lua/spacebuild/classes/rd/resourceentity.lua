@@ -193,14 +193,8 @@ function C:receive()
 	funcRef.receiveSignal(self)
 end
 
--- Start Save/Load functions
+-- Duplicator methods
 
-function C:onLoad(data)
-	funcRef.onLoad(self, data)
-	local ent = self
-	timer.Simple(0.1, function()
-		ent.network = self.resourceRegistry:getDeviceInfo(data.network.syncid)
-	end)
-end
-
--- End Save/Load functions
+local function buildInfo(ent, data) end
+local function applyInfo(ent, createdEntities, data) end
+SB:registerDupeFunctions("rd/ResourceEntity", buildInfo, applyInfo)

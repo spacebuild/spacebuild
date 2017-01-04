@@ -131,8 +131,7 @@ end
 
 function ENT:PreEntityCopy()
     --self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
-    local RD = CAF.GetAddon("Resource Distribution")
-    RD.BuildDupeInfo(self)
+    SB:buildDupeInfo(self)
     if WireLib then
         local DupeInfo = WireLib.BuildDupeInfo(self)
         if DupeInfo then
@@ -143,8 +142,7 @@ end
 
 function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
     --self.BaseClass.PostEntityPaste(self, Player, Ent, CreatedEntities ) --use this if you have to use PostEntityPaste
-    local RD = CAF.GetAddon("Resource Distribution")
-    RD.ApplyDupeInfo(Ent, CreatedEntities)
+    SB:applyDupeInfo(Ent, CreatedEntities)
     if WireLib and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then
         WireLib.ApplyDupeInfo(Player, Ent, Ent.EntityMods.WireDupeInfo, function(id) return CreatedEntities[id] end)
     end

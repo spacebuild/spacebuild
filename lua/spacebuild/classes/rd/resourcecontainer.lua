@@ -257,40 +257,6 @@ function C:getModified()
 	return self.modified
 end
 
--- Start Save/Load functions
-
-function C:onRestore(ent)
-	self:onLoad(ent.oldrdobject)
-	ent.oldrdobject = nil
-end
-
-function C:applyDupeInfo(data, newent, CreatedEntities)
-	local res
-	for _, v in pairs(data.resources) do
-		res = self:addResource(v.name, 0, 0)
-		res:onLoad(v)
-		res:setAmount(0)
-	end
-	self.modified = CurTime()
-end
-
-
-
-function C:onSave()
-	return self
-end
-
-function C:onLoad(data)
-	self.syncid = data.syncid
-	local res
-	for k, v in pairs(data.resources) do
-		res = self:addResource(v.name)
-		res:onLoad(v)
-	end
-end
-
--- End Save/Load functions
-
 function C:getDelta()
 	return self.delta
 end

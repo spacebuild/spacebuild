@@ -153,20 +153,3 @@ end
 function C:getModified()
 	return self.modified
 end
-
--- Start Save/Load functions
-
-function C:onSave()
-	return self
-end
-
-function C:onLoad(data)
-	self.name = data.name
-	self.amount = data.amount
-	self.maxAmount = data.maxAmount
-	self.resourceInfo = self.resourceRegistry:getResourceInfoFromName(self.name)
-	self.modified = CurTime()
-	self.modifiedMaxAmount = CurTime()
-end
-
--- End Save/Load functions

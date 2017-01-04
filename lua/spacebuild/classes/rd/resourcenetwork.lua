@@ -310,33 +310,8 @@ function C:receive()
 	funcRef.receiveSignal(self)
 end
 
--- Start Save/Load functions
+-- Duplicator methods
 
-function C:applyDupeInfo(data, newent, CreatedEntities)
-	--funcRef.applyDupeInfo(self, data, newent, CreatedEntities) -- Don't restore resource info, this will happen by relinking below
-	for k, v in pairs(data.networks) do
-		-- TODO how to get this
-		self:link(SB:getDeviceInfo(CreatedEntities[k]:EntIndex()))
-	end
-	for k, v in pairs(data.containers) do
-		-- TODO how to get this
-		self:link(SB:getDeviceInfo(CreatedEntities[k]:EntIndex()))
-	end
-end
-
-function C:onLoad(data)
-	funcRef.onLoad(self, data)
-	local ent = self
-	timer.Simple(0.1, function()
-		for k, v in pairs(data.networks) do
-			-- TODO how to get this
-			ent.networks[v] = SB:getDeviceInfo(k)
-		end
-		for k, v in pairs(data.containers) do
-			--TODO how to get this
-			ent.containers[v] = SB:getDeviceInfo(k)
-		end
-	end)
-end
-
--- End Save/Load functions
+local function buildInfo(ent, data) end
+local function applyInfo(ent, createdEntities, data) end
+SB:registerDupeFunctions("rd/ResourceNetwork", buildInfo, applyInfo)
