@@ -15,6 +15,7 @@
 local GM = SPACEBUILD
 local class = GM.class or {}
 GM.class = class
+local log = GM.log
 
 local preload = true
 local tostring = tostring
@@ -22,7 +23,6 @@ local error = error
 local setmetatable = setmetatable
 local pairs = pairs
 local table = table
-local log = log
 
 -- GMOD
 local include = include
@@ -34,7 +34,7 @@ local loadedclasses = {}
 -- GMOD
 local function getClassFolder(name)
 	if preload then return "" end
-	for k, v in pairs(classes_folder) do
+	for _, v in pairs(classes_folder) do
 		log.info("Looking for:"..v .. name .. ".lua")
 		if #file.Find(v .. name .. ".lua", "LUA") == 1 then
 			return v

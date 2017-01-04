@@ -354,6 +354,7 @@ stds.garrysmod = {
     "xpcall",
     -- other globals during creation (entity and gm), ...
     GM = true,
+    "GAMEMODE",
     ENT = true,
     "NULL",
     "VERSION",
@@ -365,5 +366,8 @@ stds.garrysmod = {
 -- string keys mean read-write globals
 stds.spacebuild = {
   SPACEBUILD = true,
-  self = true
+  self = true,
+  CLASS = true,
+  "sbnet",
+  "luaunit"
 }
