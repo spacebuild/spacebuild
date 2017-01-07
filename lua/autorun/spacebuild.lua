@@ -21,9 +21,6 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-AddCSLuaFile("includes/modules/log.lua")
-AddCSLuaFile() -- send this file to the client
-
 local version = {
     major = 4,
     minor = 0, -- never more then 99 minors
@@ -139,4 +136,6 @@ SB.internal = nil
 
 SB = createReadOnlyTable(SB)
 SPACEBUILD = SB
+
+AddCSLuaFile() -- send this file to the client, but only after all the others have been send!
 
