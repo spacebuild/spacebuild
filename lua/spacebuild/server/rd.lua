@@ -68,7 +68,7 @@ end
 SB.core.rd = {
     player = {
         think = function(ply, time)
-            if not ply or not ply:IsAlive() then return end
+            if not ply or not ply:Alive() then return end
             -- RD
             if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
                 for k, v in pairs(internal.device_table) do

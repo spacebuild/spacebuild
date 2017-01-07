@@ -284,7 +284,7 @@ SB.core.sb = {
 
     player = {
         think = function(ply, time)
-            if not ply or not ply:IsAlive() then return end
+            if not ply or not ply:Alive() then return end
             -- SB
             if ply.lastsbupdate and ply.lastsbupdate + time_to_next_sb_sync < time then
                 for _, v in pairs(internal.mod_tables) do

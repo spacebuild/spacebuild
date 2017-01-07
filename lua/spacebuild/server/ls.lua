@@ -42,7 +42,7 @@ hook.Add( "PlayerSpawn", "spacebuild.mod.ls.spawn", LSResetSpawnFunc )
 SB.core.ls = {
     player = {
         think = function(ply, time)
-            if not ply or not ply:IsAlive() then return end
+            if not ply or not ply:Alive() then return end
             --LS
             if not ply.lastlsEnvupdate or ply.lastlsEnvupdate + time_to_next_ls_env < time then
                 if ply.suit then
