@@ -300,6 +300,9 @@ SB.core.sb = {
                 ply.lastsbupdate = time
             elseif not ply.lastsbupdate then
                 ply.lastsbupdate = (-time_to_next_sb_sync)
+                if not ply.environment then
+                    ply.environment = SB:getSpace();
+                end
             end
             -- Noclip from planets check?
             if ply.environment and ply.environment == SB:getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
