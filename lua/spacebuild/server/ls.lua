@@ -49,6 +49,7 @@ SB.core.ls = {
                     ply.lastlsEnvupdate = time
                 end
             end
+            if not ply.spawntime or ply.spawntime + 1 < time then return end
             if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
                 if ply.suit then
                     ply.suit:send(ply.lastlsupdate or 0)

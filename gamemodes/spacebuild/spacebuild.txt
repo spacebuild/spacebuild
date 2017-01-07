@@ -1,6 +1,6 @@
 "spacebuild"
 {
-	"base"		"base"
+	"base"		"sandbox"
 	"title"		"Spacebuild"
 	"maps"		"^sb_"
 	"menusystem"	"1"
