@@ -1,6 +1,0 @@
-"vertexlitgeneric"
-{
-	"$basetexture" 	"ce_ls3additional/compressor/base"
-	"$bumpmap" 	"ce_ls3additional/compressor/base_bump"
-	"$model" 	"1"
-}

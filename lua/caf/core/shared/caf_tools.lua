@@ -1,3 +1,4 @@
+AddCSLuaFile()
 --
 --	Custom Addon Framework TOOLS HAPPY-FUN TIME-SAVER FUNCTIONS
 --

@@ -194,7 +194,15 @@ function C:receive()
 end
 
 -- Duplicator methods
+if SERVER then
+	local function buildInfo(ent, data)
+		return {}
+	end
+	local function applyInfo(ent, createdEntities, data)
 
-local function buildInfo(ent, data) end
-local function applyInfo(ent, createdEntities, data) end
-SB:registerDupeFunctions("rd/ResourceEntity", buildInfo, applyInfo)
+	end
+	local function restoreInfo(ent, data)
+
+	end
+	timer.Simple(0.1, function() SB:registerDupeFunctions("rd/ResourceEntity", buildInfo, applyInfo, restoreInfo) end)
+end

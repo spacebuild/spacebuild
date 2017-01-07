@@ -1,8 +1,0 @@
-"vertexlitGeneric" {
-    "$basetexture" "demeter\demeter"
-    "$surfaceprop" "metal"
-    "$model" "1"
-    "$translucent" 1
-    "$alpha" .1
-    "$additive" 1
-}

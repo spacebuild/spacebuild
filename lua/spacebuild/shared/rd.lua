@@ -61,9 +61,7 @@ function SB:registerDevice(ent, rdtype)
         error("type is not supported")
     end
     ent.rdobject = obj
-    ent._synctimestamp = CurTime() --Time stamp on registration, for use with timers.
     device_table[entid] = obj
-
     if not ent.rdobject then
         log.error("Something went wrong registering the device")
     end

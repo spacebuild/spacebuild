@@ -37,10 +37,11 @@ end)
 
 local dupeFactories = {}
 
-function SB:registerDupeFunctions(className, buildDupeFunction, applyDupeFunction)
+function SB:registerDupeFunctions(className, buildDupeFunction, applyDupeFunction, restoreFunction)
     dupeFactories[className] = {
         build = buildDupeFunction,
-        apply = applyDupeFunction
+        apply = applyDupeFunction,
+        restore = restoreFunction
     }
 end
 
@@ -49,6 +50,12 @@ function SB:buildDupeInfo(ent)
     if className and dupeFactories[className] then
         duplicator.StoreEntityModifier( ent, "rdinfo", {class = className, data = dupeFactories[className].build(ent, ent.rdobject) })
     end
+end
+
+function SB:onRestore(ent)
+    local oldrdobject = ent.rdobject
+    ent.rdobject = nil
+    dupeFactories[oldrdobject:getClass()].restore(ent, oldrdobject)
 end
 
 function SB:applyDupeInfo(ent, createdEntities)

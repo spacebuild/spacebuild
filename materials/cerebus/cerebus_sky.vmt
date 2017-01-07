@@ -1,7 +1,0 @@
-"unlitgeneric" {
-    "$basetexture" "cerebus\cerebus"
-    "$surfaceprop" "metal"
-    "$model" "1"
-    "$translucent" 1
-    "$alpha" 1
-}

@@ -1,6 +1,0 @@
-"vertexlitgeneric"
-{
-	"$basetexture" 	"ce_ls3additional/asteroids/asteroid_large"
-	"$bumpmap" 	"ce_ls3additional/asteroids/asteroid_large_bump"
-	"$model" 	"1"
-}

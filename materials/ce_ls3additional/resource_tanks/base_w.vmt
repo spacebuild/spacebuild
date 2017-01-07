@@ -1,6 +1,0 @@
-"vertexlitgeneric"
-{
-	"$basetexture" 	"ce_ls3additional/resource_tanks/base_w"
-	"$bumpmap" 	"ce_ls3additional/resource_tanks/base_w_bump"
-	"$model" 	"1"
-}

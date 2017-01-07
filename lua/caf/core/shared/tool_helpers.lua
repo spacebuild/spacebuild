@@ -1,3 +1,4 @@
+AddCSLuaFile()
 CAFToolSetup = {}
 
 function CAFToolSetup.open( s_toolmode )

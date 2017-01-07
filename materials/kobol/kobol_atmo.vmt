@@ -1,8 +1,0 @@
-"vertexlitGeneric" {
-    "$basetexture" "kobol\kobol"
-    "$surfaceprop" "metal"
-    "$model" "1"
-    "$translucent" 1
-    "$alpha" 0.8
-    "$additive" 1
-}
