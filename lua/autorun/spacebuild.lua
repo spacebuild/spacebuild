@@ -46,7 +46,7 @@ local version = {
     patch = 0, -- never more then 99 patches
     tag = "alpha1",
     date = 20161226,
-    requiredGmodVersion = 161219,
+    requiredGmodVersion = 161216,
     fullVersion = function(self)
         return self.major .. "." .. self.minor .. ".".. self.patch.."-"..self.tag
     end,

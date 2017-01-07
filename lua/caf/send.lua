@@ -27,7 +27,7 @@ AddCSLuaFile(base.."addons/client/lifesupport.lua")
 AddCSLuaFile(base.."addons/client/spacebuild.lua")
 
 -- Language
-AddCSLuaFile(base.."languagesvars/defaults.lua")
+AddCSLuaFile(base.."languagevars/defaults.lua")
 
 -- Other
 AddCSLuaFile( "vgui/caf_gui.lua" )
