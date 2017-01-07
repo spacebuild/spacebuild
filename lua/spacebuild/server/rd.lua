@@ -65,6 +65,12 @@ function SB:applyDupeInfo(ent, createdEntities)
     end
 end
 
+local function LSSpawnFunc( ply )
+    log.debug("Player spawn - rd")
+    ply.lastrdupdate = nil
+end
+hook.Add( "PlayerInitialSpawn", "spacebuild.mod.rd.initialspawn", LSSpawnFunc )
+
 SB.core.rd = {
     player = {
         think = function(ply, time)

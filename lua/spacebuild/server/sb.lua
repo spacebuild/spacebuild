@@ -280,6 +280,12 @@ function internal.getSpawnedEntities()
     return spawned_entities
 end
 
+local function LSSpawnFunc( ply )
+    log.debug("Player spawn - sb")
+    ply.lastsbupdate = nil
+end
+hook.Add( "PlayerInitialSpawn", "spacebuild.mod.sb.initialspawn", LSSpawnFunc )
+
 SB.core.sb = {
 
     player = {

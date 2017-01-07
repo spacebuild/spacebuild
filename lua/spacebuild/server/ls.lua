@@ -28,7 +28,9 @@ local time_to_next_ls_env = SB.constants.TIME_TO_NEXT_LS_ENV
 
 
 local function LSSpawnFunc( ply )
-    log.debug("Adding playersuit")
+    log.debug("Player spawn - sb")
+    ply.lastlsEnvupdate = nil
+    ply.lastlsupdate = nil
     ply.suit = class.new("ls/Playersuit", ply)
 end
 hook.Add( "PlayerInitialSpawn", "spacebuild.mod.ls.initialspawn", LSSpawnFunc )
