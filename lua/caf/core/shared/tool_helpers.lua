@@ -1,4 +1,3 @@
-AddCSLuaFile()
 CAFToolSetup = {}
 
 function CAFToolSetup.open( s_toolmode )
@@ -58,14 +57,14 @@ end
 function CAFToolSetup.RegEnts()
 	if not TOOL.DevSelect then return end
 
-	local t_devicefiles = file.Find("CAF/Stools/"..TOOL.Mode.."/*.lua", "LUA")
+	local t_devicefiles = file.Find("caf/stools/"..TOOL.Mode.."/*.lua", "LUA")
 	if t_devicefiles then
 		MsgN("CAF Tool: Loading device defs")
 
 		TOOL.DevClasses = TOOL.DevClasses or {}
 		TOOL.Devices	= TOOL.Devices or {}
 
-		local s_path = "CAF/Stools/"..TOOL.Mode.."/"
+		local s_path = "caf/stools/"..TOOL.Mode.."/"
 		for key, val in pairs(t_devicefiles) do
             local s_devtype = string.sub(val, 0, -5)
 			

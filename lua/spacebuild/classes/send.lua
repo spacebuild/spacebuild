@@ -14,6 +14,7 @@
 
 local base = "spacebuild/classes/"
 
+AddCSLuaFile(base.."include.lua")
 AddCSLuaFile(base.."class.lua")
 
 AddCSLuaFile(base.."/ls/playersuit.lua")

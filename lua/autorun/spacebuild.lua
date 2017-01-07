@@ -32,6 +32,9 @@ if SERVER then
     include("spacebuild/classes/send.lua")
     include("spacebuild/client/send.lua")
     include("spacebuild/tests/shared/send.lua")
+
+    --Deprecated
+    include("caf/send.lua")
 end
 
 AddCSLuaFile() -- send this file to the client, but only after all the others have been send!

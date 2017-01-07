@@ -1,7 +1,3 @@
-AddCSLuaFile("includes/modules/ArrayList.lua")
-AddCSLuaFile("includes/modules/HashMap.lua")
-AddCSLuaFile("includes/modules/cache.lua")
-
 require("ArrayList")
 require("HashMap")
 require("CustomAttack")

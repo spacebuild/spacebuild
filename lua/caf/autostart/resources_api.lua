@@ -11,11 +11,6 @@ RESOURCES = {}
 --TODO: For Developers: You need to fill this file out with your custom RD replacement/whatever.
 
 
-if (SERVER) then
-    AddCSLuaFile() -- send this file to the client
-end
-
-
 
 if (CLIENT) then
 	local meta = FindMetaTable("Entity")

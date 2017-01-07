@@ -62,7 +62,6 @@ local function ErrorOffStuff(String)
 	Msg(tostring(String).."\n")
 end
 
-AddCSLuaFile("caf/autostart/client/cl_caf_autostart.lua")
 CAF2.CAF3 = CAF3;
 include("caf/core/shared/sh_general_caf.lua")
 CAF2.CAF3 = nil;
@@ -455,38 +454,7 @@ for k, File in ipairs(Files) do
 	end
 end
 
-Files = file.Find("CAF/Core/client/*.lua", "LUA")
-for k, File in ipairs(Files) do
-	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/core/client/"..File)
-	if(not ErrorCheck) then
-		ErrorOffStuff(PCallError)
-	else
-		Msg("Sent: Successfully\n")
-	end
-end
-
-Files = file.Find("CAF/Core/shared/*.lua", "LUA")
-for k, File in ipairs(Files) do
-	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/core/shared/"..File)
-	if(not ErrorCheck) then
-		ErrorOffStuff(PCallError)
-	else
-		Msg("Sent: Successfully\n")
-	end
-end
-
 Files = file.Find("caf/languagevars/*.lua", "LUA")
-for k, File in ipairs(Files) do
-	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/languagevars/"..File)
-	if(not ErrorCheck) then
-		ErrorOffStuff(PCallError)
-	else
-		Msg("Sent: Successfully\n")
-	end
-end
 
 for k, File in ipairs(Files) do
 	Msg("Sending: "..File.."...")
@@ -507,27 +475,5 @@ for k, File in ipairs(Files) do
 		ErrorOffStuff(PCallError)
 	else
 		Msg("Loaded: Successfully\n")
-	end
-end
-
-Files = file.Find("caf/addons/client/*.lua", "LUA")
-for k, File in ipairs(Files) do
-	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/addons/client/"..File)
-	if(not ErrorCheck) then
-		ErrorOffStuff(PCallError)
-	else
-		Msg("Sent: Successfully\n")
-	end
-end
-
-Files = file.Find("caf/addons/shared/*.lua", "LUA")
-for k, File in ipairs(Files) do
-	Msg("Sending: "..File.."...")
-	local ErrorCheck, PCallError = pcall(AddCSLuaFile, "caf/addons/shared/"..File)
-	if(not ErrorCheck) then
-		ErrorOffStuff(PCallError)
-	else
-		Msg("Sent: Successfully\n")
 	end
 end

@@ -1,4 +1,3 @@
-AddCSLuaFile()
 local CAF2 = CAF;
 local CAF3 = CAF2.CAF3;
 local DEBUG = CAF3.DEBUG;
