@@ -280,13 +280,6 @@ function internal.getSpawnedEntities()
     return spawned_entities
 end
 
-local function SBSpawnFunc( ply )
-    if ply.environment then
-        hook.Call("OnEnterEnvironment", GAMEMODE, ply.environment, ply, ply.environment, SB:getSpace())
-    end
-end
-hook.Add( "PlayerInitialSpawn", "spacebuild.mod.sb.initialspawn", SBSpawnFunc )
-
 SB.core.sb = {
 
     player = {
@@ -300,6 +293,9 @@ SB.core.sb = {
                 end
                 for _, v in pairs(internal.environments) do
                     v:send(ply.lastsbupdate or 0, ply)
+                end
+                if ply.lastsbupdate < 0 and ply.environment then
+                    hook.Call("OnEnterEnvironment", GAMEMODE, ply.environment, ply, ply.environment, SB:getSpace())
                 end
                 ply.lastsbupdate = time
             elseif not ply.lastsbupdate then

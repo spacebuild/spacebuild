@@ -76,8 +76,10 @@ net.Receive( "sbee", function(length, ply)
     if ent:IsPlayer() then
         local newEnvironment = SB:getEnvironment(environmentId)
         local oldEnvironment = SB:getEnvironment(oldEnvironmentId)
-        ent.environment = newEnvironment
-        log.debug("player ", ent:GetName(), " joined environment ", newEnvironment:getName(), " left environment ", oldEnvironment:getName())
+        if ent.environment ~= newEnvironment then
+            ent.environment = newEnvironment
+            log.debug("player ", ent:GetName(), " joined environment ", newEnvironment:getName(), " left environment ", oldEnvironment:getName())
+        end
     end
 end)
 
