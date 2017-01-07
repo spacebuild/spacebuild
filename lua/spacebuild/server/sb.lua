@@ -280,10 +280,10 @@ function internal.getSpawnedEntities()
     return spawned_entities
 end
 
-local function LSSpawnFunc( ply )
-    ply.spawntime = CurTime()
+local function LSResetSpawnFunc( ply )
+    if not ply.spawntime then ply.spawntime = CurTime() end
 end
-hook.Add( "PlayerInitialSpawn", "spacebuild.mod.sb.initialspawn", LSSpawnFunc )
+hook.Add( "PlayerSpawn", "spacebuild.mod.sb.spawn", LSResetSpawnFunc )
 
 SB.core.sb = {
 
