@@ -21,6 +21,21 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+if SERVER then
+    -- We do modules manually to not the ones from other modules!
+    AddCSLuaFile("includes/modules/log.lua")
+    AddCSLuaFile("includes/modules/luaunit.lua")
+    AddCSLuaFile("includes/modules/sbnet.lua")
+    -- end modules
+
+    include("spacebuild/shared/send.lua")
+    include("spacebuild/classes/send.lua")
+    include("spacebuild/client/send.lua")
+    include("spacebuild/tests/shared/send.lua")
+end
+
+AddCSLuaFile() -- send this file to the client, but only after all the others have been send!
+
 local version = {
     major = 4,
     minor = 0, -- never more then 99 minors
@@ -76,17 +91,6 @@ include("spacebuild/shared/include.lua")
 
 if SERVER then
     include("spacebuild/server/include.lua")
-
-    -- We do modules manually to not the ones from other modules!
-    AddCSLuaFile("includes/modules/log.lua")
-    AddCSLuaFile("includes/modules/luaunit.lua")
-    AddCSLuaFile("includes/modules/sbnet.lua")
-    -- end modules
-
-    include("spacebuild/shared/send.lua")
-    include("spacebuild/classes/send.lua")
-    include("spacebuild/client/send.lua")
-    include("spacebuild/tests/shared/send.lua")
 end
 
 if CLIENT then
@@ -136,6 +140,4 @@ SB.internal = nil
 
 SB = createReadOnlyTable(SB)
 SPACEBUILD = SB
-
-AddCSLuaFile() -- send this file to the client, but only after all the others have been send!
 
