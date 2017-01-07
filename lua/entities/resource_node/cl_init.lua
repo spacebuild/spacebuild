@@ -45,6 +45,7 @@ function ENT:DoNormalDraw( bDontDrawModel )
 		local trace = LocalPlayer():GetEyeTrace()
 		if not bDontDrawModel  then self:DrawModel() end
 		local obj = self.rdobject
+		if not obj then return end
 		
 		local range = self:GetNetworkedInt("range")
 		local playername = self:GetPlayerName()

@@ -1,7 +1,5 @@
 require("ArrayList")
 require("HashMap")
-require("CustomAttack")
-require("CustomArmor")
 
 local meta = FindMetaTable("Entity")
 

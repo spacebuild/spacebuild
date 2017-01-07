@@ -240,7 +240,7 @@ function C:removeEntity(ent)
 	if self.entities[ent:EntIndex()] then
 		self:setEnvironmentOnEntity(ent, GM:getSpace())
 		self.entities[ent:EntIndex()] = nil
-		hook.Call("OnEnterEnvironment", GM, self, ent, GM:getSpace(), oldEnvironment)
+		hook.Call("OnEnterEnvironment", GAMEMODE, self, ent, GM:getSpace(), oldEnvironment)
 	end
 end
 

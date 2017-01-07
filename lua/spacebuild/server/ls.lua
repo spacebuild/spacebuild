@@ -31,13 +31,13 @@ local function LSSpawnFunc( ply )
     log.debug("Adding playersuit")
     ply.suit = class.new("ls/Playersuit", ply)
 end
-hook.Add( "PlayerInitialSpawn", "LS_Core_SpawnFunc", LSSpawnFunc )
+hook.Add( "PlayerInitialSpawn", "spacebuild.mod.ls.initialspawn", LSSpawnFunc )
 
 local function LSResetSpawnFunc( ply )
     log.debug("Resetting playersuit")
     ply.suit:reset()
 end
-hook.Add( "PlayerSpawn", "LS_Core_ResetSpawnFunc", LSResetSpawnFunc )
+hook.Add( "PlayerSpawn", "spacebuild.mod.ls.spawn", LSResetSpawnFunc )
 
 SB.core.ls = {
     player = {

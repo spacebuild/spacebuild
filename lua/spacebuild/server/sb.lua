@@ -226,7 +226,7 @@ local function PhysgunPickup(ply , ent)
     local entClass = ent:GetClass()
     return not protectedEnvironmentEntities[entClass];
 end
-hook.Add("PhysgunPickup", "SB_PhysgunPickup_Check", PhysgunPickup)
+hook.Add("PhysgunPickup", "spacebuild.game.physgunpickup", PhysgunPickup)
 
 function SB:addProtectedEnvironmentEntityClass(className)
     protectedEnvironmentEntities[className] = true
@@ -254,7 +254,6 @@ local function OnEntitySpawn(ent)
     elseif not table.HasValue(spawned_entities, ent) then
         table.insert(spawned_entities, ent)
         timer.Simple(0.1, function()
-
             if SB:onSBMap() and not ent.environment and SB:isValidSBEntity(ent) then
                 ent.environment = SB:getSpace()
                 ent.environment:updateEnvironmentOnEntity(ent)
@@ -262,7 +261,7 @@ local function OnEntitySpawn(ent)
         end)
     end
 end
-hook.Add("OnEntityCreated", "SB_OnEntitySpawn", OnEntitySpawn)
+hook.Add("OnEntityCreated", "spacebuild.game.entitycreated", OnEntitySpawn)
 
 local function onEnterEnvironment(environmentThatNotifies, ent, environment, oldenvironment)
     net.Start("sbee")
@@ -275,11 +274,18 @@ local function onEnterEnvironment(environmentThatNotifies, ent, environment, old
     end
     net.Broadcast()
 end
-hook.Add("OnEnterEnvironment", "SB_OnEnterEnvironment", onEnterEnvironment)
+hook.Add("OnEnterEnvironment", "spacebuild.mod.onenterenvironment", onEnterEnvironment)
 
 function internal.getSpawnedEntities()
     return spawned_entities
 end
+
+local function SBSpawnFunc( ply )
+    if ply.environment then
+        hook.Call("OnEnterEnvironment", GAMEMODE, ply.environment, ply, ply.environment, SB:getSpace())
+    end
+end
+hook.Add( "PlayerInitialSpawn", "spacebuild.mod.sb.initialspawn", SBSpawnFunc )
 
 SB.core.sb = {
 
