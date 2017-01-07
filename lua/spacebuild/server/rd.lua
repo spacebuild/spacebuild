@@ -68,6 +68,7 @@ end
 local function LSSpawnFunc( ply )
     log.debug("Player spawn - rd")
     ply.lastrdupdate = nil
+    ply.amountofupdates = 0
 end
 hook.Add( "PlayerInitialSpawn", "spacebuild.mod.rd.initialspawn", LSSpawnFunc )
 
@@ -77,9 +78,13 @@ SB.core.rd = {
             if not ply or not ply:Alive() then return end
             -- RD
             if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
-                log.debug("Player RD update", ply.lastrdupdate, time)
+                ply.amountofupdates = ply.amountofupdates + 1
+                local lastUpdate = ply.lastrdupdate or 0
+                if ply.amountofupdates == 2 then
+                    lastUpdate = 0 -- Resend all data again for a full sync, so we are sure everything is send
+                end
                 for k, v in pairs(internal.device_table) do
-                    v:send(ply.lastrdupdate or 0, ply)
+                    v:send(lastUpdate, ply)
                 end
                 ply.lastrdupdate = time
             end
