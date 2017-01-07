@@ -21,6 +21,7 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+AddCSLuaFile("includes/modules/log.lua")
 AddCSLuaFile() -- send this file to the client
 
 local version = {
