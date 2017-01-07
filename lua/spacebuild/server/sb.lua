@@ -280,16 +280,11 @@ function internal.getSpawnedEntities()
     return spawned_entities
 end
 
-local function LSResetSpawnFunc( ply )
-    if not ply.spawntime then ply.spawntime = CurTime() end
-end
-hook.Add( "PlayerSpawn", "spacebuild.mod.sb.spawn", LSResetSpawnFunc )
-
 SB.core.sb = {
 
     player = {
         think = function(ply, time)
-            if not ply.spawntime or ply.spawntime + 1 < time then return end
+            if not ply or not ply:IsAlive() then return end
             -- SB
             if ply.lastsbupdate and ply.lastsbupdate + time_to_next_sb_sync < time then
                 for _, v in pairs(internal.mod_tables) do
