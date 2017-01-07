@@ -31,6 +31,7 @@ if SERVER then
     include("spacebuild/shared/send.lua")
     include("spacebuild/classes/send.lua")
     include("spacebuild/client/send.lua")
+    include("spacebuild/documentation/send.lua")
     include("spacebuild/tests/shared/send.lua")
 
     --Deprecated
@@ -45,7 +46,7 @@ local version = {
     patch = 0, -- never more then 99 patches
     tag = "alpha1",
     date = 20161226,
-    requiredGmodVersion = 161220,
+    requiredGmodVersion = 161219,
     fullVersion = function(self)
         return self.major .. "." .. self.minor .. ".".. self.patch.."-"..self.tag
     end,
@@ -54,7 +55,7 @@ local version = {
     end
 }
 if VERSION < version.requiredGmodVersion then
-    error("SB Loader: Your gmod is out of date: found version ", VERSION, "required ", version.requiredGmodVersion)
+    error("SB Loader: Your gmod is out of date: found version "..VERSION.."required "..version.requiredGmodVersion)
 end
 
 require("log")
@@ -63,6 +64,8 @@ local log = log
 if version.tag == "release" then
     log.setLevel(log.INFO)
 end
+
+concommand.Add("spacebuild", function() log.info("Spacebuild version "..version:fullVersion()))
 
 SPACEBUILD = {}
 local SB = SPACEBUILD
