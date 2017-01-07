@@ -20,8 +20,6 @@
 -- To change this template use File | Settings | File Templates.
 --
 
-AddCSLuaFile()
-
 local net = net
 local math = math
 

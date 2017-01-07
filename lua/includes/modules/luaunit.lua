@@ -22,8 +22,6 @@ Based on initial work of Ryu, Gwang (http://www.gpgstudy.com/gpgiki/LuaUnit)
 License: BSD License, see LICENSE.txt
 Version: 3.0
 ]]--
-AddCSLuaFile()
-
 module("luaunit", package.seeall )
 
 -- private exported functions (for testing)
