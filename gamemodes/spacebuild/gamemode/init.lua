@@ -6,5 +6,8 @@
 -- To change this template use File | Settings | File Templates.
 --
 
+AddCSLuaFile( "cl_init.lua" )
+AddCSLuaFile( "shared.lua" )
+
 include( "shared.lua" )
 
