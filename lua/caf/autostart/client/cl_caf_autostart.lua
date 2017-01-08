@@ -659,7 +659,7 @@ local function getHtmlPanel(frame)
 	html:AddFunction( "caf", "print", log.warn)
 	html:AddFunction( "caf", "updateMessages", updateMessages)
 	html:AddFunction( "caf", "updateAddons", updateAddons)
-	html:OpenURL( "asset://garrysmod/data/sb/menu.txt" )
+	html:OpenURL( "asset://garrysmod/data/sb/menu.html.txt" )
 	return html
 end
 

@@ -41,7 +41,7 @@ hook.Add("EntityRemoved", "spacebuild.common.EntityRemoved", EntityRemoved)
 
 local function LSSpawnFunc( ply )
     log.debug("Player spawn - common")
-    ply.lastsync = nil
+    ply.firstsync = nil
 end
 hook.Add( "PlayerInitialSpawn", "spacebuild.core.initialspawn", LSSpawnFunc )
 
@@ -49,8 +49,8 @@ local time
 local function Think( )
     time = CurTime()
     for _, ply in pairs(player.GetAll()) do
-        if not ply.lastsync then ply.lastsync = time end
-        if ply.lastsync + 1 < time then
+        if not ply.firstsync then ply.firstsync = time + 1 end
+        if ply.firstsync < time or game.SinglePlayer() then
             for _, part in pairs(core) do
                 if part.player and part.player.think then
                     part.player.think(ply, time)

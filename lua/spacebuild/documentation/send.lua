@@ -15,5 +15,8 @@
 local base = "spacebuild/documentation/"
 
 AddCSLuaFile(base.."menu.lua")
+for key, val in pairs(file.Find(base.."contents/*.lua", "LUA")) do
+    AddCSLuaFile( base.."contents/"..val )
+end
 
 

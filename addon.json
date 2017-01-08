@@ -8,7 +8,6 @@
 		"*.psd",
 		"*.vcproj",
 		"*.svn*",
-		"*.txt",
 		".git*",
 		"docs/*",
 		"spacebuild.iml",
