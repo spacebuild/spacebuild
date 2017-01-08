@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="bootstrap.css.txt">
-    <link rel="stylesheet" type="text/css" href="style.css.txt">
-    <script type="text/javascript" src="jquery.js.txt"></script>
-    <script type="text/javascript" src="common.js.txt"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap.css.lua">
+    <link rel="stylesheet" type="text/css" href="style.css.lua">
+    <link rel="stylesheet" type="text/css" href="prism.css.lua">
+    <script type="text/javascript" src="jquery.js.lua"></script>
+    <script type="text/javascript" src="prism.js.lua"></script>
+    <script type="text/javascript" src="common.js.lua"></script>
 </head>
 <body>
 <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
@@ -36,6 +38,14 @@
 
     <div id="addon_view" class="view row">
         <h1>Addons</h1>
+        <pre><code class="language-lua">
+local base = "spacebuild/documentation/"
+
+AddCSLuaFile(base.."menu.lua")
+for key, val in pairs(file.Find(base.."contents/*.lua", "LUA")) do
+    AddCSLuaFile( base.."contents/"..val )
+end
+        </code></pre>
     </div>
 
     <div id="info_view" class="view row" data-spy="scroll" data-target="#nav-info">
@@ -49,9 +59,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#info_ls">Life Support</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
             </ul>
         </div>
@@ -79,40 +86,96 @@
     </div>
 
     <div id="about_view" class="view row">
-        <div class="col-sm-12">
-            <h1>About</h1>
-            <h2>You can find us on<h2>
-            <ul class="list-group">
-              <li class="list-group-item justify-content-between">
-                https://github.com/spacebuild/spacebuild
-                <span class="badge badge-info badge-pill">Github</span>
-                <span class="badge badge-success badge-pill">Core</span>
-              </li>
-              <li class="list-group-item justify-content-between">
-                https://github.com/spacebuild/sbep
-                <span class="badge badge-info badge-pill">Github</span>
-                <span class="badge badge-warning badge-pill">Extensions</span>
-              </li>
-              <li class="list-group-item justify-content-between">
-                https://github.com/spacebuild/SB-Addons
-                <span class="badge badge-info badge-pill">Github</span>
-                <span class="badge badge-warning badge-pill">Extensions</span>
-              </li>
-              <li class="list-group-item justify-content-between">
-                https://steamcommunity.com/sharedfiles/filedetails/?id=693838486
-                <span class="badge badge-default badge-pill">Workshop</span>
-                <span class="badge badge-success badge-pill">Core</span>
-              </li>
-              <li class="list-group-item justify-content-between">
-                https://steamcommunity.com/sharedfiles/filedetails/?id=695227522
-                <span class="badge badge-default badge-pill">Workshop</span>
-                <span class="badge badge-warning badge-pill">Extensions</span>
-              </li>
-              <li class="list-group-item justify-content-between">
-                https://discord.gg/3A4dPhD
-                <span class="badge badge-primary badge-pill">discord</span>
-              </li>
+        <div class="col-sm-3 sidebar">
+            <ul class="nav nav-pills flex-column" id="nav-about">
+                <li class="nav-item">
+                    <a class="nav-link" href="#about_talk">Chat/Ask questions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about_downloads">Download</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about_github">Github</a>
+                </li>
             </ul>
+        </div>
+        <div class="col-sm-9 offset-sm-3">
+            <h1>About</h1>
+            <h2 id="about_talk">Want to chat or ask us questions?</h2>
+            <table class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Discord</td>
+                        <td>https://discord.gg/3A4dPhD</td>
+                        <td><span class="badge badge-primary badge-pill">discord</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 id="about_downloads">You can install us using</h2>
+            <table class="table">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Link</th>
+                    <th>Tags</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Spacebuild release</td>
+                        <td>https://steamcommunity.com/sharedfiles/filedetails/?id=693838486</td>
+                        <td><span class="badge badge-success badge-pill">Core</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>SBEP release</td>
+                        <td>https://steamcommunity.com/sharedfiles/filedetails/?id=695227522</td>
+                        <td><span class="badge badge-warning badge-pill">Extensions</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 id="about_github">Github repositories</h2>
+            <table class="table">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Link</th>
+                    <th>Tags</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Spacebuild</td>
+                    <td>https://github.com/spacebuild/spacebuild</td>
+                    <td><span class="badge badge-success badge-pill">Core</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>SBEP</td>
+                    <td>https://github.com/spacebuild/sbep</td>
+                    <td><span class="badge badge-warning badge-pill">Extensions</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>SB addons</td>
+                    <td>https://github.com/spacebuild/SB-Addons</td>
+                    <td><span class="badge badge-warning badge-pill">Extensions</span></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
