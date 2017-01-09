@@ -2,3 +2,5 @@
 *.komodoproject
 spacebuild.gma
 /.idea/
+*.ipr
+*.iml

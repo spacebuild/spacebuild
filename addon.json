@@ -17,6 +17,7 @@
 		"*.md",
 		"*.gma",
 		"*.jpg",
+		".grep",
 		".luacheckrc",
 		"*.yml"
 	]
