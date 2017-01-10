@@ -1,1 +1,7 @@
 ^gamemodes/spacebuild/gamemode/.*\.lua$
+^lua/autorun/.*\.lua$
+^lua/spacebuild/classes/.*\.lua$
+^lua/spacebuild/client/.*\.lua$
+^lua/spacebuild/server/.*\.lua$
+^lua/spacebuild/shared/.*\.lua$
+^lua/spacebuild/tools/.*\.lua$
