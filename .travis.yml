@@ -9,4 +9,4 @@ install:
   - luarocks install luacheck
 
 script:
-  - git ls-files | grep -f .grep | xargs --no-run-if-empty luacheck --std min+garrysmod+spacebuild
+  - git ls-files | grep -f .grep | xargs --no-run-if-empty --no-unused-args luacheck --std min+garrysmod+spacebuild
