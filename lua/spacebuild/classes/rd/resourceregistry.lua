@@ -35,11 +35,11 @@ function C:registerResourceInfo(id, name, displayName, attributes)
 end
 
 function C:getResourceInfoFromID(id)
-    return self.resources_ids_table[id]
+    return self.resources_ids_table[id] or error("Resource with id="..id.."not found in the registry, please call ResourceRegistry:registerResourceInfo(unique_id, name, displayname, attributes)")
 end
 
 function C:getResourceInfoFromName(name)
-    return self.resources_names_table[name]
+    return self.resources_names_table[name] or error("Resource with name="..name.."not found in the registry, please call ResourceRegistry:registerResourceInfo(unique_id, name, displayname, attributes)")
 end
 
 local coolant_resources
