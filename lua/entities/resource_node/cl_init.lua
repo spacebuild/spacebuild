@@ -41,8 +41,9 @@ function ENT:DoNormalDraw( bDontDrawModel )
 			end
 		end
 	end
-	if ( EyePos():Distance( self:GetPos() ) < rd_overlay_dist and mode ~= 0 ) and ( (mode ~= 1 and not string.find(self:GetModel(),"s_small_res") ) or LocalPlayer():GetEyeTrace().Entity == self) then
-		local trace = LocalPlayer():GetEyeTrace()
+	local ply = LocalPlayer()
+	local trace = ply:GetEyeTrace();
+	if ( EyePos():Distance( self:GetPos() ) < rd_overlay_dist and mode ~= 0 ) and ( (mode ~= 1 and not string.find(self:GetModel(),"s_small_res") ) or trace.Entity == self) then
 		if not bDontDrawModel  then self:DrawModel() end
 		local obj = self.rdobject
 		if not obj then return end
@@ -224,6 +225,23 @@ function ENT:DoNormalDraw( bDontDrawModel )
 					end
 				end
 			--Stop rendering
+			-- Test Screen clicking for button behaviour
+			--[[local t = {}
+			t.start = ply:GetShootPos()
+			t.endpos = ply:GetAimVector() * 32 + t.start
+			t.filter = ply
+
+			local tr = util.TraceLine(t)]]
+
+			local pos = self:WorldToLocal(trace.HitPos)
+			if trace.Entity == self then
+				surface.DrawText("Pos "..pos.x..","..pos.y)
+				surface.DrawCircle( pos.x * mul_up, -(pos.y * mul_up), 4, 255, 0, 0, 255 )
+			else
+				surface.DrawText("Pos "..pos.x..","..pos.y)
+			end
+
+			--end test screen clicking
 			cam.End3D2D()
 		end
 	else
