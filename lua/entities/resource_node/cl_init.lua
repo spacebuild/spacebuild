@@ -100,7 +100,8 @@ function ENT:DoNormalDraw( bDontDrawModel )
 				mul_up = 15.2
 			end
 			--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
-			local pos = self:GetPos() + (self:GetUp() * mul_up) + (self:GetRight() * mul_ri) + (self:GetForward() * mul_fr)
+			local screenOffset = (self:GetUp() * mul_up) + (self:GetRight() * mul_ri) + (self:GetForward() * mul_fr)
+			local pos = self:GetPos() + screenOffset
 			--[[local angle =  (LocalPlayer():GetPos() - trace.HitPos):Angle()
 			angle.r = angle.r  + 90
 			angle.y = angle.y + 90
@@ -110,7 +111,9 @@ function ENT:DoNormalDraw( bDontDrawModel )
 
 			local textStartPos = -375
 
-			cam.Start3D2D(pos,angle,0.05)
+			local factor = 20
+
+			cam.Start3D2D(pos,angle,1/factor)
 
 				surface.SetDrawColor(0,0,0,255)
 				surface.DrawRect( textStartPos, 0, 1250, 675 )
@@ -226,19 +229,11 @@ function ENT:DoNormalDraw( bDontDrawModel )
 				end
 			--Stop rendering
 			-- Test Screen clicking for button behaviour
-			--[[local t = {}
-			t.start = ply:GetShootPos()
-			t.endpos = ply:GetAimVector() * 32 + t.start
-			t.filter = ply
 
-			local tr = util.TraceLine(t)]]
-
-			local pos = self:WorldToLocal(trace.HitPos)
 			if trace.Entity == self then
-				surface.DrawText("Pos "..pos.x..","..pos.y)
-				surface.DrawCircle( pos.x * mul_up, -(pos.y * mul_up), 4, 255, 0, 0, 255 )
-			else
-				surface.DrawText("Pos "..pos.x..","..pos.y)
+				local pos = self:WorldToLocal(trace.HitPos)
+				pos.x = pos.x + textStartPos -- Normalize so that we start from x = 0
+				surface.DrawCircle( pos.x * factor, pos.y * factor, 4, 255, 0, 0, 255 )
 			end
 
 			--end test screen clicking
