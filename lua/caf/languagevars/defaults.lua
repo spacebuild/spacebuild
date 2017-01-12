@@ -308,7 +308,7 @@ t["Not on a Spacebuild Map!"] = "Dieses ist keine Spacebuild-Map!"
 
 CAF.LANGUAGE["de"] = t;
 
-local t = CAF.LANGUAGE["pt"] or {}
+local t = CAF.LANGUAGE["pt-BR"] or {}
 
 --Custom Addon Framework
 t["caf_menu_title"] = "Menu Custom Addon Framework"
@@ -406,5 +406,5 @@ t["This Addon is already Active!"] = "Esse Addon já está Ativo!"
 t["This Addon is already disabled!"] = "Esse Addon já está Desativado!"
 t["Not on a Spacebuild Map!"] = "Esse não é um Mapa Spacebuild!"
 
-CAF.LANGUAGE["pt"] = t;
+CAF.LANGUAGE["pt-BR"] = t;
 
