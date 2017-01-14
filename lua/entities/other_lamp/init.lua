@@ -5,6 +5,8 @@ util.PrecacheSound("Buttons.snd17")
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 local Energy_Increment = 4
 
 function ENT:Initialize()
@@ -62,9 +64,7 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").Destruct(self, true)
-    end
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:Think()

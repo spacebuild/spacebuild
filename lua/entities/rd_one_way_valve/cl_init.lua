@@ -2,6 +2,8 @@ include('shared.lua')
 
 ENT.RenderGroup = RENDERGROUP_BOTH
 
+local SB = SPACEBUILD
+
 local OOO = {}
 OOO[0] = "Closed"
 OOO[1] = "Open"
@@ -9,12 +11,8 @@ OOO[1] = "Open"
 function ENT:Draw(bDontDrawModel)
     self:DoNormalDraw()
 
-    --draw beams by MadDog
-    CAF.GetAddon("Resource Distribution").Beam_Render(self)
-
-    if (Wire_Render) then
-        Wire_Render(self)
-    end
+    SB:drawBeams(self)
+    SB.util.wire.render(self)
 end
 
 function ENT:DrawTranslucent(bDontDrawModel)

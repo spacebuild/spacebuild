@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     self.BaseClass.Initialize(self)
     self.Active = 0
@@ -202,7 +204,7 @@ end
 
 --check 
 function ENT:Destruct()
-    CAF.GetAddon("Life Support"):LS_Destruct(self, true)
+    SB.util.damage.destruct(self, true)
 end
 
 --check

@@ -232,8 +232,11 @@ function ENT:DoNormalDraw( bDontDrawModel )
 
 			if trace.Entity == self then
 				local pos = self:WorldToLocal(trace.HitPos)
-				pos.x = pos.x + textStartPos -- Normalize so that we start from x = 0
-				surface.DrawCircle( pos.x * factor, pos.y * factor, 4, 255, 0, 0, 255 )
+				if pos.y > -16 and pos.y < 16 and pos.x > -32 and pos.x < 32 then
+					surface.DrawCircle(250+(pos.x  * factor), 330 -(pos.y * factor), 4, 255, 0, 0, 255 )
+				end
+				surface.SetTextPos(textStartPos+15,TempY + 70)
+				surface.DrawText("Pos: "..pos.x ..", "..pos.y)
 			end
 
 			--end test screen clicking

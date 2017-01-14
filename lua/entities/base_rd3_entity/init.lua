@@ -41,7 +41,7 @@ function ENT:GetMultiplier()
 end
 
 function ENT:Repair()
-    self:SetHealth(self:GetMaxHealth())
+    SB.util.damage.repair(self)
 end
 
 --[[
@@ -76,10 +76,8 @@ end
 
 
 
-function ENT:OnTakeDamage(DmgInfo) --should make the damage go to the shield if the shield is installed(CDS)
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").DamageLS(self, DmgInfo:GetDamage())
-    end
+function ENT:OnTakeDamage(DmgInfo)
+    SB.util.damage.doDamage(self, DmgInfo:GetDamage())
 end
 
 function ENT:OnRemove()

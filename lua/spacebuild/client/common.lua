@@ -149,7 +149,7 @@ end
 
 local function drawEnvironment(ply, width, height)
     if hook.Call( "HUDShouldDraw", GAMEMODE, "SBHudEnvironment" ) == false then return end
-    if not ply.environment then return end
+    if not ply.environment or not SB:onSBMap() then return end
 
     surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
     surface.DrawRect( 20, 28, 150, 20 )

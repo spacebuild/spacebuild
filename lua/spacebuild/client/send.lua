@@ -20,8 +20,8 @@ AddCSLuaFile(base.."ls.lua")
 AddCSLuaFile(base.."mining.lua")
 AddCSLuaFile(base.."rd.lua")
 AddCSLuaFile(base.."sb.lua")
+AddCSLuaFile(base.."util.lua")
 
-resource.AddFile("resource/fonts/fontawesome.otf")
 resource.AddFile("resource/fonts/fontawesome-webfont.ttf")
 
 

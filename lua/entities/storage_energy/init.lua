@@ -2,6 +2,8 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     self.BaseClass.Initialize(self)
     self.energy = 0
@@ -37,17 +39,12 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").Destruct(self, true)
-    end
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:Leak()
     local energy = self:GetResourceAmount("energy")
-    local zapme
-    if CAF.GetAddon("Life Support") then
-        zapme = CAF.GetAddon("Life Support").ZapMe
-    end
+    local zapme = SB.util.damage.zapArea
     if energy > 0 then
         local waterlevel = 0
         if CAF then

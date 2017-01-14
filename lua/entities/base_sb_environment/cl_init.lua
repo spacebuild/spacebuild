@@ -7,18 +7,12 @@ OOO[0] = "Off"
 OOO[1] = "On"
 OOO[2] = "Overdrive"
 
+local SB = SPACEBUILD
+
 function ENT:Draw(bDontDrawModel)
     self:DoNormalDraw()
-    --draw beams by MadDog
-    if CAF then
-        local RD = CAF.GetAddon("Resource Distribution")
-        if RD then
-            RD.Beam_Render(self)
-        end
-    end
-    if (Wire_Render) then
-        Wire_Render(self)
-    end
+    SB:drawBeams(self)
+    SB.util.wire.render(self)
 end
 
 function ENT:DrawTranslucent(bDontDrawModel)

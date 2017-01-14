@@ -7,6 +7,8 @@ util.PrecacheSound("common/warning.wav")
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     self.BaseClass.Initialize(self)
     self.Active = 0
@@ -124,7 +126,7 @@ end
 
 function ENT:Destruct()
     CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
-    CAF.GetAddon("Life Support").LS_Destruct(self, true)
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:OnRemove()

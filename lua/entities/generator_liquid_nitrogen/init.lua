@@ -8,6 +8,8 @@ local Energy_Increment = 450
 local Nitrogen_Increment = 60
 local Liquid_Nitrogen_Increment = 45
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     self.BaseClass.Initialize(self)
     self.Active = 0
@@ -143,9 +145,7 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").Destruct(self, true)
-    end
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:OnRemove()
@@ -164,14 +164,7 @@ function ENT:Proc_Water()
     if not (WireAddon == nil) then Wire_TriggerOutput(self, "NitrogenUsage", math.Round(winc)) end
     if (energy >= einc and nitrogen >= winc) then
         if self.overdrive > 0 then
-            if CAF and CAF.GetAddon("Life Support") then
-                CAF.GetAddon("Life Support").DamageLS(self, math.random(2, 3))
-            else
-                self:SetHealth(self:Health() - math.Random(2, 3))
-                if self:Health() <= 0 then
-                    self:Remove()
-                end
-            end
+            SB.util.damage.doDamage(self, math.random(2, 3))
         end
         self:ConsumeResource("energy", einc)
         self:ConsumeResource("nitrogen", winc)

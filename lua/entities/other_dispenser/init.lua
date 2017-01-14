@@ -4,6 +4,8 @@ util.PrecacheSound( "ambient.steam01" )
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
 	self.damaged = 0
@@ -27,9 +29,7 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").Destruct( self, true )
-	end
+	SB.util.damage.destruct(self, true)
 end
 
 local function quiet_steam(ent)

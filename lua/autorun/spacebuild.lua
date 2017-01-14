@@ -76,6 +76,7 @@ SB.plugins = {}
 SB.constants = {}
 SB.config = {}
 SB.internal = {}
+SB.util = {}
 
 log.info("Starting up spacebuild " .. version:fullVersion());
 
@@ -143,6 +144,7 @@ SB.plugins = nil
 SB.constants = createReadOnlyTable(SB.constants)
 SB.config = nil
 SB.internal = nil
+SB.util = createReadOnlyTable(SB.util)
 
 SB = createReadOnlyTable(SB)
 SPACEBUILD = SB

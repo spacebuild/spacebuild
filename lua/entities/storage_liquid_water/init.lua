@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 --ToDo: Add HeatUP? = toSteam
 
 function ENT:Initialize()
@@ -44,9 +46,7 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").Destruct(self, true)
-    end
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:OnRemove()

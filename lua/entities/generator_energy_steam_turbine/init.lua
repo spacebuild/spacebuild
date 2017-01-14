@@ -10,6 +10,8 @@ local Water_Increment = 10
 local Energy_Increment = 90
 local Steam_Increment = 10
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     self.BaseClass.Initialize(self)
     self.Active = 0
@@ -142,9 +144,7 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").Destruct(self, true)
-    end
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:OnRemove()

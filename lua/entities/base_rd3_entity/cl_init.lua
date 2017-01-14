@@ -17,9 +17,7 @@ function ENT:Draw(bDontDrawModel)
 
     SB:drawBeams(self)
 
-    if (Wire_Render) then
-        Wire_Render(self)
-    end
+    SB.util.wire.render(self)
 end
 
 function ENT:DrawTranslucent(bDontDrawModel)

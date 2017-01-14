@@ -9,6 +9,8 @@ local Water_Increment = 10
 local Steam_Increment = 10
 local HeatUpTime = 5;
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
     self.BaseClass.Initialize(self)
     self.Active = 0
@@ -144,9 +146,7 @@ function ENT:Repair()
 end
 
 function ENT:Destruct()
-    if CAF and CAF.GetAddon("Life Support") then
-        CAF.GetAddon("Life Support").Destruct(self, true)
-    end
+    SB.util.damage.destruct(self, true)
 end
 
 function ENT:OnRemove()
@@ -165,16 +165,7 @@ function ENT:Proc_Water()
     winc = (math.ceil(winc * self:GetMultiplier())) * self.Multiplier
     if self.time > HeatUpTime - (self.overdrive * 2) then
         if (energy >= einc and water >= winc) then
-            if CAF and CAF.GetAddon("Life Support") then
-                if (self.overdrive == 1) then
-                    CAF.GetAddon("Life Support").DamageLS(self, math.random(2, 3))
-                end
-            else
-                self:SetHealth(self:Health() - math.Random(2, 3))
-                if self:Health() <= 0 then
-                    self:Remove()
-                end
-            end
+            SB.util.damage.doDamage(self, math.random(2, 3))
             self:ConsumeResource("energy", einc)
             self:ConsumeResource("water", winc)
             local left = self:SupplyResource("steam", math.ceil((Steam_Increment + (self.overdrive * Steam_Increment)) * self:GetMultiplier() * self.Multiplier))
@@ -192,14 +183,7 @@ function ENT:Proc_Water()
         end
     else
         if (self.overdrive == 1) then
-            if CAF and CAF.GetAddon("Life Support") then
-                CAF.GetAddon("Life Support").DamageLS(self, math.random(2, 3))
-            else
-                self.health = self.health - math.Random(2, 3)
-                if self.health <= 0 then
-                    self:Remove()
-                end
-            end
+            SB.util.damage.doDamage(self, math.random(2, 3))
         end
         self.time = self.time + 1
         self:ConsumeResource("energy", einc)

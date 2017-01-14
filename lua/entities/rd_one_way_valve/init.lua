@@ -4,6 +4,8 @@ AddCSLuaFile( "shared.lua" )
 
 include('shared.lua')
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
 	--self.BaseClass.Initialize(self) --use this in all ents
 	self:PhysicsInit( SOLID_VPHYSICS )
@@ -148,14 +150,7 @@ function ENT:AcceptInput(name,activator,caller)
 end
 
 function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
-	if self.Shield then
-		self.Shield:ShieldDamage(DmgInfo:GetDamage())
-		CDS_ShieldImpact(self:GetPos())
-		return
-	end
-	if CAF and CAF.GetAddon("Life Support") then
-		CAF.GetAddon("Life Support").DamageLS(self, DmgInfo:GetDamage())
-	end
+	SB.util.damage.doDamage(self, DmgInfo:GetDamage())
 end
 
 function ENT:Think()
