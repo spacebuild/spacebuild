@@ -100,7 +100,7 @@ hook.Add( "RenderScreenspaceEffects", "VFX_Render", RenderColorAndBloom );
 
 local function DrawSunEffects( )
     -- no pixel shaders? no sun effects!
-    if( not render.SupportsPixelShaders_2_0() ) then return; end
+    if not render.SupportsPixelShaders_2_0() or not SB:onSBMap() then return end
     -- render each star.
     for ent, Sun in pairs( SB:getEnvironments() ) do
         if Sun:isA("SunEnvironment") then

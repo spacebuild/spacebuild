@@ -56,12 +56,14 @@ SB.getSpace = function() return space end
 function SB:addEnvironment(environment)
     if not environment or not environment.isA or not environment:isA("BaseEnvironment") then error("not a valid environment class!") end
     internal.environments[environment:getID()] = environment
+    isSBMap = nil -- we need to recalculate
     hook.Call("onEnvironmentAdded", GAMEMODE, environment)
 end
 
 function SB:removeEnvironment(environment)
     if not environment or not environment.isA or not environment:isA("BaseEnvironment") then error("not a valid environment class!") end
     internal.environments[environment:getID()] = nil
+    isSBMap = nil -- we need to recalculate
     hook.Call("onEnvironmentRemoved", GAMEMODE, environment)
 end
 
