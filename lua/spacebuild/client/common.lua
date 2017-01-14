@@ -180,10 +180,10 @@ local function drawEnvironment(ply, width, height)
     draw.DrawText( utf8.char( 0xf2c7 ) , "FANormal", 24, 52, whiteColor, TEXT_ALIGN_LEFT )
 
     if ply.environment.getNightTemperature and ply.environment:getNightTemperature() ~= ply.environment:getTemperature() then
-        draw.DrawText( string.format("%6.2f", convertTemperature(ply.environment:getNightTemperature(), unit))..unit , "FANormal", 100, 54, getTemperatureColor(ply.environment:getNightTemperature()), TEXT_ALIGN_RIGHT )
+        draw.DrawText( string.format("%6.2f", convertTemperature(ply.environment:getNightTemperature(), unit)).." "..unit , "FANormal", 100, 54, getTemperatureColor(ply.environment:getNightTemperature()), TEXT_ALIGN_RIGHT )
         draw.DrawText( "-", "FANormal", 105, 54, whiteColor, TEXT_ALIGN_RIGHT)
     end
-    draw.DrawText( string.format("%6.2f", convertTemperature(ply.environment:getTemperature(), unit))..unit , "FANormal", 158, 54, getTemperatureColor(ply.environment:getTemperature()), TEXT_ALIGN_RIGHT )
+    draw.DrawText( string.format("%6.2f", convertTemperature(ply.environment:getTemperature(), unit)).." "..unit , "FANormal", 158, 54, getTemperatureColor(ply.environment:getTemperature()), TEXT_ALIGN_RIGHT )
 
     -- Gravity
     surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
@@ -197,7 +197,7 @@ local function drawEnvironment(ply, width, height)
     surface.DrawRect( 20, 94, 150, 20 )
 
     draw.DrawText( utf8.char( 0xf2da ) , "FANormal", 24, 96, whiteColor, TEXT_ALIGN_LEFT )
-    draw.DrawText( string.format("%6.2f", ply.environment:getPressure()).."P"  , "FANormal", 158, 98, whiteColor, TEXT_ALIGN_RIGHT )
+    draw.DrawText( string.format("%6.2f", ply.environment:getPressure()).." atm"  , "FANormal", 158, 98, whiteColor, TEXT_ALIGN_RIGHT )
 
     -- Oxygen
     surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
