@@ -308,3 +308,103 @@ t["Not on a Spacebuild Map!"] = "Dieses ist keine Spacebuild-Map!"
 
 CAF.LANGUAGE["de"] = t;
 
+local t = CAF.LANGUAGE["pt-BR"] or {}
+
+--Custom Addon Framework
+t["caf_menu_title"] = "Menu Custom Addon Framework"
+t["caf_menu_tab_title"] = "Custom Addon Framework"
+
+--Life Support
+t["Life Support"] = "Suporte de Vida"
+t["Generator"] = "Gerador"
+t["Generators"] = "Geradores"
+t["Storage Device"] = "Dispositivo de Armazenamento"
+t["Storage Devices"] = "Dispositivos de Armazenamento"
+t["Life Support Storage Devices"] = "Dispositivos de Armazenamento do Suporte de Vida"
+t["Life Support Generators"] = "Geradores do Suporte de Vida"
+t["Create Storage Devices attached to any surface."] = "Criar Dispositivos de Armazenamento fixados á qualquer superfície."
+t["Create Generators attached to any surface."] = "Criar Geradores fixados á qualquer superífice."
+t["Left-Click: Spawn a Device.  Reload: Repair Device."] = "Clique Esquerdo: Criar um Dispositivo. Recarregar: Consertar Dispositivo."
+t["Environmental Control"] = "Controle de Ambiente"
+t["Environmental Controls"] = "Controles de Ambiente"
+t["sb_dev_plants_title"] = "Planta Dev Spacebuild"
+t["sb_dev_plants_desc"] = "Criar Plantas Dev fixadas á qualquer superfície."
+t["sb_dev_plants_desc2"] = "Clique Esquerdo: Criar uma Planta Dev.(Somente Admins) Recarregar: Consertar Planta."
+
+t["O2 Refresh Rate"] = "Taxa de Recarregamento O2"
+t["Dev Plants (Auto O2 Refresher)"] = "Plantas Dev (Recarregador de O2 Automático)"
+t["#Dev Plants"] = "#Planta Dev"
+t["Air"] = "Ar"
+t["Temperature"] = "Temperatura"
+t["Coolant"] = "Refrigerante"
+t["Energy"] = "Energia"
+t["Water"] = "Água"
+t["Nitrogen"] = "Nitrogênio"
+t["Hydrogen"] = "Hidrogênio"
+t["Oxygen"] = "Oxigênio"
+t["Carbon Dioxide"] = "Dióxido de Carbono"
+t["Steam"] = "Vapor"
+t["Heavy Water"] = "Água Pesada"
+t["Liquid Nitrogen"] = "Nitrogênio Líquido"
+t["Some Language Changes will only Show after a map reload!"] = "Algumas Mudanças de Linguagem só irão Aparecer depois de recarregar ou mudar o mapa!"
+t["Language"] = "Linguagem"
+t["Clientside CAF Options"] = "Opções CAF do Cliente"
+--Shared 
+t["No Implementation yet"] = "Nenhuma Implementação ainda."
+t["Beta"] = "Beta"
+t["This Addon is already Active!"] = "Esse Addon já está Ativo!"
+t["Resource Distribution is Required and needs to be Active!"] = "Resource Distribution é necessário e precisa estar Ativo!"
+t["This addon wasn't on in the first place"] = "Esse Addon não estava ligado para começar"
+
+--CAF Stuff
+t["Error unloading Addon"] = "Erro upando Addon"
+t["Error loading Addon"] = "Erro carregando Addon"
+t["Addon"] = "Addon"
+t["got disabled"] = "foi desativado"
+t["An error occured when trying to disable Addon"] = "Um erro occoreu ao tentar desabilitar o Addon"
+t["got enabled"] = "foi ativado"
+t["An error occured when trying to enable Addon"] = "Um erro occoreu ao tentar abilitar o Addon"
+t["Missing Argument"] = "Argumento Faltando"
+t["No HookName given"] = "Nenhum HookName especificado"
+t["No function given"] = "Nenhum function especificado"
+t["This hook doesn't exist"] = "Esse hook não existe"
+t["No AddonName given"] = "Nenhum AddonName especificado"
+t["No OptionName given"] = "Nenhum OptionName especificado"
+t["This option wasn't found for this Addon"] = "Esta opção nao foi encontrada para esse Addon"
+t["No Extra options found for this Addon"] = "Nenhuma opção extra encontrada para esse Addon"
+t["Addon Not Found"] = "Addon Não Encontrado"
+t["No Status Info Found"] = "Nenhum Status Info Encontrado"
+t["No Custom Status Info Found"] = "Nenhum Custom Status Info Encontrado"
+t["No Version Info Found"] = "Nenhum Version Info Encontrado"
+t["No AddonClass given"] = "Nenhum AddonClass especificado"
+t["CAF: Client has Internet. Enabled Online-Help"] = "CAF: Cliente tem Internet. Ajuda Online Abilitada"
+t["Your version is out of date. Please update to version "] = "A sua versão está desatualizada. Por favor atualize para versão "
+t["No Description"] = "Nenhuma Descrição"
+t["Description"] = "Descrição"
+t["Installed Addons"] = "Addons Instalados"
+t["Info and Help"] = "Informação e Ajuda"
+t["Server Settings"] = "Configurações do Server"
+t["Client Settings"] = "Configurações do Cliente"
+t["About"] = "Sobre"
+t["Unknown"] = "Desconhecido"
+t["Loading"] = "Carregando"
+
+--New CAF Stuff
+t["This Addon is up to date"] = "Esse Addon está atualizado";
+t["This Addon is out of date"] = "Esse Addon está destualizado";
+t["No Update Information Available"] = "Nenhuma Informção de Atualização Disponível";
+
+--Default Stool Stuff
+t["caf_stool_disabled"] = "Esse Stool não está ativo"
+t["caf_stool_entity_disabled"] = "Esse Entidade Stool não está ativa"
+t["caf_stool_entity_model_disabled"] = "Esse Modelo de Entidade Stool não está ativo"
+t["caf_stool_admin_required"] = "Esse Stool é exclusivo para Admins";
+t["caf_stool_entity_admin_required"] = "Essa Entidade Stool é exclusiva para Admins";
+t["caf_stool_entity_model_admin_required"] = "Esse Modelo de Entidade Stool é exclusivo para Admins";
+
+t["This Addon is already Active!"] = "Esse Addon já está Ativo!"
+t["This Addon is already disabled!"] = "Esse Addon já está Desativado!"
+t["Not on a Spacebuild Map!"] = "Esse não é um Mapa Spacebuild!"
+
+CAF.LANGUAGE["pt-BR"] = t;
+
