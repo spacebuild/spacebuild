@@ -26,12 +26,13 @@ function C:isA(className)
 	return className == "ResourceInfo"
 end
 
-function C:init(id, name, displayName, attributes)
+function C:init(id, name, displayName, unit, attributes)
 	if not id then error(self:getClass() + " requires an id") end
 	if not name then error(self:getClass() + " requires a name") end
 	self.id = id
 	self.name = name
 	self.displayName = displayName or self.name
+	self.unit = unit or ""
 	self.attributes = attributes or {}
 end
 

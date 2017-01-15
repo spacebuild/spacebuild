@@ -1,3 +1,5 @@
+local SB = SPACEBUILD
+
 CAFToolSetup = {}
 
 function CAFToolSetup.open( s_toolmode )
@@ -459,7 +461,8 @@ function CAFTool.Reload( self, trace )
 	if not trace.Entity:IsValid() then return false end
 	if CLIENT then return true end
 	if trace.Entity.Repair == nil then
-		self:GetOwner():SendLua("GAMEMODE:AddNotify('Object cannot be repaired!', NOTIFY_GENERIC, 7); surface.PlaySound(\"ambient/water/drip"..math.random(1, 4)..".wav\")")
+		SB.util.messages.notify(self:GetOwner(), "Object cannot be repaired!")
+		SB.util.messages.sound(self:GetOwner(), "ambient/water/drip"..math.random(1, 4)..".wav")
 		return
 	end
 	trace.Entity:Repair()

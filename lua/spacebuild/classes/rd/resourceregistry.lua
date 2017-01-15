@@ -28,8 +28,8 @@ function C:init()
     self.resources_ids_table = {}
 end
 
-function C:registerResourceInfo(id, name, displayName, attributes)
-    local resourceinfo = self.classLoader.new("rd/ResourceInfo", id, name, displayName, attributes)
+function C:registerResourceInfo(id, name, displayName, unit, attributes)
+    local resourceinfo = self.classLoader.new("rd/ResourceInfo", id, name, displayName, unit, attributes)
     self.resources_names_table[name] = resourceinfo
     self.resources_ids_table[id] = resourceinfo
 end

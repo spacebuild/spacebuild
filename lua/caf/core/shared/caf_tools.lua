@@ -2,6 +2,7 @@
 --	Custom Addon Framework TOOLS HAPPY-FUN TIME-SAVER FUNCTIONS
 --
 
+local SB = SPACEBUILD
 
 if ( SERVER ) then
 	
@@ -185,7 +186,8 @@ function CAF_ToolRegister( TOOL, Models_List, MakeFunc, ToolName, ToolLimit, Mak
 		if not trace.Entity:IsValid() then return false end
 		if (CLIENT) then return true end
 		if (not trace.Entity:GetTable().Repair) then
-	        self:GetOwner():SendLua("GAMEMODE:AddNotify('Object cannot be repaired!', NOTIFY_GENERIC, 7); surface.PlaySound(\"ambient/water/drip"..math.random(1, 4)..".wav\")")
+			SB.util.messages.notify(self:GetOwner(), "Object cannot be repaired!")
+			SB.util.messages.sound(self:GetOwner(), "ambient/water/drip"..math.random(1, 4)..".wav")
 			return
 		end
 		trace.Entity:Repair()

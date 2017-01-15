@@ -12,7 +12,6 @@ local internal = SB.internal
 
 
 local damage = {}
-local wire = {}
 
 damage.repair = function(ent)
     ent:SetHealth(ent:GetMaxHealth())
@@ -138,9 +137,25 @@ damage.performCrushEffects = function(ent)
     ent:EmitSound( "Player.FallGib" )
 end
 
+local wire = {}
+
+local protection = {}
+
+local messages = {}
+
+messages.notify = function(ply, message)
+    ply:SendLua( "GAMEMODE:AddNotify('"..message.."', NOTIFY_GENERIC, 7);" )
+end
+
+messages.sound = function(ply, sound)
+    ply:SendLua( "surface.PlaySound('"..sound.."');" )
+end
+
 
 SB.util.damage =  internal.readOnlyTable(damage)
 SB.util.wire =  internal.readOnlyTable(wire)
+SB.util.protection = internal.readOnlyTable(protection)
+SB.util.messages = internal.readOnlyTable(messages)
 
 
 

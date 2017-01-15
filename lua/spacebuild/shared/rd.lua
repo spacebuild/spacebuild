@@ -25,21 +25,20 @@ local SB = SPACEBUILD
 local internal = SB.internal
 local class = SB.class
 local device_table = {}
-local missing_devices = {}
 local resourceRegistry = class.new("rd/ResourceRegistry", class)
 
 internal.device_table = device_table
 
-resourceRegistry:registerResourceInfo(1, "vacuum", "Vacuum", { })
-resourceRegistry:registerResourceInfo(1, "energy", "Energy", { "ENERGY" })
-resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
-resourceRegistry:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
-resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
-resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
-resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", { "GAS" })
-resourceRegistry:registerResourceInfo(7, "steam", "Steam", { "GAS" })
-resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water", { "LIQUID" })
-resourceRegistry:registerResourceInfo(9, "liquid nitrogen", "Liquid Nitrogen", { "LIQUID" })
+resourceRegistry:registerResourceInfo(1, "vacuum", "Vacuum", "", { })
+resourceRegistry:registerResourceInfo(1, "energy", "Energy", "W", { "ENERGY" })
+resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", "l", { "GAS" })
+resourceRegistry:registerResourceInfo(3, "water", "Water", "l", { "LIQUID", "COOLANT" })
+resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen","l", { "GAS", "FLAMABLE" })
+resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen","l", { "GAS", "COOLANT" })
+resourceRegistry:registerResourceInfo(6, "carbon dioxide","l", "Carbon Dioxide", { "GAS" })
+resourceRegistry:registerResourceInfo(7, "steam", "Steam","l", { "GAS" })
+resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water","l", { "LIQUID" })
+resourceRegistry:registerResourceInfo(9, "liquid nitrogen", "Liquid Nitrogen","l", { "LIQUID" })
 
 SB.RDTYPES = SB.internal.readOnlyTable({
     STORAGE = 1,

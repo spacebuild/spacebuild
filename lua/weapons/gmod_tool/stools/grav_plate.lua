@@ -5,6 +5,8 @@ TOOL.Command = nil
 TOOL.ConfigName = ''
 TOOL.Tab = "Spacebuild"
 
+local SB = SPACEBUILD
+
 -- Add Default Language translation (saves adding it to the txt files)
 if ( CLIENT ) then
 	language.Add( "tool.grav_plate.name", "Gravity Plating" )
@@ -39,7 +41,7 @@ function TOOL:LeftClick( trace )
 	if CLIENT then return true end
 	local gravplating = 1
 	SaveGravPlating(self:GetOwner(),trace.Entity,{ GravPlating = gravplating })
-	self:GetOwner():SendLua( "GAMEMODE:AddNotify('Surface has received Gravity Plating.', NOTIFY_GENERIC, 7);" )
+	SB.util.messages.notify(self:GetOwner(), "Surface has received Gravity Plating." )
 	return true
 end
 
@@ -52,7 +54,7 @@ function TOOL:RightClick( trace )
 	if CLIENT then return true end
 	local gravplating = 0
 	SaveGravPlating(self:GetOwner(),trace.Entity,{ GravPlating = gravplating })
-	self:GetOwner():SendLua( "GAMEMODE:AddNotify('Gravity Plating removed from surface.', NOTIFY_GENERIC, 7);" )
+	SB.util.messages.notify(self:GetOwner(), "Gravity Plating removed from surface.")
 	return true
 end
 

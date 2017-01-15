@@ -10,6 +10,8 @@ TOOL.Command	= nil
 TOOL.ConfigName	= ''
 TOOL.Tab = "Spacebuild"
 
+local SB = SPACEBUILD
+
 if ( CLIENT ) then
 	language.Add( "tool.rd3_dev_link2.name", "Smart Link Tool" )
 	language.Add( "tool.rd3_dev_link2.desc", "Links Resource-Carrying Devices to a Resource Node, including Vehicle Pods." )
@@ -31,8 +33,7 @@ TOOL.ClientConVar[ "color_a" ] = "255"
 function TOOL:LeftClick( trace )
 	if (not trace.Entity:IsValid()) or (trace.Entity:IsPlayer()) then return end
 	if (CLIENT) then return true end
-	local enttable = CAF.GetAddon("Resource Distribution").GetEntityTable(trace.Entity)
-	if table.Count(enttable) > 0 or trace.Entity.IsNode or trace.Entity.IsValve or trace.Entity.IsPump then
+	if trace.Entity.rdobject then
 		local iNum = self:NumObjects()
 		local Phys = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
 		self:SetObject( iNum + 1, trace.Entity, trace.HitPos, Phys, trace.PhysicsBone, trace.HitNormal )
@@ -49,58 +50,35 @@ function TOOL:RightClick( trace )
 	--local Phys = trace.Entity:GetPhysicsObjectNum( trace.PhysicsBone )
 	--self:SetObject( iNum + 1, trace.Entity, trace.HitPos, Phys, trace.PhysicsBone, trace.HitNormal )
 
-	if ( iNum > 0 and trace.Entity.IsNode ) then
+	if iNum > 0 and trace.Entity.rdobject and trace.Entity.rdobject:isA("ResourceNetwork") then
 		-- Get information we're about to use
 		for k, v in pairs(self.Objects) do
-			local Ent1,  Ent2  = self:GetEnt(k), trace.Entity
+			local Ent1, nodeEntity = self:GetEnt(k), trace.Entity
 			--local Bone1, Bone2 = self:GetBone(k),	trace.PhysicsBone
 			local WPos1, WPos2 = self:GetPos(k),		trace.Entity:GetPos()
 			--local LPos1, LPos2 = self:GetLocalPos(k),	self:GetLocalPos(2)
 			local length = ( WPos1 - WPos2):Length()
 			Ent1:SetColor(Color(255, 255, 255, 255))
-			
-			-- Get client's CVars
-			--local addlength	 = self:GetClientNumber( "addlength" )
-			local material	= self:GetClientInfo( "material" )
-			local width		= self:GetClientNumber( "width" ) 
-			local color		= Color(self:GetClientNumber("color_r"), self:GetClientNumber("color_g"), self:GetClientNumber("color_b"))
-			--Possible
-			---- Ent - Node V
-			---- Node - Ent V
-			---- Node - Node V
-			---- Ent - Cutoff valve V
-			---- Node - Cutoff valve V
-			---- Cutoff valve - node V
-			---- Cutoff valve - ent V
-			---- pump - node
-			---- node - pump
-			
-			if Ent1.IsNode then
-				if length <= Ent1.range or length <= Ent2.range then
-					CAF.GetAddon("Resource Distribution").linkNodes(Ent1.netid, Ent2.netid)
-				else
-					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The two Nodes are too far apart!', NOTIFY_GENERIC, 7);" )
-				end
-			elseif table.Count(CAF.GetAddon("Resource Distribution").GetEntityTable(Ent1)) > 0 then
-				if length <= Ent2.range then
-					CAF.GetAddon("Resource Distribution").Link(Ent1, Ent2.netid)
-				else
-					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Entity and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
-				end
-			elseif Ent1.IsPump then
-				if length <= Ent2.range then
-					Ent1:SetNetwork(Ent2.netid)
-					Ent1.node = Ent2
-				else
-					 self:GetOwner():SendLua( "GAMEMODE:AddNotify('The Pump and the Node are too far apart!', NOTIFY_GENERIC, 7);" )
-				end
+			local inRange1 = not Ent1.range or Ent1.range >= length
+			local inRange2 = not nodeEntity.range or nodeEntity.range >= length
+
+			if not nodeEntity.rdobject:canLink(Ent1.rdobject) then
+				SB.util.messages.notify(self:GetOwner(), "Invalid Combination!" )
+			elseif not inRange1 or not inRange2 then
+				SB.util.messages.notify(self:GetOwner(), "These 2 entities are too far apart!'" )
 			else
-		        self:GetOwner():SendLua( "GAMEMODE:AddNotify('Invalid Combination!', NOTIFY_GENERIC, 7);" )
+				nodeEntity.rdobject:link(Ent1.rdobject)
+				local material = self:GetClientInfo("material")
+				local width = tonumber(self:GetClientInfo("width"))
+				local color =  Color(self:GetClientInfo("color_r"), self:GetClientInfo("color_g"), self:GetClientInfo("color_b"), self:GetClientInfo("color_a"))
+
+				Ent1.rdobject:addBeam(nodeEntity.rdobject:getID(), material, width, color);
+				nodeEntity.rdobject:addBeam(Ent1.rdobject:getID(), material, width, color);
 			end
 		end
-		self:ClearObjects()
+		self:Reload(trace) --Reset colors and clear objects
 	else
-		self:GetOwner():SendLua( "GAMEMODE:AddNotify(\"You didn't click on a Resource node to link to!\", NOTIFY_GENERIC, 7);" )
+		SB.util.messages.notify(self:GetOwner(), "You didn't click on a Resource node to link to!" )
 	end
 	return true
 end

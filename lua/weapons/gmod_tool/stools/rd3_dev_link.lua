@@ -11,6 +11,8 @@ TOOL.ConfigName	= ''
 
 TOOL.Tab = "Spacebuild"
 
+local SB = SPACEBUILD
+
 if ( CLIENT ) then
 	language.Add( "tool.rd3_dev_link.name", "Link Tool" )
 	language.Add( "tool.rd3_dev_link.desc", "Links Resource-Carrying Devices together to a Resource Node, including Vehicle Pods." )
@@ -37,7 +39,7 @@ function TOOL:LeftClick( trace )
 	if CLIENT  then return true end
 	-- If there's no physics object then we can't constraint it!
 	if not util.IsValidPhysicsObject( trace.Entity, trace.PhysicsBone )  then return false end
-	if not trace.Entity.rdobject then self:GetOwner():SendLua( "GAMEMODE:AddNotify('Not a valid RD entity!', NOTIFY_GENERIC, 7);" ) return false end
+	if not trace.Entity.rdobject then SB.util.messages.notify(self:GetOwner(), "Not a valid RD entity!" ) return false end
 
 	--how many objects stored
 	local iNum = self:NumObjects() + 1
@@ -53,9 +55,9 @@ function TOOL:LeftClick( trace )
 		local inRange2 = not ent2.range or ent2.range >= length
 
 		if not ent1.rdobject:canLink(ent2.rdobject) then
-			self:GetOwner():SendLua( "GAMEMODE:AddNotify('Invalid Combination!', NOTIFY_GENERIC, 7);" )
+			SB.util.messages.notify(self:GetOwner(), "Invalid Combination!")
 		elseif not inRange1 or not inRange2 then
-			self:GetOwner():SendLua( "GAMEMODE:AddNotify('These 2 entities are too far apart!', NOTIFY_GENERIC, 7);" )
+			SB.util.messages.notify(self:GetOwner(), "These 2 entities are too far apart!" )
 		else
 			ent1.rdobject:link(ent2.rdobject)
 			local material = self:GetClientInfo("material")
