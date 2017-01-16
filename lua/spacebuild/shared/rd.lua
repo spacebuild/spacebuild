@@ -29,22 +29,30 @@ local resourceRegistry = class.new("rd/ResourceRegistry", class)
 
 internal.device_table = device_table
 
-resourceRegistry:registerResourceInfo(1, "vacuum", "Vacuum", "", { })
-resourceRegistry:registerResourceInfo(1, "energy", "Energy", "W", { "ENERGY" })
-resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", "l", { "GAS" })
-resourceRegistry:registerResourceInfo(3, "water", "Water", "l", { "LIQUID", "COOLANT" })
-resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen","l", { "GAS", "FLAMABLE" })
-resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen","l", { "GAS", "COOLANT" })
-resourceRegistry:registerResourceInfo(6, "carbon dioxide","l", "Carbon Dioxide", { "GAS" })
-resourceRegistry:registerResourceInfo(7, "steam", "Steam","l", { "GAS" })
-resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water","l", { "LIQUID" })
-resourceRegistry:registerResourceInfo(9, "liquid nitrogen", "Liquid Nitrogen","l", { "LIQUID" })
-
 SB.RDTYPES = SB.internal.readOnlyTable({
     STORAGE = 1,
     GENERATOR = 2,
     NETWORK = 3
 })
+
+SB.RESTYPES = SB.internal.readOnlyTable({
+    ENERGY = 1,
+    GAS = 2,
+    LIQUID = 3,
+    COOLANT = 4,
+    FLAMABLE = 5
+})
+
+resourceRegistry:registerResourceInfo(1, "vacuum", "Vacuum", "", { })
+resourceRegistry:registerResourceInfo(1, "energy", "Energy", "W", { SB.RESTYPES.ENERGY })
+resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", "l", { SB.RESTYPES.GAS })
+resourceRegistry:registerResourceInfo(3, "water", "Water", "l", { SB.RESTYPES.LIQUID, SB.RESTYPES.COOLANT })
+resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.FLAMABLE })
+resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.COOLANT })
+resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", "l", { SB.RESTYPES.GAS })
+resourceRegistry:registerResourceInfo(7, "steam", "Steam","l", { SB.RESTYPES.GAS })
+resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water","l", { SB.RESTYPES.LIQUID })
+resourceRegistry:registerResourceInfo(9, "liquid nitrogen", "Liquid Nitrogen","l", { SB.RESTYPES.LIQUID })
 
 function SB:getResourceRegistry()
     return resourceRegistry

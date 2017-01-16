@@ -1,4 +1,5 @@
-[![Issue Count](https://codeclimate.com/github/spacebuild/spacebuild/badges/issue_count.svg)](https://codeclimate.com/github/spacebuild/spacebuild)
+[![GitHub release](https://img.shields.io/github/release/spacebuild/spacebuild.svg)]()
+[![license](https://img.shields.io/github/license/spacebuild/spacebuild.svg)]()
 
 Spacebuild
 ==========
