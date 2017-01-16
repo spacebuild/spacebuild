@@ -42,7 +42,9 @@ local funcRef = {
 	sendContent = C._sendContent,
 	receiveSignal = C.receive,
 	onSave = C.onSave,
-	onLoad = C.onLoad
+	onLoad = C.onLoad,
+	consumeResourceByAttribute = C.consumeResourceByAttribute,
+	getResourceAmountByAttribute = C.getResourceAmountByAttribute
 }
 
 --- General class function to check is this class is of a certain type
@@ -105,6 +107,20 @@ function C:consumeResource(name, amount)
 		return self.network:consumeResource(name, amount)
 	end
 	return funcRef.consumeResource(self, name, amount)
+end
+
+function C:consumeResourceByAttribute(attribute, amount)
+	if self.network then
+		return self.network:consumeResourceByAttribute(attribute, amount)
+	end
+	return funcRef.consumeResourceByAttribute(self, attribute, amount)
+end
+
+function C:getResourceAmountByAttribute(attribute)
+	if self.network then
+		return self.network:getResourceAmountByAttribute(attribute)
+	end
+	return funcRef.getResourceAmountByAttribute(self, attribute)
 end
 
 --- Retrieve the resource amount this container or its network actually has of a specified resource

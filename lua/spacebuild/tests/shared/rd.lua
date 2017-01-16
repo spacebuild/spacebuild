@@ -22,7 +22,8 @@
 --
 
 local print = print
-local class = SPACEBUILD.class
+local SB = SPACEBUILD
+local class = SB.class
 
 require("luaunit")
 local lu = luaunit
@@ -31,27 +32,82 @@ TestRD = {} --class
 local TestRD = TestRD
 function TestRD:setUp()
     self.resourceRegistry = class.new("rd/ResourceRegistry")
-    self.resourceRegistry:registerResourceInfo(1, "energy", "Energy", { "ENERGY" })
-    self.resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", { "GAS" })
-    self.resourceRegistry:registerResourceInfo(3, "water", "Water", { "LIQUID", "COOLANT" })
-    self.resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen", { "GAS", "FLAMABLE" })
-    self.resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen", { "GAS", "COOLANT" })
-    self.resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", { "GAS" })
+    lu.assertNotNil(self.resourceRegistry)
+    self.resourceRegistry:registerResourceInfo(0, "vacuum", "Vacuum", "", { })
+    self.resourceRegistry:registerResourceInfo(1, "energy", "Energy", "W", { SB.RESTYPES.ENERGY })
+    self.resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", "l", { SB.RESTYPES.GAS })
+    self.resourceRegistry:registerResourceInfo(3, "water", "Water", "l", { SB.RESTYPES.LIQUID, SB.RESTYPES.COOLANT })
+    self.resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.FLAMABLE })
+    self.resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.COOLANT }, {1, 2})
+    self.resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", "l", { SB.RESTYPES.GAS })
+    self.resourceRegistry:registerResourceInfo(7, "steam", "Steam","l", { SB.RESTYPES.GAS })
+    self.resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water","l", { SB.RESTYPES.LIQUID })
+    self.resourceRegistry:registerResourceInfo(9, "liquid nitrogen", "Liquid Nitrogen","l", { SB.RESTYPES.LIQUID })
 end
 
 function TestRD:tearDown()
     self.resourceRegistry = nil
 end
 
-function TestRD:testResource()
-    local resource = class.new("rd/Resource", "resource_name", 0, 0, self.resourceRegistry)
-    lu.assert(resource)
-    lu.assertEquals(resource:getName(), "resource_name")
-    lu.assertEquals(resource:getAmount(), 0)
-    lu.assertEquals(resource:getMaxAmount(), 0)
-    lu.assertNil(resource:getResourceInfo()) --Resource doesn't exist!
+function TestRD:testResourceUsageUsingAttributes()
+    local ent = class.new("rd/ResourceEntity", 10,SB.RDTYPES.STORAGE, self.resourceRegistry)
 
-    resource = class.new("rd/Resource", "energy", 200, 100, self.resourceRegistry)
+    lu.assertEquals(ent:getMaxResourceAmount("energy"), 0)
+    lu.assertEquals(ent:getResourceAmount("energy"), 0)
+    lu.assertEquals(ent:getMaxResourceAmount("water"), 0)
+    lu.assertEquals(ent:getResourceAmount("water"), 0)
+    lu.assertEquals(ent:getMaxResourceAmount("nitrogen"), 0)
+    lu.assertEquals(ent:getResourceAmount("nitrogen"), 0)
+
+    ent:addResource("energy", 10000)
+    ent:addResource("water", 8000, 1000)
+    ent:addResource("nitrogen", 1000)
+
+    lu.assertEquals(ent:getMaxResourceAmount("energy"), 10000)
+    lu.assertEquals(ent:getResourceAmount("energy"), 0)
+    lu.assertEquals(ent:getMaxResourceAmount("water"), 8000)
+    lu.assertEquals(ent:getResourceAmount("water"), 1000)
+    lu.assertEquals(ent:getMaxResourceAmount("nitrogen"), 1000)
+    lu.assertEquals(ent:getResourceAmount("nitrogen"), 0)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.ENERGY), 0)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.COOLANT), 1000)
+
+    ent:supplyResource("energy", 2000)
+
+    lu.assertEquals(ent:getMaxResourceAmount("energy"), 10000)
+    lu.assertEquals(ent:getResourceAmount("energy"), 2000)
+    lu.assertEquals(ent:getMaxResourceAmount("water"), 8000)
+    lu.assertEquals(ent:getResourceAmount("water"), 1000)
+    lu.assertEquals(ent:getMaxResourceAmount("nitrogen"), 1000)
+    lu.assertEquals(ent:getResourceAmount("nitrogen"), 0)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.ENERGY), 2000)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.COOLANT), 1000)
+
+    ent:supplyResource("nitrogen", 500)
+
+    lu.assertEquals(ent:getMaxResourceAmount("energy"), 10000)
+    lu.assertEquals(ent:getResourceAmount("energy"), 2000)
+    lu.assertEquals(ent:getMaxResourceAmount("water"), 8000)
+    lu.assertEquals(ent:getResourceAmount("water"), 1000)
+    lu.assertEquals(ent:getMaxResourceAmount("nitrogen"), 1000)
+    lu.assertEquals(ent:getResourceAmount("nitrogen"), 500)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.ENERGY), 2000)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.COOLANT), 2000)
+
+    ent:supplyResource("nitrogen", 500)
+
+    lu.assertEquals(ent:getMaxResourceAmount("energy"), 10000)
+    lu.assertEquals(ent:getResourceAmount("energy"), 2000)
+    lu.assertEquals(ent:getMaxResourceAmount("water"), 8000)
+    lu.assertEquals(ent:getResourceAmount("water"), 1000)
+    lu.assertEquals(ent:getMaxResourceAmount("nitrogen"), 1000)
+    lu.assertEquals(ent:getResourceAmount("nitrogen"), 1000)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.ENERGY), 2000)
+    lu.assertEquals(ent:getResourceAmountByAttribute(SB.RESTYPES.COOLANT), 3000)
+end
+
+function TestRD:testResource()
+    local resource = class.new("rd/Resource", "energy", 200, 100, self.resourceRegistry)
     lu.assert(resource)
     lu.assertEquals(resource:getName(), "energy")
     lu.assertEquals(resource:getAmount(), 100)
@@ -80,7 +136,7 @@ function TestRD:testResource()
 end
 
 function TestRD:testResourceEntity()
-    local ent = class.new("rd/ResourceEntity", 10, self.resourceRegistry)
+    local ent = class.new("rd/ResourceEntity", 10, SB.RDTYPES.STORAGE, self.resourceRegistry)
 
     lu.assertEquals(ent:getMaxResourceAmount("energy"), 0)
     lu.assertEquals(ent:getResourceAmount("energy"), 0)
@@ -144,20 +200,16 @@ end
 
 function TestRD:testNetworks()
     local resourceRegistry = self.resourceRegistry
-    local obj = class.new("rd/Resource", "resource_name", 0, 0, resourceRegistry)
-    lu.assert(obj)
-    lu.assertTrue(obj:isA("Resource"))
-    lu.assertEquals(obj:getName(), "resource_name")
 
     local network1 = class.new("rd/ResourceNetwork", 1, resourceRegistry)
     local network2 = class.new("rd/ResourceNetwork", 2, resourceRegistry)
     local network3 = class.new("rd/ResourceNetwork", 3, resourceRegistry)
-    local ent1 = class.new("rd/ResourceEntity", 10, resourceRegistry)
-    local ent2 = class.new("rd/ResourceEntity", 11, resourceRegistry)
-    local ent3 = class.new("rd/ResourceEntity", 12, resourceRegistry)
-    local ent4 = class.new("rd/ResourceEntity", 13, resourceRegistry)
-    local ent5 = class.new("rd/ResourceEntity", 14, resourceRegistry)
-    local ent6 = class.new("rd/ResourceEntity", 15, resourceRegistry)
+    local ent1 = class.new("rd/ResourceEntity", 10,SB.RDTYPES.STORAGE, resourceRegistry)
+    local ent2 = class.new("rd/ResourceEntity", 11,SB.RDTYPES.STORAGE, resourceRegistry)
+    local ent3 = class.new("rd/ResourceEntity", 12,SB.RDTYPES.STORAGE, resourceRegistry)
+    local ent4 = class.new("rd/ResourceEntity", 13,SB.RDTYPES.STORAGE, resourceRegistry)
+    local ent5 = class.new("rd/ResourceEntity", 14,SB.RDTYPES.STORAGE, resourceRegistry)
+    local ent6 = class.new("rd/ResourceEntity", 15,SB.RDTYPES.STORAGE, resourceRegistry)
 
     --Test entity 1
     ent1:addResource("energy", 10000)
@@ -281,7 +333,5 @@ function TestRD:testNetworks()
 
     lu.assertEquals(network3:getMaxResourceAmount("energy"), 0)
     lu.assertEquals(network3:getResourceAmount("energy"), 0)
-
-
 end
 

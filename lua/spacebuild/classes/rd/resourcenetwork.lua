@@ -38,7 +38,9 @@ local funcRef = {
 	receiveSignal = C.receive,
 	onSave = C.onSave,
 	onLoad = C.onLoad,
-	applyDupeInfo = C.applyDupeInfo
+	applyDupeInfo = C.applyDupeInfo,
+	consumeResourceByAttribute = C.consumeResourceByAttribute,
+	getResourceAmountByAttribute = C.getResourceAmountByAttribute
 }
 
 --- General class function to check is this class is of a certain type
@@ -135,6 +137,38 @@ function C:getResourceAmount(name, visited)
 	for k, v in pairs(self.networks) do
 		if not v:isBusy() and not visited[v:getID()] then
 			tmp, visited = v:getResourceAmount(name, visited)
+			amount = amount + tmp
+			visited[v:getID()] = v
+		end
+	end
+	self.busy = false
+	return amount, visited
+end
+
+function C:consumeResourceByAttribute(attribute, amount)
+	local to_little = funcRef.consumeResourceByAttribute(self, attribute, amount)
+	if to_little > 0 then
+		self.busy = true
+		for k, v in pairs(self.networks) do
+			if not v:isBusy() then
+				to_little = v:consumeResourceByAttribute(attribute, to_little)
+			end
+			if to_little == 0 then
+				break
+			end
+		end
+		self.busy = false
+	end
+	return to_little
+end
+
+function C:getResourceAmountByAttribute(attribute, visited)
+	visited = visited or {}
+	local amount, tmp = funcRef.getResourceAmountByAttribute(self, attribute), nil
+	self.busy = true
+	for k, v in pairs(self.networks) do
+		if not v:isBusy() and not visited[v:getID()] then
+			tmp, visited = v:getResourceAmountByAttribute(attribute, visited)
 			amount = amount + tmp
 			visited[v:getID()] = v
 		end

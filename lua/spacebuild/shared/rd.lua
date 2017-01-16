@@ -43,12 +43,12 @@ SB.RESTYPES = SB.internal.readOnlyTable({
     FLAMABLE = 5
 })
 
-resourceRegistry:registerResourceInfo(1, "vacuum", "Vacuum", "", { })
+resourceRegistry:registerResourceInfo(0, "vacuum", "Vacuum", "", { })
 resourceRegistry:registerResourceInfo(1, "energy", "Energy", "W", { SB.RESTYPES.ENERGY })
 resourceRegistry:registerResourceInfo(2, "oxygen", "Oxygen", "l", { SB.RESTYPES.GAS })
 resourceRegistry:registerResourceInfo(3, "water", "Water", "l", { SB.RESTYPES.LIQUID, SB.RESTYPES.COOLANT })
 resourceRegistry:registerResourceInfo(4, "hydrogen", "Hydrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.FLAMABLE })
-resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.COOLANT })
+resourceRegistry:registerResourceInfo(5, "nitrogen", "Nitrogen","l", { SB.RESTYPES.GAS, SB.RESTYPES.COOLANT }, {1, 2})
 resourceRegistry:registerResourceInfo(6, "carbon dioxide", "Carbon Dioxide", "l", { SB.RESTYPES.GAS })
 resourceRegistry:registerResourceInfo(7, "steam", "Steam","l", { SB.RESTYPES.GAS })
 resourceRegistry:registerResourceInfo(8, "heavy water", "Heavy water","l", { SB.RESTYPES.LIQUID })

@@ -102,7 +102,7 @@ function C:addResource(name, maxAmount, amount)
 	name = tostring(name)
 	if not amount or type(amount) ~= "number" or amount < 0 then amount = 0 end
 	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
-	local res = self.resources[name]
+	local res = self:getResource(name)
 	if not res then
 		res = self.classLoader.new("rd/Resource", name, maxAmount, amount, self.resourceRegistry)
 		self.resources[name] = res
@@ -123,7 +123,7 @@ function C:removeResource(name, maxAmount, amount)
 	if not maxAmount or type(maxAmount) ~= "number" or maxAmount < 0 then maxAmount = amount end
 	if not self:containsResource(name) then error("ResourceContainer:removeResource couldn't find the resource") end
 
-	local res = self.resources[name]
+	local res = self:getResource(name)
 	res:consume(amount)
 	res:setMaxAmount(res:getMaxAmount() - maxAmount)
 
@@ -136,7 +136,7 @@ local res, ret
 
 function C:supplyResource(name, amount)
 	if not self:containsResource(name) then return amount end
-	res = self.resources[name]
+	res = self:getResource(name)
 	ret = res:supply(amount)
 	if self.modified < res:getModified() then
 		self.modified = res:getModified()
@@ -146,12 +146,38 @@ end
 
 function C:consumeResource(name, amount)
 	if not self:containsResource(name) then return amount end
-	res = self.resources[name]
+	res = self:getResource(name)
 	ret = res:consume(amount)
 	if self.modified < res:getModified() then
 		self.modified = res:getModified()
 	end
 	return ret
+end
+
+function C:consumeResourceByAttribute(attribute, amount)
+	for k, v in pairs(self.resources) do
+		if v:getResourceInfo():hasAttribute(attribute) then
+			local multiplier = v:getResourceInfo():getAttributeMultiplier(attribute)
+			local amountToUse = math.ceil(amount/multiplier)
+			amountToUse = self:consumeResource(v:getName(), amountToUse)
+			amount = math.ceil(amountToUse * multiplier)
+			if amount == 0 then
+				break
+			end
+		end
+	end
+	return amount -- the amount we couldn't consume
+end
+
+function C:getResourceAmountByAttribute(attribute)
+	local amount = 0
+	for k, v in pairs(self.resources) do
+		if v:getResourceInfo():hasAttribute(attribute) then
+			local multiplier = v:getResourceInfo():getAttributeMultiplier(attribute)
+			amount = amount + math.floor(self:getResourceAmount(v:getName()) * multiplier)
+		end
+	end
+	return amount -- the amount we can use of this attribute in total, calculated based on the mutlipliers
 end
 
 function C:getResource(name)
@@ -164,12 +190,12 @@ end
 
 function C:getResourceAmount(name)
 	if not self:containsResource(name) then return 0 end
-	return self.resources[name]:getAmount()
+	return self:getResource(name):getAmount()
 end
 
 function C:getMaxResourceAmount(name)
 	if not self:containsResource(name) then return 0 end
-	return self.resources[name]:getMaxAmount()
+	return self:getResource(name):getMaxAmount()
 end
 
 function C:link(container, dont_link)
@@ -236,10 +262,10 @@ function C:receive()
 	for am = 1, nrRes do
 		id = net.readTiny()
 		name = self.resourceRegistry:getResourceInfoFromID(id):getName()
-		if not self.resources[name] then
-			self.resources[name] = self.classLoader.new("rd/Resource", name, 0, 0, self.resourceRegistry)
+		if not self:containsResource(name) then
+			self:addResource(name, 0, 0)
 		end
-		self.resources[name]:receive()
+		self:getResource(name):receive()
 	end
 	local beamUpdate = net.ReadBool()
 	if beamUpdate then

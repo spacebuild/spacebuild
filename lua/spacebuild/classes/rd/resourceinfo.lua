@@ -26,7 +26,7 @@ function C:isA(className)
 	return className == "ResourceInfo"
 end
 
-function C:init(id, name, displayName, unit, attributes)
+function C:init(id, name, displayName, unit, attributes, attributeMultipliers)
 	if not id then error(self:getClass() + " requires an id") end
 	if not name then error(self:getClass() + " requires a name") end
 	self.id = id
@@ -34,6 +34,7 @@ function C:init(id, name, displayName, unit, attributes)
 	self.displayName = displayName or self.name
 	self.unit = unit or ""
 	self.attributes = attributes or {}
+	self.attributeMultipliers = attributeMultipliers or {}
 end
 
 function C:getID()
@@ -63,6 +64,15 @@ function C:hasAttribute(attribute)
 		end
 	end
 	return false
+end
+
+function C:getAttributeMultiplier(attribute)
+	for _, v in pairs(self.attributes) do
+		if v == attribute then
+			return self.attributeMultipliers[_] or 1
+		end
+	end
+	return 1
 end
 
 
