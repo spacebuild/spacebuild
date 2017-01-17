@@ -1,16 +1,17 @@
+local lang = SPACEBUILD.lang
 
-TOOL.Category		= "Resource Distribution"
+TOOL.Category = lang.get("tool.category.rd")
 TOOL.Mode 			= "rd3_resdebug"
-TOOL.Name			= "Res. Debuger"
+TOOL.Name			= "#Res. Debuger"
 TOOL.Command		= nil
 TOOL.ConfigName		= nil
 TOOL.Tab = "Spacebuild"
 
 
 if ( CLIENT ) then
-	language.Add( "tool.rd3_resdebug.name",	"RD Resource Debuger" )
-	language.Add( "tool.rd3_resdebug.desc",	"Spams the ent's resource table to the console, Left Click = serverside, Right click = Clientside" )
-	language.Add( "tool.rd3_resdebug.0", "Click an RD3 Ent" )
+	lang.register( "tool.rd3_resdebug.name" )
+	lang.register( "tool.rd3_resdebug.desc" )
+	lang.register( "tool.rd3_resdebug.0" )
 end
 
 function TOOL:LeftClick( trace )

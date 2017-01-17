@@ -33,6 +33,7 @@ if SERVER then
     include("spacebuild/client/send.lua")
     include("spacebuild/documentation/send.lua")
     include("spacebuild/tests/shared/send.lua")
+    include("spacebuild/languages/send.lua")
 
     --Deprecated
     include("caf/send.lua")
@@ -77,6 +78,7 @@ SB.constants = {}
 SB.config = {}
 SB.internal = {}
 SB.util = {}
+SB.lang = {}
 
 log.info("Starting up spacebuild " .. version:fullVersion());
 
@@ -145,6 +147,7 @@ SB.constants = createReadOnlyTable(SB.constants)
 SB.config = nil
 SB.internal = nil
 SB.util = createReadOnlyTable(SB.util)
+SB.lang = createReadOnlyTable(SB.lang)
 
 SB = createReadOnlyTable(SB)
 SPACEBUILD = SB

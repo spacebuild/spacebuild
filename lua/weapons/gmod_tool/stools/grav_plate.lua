@@ -1,5 +1,6 @@
+local lang = SPACEBUILD.lang
 
-TOOL.Category = 'Life Support'
+TOOL.Category = lang.get("tool.category.ls")
 TOOL.Name = '#Gravity Plating'
 TOOL.Command = nil
 TOOL.ConfigName = ''
@@ -9,9 +10,9 @@ local SB = SPACEBUILD
 
 -- Add Default Language translation (saves adding it to the txt files)
 if ( CLIENT ) then
-	language.Add( "tool.grav_plate.name", "Gravity Plating" )
-	language.Add( "tool.grav_plate.desc", "Enables walking on a prop even in low-to-zero gravity." )
-	language.Add( "tool.grav_plate.0", "Left Click to attach Gravity Plating.  Right Click to take it off." )
+	lang.register( "tool.grav_plate.name" )
+	lang.register( "tool.grav_plate.desc" )
+	lang.register( "tool.grav_plate.0" )
 end
 
 local function SaveGravPlating( Player, Entity, Data )
@@ -41,7 +42,7 @@ function TOOL:LeftClick( trace )
 	if CLIENT then return true end
 	local gravplating = 1
 	SaveGravPlating(self:GetOwner(),trace.Entity,{ GravPlating = gravplating })
-	SB.util.messages.notify(self:GetOwner(), "Surface has received Gravity Plating." )
+	SB.util.messages.notify(self:GetOwner(), lang.get("tool.grav_plate.added") )
 	return true
 end
 
@@ -54,7 +55,7 @@ function TOOL:RightClick( trace )
 	if CLIENT then return true end
 	local gravplating = 0
 	SaveGravPlating(self:GetOwner(),trace.Entity,{ GravPlating = gravplating })
-	SB.util.messages.notify(self:GetOwner(), "Gravity Plating removed from surface.")
+	SB.util.messages.notify(self:GetOwner(), lang.get("tool.grav_plate.removed"))
 	return true
 end
 

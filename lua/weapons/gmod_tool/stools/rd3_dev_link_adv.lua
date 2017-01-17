@@ -1,5 +1,7 @@
+local lang = SPACEBUILD.lang
+
+TOOL.Category = lang.get("tool.category.rd")
 TOOL.Mode		= "rd3_dev_link_adv"
-TOOL.Category		= "Resource Distribution"
 TOOL.Name		= "#Advanced Link Tool"
 TOOL.Command		= nil
 TOOL.ConfigName	= ""
@@ -7,15 +9,15 @@ TOOL.ConfigName	= ""
 TOOL.Tab = "Spacebuild"
 
 if ( CLIENT ) then
-	language.Add( "tool.rd3_dev_link_adv.name", "Advanced Link Tool" )
-	language.Add( "tool.rd3_dev_link_adv.desc", "Links Resource-Carrying Devices together to a Resource Node, including Vehicle Pods. Waypoints can be set using this stool!!" )
-	language.Add( "tool.rd3_dev_link_adv.0", "Left Click: Link Devices.  Right Click: Place link point.  Reload: Unlink Device from All." )
-	language.Add( "tool.rd3_dev_link_adv.1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
-	language.Add( "tool.rd3_dev_link_adv.2", "Right-Click on another Resource-Carrying Device(or the same one to unlink ALL)" )
-	language.Add( "rd3_dev_link_adv_addlength", "Add Length:" )
-	language.Add( "rd3_dev_link_adv_width", "Width:" )
-	language.Add( "rd3_dev_link_adv_material", "Material:" )
-	language.Add( "rd3_dev_link_adv_colour", "Color:")
+	lang.register( "tool.rd3_dev_link_adv.name" )
+	lang.register( "tool.rd3_dev_link_adv.desc" )
+	lang.register( "tool.rd3_dev_link_adv.0" )
+	lang.register( "tool.rd3_dev_link_adv.1" )
+	lang.register( "tool.rd3_dev_link_adv.2" )
+	lang.register( "rd3_dev_link_adv_addlength" )
+	lang.register( "rd3_dev_link_adv_width" )
+	lang.register( "rd3_dev_link_adv_material" )
+	lang.register( "rd3_dev_link_adv_colour" )
 end
 
 TOOL.ClientConVar[ "material" ] = "cable/cable"

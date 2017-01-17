@@ -21,5 +21,6 @@ AddCSLuaFile(base.."ls.lua")
 AddCSLuaFile(base.."mining.lua")
 AddCSLuaFile(base.."rd.lua")
 AddCSLuaFile(base.."sb.lua")
+AddCSLuaFile(base.."language.lua")
 
 

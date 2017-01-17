@@ -1,7 +1,9 @@
 include("caf/core/shared/tool_manifest.lua")
 
 TOOL = ToolObj:Create()
-TOOL.Category = "Spacebuild"
+local lang = SPACEBUILD.lang
+
+TOOL.Category = lang.get("tool.category.sb")
 TOOL.Mode = "startup_tool"
 TOOL.Name = "CAF Tools Startup"
 TOOL.Command = nil

@@ -3,8 +3,10 @@
 
 --dev link stool
 --TOOL			= ToolObj:Create()
+local lang = SPACEBUILD.lang
+
+TOOL.Category = lang.get("tool.category.rd")
 TOOL.Mode		= "rd3_dev_link_valve"
-TOOL.Category		= "Resource Distribution"
 TOOL.Name		= "#Valve Link Tool"
 TOOL.Command		= nil
 TOOL.ConfigName	= ''
@@ -12,15 +14,15 @@ TOOL.ConfigName	= ''
 TOOL.Tab = "Spacebuild"
 
 if ( CLIENT ) then
-	language.Add( "tool.rd3_dev_link_valve.name", "Valve Link Tool" )
-	language.Add( "tool.rd3_dev_link_valve.desc", "Links a resource node to a 1 or 2 way Valve." )
-	language.Add( "tool.rd3_dev_link_valve.0", "Left Click: Link Resource Node 1 to the valve.  Right Click: Link Resource Node2 to the Valve.  Reload: Unlink Device from All." )
-	language.Add( "tool.rd3_dev_link_valve.1", "Click on the next device (Valve/Resource node)" )
-	language.Add( "tool.rd3_dev_link_valve.2", "Right-Click on the next device (Valve/Resource node)" )
-	language.Add( "rd3_dev_link_valve_addlength", "Add Length:" )
-	language.Add( "rd3_dev_link_valve_width", "Width:" )
-	language.Add( "rd3_dev_link_valve_material", "Material:" )
-	language.Add( "rd3_dev_link_valve_colour", "Color:")
+	lang.register( "tool.rd3_dev_link_valve.name" )
+	lang.register( "tool.rd3_dev_link_valve.desc" )
+	lang.register( "tool.rd3_dev_link_valve.0" )
+	lang.register( "tool.rd3_dev_link_valve.1" )
+	lang.register( "tool.rd3_dev_link_valve.2" )
+	lang.register( "rd3_dev_link_valve_addlength" )
+	lang.register( "rd3_dev_link_valve_width" )
+	lang.register( "rd3_dev_link_valve_material" )
+	lang.register( "rd3_dev_link_valve_colour" )
 end
 
 TOOL.ClientConVar[ "material" ] = "cable/cable2"

@@ -3,8 +3,10 @@
 
 --dev link stool
 --TOOL			= ToolObj:Create()
+local lang = SPACEBUILD.lang
+
+TOOL.Category = lang.get("tool.category.rd")
 TOOL.Mode		= "rd3_dev_link2"
-TOOL.Category	= 'Resource Distribution'
 TOOL.Name		= '#Smart Link Tool'
 TOOL.Command	= nil
 TOOL.ConfigName	= ''
@@ -13,14 +15,14 @@ TOOL.Tab = "Spacebuild"
 local SB = SPACEBUILD
 
 if ( CLIENT ) then
-	language.Add( "tool.rd3_dev_link2.name", "Smart Link Tool" )
-	language.Add( "tool.rd3_dev_link2.desc", "Links Resource-Carrying Devices to a Resource Node, including Vehicle Pods." )
-	language.Add( "tool.rd3_dev_link2.0", "Left Click: Select Devices.  Right Click: Link All devices to the selected Node.  Reload: Reset selected devices." )
-    language.Add( "tool.rd3_dev_link2.1", "Click on another Resource-Carrying Device(or Vehicle Pod)" )
-   	language.Add( "rd3_dev_link2_addlength", "Add Length:" )
-	language.Add( "rd3_dev_link2_width", "Width:" )
-	language.Add( "rd3_dev_link2_material", "Material:" )
-	language.Add( "rd3_dev_link2_colour", "Color:")
+	lang.register( "tool.rd3_dev_link2.name" )
+	lang.register( "tool.rd3_dev_link2.desc" )
+	lang.register( "tool.rd3_dev_link2.0" )
+	lang.register( "tool.rd3_dev_link2.1" )
+	lang.register( "rd3_dev_link2_addlength" )
+	lang.register( "rd3_dev_link2_width" )
+	lang.register( "rd3_dev_link2_material" )
+	lang.register( "rd3_dev_link2_colour" )
 end
 
 TOOL.ClientConVar[ "width" ] = "2"
