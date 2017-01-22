@@ -48,6 +48,7 @@ hook.Add( "PlayerInitialSpawn", "spacebuild.core.initialspawn", LSSpawnFunc )
 local time
 local function Think( )
     time = CurTime()
+    -- Update players
     for _, ply in pairs(player.GetAll()) do
         if not ply.firstsync then ply.firstsync = time + 1 end
         if ply.firstsync < time or game.SinglePlayer() then
@@ -56,6 +57,12 @@ local function Think( )
                     part.player.think(ply, time)
                 end
             end
+        end
+    end
+    -- Perform updates for everything else
+    for _, part in pairs(core) do
+        if part.think then
+            part.think(time)
         end
     end
 end

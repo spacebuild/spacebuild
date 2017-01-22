@@ -22,39 +22,48 @@
 
 local SB = SPACEBUILD
 
-CreateConVar("SB_NoClip", "1")
-CreateConVar("SB_AdminSpaceNoclip", "1") -- Makes it so admins can no clip in space, defaults to yes
-CreateConVar("SB_SuperAdminSpaceNoclip", "1") -- Makes it so admins can no clip in space, defaults to yes
-CreateConVar("SB_PlanetNoClipOnly", "1") -- Make it so admins can let players no clip in space.
+local noClip = CreateConVar("SB_NoClip", "1")
+local adminNoClip = CreateConVar("SB_AdminSpaceNoclip", "1") -- Makes it so admins can no clip in space, defaults to yes
+local superAdminNoClip = CreateConVar("SB_SuperAdminSpaceNoclip", "1") -- Makes it so admins can no clip in space, defaults to yes
+local planetNoClipOnly = CreateConVar("SB_PlanetNoClipOnly", "1") -- Make it so admins can let players no clip in space.
 
-CreateConVar("SB_EnableDrag", "1") -- Make it drag also gets affected, on by default.
-CreateConVar("SB_InfiniteResources", "0") -- Makes it so that a planet can't run out of resources, off by default.
-CreateConVar("SB_StaticEnvironment", "0") -- @DEPRECATED, use SB_InfiniteResources instead
+local enableDrag = CreateConVar("SB_EnableDrag", "1") -- Make it drag also gets affected, on by default.
+local infiniteResources = CreateConVar("SB_InfiniteResources", "0") -- Makes it so that a planet can't run out of resources, off by default.
+local staticEnvironment = CreateConVar("SB_StaticEnvironment", "0") -- @DEPRECATED, use SB_InfiniteResources instead
+
+-- Orbiting mechanics
+local orbitEnable = CreateConVar("SB_OrbitEnable", "0") -- should we enable orbital mechanics?
+local orbitGravityMultiplier = CreateConVar("SB_OrbitGravityMultiplier", "0.0006") -- what kind of multiplier do we use for orbiting?
+local orbitRadius = CreateConVar("SB_OrbitRadiusMultiplier", "1.8") -- How far away from the planet does orbitting apply? 1.8 = 1.8 x planet radius
 
 SB.config = {
-
     noclip = {
-        get = function() return GetConVar("SB_NoClip"):GetBool() end,
-        set = function(val) game.ConsoleCommand("SB_NoClip", val:toNumber()) end
+        get = function() return noClip:GetBool() end,
+        set = function(val) noClip:SetBool(val) end
     },
     adminspacenoclip = {
-        get = function() return GetConVar("SB_AdminSpaceNoclip"):GetBool() end,
-        set = function(val) game.ConsoleCommand("SB_AdminSpaceNoclip", val:toNumber()) end
+        get = function() return adminNoClip:GetBool() end,
+        set = function(val) adminNoClip:SetBool(val) end
     },
     superadminspacenoclip = {
-        get = function() return GetConVar("SB_SuperAdminSpaceNoclip"):GetBool() end,
-        set = function(val) game.ConsoleCommand("SB_SuperAdminSpaceNoclip", val:toNumber()) end
+        get = function() return superAdminNoClip:GetBool() end,
+        set = function(val) superAdminNoClip:SetBool(val) end
     },
     planetnocliponly = {
-        get = function() return GetConVar("SB_PlanetNoClipOnly"):GetBool() end,
-        set = function(val) game.ConsoleCommand("SB_PlanetNoClipOnly", val:toNumber()) end
+        get = function() return planetNoClipOnly:GetBool() end,
+        set = function(val) planetNoClipOnly:SetBool(val) end
     },
     drag = {
-        get = function() return GetConVar("SB_EnableDrag"):GetBool() end,
-        set = function(val) game.ConsoleCommand("SB_EnableDrag", val:toNumber()) end
+        get = function() return enableDrag:GetBool() end,
+        set = function(val) enableDrag:SetBool(val) end
     },
     resources = {
-        get = function() return GetConVar("SB_InfiniteResources"):GetBool() or GetConVar("SB_StaticEnvironment"):GetBool() end,
-        set = function(val) game.ConsoleCommand("SB_InfiniteResources", val:toNumber()) end
+        get = function() return infiniteResources:GetBool() or staticEnvironment:GetBool() end,
+        set = function(val) infiniteResources:SetBool(val) end
+    },
+    orbit = {
+        get = function() return orbitEnable:GetBool(), orbitRadius:GetFloat(), orbitGravityMultiplier:GetFloat() end,
+        set = function(enable, radius, multiplier) orbitEnable:SetBool(enable) orbitRadius:SetFloat(radius) orbitGravityMultiplier:SetFloat(multiplier) end
     }
+
 }

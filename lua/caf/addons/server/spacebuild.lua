@@ -373,36 +373,3 @@ function SB.AddCustomVolume(name, pos, radius)
 	volumes[name].pos = pos
 	volumes[name].radius = radius
 end
-
-function SB.FindClosestPlanet(pos, starsto)
-	local closestplanet
-	local Planets = SPACEBUILD:getPlanets()
-	if starsto then
-		table.Add(Planets, SPACEBUILD:getStars())
-	end
-	if table.Count(Planets) > 0 then
-		for k, v in pairs(Planets) do
-			if not closestplanet then
-				closestplanet = v
-			else
-				local ent = v:getEntity()
-				local entClosest = closestplanet:getEntity()
-				if (ent:GetPos():Distance(pos) - v:getRadius() < entClosest:GetPos():Distance(pos) - closestplanet:getRadius()) then
-					closestplanet = v
-				end
-			end
-		end
-	end
-	return closestplanet
-end
-
-function SB.FindEnvironmentOnPos(pos)
-	local env
-	local environments = SPACEBUILD:getEnvironments()
-	if table.Count(environments) > 0 then
-		for k, v in pairs(environments) do
-			env = v:containsPosition(pos, env)
-		end
-	end
-	return env or SB.GetSpace()
-end

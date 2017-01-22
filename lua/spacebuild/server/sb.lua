@@ -28,6 +28,7 @@ local time_to_next_sb_sync = SB.constants.TIME_TO_NEXT_SB_SYNC
 local config = SB.config
 require("sbnet")
 local net = sbnet
+local nextOrbitUpdate = 0
 
 local function AllowAdminNoclip(ply)
     if (ply:IsAdmin() or ply:IsSuperAdmin()) and config.adminspacenoclip.get() then return true end
@@ -286,8 +287,61 @@ local function LSSpawnFunc( ply )
 end
 hook.Add( "PlayerInitialSpawn", "spacebuild.mod.sb.initialspawn", LSSpawnFunc )
 
-SB.core.sb = {
+function SB:findClosestEnvironment(pos, starsto)
+    local closestplanet
+    local Planets = SB:getPlanets()
+    if starsto then
+        table.Add(Planets, SB:getStars())
+    end
+    if table.Count(Planets) > 0 then
+        for k, v in pairs(Planets) do
+            if not closestplanet then
+                closestplanet = v
+            else
+                local envPos = v:getPosition()
+                local currentClosestPos = closestplanet:getPosition()
+                if (envPos:Distance(pos) - v:getRadius() < currentClosestPos:Distance(pos) - closestplanet:getRadius()) then
+                    closestplanet = v
+                end
+            end
+        end
+    end
+    return closestplanet
+end
 
+function SB:findEnvironmentOnPos(pos)
+    local env
+    local environments = SB:getEnvironments()
+    if table.Count(environments) > 0 then
+        for k, v in pairs(environments) do
+            env = v:containsPosition(pos, env)
+        end
+    end
+    return env or SB.GetSpace()
+end
+
+local function doOrbitalPush(ent, gravity, posTocenter, totalRad, nonaffectRadius, affectPlayers)
+
+    --Perform checks, make sure we are in the desired environment to continue
+    if ent:IsPlayer() and not affectPlayers then return end -- allowed to touch players?
+    if (ent:GetMoveType() == MOVETYPE_NOCLIP) then return end -- not allowed to touch noclipped?
+
+    local entityPos 		= ent:GetPos()
+    local totalDistance		= entityPos:Distance( posTocenter )
+    local estimatedForceMul	= (gravity * (1 - ((totalDistance - nonaffectRadius) / totalRad))) --Beta distance gravity decay
+
+    if ent:IsPlayer() then
+        local forceVector = (posTocenter - entityPos) * estimatedForceMul
+        ent:SetVelocity( forceVector )
+    else
+        local physObj = ent:GetPhysicsObject()
+        local forceVector = (posTocenter - entityPos) * (physObj:GetMass() * estimatedForceMul)
+        physObj:ApplyForceCenter( forceVector )
+    end
+
+end
+
+SB.core.sb = {
     player = {
         think = function(ply, time)
             if not ply or not ply:Alive() then return end
@@ -315,6 +369,28 @@ SB.core.sb = {
             end
         end
     },
+    think = function(time)
+        local enable, radiusMultiplier, gravMult = config.orbit.get()
+        if enable and nextOrbitUpdate < time then
+            for _, ent in pairs(internal.getSpawnedEntities()) do
+                if SB:isValidSBEntity(ent) and not ent:GetPhysicsObject():IsAsleep() then
+                    if ent.environment and ent.environment:isSpace() then --only use orbital mechanics when in space
+                        local pos = ent:GetPos()
+                        local closest = SB:findClosestEnvironment(pos, true)
+                        if closest then
+                            local envPos = closest:getPosition()
+                            local affectRadius = closest:getRadius() * radiusMultiplier
+                            local distanceOfEnvironment = pos:Distance(envPos)
+                            if distanceOfEnvironment < affectRadius then
+                                doOrbitalPush(ent, closest:getGravity() * gravMult, envPos, affectRadius, closest:getRadius(), true)
+                            end
+                        end
+                    end
+                end
+            end
+            nextOrbitUpdate = time + SB.constants.TIME_TO_NEXT_ORBIT_UPDATE
+        end
+    end,
     entityRemoved = function(ent)
         if ent.envobject then
             log.debug("Removing SB Environment object pre-hook")
