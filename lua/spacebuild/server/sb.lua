@@ -335,8 +335,15 @@ local function doOrbitalPush(ent, gravity, posTocenter, totalRad, nonaffectRadiu
         ent:SetVelocity( forceVector )
     else
         local physObj = ent:GetPhysicsObject()
-        local forceVector = (posTocenter - entityPos) * (physObj:GetMass() * estimatedForceMul)
-        physObj:ApplyForceCenter( forceVector )
+        local parentPhysObj, mass = physObj, physObj:GetMass()
+        for _, child in pairs(ent:GetChildren()) do
+            physObj = child:GetPhysicsObject()
+            if IsValid(physObj) then
+                mass = mass + physObj:GetMass();
+            end
+        end
+        local forceVector = (posTocenter - entityPos) * (mass * estimatedForceMul)
+        parentPhysObj:ApplyForceCenter( forceVector )
     end
 
 end
@@ -373,7 +380,8 @@ SB.core.sb = {
         local enable, radiusMultiplier, gravMult = config.orbit.get()
         if enable and nextOrbitUpdate < time then
             for _, ent in pairs(internal.getSpawnedEntities()) do
-                if SB:isValidSBEntity(ent) and not ent:GetPhysicsObject():IsAsleep() then
+                -- Only check entities that are able to be used by Spacebuild, that are not asleep(frozen) and don't have a parent
+                if SB:isValidSBEntity(ent) and not ent:GetPhysicsObject():IsAsleep() and not IsValid(ent:GetParent()) then
                     if ent.environment and ent.environment:isSpace() then --only use orbital mechanics when in space
                         local pos = ent:GetPos()
                         local closest = SB:findClosestEnvironment(pos, true)

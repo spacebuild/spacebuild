@@ -63,3 +63,7 @@ function C:isSpace()
 	return true
 end
 
+function C:getEntity()
+	return Entity(0)
+end
+
