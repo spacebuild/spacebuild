@@ -359,11 +359,13 @@ end
 ---
 -- @deprecated to remove in version 4.1
 function C:GetSize()
+    log.warn("Using deprecated environment:GetSize(), please use environment:getRadius() instead")
     return self:getRadius()
 end
 
 ---
 -- @deprecated to remove in version 4.1
 function C:GetPos()
+    log.warn("Using deprecated environment:GetPos(), please use environment:getPosition() instead")
     return self:getPosition()
 end
