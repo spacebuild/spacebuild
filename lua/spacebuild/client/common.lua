@@ -21,6 +21,8 @@
 --
 
 local SB = SPACEBUILD
+require("sbnet")
+local net = sbnet
 
 surface.CreateFont( "FABig", {
     font = "FontAwesome",
@@ -254,3 +256,9 @@ local function hidehud(name)
     end
 end
 hook.Add("HUDShouldDraw", "SpacebuildDisableDefault", hidehud)
+
+local function init()
+    net.Start( "sbre" )
+    net.SendToServer()
+end
+hook.Add( "Initialize", "sb.client.ready", init )
