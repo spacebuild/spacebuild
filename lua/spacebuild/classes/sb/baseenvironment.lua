@@ -353,3 +353,17 @@ function C:receive()
 		self:addAttribute(net.ReadString())
 	end
 end
+
+-- Old reference methods for SB3 compatibility
+
+---
+-- @deprecated to remove in version 4.1
+function C:GetSize()
+    return self:getRadius()
+end
+
+---
+-- @deprecated to remove in version 4.1
+function C:GetPos()
+    return self:getPosition()
+end
