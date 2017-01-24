@@ -53,12 +53,10 @@ SB.core.ls = {
                 end
             end
             if not ply.lastlsupdate or ply.lastlsupdate + time_to_next_ls_sync < time then
-                log.debug("Sending ls data start", "time=", CurTime())
                 if ply.suit then
                     ply.suit:send(ply.lastlsupdate or 0)
                     ply.lastlsupdate = time
                 end
-                log.debug("Sending ls data start", "time=", CurTime())
             end
         end
     }

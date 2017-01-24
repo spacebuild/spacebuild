@@ -353,8 +353,7 @@ SB.core.sb = {
         think = function(ply, time)
             if not ply or not ply:Alive() then return end
             -- SB
-            if ply.lastsbupdate and ply.lastsbupdate + time_to_next_sb_sync < time then
-                log.debug("Sending environment data start", "time=", CurTime())
+            if not ply.lastsbupdate or ply.lastsbupdate + time_to_next_sb_sync < time then
                 for _, v in pairs(internal.mod_tables) do
                     for _, w in pairs(v) do
                         w:send(ply.lastsbupdate or 0, ply)
@@ -367,9 +366,6 @@ SB.core.sb = {
                     hook.Call("OnEnterEnvironment", GAMEMODE, ply.environment, ply, ply.environment, SB:getSpace())
                 end
                 ply.lastsbupdate = time
-                log.debug("Sending environment data end", "time=", CurTime())
-            elseif not ply.lastsbupdate then
-                ply.lastsbupdate = (-time_to_next_sb_sync)
             end
             -- Noclip from planets check?
             if ply.environment and ply.environment == SB:getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
