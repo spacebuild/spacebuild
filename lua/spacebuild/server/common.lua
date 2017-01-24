@@ -47,7 +47,7 @@ hook.Add( "PlayerInitialSpawn", "spacebuild.core.initialspawn", LSSpawnFunc )
 
 -- Player ready to receive messages?
 net.Receive( "sbre", function(length, ply)
-    ply.cansync = CurTime() + 1
+    ply.cansync = true
 end)
 
 local time
@@ -55,7 +55,7 @@ local function Think( )
     time = CurTime()
     -- Update players
     for _, ply in pairs(player.GetAll()) do
-        if (ply.cansync and ply.cansync < time) or game.SinglePlayer() then
+        if ply.cansync or game.SinglePlayer() then
             core.rd.player.think(ply, time)
             core.sb.player.think(ply, time)
             core.ls.player.think(ply, time)
