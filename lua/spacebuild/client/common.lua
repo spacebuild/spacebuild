@@ -23,6 +23,7 @@
 local SB = SPACEBUILD
 require("sbnet")
 local net = sbnet
+local log = SB.log
 
 surface.CreateFont( "FABig", {
     font = "FontAwesome",
@@ -258,7 +259,8 @@ end
 hook.Add("HUDShouldDraw", "SpacebuildDisableDefault", hidehud)
 
 local function init()
+    log.debug("Sending message the client is ready to receive messages!")
     net.Start( "sbre" )
     net.SendToServer()
 end
-hook.Add( "Initialize", "sb.client.ready", init )
+hook.Add( "InitPostEntity", "sb.client.ready", init )
