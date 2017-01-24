@@ -354,6 +354,7 @@ SB.core.sb = {
             if not ply or not ply:Alive() then return end
             -- SB
             if ply.lastsbupdate and ply.lastsbupdate + time_to_next_sb_sync < time then
+                log.debug("Sending environment data start", "time=", CurTime())
                 for _, v in pairs(internal.mod_tables) do
                     for _, w in pairs(v) do
                         w:send(ply.lastsbupdate or 0, ply)
@@ -366,6 +367,7 @@ SB.core.sb = {
                     hook.Call("OnEnterEnvironment", GAMEMODE, ply.environment, ply, ply.environment, SB:getSpace())
                 end
                 ply.lastsbupdate = time
+                log.debug("Sending environment data end", "time=", CurTime())
             elseif not ply.lastsbupdate then
                 ply.lastsbupdate = (-time_to_next_sb_sync)
             end

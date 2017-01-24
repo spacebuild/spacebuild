@@ -56,18 +56,12 @@ local function Think( )
     -- Update players
     for _, ply in pairs(player.GetAll()) do
         if ply.cansync or game.SinglePlayer() then
-            for _, part in pairs(core) do
-                if part.player and part.player.think then
-                    part.player.think(ply, time)
-                end
-            end
+            core.rd.player.think(ply, time)
+            core.sb.player.think(ply, time)
+            core.ls.player.think(ply, time)
         end
     end
     -- Perform updates for everything else
-    for _, part in pairs(core) do
-        if part.think then
-            part.think(time)
-        end
-    end
+    core.sb.think(time)
 end
 hook.Add("Think", "spacebuild.common.Think", Think)

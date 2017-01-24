@@ -27,6 +27,7 @@ require("sbnet")
 local net = sbnet
 
 net.Receive( "sbeu", function(length, ply)
+    log.debug("receiving sb data start", "time=", CurTime())
     local className = net.ReadString()
     local entId = net.readShort()
     log.debug("Receiving environment data", className, entId)
@@ -40,6 +41,7 @@ net.Receive( "sbeu", function(length, ply)
     end
     environment:receive()
     --log.table(environment, log.DEBUG, "loaded environment update")
+    log.debug("receiving sb data end", "time=", CurTime())
 end)
 
 net.Receive( "sbmu", function(length, ply)

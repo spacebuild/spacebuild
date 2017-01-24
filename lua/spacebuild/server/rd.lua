@@ -78,6 +78,7 @@ SB.core.rd = {
             if not ply or not ply:Alive() then return end
             -- RD
             if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
+                log.debug("Sending rd data start", "time=", CurTime())
                 ply.amountofupdates = ply.amountofupdates + 1
                 local lastUpdate = ply.lastrdupdate or 0
                 if ply.amountofupdates == 2 then
@@ -87,6 +88,7 @@ SB.core.rd = {
                     v:send(lastUpdate, ply)
                 end
                 ply.lastrdupdate = time
+                log.debug("Sending rd data end", "time=", CurTime())
             end
         end
     },

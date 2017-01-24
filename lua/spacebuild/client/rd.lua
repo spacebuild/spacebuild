@@ -26,6 +26,7 @@ require("sbnet")
 local net = sbnet
 
 net.Receive( "sbru", function(length, ply)
+    log.debug("receiving rd data start", "time=", CurTime())
     local id = net.readShort()
     local rdtype = net.readShort()
     log.debug("Receiving rd entity update", id)
@@ -34,6 +35,7 @@ net.Receive( "sbru", function(length, ply)
         container =SB:registerDevice(Entity(id), rdtype)
     end
     container:receive()
+    log.debug("receiving rd data end", "time=", CurTime())
 end)
 
 list.Add( "BeamMaterials", "cable/rope_icon" )
