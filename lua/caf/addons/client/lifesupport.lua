@@ -87,13 +87,13 @@ local function lifesupport_HUDPaint()
 		end
 		local ply = LocalPlayer()
 		if not ply or not ply:Alive() then return end
-		if not ply.environment then
-			if amountOfFails % 100 == 0 then
-				log.error("no environment on the client!!")
-			end
-			amountOfFails = amountOfFails + 1
-			return
-		end
+--		if not ply.environment then
+--			if amountOfFails % 100 == 0 then
+--				log.error("no environment on the client!!")
+--			end
+--			amountOfFails = amountOfFails + 1
+--			return
+--		end
 		local hud_to_use = Display_hud:GetInt()
 		if hud_to_use ~= 0 then
 			if not ls_sb_mode then
