@@ -32,16 +32,13 @@ local function getEntity(id)
 end
 
 net.Receive( "sbru", function(length, ply)
-    log.debug("receiving rd data start", "time=", CurTime())
     local id = net.readShort()
     local rdtype = net.readShort()
-    log.debug("Receiving rd entity update", id)
     local container = SB:getDeviceInfo(id)
     if not container then
         container =SB:registerDevice(getEntity(id), rdtype)
     end
     container:receive()
-    log.debug("receiving rd data end", "time=", CurTime())
 end)
 
 list.Add( "BeamMaterials", "cable/rope_icon" )

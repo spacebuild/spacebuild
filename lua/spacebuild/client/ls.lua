@@ -25,9 +25,7 @@ local class = SB.class
 local log = SB.log
 
 net.Receive( "sbrpu", function(length, ply)
-    log.debug("receiving ls data start", "time=", CurTime())
     local ply = LocalPlayer()
     if not ply.suit then ply.suit = class.new("ls/Playersuit", ply) end
     ply.suit:receive()
-    log.debug("receiving ls data end", "time=", CurTime())
 end)
