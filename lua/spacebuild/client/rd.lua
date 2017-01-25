@@ -25,6 +25,11 @@ local log = SB.log
 require("sbnet")
 local net = sbnet
 
+local function getEntity(id)
+    local ent = Entity(id)
+    log.debug("Registering rd entity", "id=", id, "ent=", ent)
+end
+
 net.Receive( "sbru", function(length, ply)
     log.debug("receiving rd data start", "time=", CurTime())
     local id = net.readShort()
@@ -32,7 +37,7 @@ net.Receive( "sbru", function(length, ply)
     log.debug("Receiving rd entity update", id)
     local container = SB:getDeviceInfo(id)
     if not container then
-        container =SB:registerDevice(Entity(id), rdtype)
+        container =SB:registerDevice(getEntity(id), rdtype)
     end
     container:receive()
     log.debug("receiving rd data end", "time=", CurTime())
