@@ -28,6 +28,7 @@ local net = sbnet
 local function getEntity(id)
     local ent = Entity(id)
     log.debug("Registering rd entity", "id=", id, "ent=", ent)
+    return ent
 end
 
 net.Receive( "sbru", function(length, ply)
