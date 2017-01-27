@@ -42,9 +42,9 @@ function dump( func,  stripDebugInfo) end
 -- Returns whether or not the second passed string matches the end of the first.
 --
 -- @param  str string  The string whose end is to be checked.
--- @param  end string  The string to be matched with the end of the first.
+-- @param  endStr string  The string to be matched with the end of the first.
 -- @return boolean true if the first string ends with the second, or the second is empty, otherwise false.
-function EndsWith( str,  end) end
+function EndsWith( str,  endStr) end
 
 --- string.Explode
 -- @usage shared_m

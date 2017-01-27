@@ -20,9 +20,9 @@ function AllowsAutoSwitchTo() end
 -- @usage shared
 -- Calls a SWEP function on client.
 --
--- @param  function string  Name of function to call. If you want to call SWEP:MyFunc() on client, you type in "MyFunc"
+-- @param  func string  Name of function to call. If you want to call SWEP:MyFunc() on client, you type in "MyFunc"
 -- @param  arguments="" string  Arguments for the function, separated by spaces.  Note: Only the second argument is passed as argument and must be a string
-function CallOnClient( function,  arguments) end
+function CallOnClient( func,  arguments) end
 
 --- Weapon:Clip1
 -- @usage shared

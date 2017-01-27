@@ -131,9 +131,9 @@ function GetTextSize( text) end
 -- @usage client_m
 -- Returns the texture id of the material with the given name/path.
 --
--- @param  name/path string  Name or path of the texture.
+-- @param  nameORpath string  Name or path of the texture.
 -- @return number The texture ID
-function GetTextureID( name/path) end
+function GetTextureID( nameORpath) end
 
 --- surface.GetTextureSize
 -- @usage client_m

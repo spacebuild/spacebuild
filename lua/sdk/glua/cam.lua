@@ -78,16 +78,16 @@ function Start2D() end
 -- @usage client
 -- Sets up a new 3D rendering context. Must be finished by cam.End3D.
 --
--- @param () Vector  Render cam position.
--- @param () Angle  Render cam angles.
--- @param  fov=nil number  Field of view.
--- @param  x=0 number  X coordinate of where to start the new view port.
--- @param  y=0 number  Y coordinate of where to start the new view port.
--- @param () number  Width of the new viewport.
--- @param () number  Height of the new viewport.
--- @param  zNear=nil number  Distance to near clipping plane.
--- @param  zFar=nil number  Distance to far clipping plane.
-function Start3D((), (),  fov,  x,  y, (), (),  zNear,  zFar) end
+-- @param pos Vector  Render cam position.
+-- @param angle Angle  Render cam angles.
+-- @param  fov =nil number  Field of view.
+-- @param  x =0 number  X coordinate of where to start the new view port.
+-- @param  y =0 number  Y coordinate of where to start the new view port.
+-- @param width number  Width of the new viewport.
+-- @param height number  Height of the new viewport.
+-- @param  zNear =nil number  Distance to near clipping plane.
+-- @param  zFar =nil number  Distance to far clipping plane.
+function Start3D(pos, angle,  fov,  x,  y, width, height,  zNear,  zFar) end
 
 --- cam.Start3D2D
 -- @usage client

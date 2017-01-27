@@ -17,9 +17,9 @@ function AddItem( left,  right) end
 --
 -- @param  text string  The text on the button
 -- @param  concmd string  The concommand to run when the button is clicked
--- @param  concmd args vararg  The arguments to pass on to the concommand when the button is clicked
+-- @param  concmdargs vararg  The arguments to pass on to the concommand when the button is clicked
 -- @return Panel The created DButton
-function Button( text,  concmd,  concmd args) end
+function Button( text,  concmd,  concmdargs) end
 
 --- DForm:CheckBox
 -- @usage client

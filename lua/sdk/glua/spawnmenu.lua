@@ -38,11 +38,11 @@ function AddContentType( name,  constructor) end
 -- Inserts a new tab into the CreationMenus table, which will be used by the creation menu to generate its tabs (Spawnlists, Weapons, Entities, etc.)
 --
 -- @param  name string  What text will appear on the tab (I.E Spawnlists).
--- @param  function function  The function called to generate the content of the tab.
+-- @param  func function  The function called to generate the content of the tab.
 -- @param  material="icon16/exclamation.png" string  Path to the material that will be used as an icon on the tab.
 -- @param  order=1000 number  The order in which this tab should be shown relative to the other tabs on the creation menu.
 -- @param  tooltip=nil string  The tooltip to be shown for this tab.
-function AddCreationTab( name,  function,  material,  order,  tooltip) end
+function AddCreationTab( name,  func,  material,  order,  tooltip) end
 
 --- spawnmenu.AddPropCategory
 -- @usage client
@@ -79,8 +79,8 @@ function AddToolCategory( tab,  RealName,  PrintName) end
 -- @param  cmd string  Command to execute when the item is selected
 -- @param  config string  Config name ( Unknown purpose )
 -- @param  cpanel function  A function to build the C panel
--- @param 1N table 
-function AddToolMenuOption( tab,  category,  class,  name,  cmd,  config,  cpanel, 1N) end
+-- @param N1 table
+function AddToolMenuOption( tab,  category,  class,  name,  cmd,  config,  cpanel, N1) end
 
 --- spawnmenu.AddToolTab
 -- @usage client

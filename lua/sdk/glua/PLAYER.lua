@@ -55,9 +55,9 @@ function AddFrozenPhysicsObject( ent,  physobj) end
 --
 -- @param  name string  Name of the vote
 -- @param  timeout number  Time until the vote expires
--- @param  vote callback function  The function to be run when the player presses 0-9 while a vote is active.
--- @param  draw callback function  Used to draw the vote panel.
-function AddPlayerOption( name,  timeout,  vote callback,  draw callback) end
+-- @param  votecallback function  The function to be run when the player presses 0-9 while a vote is active.
+-- @param  drawcallback function  Used to draw the vote panel.
+function AddPlayerOption( name,  timeout,  votecallback,  drawcallback) end
 
 --- Player:AddVCDSequenceToGestureSlot
 -- @usage shared

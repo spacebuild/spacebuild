@@ -150,9 +150,9 @@ function TotalDeaths( teamIndex) end
 -- @usage shared
 -- Get's the total frags in a team.
 --
--- @param  Entity or number Entity  Entity or number.
+-- @param  EntityOrNumber Entity  Entity or number.
 -- @return number index
-function TotalFrags( Entity or number) end
+function TotalFrags( EntityOrNumber) end
 
 --- team.Valid
 -- @usage shared

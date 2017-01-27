@@ -405,10 +405,10 @@ function tanh( number) end
 -- Returns the fraction of where the current time is relative to the start and end times
 --
 -- @param  start number  Start time in seconds
--- @param  end number  End time in seconds
+-- @param  endTime number  End time in seconds
 -- @param  current number  Current time in seconds
 -- @return number Fraction
-function TimeFraction( start,  end,  current) end
+function TimeFraction( start,  endTime,  current) end
 
 --- math.Truncate
 -- @usage shared_m

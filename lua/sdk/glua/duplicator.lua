@@ -185,9 +185,9 @@ function RegisterConstraint( name,  callback,  ...) end
 -- This allows you to specify a specific function to be run when your SENT is pasted with the duplicator, instead of relying on the generic automatic functions.
 --
 -- @param  name string  The ClassName of the entity you wish to register a factory for
--- @param  function function  The factory function you want to have called. It should have the arguments (Player, ...) where ... is whatever arguments you request to be passed.
+-- @param  func function  The factory function you want to have called. It should have the arguments (Player, ...) where ... is whatever arguments you request to be passed.
 -- @param  args vararg  A list of arguments you want passed from the duplication data table.
-function RegisterEntityClass( name,  function,  args) end
+function RegisterEntityClass( name,  func,  args) end
 
 --- duplicator.RegisterEntityModifier
 -- @usage shared

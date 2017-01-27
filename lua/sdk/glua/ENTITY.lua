@@ -146,8 +146,8 @@ function BoundingRadius() end
 --
 -- @param  identifier string  Identifier of the function within CallOnRemove
 -- @param  removeFunc function  Function to be called on remove
--- @param  argn... vararg  Optional arguments to pass to removeFunc. Do note that the first argument passed to the function will always be the entity being removed, and the arguments passed on here start after that.
-function CallOnRemove( identifier,  removeFunc,  argn...) end
+-- @param  ... vararg  Optional arguments to pass to removeFunc. Do note that the first argument passed to the function will always be the entity being removed, and the arguments passed on here start after that.
+function CallOnRemove( identifier,  removeFunc,  ...) end
 
 --- Entity:ClearPoseParameters
 -- @usage shared
@@ -508,11 +508,11 @@ function GetBonePosition( boneIndex) end
 -- @usage shared
 -- This article is a stub.
 --Please help the Garry's Mod wiki by adding to it.
--- @param 3A number 
+-- @param A3 number
 -- @return Vector 
 -- @return Vector 
 -- @return number 
-function GetBrushPlane(3A) end
+function GetBrushPlane(A3) end
 
 --- Entity:GetBrushPlaneCount
 -- @usage shared
