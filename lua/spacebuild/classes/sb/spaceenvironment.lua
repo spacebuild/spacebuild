@@ -67,3 +67,7 @@ function C:getEntity()
 	return Entity(0)
 end
 
+function C:getID()
+	return 0
+end
+
