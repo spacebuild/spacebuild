@@ -68,7 +68,7 @@ end
 
 concommand.Add("spacebuild", function() log.info("Spacebuild version "..version:fullVersion()) end)
 
-if CLIENT then
+if CLIENT and game.SinglePlayer() then
     local fileInfo = debug.getinfo( log.setLevel )
     log.debug("addon=", fileInfo.source:sub(1, 5))
     local isOnWorkshop = fileInfo.source and fileInfo.source == "@lua/includes/modules/log.lua"
