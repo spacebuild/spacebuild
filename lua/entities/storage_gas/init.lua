@@ -34,7 +34,7 @@ function ENT:OnRemove()
     self.BaseClass.OnRemove(self)
     local air = self:GetResourceAmount(self.resource)
     if self.environment then
-        self.environment:convertResource(nil, self.resource, air)
+        self.environment:convertResource("vacuum", self.resource, air)
     end
     self:StopSound("PhysicsCannister.ThrusterLoop")
 end
@@ -64,12 +64,12 @@ function ENT:Leak()
     if (air >= am) then
         self:ConsumeResource(self.resource, am)
         if self.environment then
-            self.environment:convertResource(nil, self.resource, air)
+            self.environment:convertResource("vacuum", self.resource, air)
         end
     else
         self:ConsumeResource(self.resource, air)
         if self.environment then
-            self.environment:convertResource(nil, self.resource, air)
+            self.environment:convertResource("vacuum", self.resource, air)
         end
         self:StopSound("PhysicsCannister.ThrusterLoop")
     end

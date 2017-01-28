@@ -57,7 +57,7 @@ if SERVER then
 		if up == nil or sun == nil then return true end
 
 		if sun ~= nil then
-			trace = util.QuickTrace(sun:getPos(), self:GetPos() - sun:getPos(), nil) -- Don't filter
+			trace = util.QuickTrace(sun:getPosition(), self:GetPos() - sun:getPosition(), nil) -- Don't filter
 			if trace.Hit and trace.Entity == self then
 				return false
 			else
@@ -83,7 +83,7 @@ if SERVER then
 		local sunAngle = Vector(0, 0, -1)
 
 		if sun ~= nil then
-			sunAngle = (self:GetPos() - sun:getPos()) -- DO NOT ADD :Normalize() BECOMES NIL!
+			sunAngle = (self:GetPos() - sun:getPosition()) -- DO NOT ADD :Normalize() BECOMES NIL!
 			sunAngle:Normalize() --Normalising doesn't work normally for some reason, hack implemented.
 		end
 

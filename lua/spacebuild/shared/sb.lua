@@ -110,7 +110,7 @@ function SB:getOtherEnvironments()
 end
 
 function SB:getEnvironment(id)
-    if id == -1 then
+    if id == 0 then
         return self:getSpace()
     end
     return internal.environments[id]

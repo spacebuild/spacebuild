@@ -271,7 +271,7 @@ local function onEnterEnvironment(environmentThatNotifies, ent, environment, old
     if oldenvironment then
         net.writeShort(oldenvironment:getID())
     else
-        net.writeShort(-1)
+        net.writeShort(0)
     end
     net.Broadcast()
 end

@@ -43,12 +43,8 @@ function C:isA(className)
 end
 
 function C:init(resourceRegistry)
-	funcRef.init(self, -1, {}, resourceRegistry)
+	funcRef.init(self, 0, {}, resourceRegistry)
 	self.temperature = 14 -- in K
-end
-
-function C:getEntity()
-	return nil
 end
 
 function C:hasName()
@@ -61,13 +57,5 @@ end
 
 function C:isSpace()
 	return true
-end
-
-function C:getEntity()
-	return Entity(0)
-end
-
-function C:getID()
-	return 0
 end
 
