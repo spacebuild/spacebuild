@@ -67,6 +67,7 @@ if version.tag == "release" then
 end
 
 concommand.Add("spacebuild", function() log.info("Spacebuild version "..version:fullVersion()) end)
+concommand.Add("spacebuild_error", function() log.error("Spacebuild version "..version:fullVersion()) end)
 
 SPACEBUILD = {}
 local SB = SPACEBUILD
