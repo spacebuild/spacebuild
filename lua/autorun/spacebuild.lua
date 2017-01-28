@@ -70,7 +70,8 @@ concommand.Add("spacebuild", function() log.info("Spacebuild version "..version:
 
 if CLIENT and game.SinglePlayer() then
     local fileInfo = debug.getinfo( log.setLevel )
-    log.debug("addon=", fileInfo.source:sub(1, 5))
+    log.debug("stable version", steamworks.ShouldMountAddon("693838486" ))
+    log.debug("development version", steamworks.ShouldMountAddon("830958948"))
     local isOnWorkshop = fileInfo.source and fileInfo.source == "@lua/includes/modules/log.lua"
     if isOnWorkshop then
         local stableVersion = steamworks.IsSubscribed("693838486")
