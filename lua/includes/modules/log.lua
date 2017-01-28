@@ -93,7 +93,6 @@ function log(lvl, ...)
 		print(color, "\n")
 	end
 	if lvl == ERROR then
-		PrintTable( gmodDebug.getinfo( setLevel ) )
 		gmodDebug.Trace()
 	end
 end
