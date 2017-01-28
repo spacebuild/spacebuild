@@ -1,6 +1,11 @@
 AddCSLuaFile()
-
-DEFINE_BASECLASS("base_anim")
+ENT.Type = "anim"
+local baseClass
+if WireLib and GAMEMODE.IsSandboxDerived then
+	baseClass = baseclass.Get( "base_wire_entity" )
+else
+	baseClass = baseclass.Get( "base_anim" )
+end
 
 ENT.PrintName = "Base Resource Entity"
 ENT.Author = "SnakeSVx"
@@ -13,140 +18,90 @@ ENT.AdminOnly = false
 
 local SB = SPACEBUILD
 
-local class = SB.class
-local const = SB.constants
-
 function ENT:Initialize()
+	baseClass.Initialize(self)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	if SERVER then
+		self:PhysicsInit(SOLID_VPHYSICS)
+		-- Wake the physics object up. It's time to have fun!
+		local phys = self:GetPhysicsObject()
+		if (phys:IsValid()) then
+			phys:Wake()
+		end
+	end
+	self:registerDevice()
+end
+
+function ENT:registerDevice()
 	SB:registerDevice(self, SB.RDTYPES.STORAGE)
 end
 
-
 function ENT:OnRemove()
+	baseClass.OnRemove(self)
 	SB:removeDevice(self)
-end
-
-if (CLIENT) then
-
-	local width, height
-	local scrW = ScrW()
-	local scrH = ScrH()
-	if scrW > 1650 then
-		width = 200
-	elseif scrW > 1024 then
-		width = 150
-	else
-		width = 100
-	end
-	if scrH > 900 then
-		height = 36
-	elseif scrH > 750 then
-		height = 24
-	else
-		height = 16
-	end
-
-	function ENT:BeingLookedAtByLocalPlayer()
-
-		if (LocalPlayer():GetEyeTrace().Entity ~= self) then return false end
-		if (EyePos():Distance(self:GetPos()) > 256) then return false end
-
-		return true
-	end
-
-	-- A sort of fuzzy cute version of BeingLookedAtByLocalPlayer
-	function ENT:BeingLookedAtByLocalPlayerSomewhat()
-		local lookedAt = self:BeingLookedAtByLocalPlayer()
-
-		if not lookedAt then
-			local head = LocalPlayer():LookupBone("ValveBiped.Bip01_Head1")
-			local headpos,_ = LocalPlayer():GetBonePosition(head)
-
-			local vec = self:GetPos() - ( headpos )
-			vec:Normalize()
-
-			local aimVec = LocalPlayer():GetAimVector()
-			aimVec:Normalize()
-
-			if aimVec:DotProduct( vec ) > 0.95 and EyePos():Distance(self:GetPos()) < 512 then
-				return true
-			else
-				return false
-			end
-		else
-			return lookedAt
-		end
-
-	end
-
-
-
-	function ENT:Draw()
-		if self.rdobject then
-			local resources = self.rdobject:getResources()    --- TODO Fix why this only works with Terran -.-
-			local elementTable = {}
-
-			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, self.PrintName) )
-
-			table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, "Resources: ") )
-
-			for _, v in pairs(resources) do
-				table.insert( elementTable, class.new("TextElement", 0, 0, width, height, const.colors.white, v:getDisplayName()) )
-			end
-
-			if self:BeingLookedAtByLocalPlayerSomewhat() then
-				GAMEMODE:AddWorldTip(self:EntIndex(), nil, 0.5, self:GetPos(), self)
-			end
-			if self:BeingLookedAtByLocalPlayer() then
-				GAMEMODE:AddHudTip(self:EntIndex(), elementTable, 0.5, self:GetPos(), self)
-			end
-		end
-
-		self:DrawModel()
-	end
-end
-
-function ENT:AddResource(resource, maxamount, defaultvalue)
-	return self.rdobject:addResource(resource, maxamount, defaultvalue)
-end
-
-function ENT:ConsumeResource(resource, amount)
-	return self.rdobject:consumeResource(resource, amount)
-end
-
-function ENT:SupplyResource(resource, amount)
-	return self.rdobject:supplyResource(resource, amount)
-end
-
-function ENT:GetResourceAmount(resource)
-	return self.rdobject:getResourceAmount(resource)
-end
-
-
-function ENT:GetMaxResourceAmount(resource)
-	return self.rdobject:getMaxResourceAmount(resource)
-end
-
-function ENT:OnRestore()
-	self.oldrdobject = self.rdobject
-	self:Initialize()
-	self.rdobject:onRestore(self)
 end
 
 if SERVER then
 
-	local RD_TABLE = "SB4_RESOURCE_INFO"
+	function ENT:Repair()
+		SB.util.damage.repair(self)
+	end
 
+	function ENT:OnTakeDamage(DmgInfo)
+		SB.util.damage.doDamage(self, DmgInfo:GetDamage())
+	end
+
+	function ENT:OnRestore()
+		baseClass.OnRestore(self)
+		SB:onRestore(self)
+	end
 
 	function ENT:PreEntityCopy()
-		duplicator.StoreEntityModifier(self, RD_TABLE, self.rdobject:onSave())
+		baseClass.PreEntityCopy(self)
+		SB:buildDupeInfo(self)
 	end
 
 	function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
-		if self.EntityMods and self.EntityMods[RD_TABLE] then
-			self.rdobject:applyDupeInfo(self.EntityMods[RD_TABLE], self, CreatedEntities)
-			self.EntityMods[RD_TABLE] = nil -- Remove the data
-		end
+		baseClass.PostEntityPaste(self, Player, Ent, CreatedEntities)
+		SB:applyDupeInfo(Ent, CreatedEntities)
 	end
+
+end
+
+if CLIENT then
+
+	function ENT:Draw()
+		baseClass.Draw(self)
+		SB:drawBeams(self)
+		self:drawScreen()
+	end
+
+	function ENT:drawScreen()
+		-- do nothing
+	end
+
+end
+
+function ENT:addResource(resource, maxamount, defaultvalue)
+	return self.rdobject:addResource(resource, maxamount, defaultvalue)
+end
+
+function ENT:consumeResource(resource, amount)
+	return self.rdobject:consumeResource(resource, amount)
+end
+
+function ENT:supplyResource(resource, amount)
+	return self.rdobject:supplyResource(resource, amount)
+end
+
+function ENT:getResourceAmount(resource)
+	return self.rdobject:getResourceAmount(resource)
+end
+
+
+function ENT:getMaxResourceAmount(resource)
+	return self.rdobject:getMaxResourceAmount(resource)
 end
 
 

@@ -68,26 +68,6 @@ end
 
 concommand.Add("spacebuild", function() log.info("Spacebuild version "..version:fullVersion()) end)
 
-if CLIENT and game.SinglePlayer() then
-    local fileInfo = debug.getinfo( log.setLevel )
-    log.debug("stable version", steamworks.ShouldMountAddon("693838486" ))
-    log.debug("development version", steamworks.ShouldMountAddon("830958948"))
-    local isOnWorkshop = fileInfo.source and fileInfo.source == "@lua/includes/modules/log.lua"
-    if isOnWorkshop then
-        local stableVersion = steamworks.IsSubscribed("693838486")
-        local developmentVersion = steamworks.IsSubscribed("830958948")
-        if stableVersion and developmentVersion then
-            log.error("It is dangerious to be using both the SB release and development version together. Unwanted behaviour might occur.")
-        elseif not stableVersion and not developmentVersion then
-           log.error("Using an unauthorised (re)upload of Spacebuild on the workshop. Please update to one of the official ones.")
-           log.error("Release version", "http://steamcommunity.com/sharedfiles/filedetails/?id=693838486")
-           log.error("Development version", "http://steamcommunity.com/sharedfiles/filedetails/?id=830958948")
-            error("Stopped loading Spacebuild.")
-       end
-    end
-end
-
-
 SPACEBUILD = {}
 local SB = SPACEBUILD
 SB.log = log

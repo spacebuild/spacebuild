@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS("base_resource_generator")
+local baseClass = baseclass.Get("base_resource_generator")
 
 ENT.PrintName = "Energy Generator"
 ENT.Author = "SnakeSVx & Radon"
@@ -13,36 +13,26 @@ ENT.AdminOnly = false
 
 local SB = SPACEBUILD
 
-function ENT:Initialize()
-	BaseClass.Initialize(self)
-	if SERVER then
-		self:PhysicsInit(SOLID_VPHYSICS)
-		self:SetMoveType(MOVETYPE_VPHYSICS)
-		self:SetSolid(SOLID_VPHYSICS)
-
-		-- Wake the physics object up. It's time to have fun!
-		local phys = self:GetPhysicsObject()
-		if (phys:IsValid()) then
-			phys:Wake()
-		end
-		self.rdobject:addResource("energy", 0, 0)
-		self.energygen = 8
-		self.active = true
-	end
-end
-
 function ENT:SpawnFunction(ply, tr)
 	if (not tr.HitWorld) then return end
 
-	local ent = ents.Create("resource_generator_energy")
+	local ent = ents.Create("resource_generator_energy_solar")
 	ent:SetPos(tr.HitPos + Vector(0, 0, 50))
 	ent:SetModel("models/props_phx/life_support/panel_medium.mdl")
 	ent:Spawn()
 
+	ent.rdobject:addResource("energy", 1000, 0)
+
 	return ent
 end
 
-function ENT:SetActive() --disable use, lol
+function ENT:Initialize()
+	baseClass.Initialize(self)
+	if SERVER then
+		self.rdobject:addResource("energy", 0, 0)
+		self.energygen = 8
+		self.active = true
+	end
 end
 
 if SERVER then
