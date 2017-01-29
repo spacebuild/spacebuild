@@ -13,18 +13,49 @@ local internal = SB.internal
 
 local damage = {}
 
+damage.health = function(ent, newHealth)
+    if newHealth then
+        if newHealth > damage.maxHealth(ent) then
+            newHealth = damage.maxHealth(ent);
+        end
+        ent:SetHealth(newHealth)
+    end
+    return ent:Health()
+end
+
+damage.maxHealth = function(ent, newMaxHealth)
+    if newMaxHealth then
+        local wasMaxHealth = damage.health(ent) == damage.maxHealth(ent)
+        ent:SetMaxHealth(newMaxHealth)
+        if wasMaxHealth then damage.health(ent, newMaxHealth) end
+    end
+    return ent:GetMaxHealth()
+end
+
+damage.performance = function(ent, min, max)
+    if not min then min = 0 end
+    if not max then max = 100 end
+    local hpPer, performance, dif = (damage.health(ent)/damage.maxHealth(ent)) * 100, 100, max - min;
+    if hpPer <= min then
+        performance = 0
+    elseif hpPer < max then
+        performance = (100/dif) * hpPer
+    end
+    return math.Round(performance)
+end
+
 damage.repair = function(ent)
-    ent:SetHealth(ent:GetMaxHealth())
+    damage.health(ent, damage.maxHealth(ent))
 end
 
 damage.doDamage = function(ent, amountOfDamage)
     if not (ent and ent:IsValid() and amountOfDamage) then return end
-    if ent:GetMaxHealth( ) == 0 then return end
+    if damage.maxHealth(ent) == 0 then return end
     amountOfDamage = math.floor(amountOfDamage / 2)
-    if (ent:Health( ) > 0) then
-        local HP = ent:Health( ) - amountOfDamage
-        ent:SetHealth( HP )
-        if (ent:Health( ) <= (ent:GetMaxHealth( ) / 2)) then
+    if (damage.health(ent) > 0) then
+        local HP = damage.health(ent) - amountOfDamage
+        damage.health(ent, HP)
+        if (damage.health(ent) <= (damage.maxHealth(ent) / 2)) then
             if ent.Damage then
                 ent:Damage()
             end
@@ -35,7 +66,7 @@ damage.doDamage = function(ent, amountOfDamage)
         damage.changeColor(ent, 5, 125)
         damage.changeColor(ent, 6, 100)
         damage.changeColor(ent, 7, 75)
-        if (ent:Health( ) <= 0) then
+        if (damage.health(ent) <= 0) then
             ent:SetColor(Color(50, 50, 50, 255))
             if ent.Destruct then
                 ent:Destruct()
@@ -49,7 +80,7 @@ end
 
 damage.changeColor = function(ent, hpDivider, colorCode)
     if not ent or not hpDivider or not colorCode or not IsValid(ent) then return end
-    if (ent:Health() <= (ent:GetMaxHealth( ) / hpDivider)) then
+    if (damage.health(ent) <= (damage.maxHealth(ent) / hpDivider)) then
         ent:SetColor(Color(colorCode, colorCode, colorCode, 255))
     end
 end

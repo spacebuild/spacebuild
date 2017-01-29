@@ -3,7 +3,7 @@ AddCSLuaFile()
 local baseClass = baseclass.Get("base_resource_entity")
 
 ENT.PrintName = "Base Resource Network"
-
+ENT.Category        = "Spacebuild"
 ENT.Spawnable = true
 ENT.AdminOnly = false
 

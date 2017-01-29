@@ -84,9 +84,9 @@ local function spawnSun(pos, angle, data)
 end
 
 local function initSun()
-    if not sun then
-        --TODO create an ent and spawn the sun! but what location and what angle?
-        --spawnSun(Vector(0, 0, 0), Angle(0, 0, -1), {}) --Crashes gmod
+    if not sun and util.IsInWorld( Vector(0, 0, 0) ) then
+        --TODO find out why this crashes gmod
+        --spawnSun(Vector(0, 0, 0), Angle(0, 0, -1), {})
     end
 end
 hook.Add("Initialize", "spacebuild.init.server.sun", initSun)

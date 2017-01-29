@@ -81,6 +81,7 @@ function SB:removeDevice(ent)
     device_table[entid] = nil
     if ent.rdobject ~= nil then
         ent.rdobject:unlink()
+        ent.rdobject:removeBeams()
     end
     ent.rdobject = nil
     hook.Call("onDeviceRemoved", GAMEMODE, ent)

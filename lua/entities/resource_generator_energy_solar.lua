@@ -7,6 +7,7 @@ ENT.Author = "SnakeSVx & Radon"
 ENT.Contact = ""
 ENT.Purpose = "Testing"
 ENT.Instructions = ""
+ENT.Category        = "Spacebuild"
 
 ENT.Spawnable = true
 ENT.AdminOnly = false
@@ -87,7 +88,7 @@ if SERVER then
 	end
 
 	function ENT:Think()
-
+		baseClass.Think(self)
 		if self:WaterLevel() > 0 then
 			self.active = false
 		else
