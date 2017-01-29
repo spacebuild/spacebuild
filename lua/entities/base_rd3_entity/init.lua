@@ -104,11 +104,11 @@ function ENT:AddResource(resource, maxamount, defaultvalue)
 end
 
 function ENT:ConsumeResource(resource, amount)
-    self.rdobject:consumeResource(resource, amount)
+    return self.rdobject:consumeResource(resource, amount)
 end
 
 function ENT:SupplyResource(resource, amount)
-    self.rdobject:supplyResource(resource, amount)
+    return self.rdobject:supplyResource(resource, amount)
 end
 
 function ENT:Link(netid)
