@@ -47,7 +47,7 @@ function SB:registerDeviceInfo(category, name, class, model, spawnFunction, mate
 end
 
 local makeDevice = function(tool, pl, ang, pos, device)
-    if ( IsValid( pl ) and not pl:CheckLimit( "sbmodels" ) ) then return false end
+    if ( IsValid( pl ) and not pl:CheckLimit( tool.device_category ) ) then return false end
 
 
     local thruster = ents.Create( device.class )
@@ -98,6 +98,7 @@ local leftClick = function(tool, trace)
     Ang.pitch = Ang.pitch + 90
 
     local ent = makeDevice(tool, ply, Ang, trace.HitPos, dev )
+    if not ent then return false end
 
     local min = ent:OBBMins()
     ent:SetPos( trace.HitPos - trace.HitNormal * min.z )
