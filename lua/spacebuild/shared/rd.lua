@@ -60,8 +60,10 @@ end
 
 function SB:registerDevice(ent, rdtype)
     local entid, obj = ent:EntIndex(), nil
-    if rdtype == self.RDTYPES.STORAGE or rdtype == self.RDTYPES.GENERATOR then
-        obj = class.new("rd/ResourceEntity", entid, rdtype, resourceRegistry, class)
+    if rdtype == self.RDTYPES.STORAGE then
+        obj = class.new("rd/ResourceStorage", entid, resourceRegistry, class)
+    elseif rdtype == self.RDTYPES.GENERATOR then
+        obj = class.new("rd/ResourceGenerator", entid, resourceRegistry, class)
     elseif rdtype == self.RDTYPES.NETWORK then
         obj = class.new("rd/ResourceNetwork", entid, resourceRegistry, class)
     else

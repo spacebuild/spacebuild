@@ -162,7 +162,7 @@ local function drawEnvironment(ply, width, height)
     elseif ply.environment:isStar() then
         envSymbol = utf8.char( 0xf005)
     elseif ply.environment:isSpace() then
-        envSymbol = utf8.char( 0xf197)
+        envSymbol = utf8.char( 0xf135)
     else
         envSymbol = utf8.char( 0xf299)
     end
@@ -232,7 +232,53 @@ local function drawSuit(ply, width, height)
 end
 
 local function drawRdInfo(ply, width, height)
-    if hook.Call( "HUDShouldDraw", GAMEMODE, "SBHudRDent" ) == false then return end
+   if hook.Call( "HUDShouldDraw", GAMEMODE, "SBHudRDent" ) == false then return end
+   local trace, rdobject = ply:GetEyeTrace()
+   if trace.Entity and trace.Entity.rdobject and EyePos():Distance(trace.Entity:GetPos()) < 256 then
+       rdobject = trace.Entity.rdobject
+       surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, bgColor.a )
+       surface.DrawRect( width-170, height - 160, 155, 140 )
+        height = height - 153;
+        if rdobject:isA("ResourceStorage") then
+            draw.DrawText( utf8.char( 0xf1b3 ) , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+            draw.DrawText( "Storage device "..rdobject:getID(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            height = height + 16
+            draw.DrawText( "Maximum storage capacity", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            for k, v in pairs(rdobject:getResources()) do
+                height = height + 16
+                draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            end
+        elseif rdobject:isA("ResourceGenerator") then
+            draw.DrawText( utf8.char( 0xf085 ) , "FANormal", width - 24, height, col, TEXT_ALIGN_RIGHT )
+            draw.DrawText( "Generator device "..rdobject:getID(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            height = height + 16
+            draw.DrawText( "Maximum storage capacity", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            for k, v in pairs(rdobject:getResources()) do
+                if  v:getMaxAmount() > 0 then
+                    height = height + 16
+                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                end
+            end
+            height = height + 16
+            draw.DrawText( "Generates/Requires", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            for k, v in pairs(rdobject:getResources()) do
+                if  v:getMaxAmount() == 0 then
+                    height = height + 16
+                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                end
+            end
+        elseif rdobject:isA("ResourceNetwork") then
+            draw.DrawText( utf8.char( 0xf108 ) , "FANormal", width - 24, height, col, TEXT_ALIGN_RIGHT )
+            draw.DrawText( "Network device "..rdobject:getID(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+        else
+            draw.DrawText( utf8.char( 0xf128 ) , "FANormal", width - 24, height, col, TEXT_ALIGN_RIGHT )
+            draw.DrawText( "Unknown device "..rdobject:getID(), "FANormal", width - 165, height , redColor, TEXT_ALIGN_LEFT)
+        end
+
+   end
 end
 
 hook.Add( "HUDPaint", "sb.ui.hud", function()

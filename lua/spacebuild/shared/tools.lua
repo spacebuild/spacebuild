@@ -44,51 +44,6 @@ function SB:registerDeviceInfo(category, name, class, model, spawnFunction, mate
     }
 end
 
-SB:registerCategory("Network")
-SB:registerCategory("Storage")
-SB:registerCategory("Generators")
-SB:registerCategory("Environmental")
-
-SB:registerDeviceInfo(
-    "Storage",
-    "Battery",
-    "base_resource_entity",
-    "models/props_phx/life_support/battery_small.mdl",
-    function(ent)
-        ent:addResource("energy", 500)
-    end
-)
-SB:registerDeviceInfo(
-    "Storage",
-    "Water tank",
-    "base_resource_entity",
-    "models/props_phx/life_support/canister_small.mdl",
-    function(ent)
-        ent:addResource("water", 500)
-    end,
-    nil,
-    nil,
-    4
-)
-SB:registerDeviceInfo(
-    "Storage",
-    "Oxygen tank",
-    "base_resource_entity",
-    "models/props_phx/life_support/canister_small.mdl",
-    function(ent)
-        ent:addResource("oxygen", 500)
-    end
-)
-SB:registerDeviceInfo(
-    "Network",
-    "Network",
-    "base_resource_network",
-    "models/SnakeSVx/small_res_node.mdl",
-    function(ent)
-        ent.range = 512
-    end
-)
-
 local makeDevice = function(tool, pl, ang, pos, device)
     if ( IsValid( pl ) and not pl:CheckLimit( "sbmodels" ) ) then return false end
 
@@ -127,6 +82,10 @@ local leftClick = function(tool, trace)
     local name = tool:GetClientInfo( "device" )
     local category =  tool.device_category
 
+    local allowWorldWeld = tool:GetClientNumber('AllowWorldWeld') == 1
+    local dontWeld = tool:GetClientNumber('DontWeld') == 1
+    local frozen			= tool:GetClientNumber('Frozen') == 1 or (not allowWorldWeld and trace.Entity:IsWorld())
+
     local dev = SB:getCategories()[category].devices[name]
 
     if not dev or not util.IsValidModel( dev.model ) or not util.IsValidProp( dev.model ) then return false end
@@ -135,18 +94,18 @@ local leftClick = function(tool, trace)
     local Ang = trace.HitNormal:Angle()
     Ang.pitch = Ang.pitch + 90
 
-    local thruster = makeDevice(tool, ply, Ang, trace.HitPos, dev )
+    local ent = makeDevice(tool, ply, Ang, trace.HitPos, dev )
 
-    local min = thruster:OBBMins()
-    thruster:SetPos( trace.HitPos - trace.HitNormal * min.z )
+    local min = ent:OBBMins()
+    ent:SetPos( trace.HitPos - trace.HitNormal * min.z )
 
     undo.Create( category )
-    undo.AddEntity( thruster )
+    undo.AddEntity(ent)
 
     -- Don't weld to world
-    if ( IsValid( trace.Entity ) ) then
+    if not dontWeld and (IsValid( trace.Entity ) or allowWorldWeld) then
 
-        local const = constraint.Weld( thruster, trace.Entity, 0, trace.PhysicsBone, 0, collision, true )
+        local const = constraint.Weld( ent, trace.Entity, 0, trace.PhysicsBone, 0, true )
 
         undo.AddEntity( const )
         ply:AddCleanup( category, const )
@@ -155,6 +114,14 @@ local leftClick = function(tool, trace)
 
     undo.SetPlayer( ply )
     undo.Finish()
+
+    if frozen and IsValid(ent:GetPhysicsObject()) then
+        local Phys = ent:GetPhysicsObject()
+        Phys:EnableMotion(false)
+        ply:AddFrozenPhysicsObject(ent, Phys)
+    end
+
+    ply:AddCleanup(category, ent)
 
     return true
 end
@@ -205,6 +172,10 @@ local function buildCPanel( tool )
     return function(CPanel)
         CPanel:AddControl( "Header", { Description = "#tool.sb4_test.desc" } )
 
+        CPanel:CheckBox("Don't Weld", tool.device_category.."_DontWeld" )
+        CPanel:CheckBox("Allow welding to world", tool.device_category.."_AllowWorldWeld" )
+        CPanel:CheckBox("Make Frozen", tool.device_category.."_Frozen" )
+
         CPanel:AddControl( "PropSelect", { Label = "Select entity", ConVar = tool.device_category.."_device", Height = 0, modelstable = tool.models } )
     end
 end
@@ -217,6 +188,10 @@ function SB:loadTools()
         TOOL.Name = cat.name
         TOOL.Mode = k
         TOOL.device_category = k
+
+        TOOL.ClientConVar[ "DontWeld" ] = 0
+        TOOL.ClientConVar[ "AllowWorldWeld" ] = 0
+        TOOL.ClientConVar[ "Frozen" ] = 0
 
         cleanup.Register( k )
 
@@ -241,6 +216,564 @@ function SB:loadTools()
     end
 end
 
+--[[
+    Start registering default devices
+ ]]
+
+
+-- Register network devices
+local category = "Network"
+SB:registerCategory(category)
+
+SB:registerDeviceInfo(
+    category,
+    "Small resource node",
+    "base_resource_network",
+    "models/SnakeSVx/small_res_node.mdl",
+    function(ent)
+        ent.range = 512
+    end
+)
+
+-- Register storage devices
+category = "Storage"
+SB:registerCategory(category)
+-- Energy
+SB:registerDeviceInfo(
+    category,
+    "Small Battery",
+    "base_resource_entity",
+    "models/props_phx/life_support/battery_small.mdl",
+    function(ent)
+        ent:addResource("energy", 1500)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium Battery",
+    "base_resource_entity",
+    "models/props_phx/life_support/battery_medium.mdl",
+    function(ent)
+        ent:addResource("energy", 9000)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Large Battery",
+    "base_resource_entity",
+    "models/props_phx/life_support/battery_large.mdl",
+    function(ent)
+        ent:addResource("energy", 72000)
+    end
+)
+-- Water
+SB:registerDeviceInfo(
+    category,
+    "Small water canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("water", 3000)
+    end,
+    nil,
+    nil,
+    4
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium water canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("water", 6000)
+    end,
+    nil,
+    nil,
+    4
+)
+SB:registerDeviceInfo(
+    category,
+    "Large water canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("water", 10000)
+    end,
+    nil,
+    nil,
+    4
+)
+SB:registerDeviceInfo(
+    category,
+    "Small water tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("water", 4500)
+    end,
+    nil,
+    nil,
+    4
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium water tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("water", 9000)
+    end,
+    nil,
+    nil,
+    4
+)
+SB:registerDeviceInfo(
+    category,
+    "Large water tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("water", 18000)
+    end,
+    nil,
+    nil,
+    4
+)
+
+
+-- Oxygen
+SB:registerDeviceInfo(
+    category,
+    "Small oxygen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("oxygen", 3000)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium oxygen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("oxygen", 6000)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Large oxygen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("oxygen", 10000)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Small oxygen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("oxygen", 4500)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium oxygen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("oxygen", 9000)
+    end
+)
+SB:registerDeviceInfo(
+    category,
+    "Large oxygen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("oxygen", 18000)
+    end
+)
+
+-- Nitrogen
+SB:registerDeviceInfo(
+    category,
+    "Small nitrogen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("nitrogen", 3000)
+    end,
+    nil,
+    nil,
+    1
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium nitrogen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("nitrogen", 6000)
+    end,
+    nil,
+    nil,
+    1
+)
+SB:registerDeviceInfo(
+    category,
+    "Large nitrogen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("nitrogen", 10000)
+    end,
+    nil,
+    nil,
+    1
+)
+SB:registerDeviceInfo(
+    category,
+    "Small nitrogen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("nitrogen", 4500)
+    end,
+    nil,
+    nil,
+    1
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium nitrogen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("nitrogen", 9000)
+    end,
+    nil,
+    nil,
+    1
+)
+SB:registerDeviceInfo(
+    category,
+    "Large nitrogen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("nitrogen", 18000)
+    end,
+    nil,
+    nil,
+    1
+)
+
+-- Hydrogen
+SB:registerDeviceInfo(
+    category,
+    "Small hydrogen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("hydrogen", 3000)
+    end,
+    nil,
+    nil,
+    2
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium hydrogen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("hydrogen", 6000)
+    end,
+    nil,
+    nil,
+    2
+)
+SB:registerDeviceInfo(
+    category,
+    "Large hydrogen canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("hydrogen", 10000)
+    end,
+    nil,
+    nil,
+    2
+)
+SB:registerDeviceInfo(
+    category,
+    "Small hydrogen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("hydrogen", 4500)
+    end,
+    nil,
+    nil,
+    2
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium hydrogen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("hydrogen", 9000)
+    end,
+    nil,
+    nil,
+    2
+)
+SB:registerDeviceInfo(
+    category,
+    "Large hydrogen tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("hydrogen", 18000)
+    end,
+    nil,
+    nil,
+    2
+)
+
+-- Carbon dioxide
+SB:registerDeviceInfo(
+    category,
+    "Small carbon dioxide canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("carbon dioxide", 3000)
+    end,
+    nil,
+    nil,
+    3
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium carbon dioxide canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("carbon dioxide", 6000)
+    end,
+    nil,
+    nil,
+    3
+)
+SB:registerDeviceInfo(
+    category,
+    "Large carbon dioxide canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("carbon dioxide", 10000)
+    end,
+    nil,
+    nil,
+    3
+)
+SB:registerDeviceInfo(
+    category,
+    "Small carbon dioxide tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("carbon dioxide", 4500)
+    end,
+    nil,
+    nil,
+    3
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium carbon dioxide tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("carbon dioxide", 9000)
+    end,
+    nil,
+    nil,
+    3
+)
+SB:registerDeviceInfo(
+    category,
+    "Large carbon dioxide tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("carbon dioxide", 18000)
+    end,
+    nil,
+    nil,
+    3
+)
+
+-- Steam
+SB:registerDeviceInfo(
+    category,
+    "Small steam canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("steam", 3000)
+    end,
+    nil,
+    nil,
+    5
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium steam canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("steam", 6000)
+    end,
+    nil,
+    nil,
+    5
+)
+SB:registerDeviceInfo(
+    category,
+    "Large steam canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("steam", 10000)
+    end,
+    nil,
+    nil,
+    5
+)
+SB:registerDeviceInfo(
+    category,
+    "Small steam tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("steam", 4500)
+    end,
+    nil,
+    nil,
+    5
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium steam tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("steam", 9000)
+    end,
+    nil,
+    nil,
+    5
+)
+SB:registerDeviceInfo(
+    category,
+    "Large steam tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("steam", 18000)
+    end,
+    nil,
+    nil,
+    5
+)
+
+-- Heavy water
+SB:registerDeviceInfo(
+    category,
+    "Small heavy water canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_small.mdl",
+    function(ent)
+        ent:addResource("heavy water", 3000)
+    end,
+    nil,
+    nil,
+    6
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium heavy water canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_medium.mdl",
+    function(ent)
+        ent:addResource("heavy water", 6000)
+    end,
+    nil,
+    nil,
+    6
+)
+SB:registerDeviceInfo(
+    category,
+    "Large heavy water canister",
+    "base_resource_entity",
+    "models/props_phx/life_support/canister_large.mdl",
+    function(ent)
+        ent:addResource("heavy water", 10000)
+    end,
+    nil,
+    nil,
+    6
+)
+SB:registerDeviceInfo(
+    category,
+    "Small heavy water tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_small.mdl",
+    function(ent)
+        ent:addResource("heavy water", 4500)
+    end,
+    nil,
+    nil,
+    6
+)
+SB:registerDeviceInfo(
+    category,
+    "Medium heavy water tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_medium.mdl",
+    function(ent)
+        ent:addResource("heavy water", 9000)
+    end,
+    nil,
+    nil,
+    6
+)
+SB:registerDeviceInfo(
+    category,
+    "Large heavy water tank",
+    "base_resource_entity",
+    "models/props_phx/life_support/tank_large.mdl",
+    function(ent)
+        ent:addResource("heavy water", 18000)
+    end,
+    nil,
+    nil,
+    6
+)
+
+-- Register generatorsw
+category = "Generators"
+SB:registerCategory(category)
+
+-- Register environmental devices
+category = "Environmental"
+SB:registerCategory(category)
 
 
 

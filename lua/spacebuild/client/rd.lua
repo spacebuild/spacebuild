@@ -25,18 +25,13 @@ local log = SB.log
 require("sbnet")
 local net = sbnet
 
-local function getEntity(id)
-    local ent = Entity(id)
-    log.debug("Registering rd entity", "id=", id, "ent=", ent)
-    return ent
-end
-
 net.Receive( "sbru", function(length, ply)
     local id = net.readShort()
     local rdtype = net.readShort()
     local container = SB:getDeviceInfo(id)
+    -- TODO, since the entity has to register itself clientside as well, this shouldn't be need anymore once all entities have been updated
     if not container then
-        container =SB:registerDevice(getEntity(id), rdtype)
+        container = SB:registerDevice(Entity(id), rdtype)
     end
     container:receive()
 end)

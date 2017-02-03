@@ -26,6 +26,8 @@ AddCSLuaFile(base.."/rd/resourceentity.lua")
 AddCSLuaFile(base.."/rd/resourceinfo.lua")
 AddCSLuaFile(base.."/rd/resourcenetwork.lua")
 AddCSLuaFile(base.."/rd/resourceregistry.lua")
+AddCSLuaFile(base.."/rd/resourcegenerator.lua")
+AddCSLuaFile(base.."/rd/resourcestorage.lua")
 
 AddCSLuaFile(base.."/sb/baseenvironment.lua")
 AddCSLuaFile(base.."/sb/legacybloominfo.lua")
