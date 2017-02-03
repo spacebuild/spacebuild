@@ -12,13 +12,15 @@ function SB:getCategories()
     return devices
 end
 
-function SB:registerCategory(name, icon)
+function SB:registerCategory(name, limit, icon)
     if not name then error("name is required") end
     if devices[name:lower()] then error("category is already registered") end
+    if not limit then limit = -1 end
     if not icon then icon = defaultIcon end
     devices[name:lower()] = {
         name = name,
         icon = icon,
+        limit = limit,
         devices = {}
     }
 end
@@ -86,10 +88,11 @@ local leftClick = function(tool, trace)
     local dontWeld = tool:GetClientNumber('DontWeld') == 1
     local frozen			= tool:GetClientNumber('Frozen') == 1 or (not allowWorldWeld and trace.Entity:IsWorld())
 
-    local dev = SB:getCategories()[category].devices[name]
+    local cat = SB:getCategories()[category]
+    local dev = cat.devices[name]
 
     if not dev or not util.IsValidModel( dev.model ) or not util.IsValidProp( dev.model ) then return false end
-    if ( not tool:GetSWEP():CheckLimit( category ) ) then return false end
+    if cat.limit > - 1 and not tool:GetSWEP():CheckLimit( category ) then return false end
 
     local Ang = trace.HitNormal:Angle()
     Ang.pitch = Ang.pitch + 90
@@ -193,6 +196,12 @@ function SB:loadTools()
         TOOL.ClientConVar[ "AllowWorldWeld" ] = 0
         TOOL.ClientConVar[ "Frozen" ] = 0
 
+        if cat.limit > -1 then
+            local sbox = 'sbox_max'..k
+            if SERVER then CreateConVar(sbox, cat.limit)
+            elseif CLIENT and TOOL.DeviceNamePlural then language.Add( 'SBoxLimit_'..cat.name, 'Maximum '..cat.name..' Reached' ) end
+        end
+
         cleanup.Register( k )
 
         TOOL.LeftClick		= leftClick
@@ -223,7 +232,7 @@ end
 
 -- Register network devices
 local category = "Network"
-SB:registerCategory(category)
+SB:registerCategory(category, 10)
 
 SB:registerDeviceInfo(
     category,
@@ -237,7 +246,7 @@ SB:registerDeviceInfo(
 
 -- Register storage devices
 category = "Storage"
-SB:registerCategory(category)
+SB:registerCategory(category, 30)
 -- Energy
 SB:registerDeviceInfo(
     category,
@@ -769,11 +778,11 @@ SB:registerDeviceInfo(
 
 -- Register generatorsw
 category = "Generators"
-SB:registerCategory(category)
+SB:registerCategory(category, 15)
 
 -- Register environmental devices
 category = "Environmental"
-SB:registerCategory(category)
+SB:registerCategory(category, 10)
 
 
 
