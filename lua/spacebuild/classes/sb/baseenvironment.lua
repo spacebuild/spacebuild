@@ -54,7 +54,6 @@ function C:init(entid, data, resourceRegistry)
 	self.resourceRegistry = resourceRegistry
 
 	self.temperature = 0
-	self.temperature = 0
 	self.gravity = 0
 	self.atmosphere = 0
 
@@ -194,44 +193,44 @@ end
 --- Gets the maximum amount of units can be stored in total for all resources in this environment
 -- @return an integer
 function C:getMaxAmountOfResources()
-	return math.ceil(self:getVolume() * self:getAtmosphere())
+	return (self.resources["vacuum"] and self.resources["vacuum"]:getMaxAmount()) or math.ceil(self:getVolume() * self:getAtmosphere())
 end
 
 --- Gets the amount of resource units left that can be stored in this environment
 -- @return an integer
 function C:getUnusedResourceAmountInEnvironment()
-	local max = self:getMaxAmountOfResources()
-	for k, v in pairs(self.resources) do
-		max = max - v:getAmount()
+	if not self.resources["vacuum"] then
+		local totalMax = self:getMaxAmountOfResources()
+		local max = totalMax
+		for k, v in pairs(self.resources) do
+			max = max - v:getAmount()
+		end
+		log.debug("registering vacuum for planet ", self:getID(), "max=", totalMax, "actual=", max)
+		self.resources["vacuum"] = self.classLoader.new("rd/Resource", "vacuum", totalMax, max, self.resourceRegistry)
 	end
-	return max
+	return self.resources["vacuum"]:getAmount()
 end
 
 --- Converts a given amount of units of resource from, to resource to
 -- This function won't allow to convert more resources then there are available in the from resource
--- @param from the resource name to take the given amount of units from; if nil this is counted as the "unused" resource
--- @param to the resource name to give the given amount of units to; if nil this is counted as the unused resource
+-- @param from the resource name to take the given amount of units from
+-- @param to the resource name to give the given amount of units to
 -- @param amount the amount of units to convert
 -- @return an integer with the amount of units that couldn't be converted
 function C:convertResource(from, to, amount)
+	if not from then error("Requires a valid resource to convert from") end
+	if not to then error("Requires a valid resource to convert to") end
+	-- Register the vacuum resource if we don't have it yet
+	if from == "vacuum" or to =="vacuum" then self:getUnusedResourceAmountInEnvironment() end
+	local res_from = self.resources[from]
 	local res_to = self.resources[to]
-	local not_enough = 0
+	local not_enough
 	if not res_to then
 		res_to = self.classLoader.new("rd/Resource", to, self:getMaxAmountOfResources(), 0, self.resourceRegistry)
 		self.resources[to] = res_to
 	end
-	if not from then
-		local max = self:getUnusedResourceAmountInEnvironment()
-		if max < amount then
-			not_enough = amount - max
-			amount = max
-		end
-		if amount > 0 then
-			res_to:setAmount(amount)
-			self.modified = CurTime()
-		end
-	elseif self.resources[from] then
-		not_enough = self.resources[from]:consume(amount)
+	if res_from then
+		not_enough = res_from:consume(amount)
 		if not_enough < amount then
 			res_to:supply(amount - not_enough)
 			self.modified = CurTime()
@@ -352,4 +351,20 @@ function C:receive()
 	for am = 1, nrAttributes do
 		self:addAttribute(net.ReadString())
 	end
+end
+
+-- Old reference methods for SB3 compatibility
+
+---
+-- @deprecated to remove in version 4.1
+function C:GetSize()
+    log.warn("Using deprecated environment:GetSize(), please use environment:getRadius() instead")
+    return self:getRadius()
+end
+
+---
+-- @deprecated to remove in version 4.1
+function C:GetPos()
+    log.warn("Using deprecated environment:GetPos(), please use environment:getPosition() instead")
+    return self:getPosition()
 end

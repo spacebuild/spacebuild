@@ -24,7 +24,7 @@ local SB = SPACEBUILD
 local log = SB.log
 local core = SB.core
 
-local net_pools = { "sbru", "sbrpu", "sbmu", "sbeu", "sbee" }
+local net_pools = { "sbru", "sbrpu", "sbmu", "sbeu", "sbee", "sbre" }
 for _, v in pairs(net_pools) do
     log.debug("Pooling ", v, " for net library")
     util.AddNetworkString(v)
@@ -45,25 +45,23 @@ local function LSSpawnFunc( ply )
 end
 hook.Add( "PlayerInitialSpawn", "spacebuild.core.initialspawn", LSSpawnFunc )
 
+-- Player ready to receive messages?
+net.Receive( "sbre", function(length, ply)
+    ply.cansync = true
+end)
+
 local time
 local function Think( )
     time = CurTime()
     -- Update players
     for _, ply in pairs(player.GetAll()) do
-        if not ply.firstsync then ply.firstsync = time + 1 end
-        if ply.firstsync < time or game.SinglePlayer() then
-            for _, part in pairs(core) do
-                if part.player and part.player.think then
-                    part.player.think(ply, time)
-                end
-            end
+        if ply.cansync or game.SinglePlayer() then
+            core.rd.player.think(ply, time)
+            core.sb.player.think(ply, time)
+            core.ls.player.think(ply, time)
         end
     end
     -- Perform updates for everything else
-    for _, part in pairs(core) do
-        if part.think then
-            part.think(time)
-        end
-    end
+    core.sb.think(time)
 end
 hook.Add("Think", "spacebuild.common.Think", Think)

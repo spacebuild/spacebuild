@@ -32,7 +32,7 @@ function ENT:Think()
     if self.rate > 0 and self.environment then
         local left = self.environment:convertResource("carbon dioxide", "oxygen", self.rate)
         if left > 0 then
-            left = self.environment:convertResource(nil, "oxygen", left)
+            left = self.environment:convertResource("vacuum", "oxygen", left)
             if left > 0 and self.environment:getResourcePercentage("oxygen") < 10 then
                 left = self.environment:convertResource("nitrogen", "oxygen", left)
                 if left > 0 and self.environment:getResourcePercentage("oxygen") < 10 then

@@ -29,17 +29,15 @@ local net = sbnet
 net.Receive( "sbeu", function(length, ply)
     local className = net.ReadString()
     local entId = net.readShort()
-    log.debug("Receiving environment data", className, entId)
-
     local environment = SB:getEnvironment(entId)
     if not environment then
-        local ent = ents.GetByIndex(entId)
+        local ent = Entity(entId)
+        log.debug("Registering environment data", className, entId)
         environment = class.new(className, entId, {}, SB:getResourceRegistry())
         ent.envobject = environment
         SB:addEnvironment(environment)
     end
     environment:receive()
-    --log.table(environment, log.DEBUG, "loaded environment update")
 end)
 
 net.Receive( "sbmu", function(length, ply)
@@ -68,7 +66,6 @@ net.Receive( "sbmu", function(length, ply)
 end)
 
 net.Receive( "sbee", function(length, ply)
-    log.debug("Receiving ent changed environment")
     local entId = net.readShort()
     local environmentId = net.readShort()
     local oldEnvironmentId = net.readShort()

@@ -33,7 +33,7 @@ local staticEnvironment = CreateConVar("SB_StaticEnvironment", "0") -- @DEPRECAT
 
 -- Orbiting mechanics
 local orbitEnable = CreateConVar("SB_OrbitEnable", "0") -- should we enable orbital mechanics?
-local orbitGravityMultiplier = CreateConVar("SB_OrbitGravityMultiplier", "0.0006") -- what kind of multiplier do we use for orbiting?
+local orbitGravityMultiplier = CreateConVar("SB_OrbitGravityMultiplier", "0.0024") -- what kind of multiplier do we use for orbiting?
 local orbitRadius = CreateConVar("SB_OrbitRadiusMultiplier", "1.8") -- How far away from the planet does orbitting apply? 1.8 = 1.8 x planet radius
 
 SB.config = {

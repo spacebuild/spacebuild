@@ -32,6 +32,7 @@ local net = sbnet
 local funcRef = {
 	isA = C.isA,
 	init = C.init,
+	getPosition = C.getPosition,
 	sendContent = C._sendContent,
 	receiveSignal = C.receive,
 	onSave = C.onSave,
@@ -51,8 +52,8 @@ function C:isStar()
 	return true
 end
 
-function C:getPos()
-	return (self:getEntity() and self:getEntity():GetPos()) or DEFAULT_SUN_POSITION
+function C:getPosition()
+	return funcRef.getPosition(self) or DEFAULT_SUN_POSITION
 end
 
 function C:init(entid, data, resourceRegistry)

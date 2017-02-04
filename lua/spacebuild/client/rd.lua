@@ -28,10 +28,10 @@ local net = sbnet
 net.Receive( "sbru", function(length, ply)
     local id = net.readShort()
     local rdtype = net.readShort()
-    log.debug("Receiving rd entity update", id)
     local container = SB:getDeviceInfo(id)
+    -- TODO, since the entity has to register itself clientside as well, this shouldn't be need anymore once all entities have been updated
     if not container then
-        container =SB:registerDevice(Entity(id), rdtype)
+        container = SB:registerDevice(Entity(id), rdtype)
     end
     container:receive()
 end)

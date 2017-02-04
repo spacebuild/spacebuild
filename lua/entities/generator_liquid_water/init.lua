@@ -169,6 +169,7 @@ function ENT:Pump_Water()
     local energy = self:GetResourceAmount("energy")
     local einc = Energy_Increment + (self.overdrive * Energy_Increment * 3)
     local waterlevel = 0
+    local islava
     if self.environment then
         islava = self.environment:GetTemperature(self) --Check to see if it's in lava
     else

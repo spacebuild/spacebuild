@@ -108,10 +108,10 @@ function C:addBasicResources(pOxygen, pCO2, pNitrogen, pHydrogen)
 	pNitrogen = pNitrogen / 100
 	pHydrogen = pHydrogen / 100
 	local maxAmount = self:getMaxAmountOfResources()
-	self:convertResource(nil, "oxygen", math.Round(pOxygen * maxAmount))
-	self:convertResource(nil, "carbon dioxide", math.Round(pCO2 * maxAmount))
-	self:convertResource(nil, "nitrogen", math.Round(pNitrogen * maxAmount))
-	self:convertResource(nil, "hydrogen", math.Round(pHydrogen * maxAmount))
+	self:convertResource("vacuum", "oxygen", math.Round(pOxygen * maxAmount))
+	self:convertResource("vacuum", "carbon dioxide", math.Round(pCO2 * maxAmount))
+	self:convertResource("vacuum", "nitrogen", math.Round(pNitrogen * maxAmount))
+	self:convertResource("vacuum", "hydrogen", math.Round(pHydrogen * maxAmount))
 end
 
 function C:ProcessSB1Flags(flags)

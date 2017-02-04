@@ -7,7 +7,7 @@ local status = false
 
 --Stuff that can't be disabled
 CreateConVar( "LS_AllowNukeEffect", "1" ) --Update to something changeable later on
---end 
+--end
 
 --Local Functions
 

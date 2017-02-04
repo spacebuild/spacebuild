@@ -76,6 +76,8 @@ colors.Green 	= Color(0, 225, 0, 255);
 local MaxAmounts = 4000
 local MaxAmountsDivide = MaxAmounts/100
 
+local log = SPACEBUILD.log
+
 local function lifesupport_HUDPaint()
 	if GetConVarString('cl_hudversion') == "" then
 		local ls_sb_mode = false;
@@ -84,6 +86,7 @@ local function lifesupport_HUDPaint()
 		end
 		local ply = LocalPlayer()
 		if not ply or not ply:Alive() then return end
+		if ls_sb_mode and not ply.environment then return end -- SB sync not done yet
 		local hud_to_use = Display_hud:GetInt()
 		if hud_to_use ~= 0 then
 			if not ls_sb_mode then

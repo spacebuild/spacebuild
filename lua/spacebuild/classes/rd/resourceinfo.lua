@@ -53,6 +53,10 @@ function C:setDisplayName(name)
 	self.displayName = name or self.displayName
 end
 
+function C:getUnit()
+	return self.unit
+end
+
 function C:getAttributes()
 	return self.attributes
 end

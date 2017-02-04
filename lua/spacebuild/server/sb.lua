@@ -84,9 +84,9 @@ local function spawnSun(pos, angle, data)
 end
 
 local function initSun()
-    if not sun then
-        --TODO create an ent and spawn the sun! but what location and what angle?
-        --spawnSun(Vector(0, 0, 0), Angle(0, 0, -1), {}) --Crashes gmod
+    if not sun and util.IsInWorld( Vector(0, 0, 0) ) then
+        --TODO find out why this crashes gmod
+        --spawnSun(Vector(0, 0, 0), Angle(0, 0, -1), {})
     end
 end
 hook.Add("Initialize", "spacebuild.init.server.sun", initSun)
@@ -271,7 +271,7 @@ local function onEnterEnvironment(environmentThatNotifies, ent, environment, old
     if oldenvironment then
         net.writeShort(oldenvironment:getID())
     else
-        net.writeShort(-1)
+        net.writeShort(0)
     end
     net.Broadcast()
 end
@@ -335,8 +335,15 @@ local function doOrbitalPush(ent, gravity, posTocenter, totalRad, nonaffectRadiu
         ent:SetVelocity( forceVector )
     else
         local physObj = ent:GetPhysicsObject()
-        local forceVector = (posTocenter - entityPos) * (physObj:GetMass() * estimatedForceMul)
-        physObj:ApplyForceCenter( forceVector )
+        local parentPhysObj, mass = physObj, physObj:GetMass()
+        for _, child in pairs(ent:GetChildren()) do
+            physObj = child:GetPhysicsObject()
+            if IsValid(physObj) then
+                mass = mass + physObj:GetMass();
+            end
+        end
+        local forceVector = (posTocenter - entityPos) * (mass * estimatedForceMul)
+        parentPhysObj:ApplyForceCenter( forceVector )
     end
 
 end
@@ -346,7 +353,7 @@ SB.core.sb = {
         think = function(ply, time)
             if not ply or not ply:Alive() then return end
             -- SB
-            if ply.lastsbupdate and ply.lastsbupdate + time_to_next_sb_sync < time then
+            if not ply.lastsbupdate or ply.lastsbupdate + time_to_next_sb_sync < time then
                 for _, v in pairs(internal.mod_tables) do
                     for _, w in pairs(v) do
                         w:send(ply.lastsbupdate or 0, ply)
@@ -355,12 +362,10 @@ SB.core.sb = {
                 for _, v in pairs(internal.environments) do
                     v:send(ply.lastsbupdate or 0, ply)
                 end
-                if ply.lastsbupdate < 0 and ply.environment then
+                if not ply.lastsbupdate and ply.environment then
                     hook.Call("OnEnterEnvironment", GAMEMODE, ply.environment, ply, ply.environment, SB:getSpace())
                 end
                 ply.lastsbupdate = time
-            elseif not ply.lastsbupdate then
-                ply.lastsbupdate = (-time_to_next_sb_sync)
             end
             -- Noclip from planets check?
             if ply.environment and ply.environment == SB:getSpace() and ply:Alive() then --Generic check to see if we can get space and they're alive.
@@ -373,7 +378,8 @@ SB.core.sb = {
         local enable, radiusMultiplier, gravMult = config.orbit.get()
         if enable and nextOrbitUpdate < time then
             for _, ent in pairs(internal.getSpawnedEntities()) do
-                if SB:isValidSBEntity(ent) and not ent:GetPhysicsObject():IsAsleep() then
+                -- Only check entities that are able to be used by Spacebuild, that are not asleep(frozen) and don't have a parent
+                if SB:isValidSBEntity(ent) and not ent:GetPhysicsObject():IsAsleep() and not IsValid(ent:GetParent()) then
                     if ent.environment and ent.environment:isSpace() then --only use orbital mechanics when in space
                         local pos = ent:GetPos()
                         local closest = SB:findClosestEnvironment(pos, true)

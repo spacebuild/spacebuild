@@ -28,6 +28,7 @@ local Color = Color
 local pairs = pairs
 local isClient = CLIENT
 local isServer = SERVER
+local gmodDebug = debug
 
 module("log")
 
@@ -90,6 +91,9 @@ function log(lvl, ...)
 			print(color, " ")
 		end
 		print(color, "\n")
+	end
+	if lvl == ERROR then
+		gmodDebug.Trace()
 	end
 end
 

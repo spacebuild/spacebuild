@@ -60,7 +60,7 @@ function ENT:AddExtraResource(res, start, ispercentage)
 			if available < start then
 				start = available
 			end
-			self:ConvertResource(-1, res, start)
+			self:ConvertResource("vacuum", res, start)
 		end
 	end
 end

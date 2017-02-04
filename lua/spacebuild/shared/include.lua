@@ -21,4 +21,5 @@ include(base.."mining.lua")
 include(base.."rd.lua")
 include(base.."sb.lua")
 include(base.."language.lua")
+include(base.."tools.lua")
 

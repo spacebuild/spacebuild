@@ -1,48 +1,39 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS("base_resource_generator")
+local baseClass = baseclass.Get("base_resource_generator")
 
 ENT.PrintName = "Energy Generator"
 ENT.Author = "SnakeSVx & Radon"
 ENT.Contact = ""
 ENT.Purpose = "Testing"
 ENT.Instructions = ""
+ENT.Category        = "Spacebuild"
 
 ENT.Spawnable = true
 ENT.AdminOnly = false
 
 local SB = SPACEBUILD
 
-function ENT:Initialize()
-	BaseClass.Initialize(self)
-	if SERVER then
-		self:PhysicsInit(SOLID_VPHYSICS)
-		self:SetMoveType(MOVETYPE_VPHYSICS)
-		self:SetSolid(SOLID_VPHYSICS)
-
-		-- Wake the physics object up. It's time to have fun!
-		local phys = self:GetPhysicsObject()
-		if (phys:IsValid()) then
-			phys:Wake()
-		end
-		self.rdobject:addResource("energy", 0, 0)
-		self.energygen = 8
-		self.active = true
-	end
-end
-
 function ENT:SpawnFunction(ply, tr)
 	if (not tr.HitWorld) then return end
 
-	local ent = ents.Create("resource_generator_energy")
+	local ent = ents.Create("resource_generator_energy_solar")
 	ent:SetPos(tr.HitPos + Vector(0, 0, 50))
 	ent:SetModel("models/props_phx/life_support/panel_medium.mdl")
 	ent:Spawn()
 
+	ent.rdobject:addResource("energy", 1000, 0)
+
 	return ent
 end
 
-function ENT:SetActive() --disable use, lol
+function ENT:Initialize()
+	baseClass.Initialize(self)
+	if SERVER then
+		self.rdobject:addResource("energy", 0, 0)
+		self.energygen = 8
+		self.active = true
+	end
 end
 
 if SERVER then
@@ -57,7 +48,7 @@ if SERVER then
 		if up == nil or sun == nil then return true end
 
 		if sun ~= nil then
-			trace = util.QuickTrace(sun:getPos(), self:GetPos() - sun:getPos(), nil) -- Don't filter
+			trace = util.QuickTrace(sun:getPosition(), self:GetPos() - sun:getPosition(), nil) -- Don't filter
 			if trace.Hit and trace.Entity == self then
 				return false
 			else
@@ -83,7 +74,7 @@ if SERVER then
 		local sunAngle = Vector(0, 0, -1)
 
 		if sun ~= nil then
-			sunAngle = (self:GetPos() - sun:getPos()) -- DO NOT ADD :Normalize() BECOMES NIL!
+			sunAngle = (self:GetPos() - sun:getPosition()) -- DO NOT ADD :Normalize() BECOMES NIL!
 			sunAngle:Normalize() --Normalising doesn't work normally for some reason, hack implemented.
 		end
 
@@ -97,7 +88,7 @@ if SERVER then
 	end
 
 	function ENT:Think()
-
+		baseClass.Think(self)
 		if self:WaterLevel() > 0 then
 			self.active = false
 		else

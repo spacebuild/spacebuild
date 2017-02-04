@@ -1,3 +1,6 @@
+
+SPACEBUILD:loadTools()
+
 include("caf/core/shared/tool_manifest.lua")
 
 TOOL = ToolObj:Create()

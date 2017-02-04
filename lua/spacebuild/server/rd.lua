@@ -80,6 +80,7 @@ SB.core.rd = {
             if not ply.lastrdupdate or ply.lastrdupdate + time_to_next_rd_sync < time then
                 ply.amountofupdates = ply.amountofupdates + 1
                 local lastUpdate = ply.lastrdupdate or 0
+                --TODO, we don't need to send twice anymore once we use the new ent base!
                 if ply.amountofupdates == 2 then
                     lastUpdate = 0 -- Resend all data again for a full sync, so we are sure everything is send
                 end

@@ -87,6 +87,10 @@ function C:getDisplayName()
 	return self:getResourceInfo():getDisplayName()
 end
 
+function C:getUnit()
+	return self:getResourceInfo():getUnit()
+end
+
 function C:getMaxAmount()
 	return self.maxAmount
 end
