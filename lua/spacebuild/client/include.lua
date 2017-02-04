@@ -20,4 +20,5 @@ include(base.."mining.lua")
 include(base.."rd.lua")
 include(base.."sb.lua")
 include(base.."util.lua")
+include("vgui/propselect.lua")
 
