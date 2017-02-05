@@ -180,7 +180,7 @@ local function buildCPanel( tool )
         CPanel:CheckBox("Allow welding to world", tool.device_category.."_AllowWorldWeld" )
         CPanel:CheckBox("Make Frozen", tool.device_category.."_Frozen" )
 
-        CPanel:AddControl( "PropSelect", { Label = "Select entity", ConVar = tool.device_category.."_device", Height = 0, modelstable = tool.models } )
+        CPanel:AddControl( "PropSelectCustom", { Label = "Select entity", ConVar = tool.device_category.."_device", Height = 0, modelstable = tool.models } )
     end
 end
 

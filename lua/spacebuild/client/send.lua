@@ -21,6 +21,7 @@ AddCSLuaFile(base.."mining.lua")
 AddCSLuaFile(base.."rd.lua")
 AddCSLuaFile(base.."sb.lua")
 AddCSLuaFile(base.."util.lua")
+AddCSLuaFile("vgui/propselect.lua")
 
 resource.AddFile("resource/fonts/fontawesome-webfont.ttf")
 
