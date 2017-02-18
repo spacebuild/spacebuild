@@ -20,6 +20,7 @@ local net = sbnet
 -- Class Specific
 local C = CLASS
 local GM = SPACEBUILD
+local log = GM.log
 local const = GM.constants
 
 --- General class function to check is this class is of a certain type
@@ -39,13 +40,13 @@ function C:reset()
 	self.environment = nil
 	-- is the helmet on, meaning the suit is active an can do it's job
 	self.active = false
-	self.oxygen = 0
+	self.oxygen = const.suit.MAX_OXYGEN
 	self.breath = 100
 	self.maxbreath = 100
-	self.coolant = 0
-	self.energy = 0
-	self.temperature = 293
-	self.environmentTemperature = 293
+	self.coolant = const.suit.MAX_COOLANT
+	self.energy = const.suit.MAX_ENERGY
+	self.temperature = const.TEMPERATURE_SAFE_MIN
+	self.environmentTemperature = const.TEMPERATURE_SAFE_MIN
 	self.modified = CurTime()
 end
 
@@ -143,17 +144,17 @@ local function calculateSuitTemperature(suitTemperature, environmentTemperature)
 end
 
 local function calculateEnergyRequired(suitTemperature)
-	local required = 5
+	local required = 0
 	if suitTemperature < const.TEMPERATURE_SAFE_MIN then
-
+		required = 5
 	end
 	return required
 end
 
 local function calculateCoolantRequired(suitTemperature)
-	local required = 5
+	local required = 0
 	if suitTemperature > const.TEMPERATURE_SAFE_MAX then
-
+		required = 5
 	end
 	return required
 end
@@ -184,6 +185,8 @@ function C:processEnvironment()
 			req_energy = calculateEnergyRequired(const.TEMPERATURE_SAFE_MIN)
 			req_coolant = 0
 		end
+		--log.debug("Required for player: oxygen=", req_oxygen, ", energy=", req_energy, ", coolant=", req_coolant)
+		--log.debug("Available resources: oxygen=", self:getOxygen(), ", energy=",  self:getEnergy(), ", coolant=", self:getCoolant())
 		if req_energy > 0 then
 			if self:getEnergy() >= req_energy then
 				self:setEnergy(self:getEnergy() - req_energy)
