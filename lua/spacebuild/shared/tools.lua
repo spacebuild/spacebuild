@@ -233,15 +233,15 @@ end
 --[[
     HL2 Models - Storage
         - liquids
-        - models/props_borealis/bluebarrel001.mdl
-        - models/props_c17/oildrum001.mdl
-        - models/props_c17/oildrum001_explosive.mdl
-        - models/props_junk/gascan001a.mdl
-        - models/props_junk/metalgascan.mdl
-        - models/props_junk/garbage_milkcarton001a.mdl
-        - models/props_junk/garbage_plasticbottle001a.mdl
-        - models/props_junk/garbage_plasticbottle002a.mdl
-        - models/props_junk/garbage_plasticbottle003a.mdl
+        + models/props_borealis/bluebarrel001.mdl
+        + models/props_c17/oildrum001.mdl
+        + models/props_c17/oildrum001_explosive.mdl
+        + models/props_junk/gascan001a.mdl
+        + models/props_junk/metalgascan.mdl
+        + models/props_junk/garbage_milkcarton001a.mdl
+        + models/props_junk/garbage_plasticbottle001a.mdl
+        + models/props_junk/garbage_plasticbottle002a.mdl
+        + models/props_junk/garbage_plasticbottle003a.mdl
 
         - gasses
         - models/props_c17/canister01a.mdl
@@ -255,8 +255,8 @@ end
         - models/props_wasteland/horizontalcoolingtank04.mdl
 
         - energy
-        - models/Items/car_battery01.mdl
-        - models/Items/battery.mdl
+        + models/Items/car_battery01.mdl
+        + models/Items/battery.mdl
 
     HL2 Models - generators
         - models/props_wasteland/laundry_washer003.mdl
@@ -297,15 +297,15 @@ end
         - models/blacknecro/tv_plasma_4_3.mdl
 
     SB Models - Storage
-        - models/props_phx/battery_large.mdl
-        - models/props_phx/battery_medium.mdl
-        - models/props_phx/battery_small.mdl
-        - models/props_phx/canister_large.mdl - skin 0 -> 6
-        - models/props_phx/canister_medium.mdl - skin 0 -> 6
-        - models/props_phx/canister_small.mdl - skin 0 -> 6
-        - models/props_phx/tank_large.mdl - skin 0 -> 6
-        - models/props_phx/tank_medium.mdl - skin 0 -> 6
-        - models/props_phx/tank_small.mdl - skin 0 -> 6
+        + models/props_phx/battery_large.mdl
+        + models/props_phx/battery_medium.mdl
+        + models/props_phx/battery_small.mdl
+        + models/props_phx/canister_large.mdl - skin 0 -> 6
+        + models/props_phx/canister_medium.mdl - skin 0 -> 6
+        + models/props_phx/canister_small.mdl - skin 0 -> 6
+        + models/props_phx/tank_large.mdl - skin 0 -> 6
+        + models/props_phx/tank_medium.mdl - skin 0 -> 6
+        + models/props_phx/tank_small.mdl - skin 0 -> 6
 
     SB Models - Generators
         - models/props_phx/gen_water.mdl
@@ -342,6 +342,27 @@ SB:registerCategory(category, 30)
 -- Energy
 SB:registerDeviceInfo(
     category,
+    "Tiny Battery",
+    "base_resource_entity",
+    "models/Items/battery.mdl",
+    function(ent)
+        ent:addResource("energy", 100)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Car Battery",
+    "base_resource_entity",
+    "models/Items/car_battery01.mdl",
+    function(ent)
+        ent:addResource("energy", 600)
+    end
+)
+
+
+SB:registerDeviceInfo(
+    category,
     "Small Battery",
     "base_resource_entity",
     "models/props_phx/life_support/battery_small.mdl",
@@ -375,6 +396,86 @@ SB:registerDeviceInfo(
     "models/props_borealis/bluebarrel001.mdl",
     function(ent)
         ent:addResource("water", 3000)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water barrel",
+    "base_resource_entity",
+    "models/props_c17/oildrum001.mdl",
+    function(ent)
+        ent:addResource("water", 2600)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water barrel - red",
+    "base_resource_entity",
+    "models/props_c17/oildrum001_explosive.mdl",
+    function(ent)
+        ent:addResource("water", 2600)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water can",
+    "base_resource_entity",
+    "models/props_junk/gascan001a.mdl",
+    function(ent)
+        ent:addResource("water", 500)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water can - metal",
+    "base_resource_entity",
+    "models/props_junk/metalgascan.mdl",
+    function(ent)
+        ent:addResource("water", 500)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water carton",
+    "base_resource_entity",
+    "models/props_junk/garbage_milkcarton001a.mdl",
+    function(ent)
+        ent:addResource("water", 100)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water bottle large",
+    "base_resource_entity",
+    "models/props_junk/garbage_plasticbottle001a.mdl",
+    function(ent)
+        ent:addResource("water", 150)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water bottle small",
+    "base_resource_entity",
+    "models/props_junk/garbage_plasticbottle002a.mdl",
+    function(ent)
+        ent:addResource("water", 50)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Water bottle medium",
+    "base_resource_entity",
+    "models/props_junk/garbage_plasticbottle003a.mdl",
+    function(ent)
+        ent:addResource("water", 75)
     end
 )
 
@@ -887,6 +988,87 @@ SB:registerDeviceInfo(
     nil,
     nil,
     6
+)
+
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water barrel",
+    "base_resource_entity",
+    "models/props_c17/oildrum001.mdl",
+    function(ent)
+        ent:addResource("heavy water", 2600)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water barrel - red",
+    "base_resource_entity",
+    "models/props_c17/oildrum001_explosive.mdl",
+    function(ent)
+        ent:addResource("heavy water", 2600)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water can",
+    "base_resource_entity",
+    "models/props_junk/gascan001a.mdl",
+    function(ent)
+        ent:addResource("heavy water", 500)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water can - metal",
+    "base_resource_entity",
+    "models/props_junk/metalgascan.mdl",
+    function(ent)
+        ent:addResource("heavy water", 500)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water carton",
+    "base_resource_entity",
+    "models/props_junk/garbage_milkcarton001a.mdl",
+    function(ent)
+        ent:addResource("heavy water", 100)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water bottle large",
+    "base_resource_entity",
+    "models/props_junk/garbage_plasticbottle001a.mdl",
+    function(ent)
+        ent:addResource("heavy water", 150)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water bottle small",
+    "base_resource_entity",
+    "models/props_junk/garbage_plasticbottle002a.mdl",
+    function(ent)
+        ent:addResource("heavy water", 50)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Heavy water bottle medium",
+    "base_resource_entity",
+    "models/props_junk/garbage_plasticbottle003a.mdl",
+    function(ent)
+        ent:addResource("heavy water", 75)
+    end
 )
 
 -- Register generatorsw

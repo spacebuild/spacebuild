@@ -236,7 +236,7 @@ local function drawSuit(ply, width, height)
 
     -- Oxygen
     draw.DrawText( utf8.char( 0xf1bb ) , "FANormal", width - 24, 74, whiteColor, TEXT_ALIGN_RIGHT )
-    draw.DrawText( string.format("%6.2f", ply.suit:getOxygen()).." l"  , "FANormal", width-168, 76, whiteColor, TEXT_ALIGN_LEFT )
+    draw.DrawText( string.format("%6.2f", ply.suit:getOxygen()).." cl"  , "FANormal", width-168, 76, whiteColor, TEXT_ALIGN_LEFT )
 
     -- Energy
     draw.DrawText( utf8.char( 0xf240 ) , "FANormal", width - 24, 96, whiteColor, TEXT_ALIGN_RIGHT )
@@ -244,7 +244,7 @@ local function drawSuit(ply, width, height)
 
     -- Coolant
     draw.DrawText( utf8.char( 0xf2dc ) , "FANormal", width - 24, 118, whiteColor, TEXT_ALIGN_RIGHT )
-    draw.DrawText( string.format("%6.2f", ply.suit:getCoolant()).." l"  , "FANormal", width-168, 120, whiteColor, TEXT_ALIGN_LEFT )
+    draw.DrawText( string.format("%6.2f", ply.suit:getCoolant()).." cl"  , "FANormal", width-168, 120, whiteColor, TEXT_ALIGN_LEFT )
 
 
 end
