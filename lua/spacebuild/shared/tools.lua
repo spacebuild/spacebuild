@@ -230,6 +230,97 @@ end
     Start registering default devices
  ]]
 
+--[[
+    HL2 Models - Storage
+        - liquids
+        - models/props_borealis/bluebarrel001.mdl
+        - models/props_c17/oildrum001.mdl
+        - models/props_c17/oildrum001_explosive.mdl
+        - models/props_junk/gascan001a.mdl
+        - models/props_junk/metalgascan.mdl
+        - models/props_junk/garbage_milkcarton001a.mdl
+        - models/props_junk/garbage_plasticbottle001a.mdl
+        - models/props_junk/garbage_plasticbottle002a.mdl
+        - models/props_junk/garbage_plasticbottle003a.mdl
+
+        - gasses
+        - models/props_c17/canister01a.mdl
+        - models/props_c17/canister02a.mdl
+        - models/props_c17/canister_propane01a.mdl
+        - models/props_junk/propane_tank001a.mdl
+        - models/props_junk/PropaneCanister001a.mdl
+
+        - liquids/gasses?
+        - models/props_wasteland/coolingtank02.mdl
+        - models/props_wasteland/horizontalcoolingtank04.mdl
+
+        - energy
+        - models/Items/car_battery01.mdl
+        - models/Items/battery.mdl
+
+    HL2 Models - generators
+        - models/props_wasteland/laundry_washer003.mdl
+        - models/props_wasteland/laundry_washer001a.mdl
+        - models/props_c17/TrapPropeller_Engine.mdl
+        - models/props_combine/CombineThumper002.mdl
+        - models/props_c17/FurnitureBoiler001a.mdl
+        - models/props_c17/FurnitureFireplace001a.mdl
+        - models/props_junk/TrashBin01a.mdl
+        - models/props_wasteland/kitchen_stove002a.mdl
+
+
+    HL2 Models - others
+        - models/props_combine/health_charger001.mdl
+        - models/props_combine/suit_charger001.mdl
+
+    CSS Models - Storage
+        - models/props/CS_militia/silo_01.mdl
+        - models/props/CS_militia/paintbucket01.mdl
+        - models/props/cs_office/Fire_Extinguisher.mdl
+        - models/props/de_nuke/fuel_cask.mdl
+        - models/props/de_nuke/PowerPlantTank.mdl
+        - models/props/de_nuke/storagetank.mdl
+
+    CSS Models - Generators
+        - models/props/CS_militia/furnace01.mdl
+
+    CSS Models - Other
+        - models/props/cs_office/TV_plasma.mdl
+        - models/props/cs_office/computer_monitor.mdl
+        - models/props/cs_office/computer_caseB.mdl
+
+    Wire models
+        - models/kobilica/wiremonitorbig.mdl
+        - models/kobilica/wiremonitorrt.mdl
+        - models/kobilica/wiremonitorrtbig.mdl
+        - models/kobilica/wiremonitorsmall.mdl
+        - models/blacknecro/tv_plasma_4_3.mdl
+
+    SB Models - Storage
+        - models/props_phx/battery_large.mdl
+        - models/props_phx/battery_medium.mdl
+        - models/props_phx/battery_small.mdl
+        - models/props_phx/canister_large.mdl - skin 0 -> 6
+        - models/props_phx/canister_medium.mdl - skin 0 -> 6
+        - models/props_phx/canister_small.mdl - skin 0 -> 6
+        - models/props_phx/tank_large.mdl - skin 0 -> 6
+        - models/props_phx/tank_medium.mdl - skin 0 -> 6
+        - models/props_phx/tank_small.mdl - skin 0 -> 6
+
+    SB Models - Generators
+        - models/props_phx/gen_water.mdl
+        - models/props_phx/panel_large.mdl (solar)
+        - models/props_phx/panel_medium.mdl (solar)
+        - models/props_phx/panel_small.mdl (solar)
+
+    SB Models - Other
+        - models/props_phx/crylaser_small.mdl
+        - models/props_phx/pulsar_crystal.mdl
+        - models/props_phx/rau_small.mdl
+
+
+ ]]
+
 
 -- Register network devices
 local category = "Network"
@@ -277,6 +368,16 @@ SB:registerDeviceInfo(
     end
 )
 -- Water
+SB:registerDeviceInfo(
+    category,
+    "Blue water barrel",
+    "base_resource_entity",
+    "models/props_borealis/bluebarrel001.mdl",
+    function(ent)
+        ent:addResource("water", 3000)
+    end
+)
+
 SB:registerDeviceInfo(
     category,
     "Small water canister",
@@ -704,6 +805,17 @@ SB:registerDeviceInfo(
 )
 
 -- Heavy water
+
+SB:registerDeviceInfo(
+    category,
+    "Blue heavy water barrel",
+    "base_resource_entity",
+    "models/props_borealis/bluebarrel001.mdl",
+    function(ent)
+        ent:addResource("heavy water", 3000)
+    end
+)
+
 SB:registerDeviceInfo(
     category,
     "Small heavy water canister",

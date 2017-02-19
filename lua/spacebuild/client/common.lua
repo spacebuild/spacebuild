@@ -280,8 +280,17 @@ local function drawRdInfo(ply, width, height)
                 end
             end
             height = height + 16
-            draw.DrawText( "Generates/Requires", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            for k, v in pairs(rdobject:getResources()) do
+            draw.DrawText( "Generates", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            for k, v in pairs(rdobject:generatorResources()) do
+                if  v:getMaxAmount() == 0 then
+                    height = height + 16
+                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                end
+            end
+            height = height + 16
+            draw.DrawText( "Requires", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            for k, v in pairs(rdobject:requiresResources()) do
                 if  v:getMaxAmount() == 0 then
                     height = height + 16
                     draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )

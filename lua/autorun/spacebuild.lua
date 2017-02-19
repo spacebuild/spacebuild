@@ -90,6 +90,9 @@ local function createReadOnlyTable(t)
             error("Attempt to update a read-only table")
             --print(tostring(debug.traceback()))
         end,
+        __call = function()
+            return "Readonly table - v1.0.0"
+        end,
         __metatable = false
     })
 end
