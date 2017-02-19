@@ -23,6 +23,7 @@ function TOOL:LeftClick( trace )
 end
 
 function TOOL:RightClick( trace )
+	if CLIENT then return true end
 	self:GetOwner().suit:setActive(false)
 	SB.util.messages.notify(self:GetOwner(), "helmet put off" )
 	return true
