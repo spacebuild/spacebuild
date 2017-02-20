@@ -36,6 +36,16 @@ surface.CreateFont( "FANormal", {
     size = 14,
     extended = true
 })
+--[[
+local colors = {}
+colors.White	= Color(225,225,225,255)
+colors.Black	= Color(0,0,0,100)
+colors.Cold		= Color(0,225,255,255)
+colors.Hot		= Color(225,0,0,255)
+colors.Warn		= Color(255,165,0,255)
+colors.Grey  	= Color(150, 150, 150, 255)
+colors.Green 	= Color(0, 225, 0, 255);
+]]
 
 local whiteColor = Color(255, 255, 255, 255)
 local blackColor = Color(0, 0, 0, 255)

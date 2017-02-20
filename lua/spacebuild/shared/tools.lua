@@ -268,6 +268,10 @@ end
         - models/props_junk/TrashBin01a.mdl
         - models/props_wasteland/kitchen_stove002a.mdl
 
+    HL2 Models - networks?
+        + models/props_lab/tpplugholder_single.mdl
+        + models/props_lab/tpplugholder.mdl
+
 
     HL2 Models - others
         - models/props_combine/health_charger001.mdl
@@ -288,6 +292,13 @@ end
         - models/props/cs_office/TV_plasma.mdl
         - models/props/cs_office/computer_monitor.mdl
         - models/props/cs_office/computer_caseB.mdl
+
+    Phx models (gmod)
+        - models/props_phx/rt_screen.mdl
+        - models/props_phx/sp_screen.mdl
+        - models/props_phx/facepunch_barrel.mdl
+        - models/props_phx/oildrum001.mdl
+        - models/props_phx/oildrum001_explosive.mdl
 
     Wire models
         - models/kobilica/wiremonitorbig.mdl
@@ -318,7 +329,16 @@ end
         - models/props_phx/pulsar_crystal.mdl
         - models/props_phx/rau_small.mdl
 
-
+    SBEP - models
+        - models/sbep_community/d12console.mdl
+        - models/sbep_community/d12consolert.mdl
+        - models/sbep_community/d12consolescreen.mdl
+        - models/sbep_community/d12fusionbomb.mdl
+        - models/sbep_community/d12shieldemitter.mdl
+        - models/sbep_community/d12siesmiccharge.mdl
+        - models/slyfo/t-eng.mdl
+        - models/slyfo/powercrystal.mdl
+        - models/slyfo/torpedo.mdl
  ]]
 
 
