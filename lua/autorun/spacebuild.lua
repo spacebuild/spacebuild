@@ -149,3 +149,4 @@ SB.lang = createReadOnlyTable(SB.lang)
 SB = createReadOnlyTable(SB)
 SPACEBUILD = SB
 
+hook.Call("onSpacebuildLoaded", GAMEMODE, SB)

@@ -362,20 +362,6 @@ TOOL.Devices = {
             },
         },
     },
-    generator_liquid_water = {
-        Name = "Water Pump",
-        type = "generator_liquid_water",
-        class = "generator_liquid_water",
-        func = liquid_generator_func,
-        devices = {
-            small_phx = {
-                Name = "Phx Water Pump",
-                model = "models/props_phx/life_support/gen_water.mdl",
-                skin = 0,
-                legacy = false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
-            },
-        },
-    },
     generator_liquid_hvywater = {
         Name = "Heavy Water Electrolyzer",
         type = "generator_liquid_hvywater",
@@ -408,32 +394,6 @@ TOOL.Devices = {
                 model = "models/chipstiks_ls3_models/HydroGenerator/hydrogenerator.mdl",
                 skin = 0,
                 legacy = false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
-            },
-        },
-    },
-    generator_energy_solar = {
-        Name = "Solar Panels",
-        type = "generator_energy_solar",
-        class = "generator_energy_solar",
-        func = energy_generator_func,
-        devices = {
-            small_phx = {
-                Name = "Small Solar Panel (phx)",
-                model = "models/props_phx/life_support/panel_small.mdl",
-                skin = 0,
-                legacy = false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
-            },
-            medium_phx = {
-                Name = "Medium Solar Panel (phx)",
-                model = "models/props_phx/life_support/panel_medium.mdl",
-                skin = 0,
-                legacy = false,
-            },
-            large_phx = {
-                Name = "Large Solar Panel (phx)",
-                model = "models/props_phx/life_support/panel_large.mdl",
-                skin = 0,
-                legacy = false,
             },
         },
     },

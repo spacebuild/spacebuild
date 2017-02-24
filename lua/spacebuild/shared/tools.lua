@@ -286,6 +286,10 @@ end
         - models/props_combine/health_charger001.mdl
         - models/props_combine/suit_charger001.mdl
 
+    HL2 Models - Lamps
+        - models/props_wasteland/prison_lamp001c.mdl
+        - models/props_wasteland/light_spotlight01_lamp.mdl
+
     CSS Models - Storage
         - models/props/CS_militia/silo_01.mdl
         - models/props/CS_militia/paintbucket01.mdl
@@ -414,7 +418,7 @@ SB:registerDeviceInfo(
     "base_resource_entity",
     "models/props_phx/life_support/battery_large.mdl",
     function(ent)
-        ent:addResource("energy", 72000)
+        ent:addResource("energy", 54000)
     end
 )
 -- Water
