@@ -70,6 +70,14 @@ function C:requiresResources()
 	return self.requires
 end
 
+function C:getGeneratorResource(name)
+	return self.generates[name]
+end
+
+function C:getRequiresResource(name)
+	return self.requires[name]
+end
+
 function C:generatesResource(name, maxAmount, minAmount)
 	if not name then error("ResourceContainer:generatesResource requires a name!") end
 	name = tostring(name)
@@ -101,6 +109,9 @@ function C:requiresResource(name, maxAmount, minAmount)
 	else
 		res:setMaxAmount(res:getMaxAmount() + maxAmount)
 		res:supply(minAmount)
+	end
+	if self.modified < res:getModified() then
+		self.modified = res:getModified()
 	end
 	if self.modified < res:getModified() then
 		self.modified = res:getModified()

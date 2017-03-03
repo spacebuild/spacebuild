@@ -51,7 +51,6 @@ function C:init(name, maxAmount, amount, resourceRegistry)
 	self.resourceRegistry = resourceRegistry
 	self.resourceInfo = resourceRegistry:getResourceInfoFromName(name)
 	self.modified = CurTime()
-	self.modifiedMaxAmount = CurTime()
 end
 
 function C:supply(amount)
@@ -104,9 +103,8 @@ function C:setMaxAmount(amount)
 		self.maxAmount = amount
 		if self.amount > self.maxAmount then
 			self.amount = self.maxAmount
-			self.modified = CurTime()
 		end
-		self.modifiedMaxAmount = CurTime()
+		self.modified = CurTime()
 	end
 end
 
@@ -135,11 +133,6 @@ function C:send(modified)
 	if self.modified > modified then
 		net.WriteBool(true)
 		net.writeAmount(self.amount)
-	else
-		net.WriteBool(false) --not modified since last update
-	end
-	if self.modifiedMaxAmount > modified then
-		net.WriteBool(true)
 		net.writeAmount(self.maxAmount)
 	else
 		net.WriteBool(false) --not modified since last update
@@ -151,8 +144,6 @@ end
 function C:receive()
 	if net.ReadBool() then
 		self.amount = net.readAmount()
-	end
-	if net.ReadBool() then
 		self.maxAmount = net.readAmount()
 	end
 end

@@ -321,26 +321,30 @@ end
         - models/blacknecro/tv_plasma_4_3.mdl
 
     SB Models - Storage
-        + models/props_phx/battery_large.mdl
-        + models/props_phx/battery_medium.mdl
-        + models/props_phx/battery_small.mdl
-        + models/props_phx/canister_large.mdl - skin 0 -> 6
-        + models/props_phx/canister_medium.mdl - skin 0 -> 6
-        + models/props_phx/canister_small.mdl - skin 0 -> 6
-        + models/props_phx/tank_large.mdl - skin 0 -> 6
-        + models/props_phx/tank_medium.mdl - skin 0 -> 6
-        + models/props_phx/tank_small.mdl - skin 0 -> 6
+        + models/props_phx/life_support/battery_large.mdl
+        + models/props_phx/life_support/battery_medium.mdl
+        + models/props_phx/life_support/battery_small.mdl
+        + models/props_phx/life_support/canister_large.mdl - skin 0 -> 6
+        + models/props_phx/life_support/canister_medium.mdl - skin 0 -> 6
+        + models/props_phx/life_support/canister_small.mdl - skin 0 -> 6
+        + models/props_phx/life_support/tank_large.mdl - skin 0 -> 6
+        + models/props_phx/life_support/tank_medium.mdl - skin 0 -> 6
+        + models/props_phx/life_support/tank_small.mdl - skin 0 -> 6
 
     SB Models - Generators
-        - models/props_phx/gen_water.mdl
-        - models/props_phx/panel_large.mdl (solar)
-        - models/props_phx/panel_medium.mdl (solar)
-        - models/props_phx/panel_small.mdl (solar)
+        - models/props_phx/life_support/gen_water.mdl
+        + models/props_phx/life_support/panel_large.mdl (solar)
+        + models/props_phx/life_support/panel_medium.mdl (solar)
+        + models/props_phx/life_support/panel_small.mdl (solar)
+        + models/ls_models/cloudstrifexiii/windmill/windmill_large.mdl
+        + models/ls_models/cloudstrifexiii/windmill/windmill_medium.mdl
+        + models/ls_models/cloudstrifexiii/windmill/windmill_small.mdl
+
 
     SB Models - Other
-        - models/props_phx/crylaser_small.mdl
-        - models/props_phx/pulsar_crystal.mdl
-        - models/props_phx/rau_small.mdl
+        - models/props_phx/life_support/crylaser_small.mdl
+        - models/props_phx/life_support/pulsar_crystal.mdl
+        - models/props_phx/life_support/rau_small.mdl
 
     SBEP - models
         - models/sbep_community/d12console.mdl
@@ -1107,6 +1111,67 @@ SB:registerDeviceInfo(
 -- Register generatorsw
 category = "Generators"
 SB:registerCategory(category, 15)
+
+SB:registerDeviceInfo(
+    category,
+    "Small solar panel",
+    "resource_generator_energy_solar",
+    "models/props_phx/life_support/panel_small.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("energy", 5, 0)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Medium solar panel",
+    "resource_generator_energy_solar",
+    "models/props_phx/life_support/panel_medium.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("energy", 15, 0)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Large solar panel",
+    "resource_generator_energy_solar",
+    "models/props_phx/life_support/panel_large.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("energy", 30, 0)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Small wind mill",
+    "resource_generator_energy_atmosphere",
+    "models/ls_models/cloudstrifexiii/windmill/windmill_small.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("energy", 50, 0)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Medium wind mill",
+    "resource_generator_energy_atmosphere",
+    "models/ls_models/cloudstrifexiii/windmill/windmill_medium.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("energy", 150, 0)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Large wind mill",
+    "resource_generator_energy_atmosphere",
+    "models/ls_models/cloudstrifexiii/windmill/windmill_large.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("energy", 300, 0)
+    end
+)
+
 
 -- Register environmental devices
 category = "Environmental"

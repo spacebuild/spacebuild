@@ -397,32 +397,6 @@ TOOL.Devices = {
             },
         },
     },
-    generator_energy_wind = {
-        Name = "Wind Generator",
-        type = "generator_energy_wind",
-        class = "generator_energy_wind",
-        func = energy_generator_func,
-        devices = {
-            large_1 = {
-                Name = "Large",
-                model = "models/ls_models/cloudstrifexiii/windmill/windmill_large.mdl",
-                skin = 0,
-                legacy = false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
-            },
-            medium_1 = {
-                Name = "Medium",
-                model = "models/ls_models/cloudstrifexiii/windmill/windmill_medium.mdl",
-                skin = 0,
-                legacy = false,
-            },
-            small_1 = {
-                Name = "Small",
-                model = "models/ls_models/cloudstrifexiii/windmill/windmill_small.mdl",
-                skin = 0,
-                legacy = false,
-            },
-        },
-    },
     generator_h_ramscoop = {
         Name = "Hydrogen Ram Scoop",
         type = "generator_h_ramscoop",

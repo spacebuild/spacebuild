@@ -26,7 +26,7 @@ ENT.Purpose = "Testing"
 ENT.Instructions = ""
 ENT.Category        = "Spacebuild"
 
-ENT.Spawnable = true
+ENT.Spawnable = false
 ENT.AdminOnly = false
 
 local SB = SPACEBUILD
@@ -39,16 +39,14 @@ function ENT:SpawnFunction(ply, tr)
 	ent:SetModel("models/props_phx/life_support/panel_medium.mdl")
 	ent:Spawn()
 
-	ent.rdobject:addResource("energy", 1000, 0)
-
+	ent.rdobject:generatesResource("energy", 15, 0)
 	return ent
 end
 
 function ENT:Initialize()
 	baseClass.Initialize(self)
 	if SERVER then
-		self.rdobject:addResource("energy", 0, 0)
-		self.energygen = 8
+		self.rdobject:generatesResource("energy", 0, 0)
 		self.active = true
 	end
 end
@@ -97,10 +95,12 @@ if SERVER then
 
 		local n = sunAngle:DotProduct(up * -1)
 
+		local res = self.rdobject:getGeneratorResource("energy")
+
 		if n >= 0 and not self:getBlocked(up, sun) then
-			return math.Round(self.energygen * n)
+			return math.Round(res:getMaxAmount() * n)
 		else
-			return 0
+			return res:getAmount()
 		end
 	end
 
@@ -119,6 +119,22 @@ if SERVER then
 		self:NextThink(CurTime() + 1)
 		return true
 	end
+end
+
+function ENT:AcceptInput(name, activator, caller)
+	-- Do nothing, it's a solar panel
+end
+
+function ENT:turnOn(caller)
+	-- Do nothing, it's a solar panel
+end
+
+function ENT:turnOff(caller)
+	-- Do nothing, it's a solar panel
+end
+
+function ENT:toggle(caller)
+	-- Do nothing, it's a solar panel
 end
 
 

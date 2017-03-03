@@ -17,6 +17,7 @@
 
 local SB = SPACEBUILD
 local time_to_next_rd_sync = SB.constants.TIME_TO_NEXT_RD_SYNC
+local thinks_between_forced_sync = 600
 local internal = SB.internal
 local log = SB.log
 
@@ -76,7 +77,7 @@ SB.core.rd = {
                 ply.amountofupdates = ply.amountofupdates + 1
                 local lastUpdate = ply.lastrdupdate or 0
                 --TODO, we don't need to send twice anymore once we use the new ent base!
-                if ply.amountofupdates == 2 then
+                if ply.amountofupdates % thinks_between_forced_sync == 0 then
                     lastUpdate = 0 -- Resend all data again for a full sync, so we are sure everything is send
                 end
                 for k, v in pairs(internal.device_table) do
