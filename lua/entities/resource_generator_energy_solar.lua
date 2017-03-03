@@ -19,7 +19,7 @@ AddCSLuaFile()
 
 local baseClass = baseclass.Get("base_resource_generator")
 
-ENT.PrintName = "Energy Generator"
+ENT.PrintName = "Energy Generator Solar"
 ENT.Author = "SnakeSVx & Radon"
 ENT.Contact = ""
 ENT.Purpose = "Testing"

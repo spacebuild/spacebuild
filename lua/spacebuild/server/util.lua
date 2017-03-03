@@ -184,11 +184,15 @@ local protection = {}
 local messages = {}
 
 messages.notify = function(ply, message)
-    ply:SendLua( "GAMEMODE:AddNotify('"..message.."', NOTIFY_GENERIC, 7);" )
+    if ply and ply.SendLua then
+        ply:SendLua( "GAMEMODE:AddNotify('"..message.."', NOTIFY_GENERIC, 7);" )
+    end
 end
 
 messages.sound = function(ply, sound)
-    ply:SendLua( "surface.PlaySound('"..sound.."');" )
+    if ply and ply.SendLua then
+        ply:SendLua( "surface.PlaySound('"..sound.."');" )
+    end
 end
 
 

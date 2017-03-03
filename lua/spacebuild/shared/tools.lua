@@ -332,7 +332,7 @@ end
         + models/props_phx/life_support/tank_small.mdl - skin 0 -> 6
 
     SB Models - Generators
-        - models/props_phx/life_support/gen_water.mdl
+        + models/props_phx/life_support/gen_water.mdl
         + models/props_phx/life_support/panel_large.mdl (solar)
         + models/props_phx/life_support/panel_medium.mdl (solar)
         + models/props_phx/life_support/panel_small.mdl (solar)
@@ -1171,6 +1171,18 @@ SB:registerDeviceInfo(
         ent.rdobject:generatesResource("energy", 300, 0)
     end
 )
+
+SB:registerDeviceInfo(
+    category,
+    "Medium water pump",
+    "resource_generator_water_pump",
+    "models/props_phx/life_support/gen_water.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("water", 300, 0)
+        ent.rdobject:requiresResource("energy", 15, 5)
+    end
+)
+
 
 
 -- Register environmental devices

@@ -22,6 +22,7 @@ local baseClass = baseclass.Get("base_resource_entity")
 ENT.PrintName = "Base Resource Generator"
 
 local SB = SPACEBUILD
+local lang = SB.lang
 
 function ENT:Initialize()
 	baseClass.Initialize(self)
@@ -38,16 +39,30 @@ function ENT:AcceptInput(name, activator, caller)
 	end
 end
 
+function ENT:canTurnOn()
+	return true
+end
+
 function ENT:turnOn(caller)
-	if not self.active then
-		self.active = true
+	if self.active then
+		SB.util.messages.notify(caller, lang.get("device.already.on"))
+		return
 	end
+	if not self:canTurnOn() then
+		SB.util.messages.notify(caller, lang.get("device.can.not.turn.on"))
+		return
+	end
+	self.active = true
+	SB.util.messages.notify(caller, lang.get("device.turned.on") )
 end
 
 function ENT:turnOff(caller)
-	if self.active then
-		self.active = false
+	if not self.active then
+		SB.util.messages.notify(caller, lang.get("device.already.off"))
+		return
 	end
+	self.active = false
+	SB.util.messages.notify(caller, lang.get("device.turned.off") )
 end
 
 function ENT:toggle(caller)

@@ -89,3 +89,9 @@ lang.add("en", "tool.rd3_resdebug.name",	"RD Resource Debuger" )
 lang.add("en", "tool.rd3_resdebug.desc",	"Spams the ent's resource table to the console, Left Click = serverside, Right click = Clientside" )
 lang.add("en", "tool.rd3_resdebug.0", "Click an RD3 Ent" )
 
+lang.add("en", "device.already.on", "The device is already turned on" )
+lang.add("en", "device.can.not.turn.on", "The device can not be turned on at the moment" )
+lang.add("en", "device.turned.on", "Device turned on" )
+lang.add("en", "device.already.off", "The device is already turned off" )
+lang.add("en", "device.turned.off", "Device turned off" )
+

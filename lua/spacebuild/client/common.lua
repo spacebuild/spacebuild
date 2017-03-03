@@ -31,6 +31,9 @@ surface.CreateFont( "FANormal", {
     size = 14,
     extended = true
 })
+--SB3 fonts
+surface.CreateFont( "ConflictText", {font = "Verdana", size = 60, weight = 600} )
+surface.CreateFont( "Flavour", {font = "Verdana", size = 40, weight = 600} )
 --[[
 local colors = {}
 colors.White	= Color(225,225,225,255)
@@ -265,41 +268,53 @@ local function drawRdInfo(ply, width, height)
         if rdobject:isA("ResourceStorage") then
             draw.DrawText( utf8.char( 0xf1b3 ) , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
             draw.DrawText( "Storage device "..rdobject:getID(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            height = height + 16
-            draw.DrawText( "Maximum storage capacity", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            for k, v in pairs(rdobject:getResources()) do
+            local resources = rdobject:getResources()
+                if table.Count(resources) > 0 then
                 height = height + 16
-                draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
-                draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                draw.DrawText( "Maximum storage capacity", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                for k, v in pairs(resources) do
+                    height = height + 16
+                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                end
             end
         elseif rdobject:isA("ResourceGenerator") then
             draw.DrawText( utf8.char( 0xf085 ) , "FANormal", width - 24, height, col, TEXT_ALIGN_RIGHT )
             draw.DrawText( "Generator device "..rdobject:getID(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            height = height + 16
-            draw.DrawText( "Maximum storage capacity", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            for k, v in pairs(rdobject:getResources()) do
-                if  v:getMaxAmount() > 0 then
-                    height = height + 16
-                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
-                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            local resources = rdobject:getResources()
+            if table.Count(resources) > 0 then
+                height = height + 16
+                draw.DrawText( "Maximum storage capacity", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                for k, v in pairs(resources) do
+                    if  v:getMaxAmount() > 0 then
+                        height = height + 16
+                        draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                        draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                    end
                 end
             end
-            height = height + 16
-            draw.DrawText( "Generates", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            for k, v in pairs(rdobject:generatorResources()) do
-                if  v:getMaxAmount() > 0 then
-                    height = height + 16
-                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
-                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            resources = rdobject:generatorResources()
+            if table.Count(resources) > 0 then
+                height = height + 16
+                draw.DrawText( "Generates", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                for k, v in pairs(resources) do
+                    if  v:getMaxAmount() > 0 then
+                        height = height + 16
+                        draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                        draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                    end
                 end
             end
-            height = height + 16
-            draw.DrawText( "Requires", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-            for k, v in pairs(rdobject:requiresResources()) do
-                if  v:getMaxAmount() > 0 then
-                    height = height + 16
-                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
-                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+            resources = rdobject:requiresResources()
+            if table.Count(resources) > 0 then
+                height = height + 16
+                draw.DrawText( "Requires", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                for k, v in pairs(resources) do
+                    if  v:getMaxAmount() > 0 then
+                        height = height + 16
+                        draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                        draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
+                    end
                 end
             end
         elseif rdobject:isA("ResourceNetwork") then
