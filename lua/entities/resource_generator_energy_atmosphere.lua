@@ -50,7 +50,7 @@ function ENT:Initialize()
 		self.rdobject:generatesResource("energy", 0, 0)
 		self.active = true
 		self.spinrate = 0
-		self.thinkcount = 0
+		self.rate = 0
 	end
 end
 
@@ -80,7 +80,6 @@ if SERVER then
 
 	function ENT:getRate()
 		local res = self.rdobject:getGeneratorResource("energy")
-
 		if self.environment and not self.environment:isSpace() then
 			return math.Round(res:getMaxAmount() * self.environment:getAtmosphere()), self.environment:getAtmosphere()
 		elseif self.environment then
@@ -103,15 +102,23 @@ if SERVER then
 			self.active = true
 		end
 
-		local rate = 0
+		self.rate = 0
 		if self.active then
-			rate, self.spinrate = self:getRate()
-			self.rdobject:supplyResource("energy", rate)
+			self.rate, self.spinrate = self:getRate()
+			self.rdobject:supplyResource("energy", self.rate)
 		end
-		self:doSequence(self.spinrate, rate)
+		self:doSequence(self.spinrate, self.rate)
 		self.thinkcount = 0
 	end
+
+	-- wire ouput method
+	function ENT:getEnergyRate()
+		return self.rate
+	end
+	-- end wire output method
 end
+
+
 
 function ENT:AcceptInput(name, activator, caller)
 	-- Do nothing, it's a wind gen

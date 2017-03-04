@@ -370,6 +370,7 @@ SB:registerDeviceInfo(
     "models/SnakeSVx/small_res_node.mdl",
     function(ent)
         ent.range = 512
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1184,7 +1185,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/panel_small.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 5, 0)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
     end
 )
 
@@ -1195,7 +1196,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/panel_medium.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 15, 0)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
     end
 )
 
@@ -1206,7 +1207,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/panel_large.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 30, 0)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
     end
 )
 
@@ -1217,7 +1218,7 @@ SB:registerDeviceInfo(
     "models/ls_models/cloudstrifexiii/windmill/windmill_small.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 50, 0)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
     end
 )
 
@@ -1228,7 +1229,7 @@ SB:registerDeviceInfo(
     "models/ls_models/cloudstrifexiii/windmill/windmill_medium.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 150, 0)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
     end
 )
 
@@ -1239,7 +1240,7 @@ SB:registerDeviceInfo(
     "models/ls_models/cloudstrifexiii/windmill/windmill_large.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 300, 0)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
     end
 )
 
@@ -1251,7 +1252,7 @@ SB:registerDeviceInfo(
     function(ent)
         ent.rdobject:generatesResource("water", 300, 0)
         ent.rdobject:requiresResource("energy", 15, 5)
-        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"WaterRate", "EnergyRate"})
         SB.util.wire.registerDefaultInputs(ent)
     end
 )

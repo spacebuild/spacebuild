@@ -67,6 +67,7 @@ function ENT:Initialize()
 		self.rdobject:generatesResource("water", 0, 0)
 		self.rdobject:requiresResource("energy", 0, 0)
 		self.active = false
+		self.rate = 0
 	end
 end
 
@@ -136,12 +137,21 @@ if SERVER then
 
 	function ENT:performUpdate(time)
 		baseClass.performUpdate(self, time)
+		self.rate = 0
 		if self.active then
-			if self.active then
-				self.rdobject:supplyResource("water", self:getRate())
-			end
+			self.rate = self:getRate()
+			self.rdobject:supplyResource("water", self.rate)
 		end
 	end
+
+	-- wire ouput method
+	function ENT:getEnergyRate()
+		return self.rdobject:getRequiresResource("energy"):getMaxAmount()
+	end
+	function ENT:getWaterRate()
+		return self.rate
+	end
+	-- end wire output method
 end
 
 

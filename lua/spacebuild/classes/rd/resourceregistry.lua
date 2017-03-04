@@ -46,6 +46,10 @@ function C:getResourceInfoFromName(name)
     return self.resources_names_table[name] or error("Resource with name="..name.."not found in the registry, please call ResourceRegistry:registerResourceInfo(unique_id, name, displayname, attributes)")
 end
 
+function C:getRegisteredResources()
+    return self.resources_names_table
+end
+
 local coolant_resources
 function C:getRegisteredCoolants()
     if self.coolant_resources == nil then

@@ -182,17 +182,20 @@ local wire = {}
 wire.triggerOutputs = function(ent)
     if WireLib and ent.Outputs then
         for k, v in pairs(ent.Outputs) do
+            local get = "get"..k
             if k == "active" then
                 -- convert to a number, wire doesn't like booleans
                 if ent.active then
-                    WireLib.TriggerOutput(ent, k, 1)
+                    WireLib.TriggerOutput(ent, k, 1, nil)
                 else
-                    WireLib.TriggerOutput(ent, k, 0)
+                    WireLib.TriggerOutput(ent, k, 0, nil)
                 end
             elseif ent.rdobject:containsResource(k) then
-                WireLib.TriggerOutput(ent, k, ent.rdobject:getResourceAmount(k))
-            else
-                log.warn("Could not trigger output.", "entity=", ent, "output=", k)
+                WireLib.TriggerOutput(ent, k, ent.rdobject:getResourceAmount(k), nil)
+            elseif k:StartWith("max ") and ent.rdobject:containsResource(k:sub(5)) then
+                WireLib.TriggerOutput(ent, k, ent.rdobject:getMaxResourceAmount(k:sub(5)), nil)
+            elseif ent[get] then
+                WireLib.TriggerOutput(ent, k, ent[get](ent), nil)
             end
         end
     end
@@ -204,7 +207,7 @@ wire.registerDefaultInputs = function(ent)
     end
 end
 
-wire.registerDefaultOutputs = function(ent, onOff)
+wire.registerDefaultOutputs = function(ent, onOff, extra)
     if WireLib then
         ent.WireDebugName = ent.PrintName
         local outputs = extra or {}
@@ -212,8 +215,13 @@ wire.registerDefaultOutputs = function(ent, onOff)
             table.insert(outputs, "active")
         end
         if ent.rdobject then
-            for k, v in pairs(ent.rdobject:getResources()) do
+            local resources = ent.rdobject:getResources()
+            if ent.rdobject:isA("ResourceNetwork") then
+                resources = SB:getResourceRegistry():getRegisteredResources()
+            end
+            for k, v in pairs(resources) do
                 table.insert(outputs, k)
+                table.insert(outputs, "max "..k)
             end
         end
         ent.Outputs = WireLib.CreateOutputs(ent, outputs)

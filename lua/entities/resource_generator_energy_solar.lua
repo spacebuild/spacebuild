@@ -48,6 +48,7 @@ function ENT:Initialize()
 	if SERVER then
 		self.rdobject:generatesResource("energy", 0, 0)
 		self.active = true
+		self.rate = 0
 	end
 end
 
@@ -105,17 +106,35 @@ if SERVER then
 	end
 
 	function ENT:performUpdate(time)
-		if self:WaterLevel() > 0 then
+		baseClass.performUpdate(self, time)
+		local waterlevel = 0
+		if self.WaterLevel2 then
+			waterlevel = self:WaterLevel2()
+		elseif self.WaterLevel then
+			waterlevel = self:WaterLevel()
+		end
+		if waterlevel > 0 then
 			self.active = false
 		else
 			self.active = true
 		end
-
 		if self.active then
-			self.rdobject:supplyResource("energy", self:getRate() or 0)
+			self.rate =  self:getRate() or 0
+			self.rdobject:supplyResource("energy", self.rate)
+		else
+			self.rate = 0
 		end
 	end
+
+	-- wire ouput method
+	function ENT:getEnergyRate()
+		return self.rate
+	end
+	-- end wire output method
+
 end
+
+
 
 function ENT:AcceptInput(name, activator, caller)
 	-- Do nothing, it's a solar panel
