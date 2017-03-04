@@ -1253,7 +1253,7 @@ SB:registerDeviceInfo(
         ent.rdobject:generatesResource("water", 300, 0)
         ent.rdobject:requiresResource("energy", 15, 5)
         SB.util.wire.registerDefaultOutputs(ent, true, {"WaterRate", "EnergyRate"})
-        SB.util.wire.registerDefaultInputs(ent)
+        SB.util.wire.registerDefaultInputs(ent, true)
     end
 )
 

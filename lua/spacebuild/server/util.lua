@@ -201,9 +201,15 @@ wire.triggerOutputs = function(ent)
     end
 end
 
-wire.registerDefaultInputs = function(ent)
+wire.registerDefaultInputs = function(ent, onOff, extra)
     if WireLib then
-        ent.Inputs = WireLib.CreateInputs(ent, { "active" })
+        local inputs = extra or {}
+        if onOff then
+            table.insert(inputs, "active")
+        end
+        if #inputs > 0 then
+            ent.Inputs = WireLib.CreateInputs(ent, inputs)
+        end
     end
 end
 

@@ -49,6 +49,7 @@ end
 -- @param value
 --
 function ENT:TriggerInput(name, value)
+	baseClass.TriggerInput(self, name, value)
 	if name == "active" then
 		if value ~= 0 then
 			self:turnOn()

@@ -200,6 +200,12 @@ if SERVER then
 		return true
 	end
 
+	function ENT:TriggerInput(name, value)
+		if self["set"..name] then
+			self["set"..name](self, value)
+		end
+	end
+
 end
 
 if CLIENT then
