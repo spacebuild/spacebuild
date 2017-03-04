@@ -33,9 +33,28 @@ function ENT:registerDevice()
 	SB:registerDevice(self, SB.RDTYPES.GENERATOR)
 end
 
+--- Use button support
+-- @param name
+-- @param activator
+-- @param caller
+--
 function ENT:AcceptInput(name, activator, caller)
 	if name == "Use" and caller:IsPlayer() and caller:KeyDownLast(IN_USE) == false then
 		self:toggle(caller)
+	end
+end
+
+--- Wire input support
+-- @param name
+-- @param value
+--
+function ENT:TriggerInput(name, value)
+	if name == "active" then
+		if value ~= 0 then
+			self:turnOn()
+		else
+			self:turnOff()
+		end
 	end
 end
 

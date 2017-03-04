@@ -179,6 +179,47 @@ end
 
 local wire = {}
 
+wire.triggerOutputs = function(ent)
+    if WireLib and ent.Outputs then
+        for k, v in pairs(ent.Outputs) do
+            if k == "active" then
+                -- convert to a number, wire doesn't like booleans
+                if ent.active then
+                    WireLib.TriggerOutput(ent, k, 1)
+                else
+                    WireLib.TriggerOutput(ent, k, 0)
+                end
+            elseif ent.rdobject:containsResource(k) then
+                WireLib.TriggerOutput(ent, k, ent.rdobject:getResourceAmount(k))
+            else
+                log.warn("Could not trigger output.", "entity=", ent, "output=", k)
+            end
+        end
+    end
+end
+
+wire.registerDefaultInputs = function(ent)
+    if WireLib then
+        ent.Inputs = WireLib.CreateInputs(ent, { "active" })
+    end
+end
+
+wire.registerDefaultOutputs = function(ent, onOff)
+    if WireLib then
+        ent.WireDebugName = ent.PrintName
+        local outputs = extra or {}
+        if onOff then
+            table.insert(outputs, "active")
+        end
+        if ent.rdobject then
+            for k, v in pairs(ent.rdobject:getResources()) do
+                table.insert(outputs, k)
+            end
+        end
+        ent.Outputs = WireLib.CreateOutputs(ent, outputs)
+    end
+end
+
 local protection = {}
 
 local messages = {}

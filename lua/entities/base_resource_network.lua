@@ -49,7 +49,8 @@ end
 
 if SERVER then
 
-	function ENT:Think()
+	function ENT:performUpdate(time)
+		baseClass.performUpdate(self, time)
 		if self.rdobject then
 			local entities = self.rdobject:getConnectedEntities()
 			if table.Count(entities) > 0 then
@@ -81,8 +82,6 @@ if SERVER then
 				end
 			end
 		end
-		self:NextThink(CurTime() + 1)
-		return true
 	end
 
 end

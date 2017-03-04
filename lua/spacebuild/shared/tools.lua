@@ -384,6 +384,7 @@ SB:registerDeviceInfo(
     "models/Items/battery.mdl",
     function(ent)
         ent:addResource("energy", 100)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -394,6 +395,7 @@ SB:registerDeviceInfo(
     "models/Items/car_battery01.mdl",
     function(ent)
         ent:addResource("energy", 600)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -405,6 +407,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/battery_small.mdl",
     function(ent)
         ent:addResource("energy", 1500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -414,6 +417,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/battery_medium.mdl",
     function(ent)
         ent:addResource("energy", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -423,6 +427,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/battery_large.mdl",
     function(ent)
         ent:addResource("energy", 54000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 -- Water
@@ -433,6 +438,7 @@ SB:registerDeviceInfo(
     "models/props_borealis/bluebarrel001.mdl",
     function(ent)
         ent:addResource("water", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -443,6 +449,7 @@ SB:registerDeviceInfo(
     "models/props_c17/oildrum001.mdl",
     function(ent)
         ent:addResource("water", 2600)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -453,6 +460,7 @@ SB:registerDeviceInfo(
     "models/props_c17/oildrum001_explosive.mdl",
     function(ent)
         ent:addResource("water", 2600)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -463,6 +471,7 @@ SB:registerDeviceInfo(
     "models/props_junk/gascan001a.mdl",
     function(ent)
         ent:addResource("water", 500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -473,6 +482,7 @@ SB:registerDeviceInfo(
     "models/props_junk/metalgascan.mdl",
     function(ent)
         ent:addResource("water", 500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -483,6 +493,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_milkcarton001a.mdl",
     function(ent)
         ent:addResource("water", 100)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -493,6 +504,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_plasticbottle001a.mdl",
     function(ent)
         ent:addResource("water", 150)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -503,6 +515,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_plasticbottle002a.mdl",
     function(ent)
         ent:addResource("water", 50)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -513,6 +526,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_plasticbottle003a.mdl",
     function(ent)
         ent:addResource("water", 75)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -523,6 +537,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("water", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -535,6 +550,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("water", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -547,6 +563,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("water", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -559,6 +576,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("water", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -571,6 +589,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("water", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -583,6 +602,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("water", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -598,6 +618,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("oxygen", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -607,6 +628,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("oxygen", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -616,6 +638,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("oxygen", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -625,6 +648,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("oxygen", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -634,6 +658,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("oxygen", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 SB:registerDeviceInfo(
@@ -643,6 +668,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("oxygen", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -654,6 +680,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("nitrogen", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -666,6 +693,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("nitrogen", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -678,6 +706,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("nitrogen", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -690,6 +719,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("nitrogen", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -702,6 +732,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("nitrogen", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -714,6 +745,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("nitrogen", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -728,6 +760,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("hydrogen", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -740,6 +773,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("hydrogen", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -752,6 +786,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("hydrogen", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -764,6 +799,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("hydrogen", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -776,6 +812,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("hydrogen", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -788,6 +825,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("hydrogen", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -802,6 +840,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("carbon dioxide", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -814,6 +853,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("carbon dioxide", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -826,6 +866,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("carbon dioxide", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -838,6 +879,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("carbon dioxide", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -850,6 +892,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("carbon dioxide", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -862,6 +905,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("carbon dioxide", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -876,6 +920,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("steam", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -888,6 +933,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("steam", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -900,6 +946,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("steam", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -912,6 +959,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("steam", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -924,6 +972,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("steam", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -936,6 +985,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("steam", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -951,6 +1001,7 @@ SB:registerDeviceInfo(
     "models/props_borealis/bluebarrel001.mdl",
     function(ent)
         ent:addResource("heavy water", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -961,6 +1012,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_small.mdl",
     function(ent)
         ent:addResource("heavy water", 3000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -973,6 +1025,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_medium.mdl",
     function(ent)
         ent:addResource("heavy water", 6000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -985,6 +1038,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/canister_large.mdl",
     function(ent)
         ent:addResource("heavy water", 10000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -997,6 +1051,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_small.mdl",
     function(ent)
         ent:addResource("heavy water", 4500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -1009,6 +1064,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_medium.mdl",
     function(ent)
         ent:addResource("heavy water", 9000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -1021,6 +1077,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/tank_large.mdl",
     function(ent)
         ent:addResource("heavy water", 18000)
+        SB.util.wire.registerDefaultOutputs(ent)
     end,
     nil,
     nil,
@@ -1035,6 +1092,7 @@ SB:registerDeviceInfo(
     "models/props_c17/oildrum001.mdl",
     function(ent)
         ent:addResource("heavy water", 2600)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1045,6 +1103,7 @@ SB:registerDeviceInfo(
     "models/props_c17/oildrum001_explosive.mdl",
     function(ent)
         ent:addResource("heavy water", 2600)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1055,6 +1114,7 @@ SB:registerDeviceInfo(
     "models/props_junk/gascan001a.mdl",
     function(ent)
         ent:addResource("heavy water", 500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1065,6 +1125,7 @@ SB:registerDeviceInfo(
     "models/props_junk/metalgascan.mdl",
     function(ent)
         ent:addResource("heavy water", 500)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1075,6 +1136,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_milkcarton001a.mdl",
     function(ent)
         ent:addResource("heavy water", 100)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1085,6 +1147,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_plasticbottle001a.mdl",
     function(ent)
         ent:addResource("heavy water", 150)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1095,6 +1158,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_plasticbottle002a.mdl",
     function(ent)
         ent:addResource("heavy water", 50)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1105,6 +1169,7 @@ SB:registerDeviceInfo(
     "models/props_junk/garbage_plasticbottle003a.mdl",
     function(ent)
         ent:addResource("heavy water", 75)
+        SB.util.wire.registerDefaultOutputs(ent)
     end
 )
 
@@ -1119,6 +1184,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/panel_small.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 5, 0)
+        SB.util.wire.registerDefaultOutputs(ent, true)
     end
 )
 
@@ -1129,6 +1195,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/panel_medium.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 15, 0)
+        SB.util.wire.registerDefaultOutputs(ent, true)
     end
 )
 
@@ -1139,6 +1206,7 @@ SB:registerDeviceInfo(
     "models/props_phx/life_support/panel_large.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 30, 0)
+        SB.util.wire.registerDefaultOutputs(ent, true)
     end
 )
 
@@ -1149,6 +1217,7 @@ SB:registerDeviceInfo(
     "models/ls_models/cloudstrifexiii/windmill/windmill_small.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 50, 0)
+        SB.util.wire.registerDefaultOutputs(ent, true)
     end
 )
 
@@ -1159,6 +1228,7 @@ SB:registerDeviceInfo(
     "models/ls_models/cloudstrifexiii/windmill/windmill_medium.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 150, 0)
+        SB.util.wire.registerDefaultOutputs(ent, true)
     end
 )
 
@@ -1169,6 +1239,7 @@ SB:registerDeviceInfo(
     "models/ls_models/cloudstrifexiii/windmill/windmill_large.mdl",
     function(ent)
         ent.rdobject:generatesResource("energy", 300, 0)
+        SB.util.wire.registerDefaultOutputs(ent, true)
     end
 )
 
@@ -1180,6 +1251,8 @@ SB:registerDeviceInfo(
     function(ent)
         ent.rdobject:generatesResource("water", 300, 0)
         ent.rdobject:requiresResource("energy", 15, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true)
+        SB.util.wire.registerDefaultInputs(ent)
     end
 )
 

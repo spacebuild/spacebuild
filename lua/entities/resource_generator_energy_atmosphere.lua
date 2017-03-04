@@ -90,46 +90,47 @@ if SERVER then
 		end
 	end
 
-	function ENT:Think()
-		baseClass.Think(self)
-		self.thinkcount = self.thinkcount + 1
-		if self.thinkcount == 10 then
-			if self:WaterLevel() > 1 then
-				self.active = false
-			else
-				self.active = true
-			end
+	function ENT:performAnimationUpdate(time)
+		baseClass.performAnimationUpdate(self, time)
+		self:doSequence(self.spinrate or 0)
+	end
 
-			local rate = 0
-			if self.active then
-				rate, self.spinrate = self:getRate()
-				self.rdobject:supplyResource("energy", rate)
-			end
-			self:doSequence(self.spinrate, rate)
-			self.thinkcount = 0
+	function ENT:performUpdate(time)
+		baseClass.performUpdate(self, time)
+		if self:WaterLevel() > 1 then
+			self.active = false
 		else
-			self:doSequence(self.spinrate or 0)
+			self.active = true
 		end
 
-		self:NextThink(CurTime() + 0.1)
-		return true
+		local rate = 0
+		if self.active then
+			rate, self.spinrate = self:getRate()
+			self.rdobject:supplyResource("energy", rate)
+		end
+		self:doSequence(self.spinrate, rate)
+		self.thinkcount = 0
 	end
 end
 
 function ENT:AcceptInput(name, activator, caller)
-	-- Do nothing, it's a solar panel
+	-- Do nothing, it's a wind gen
+end
+
+function ENT:TriggerInput(name, value)
+	-- Do nothing, it's a wind gen
 end
 
 function ENT:turnOn(caller)
-	-- Do nothing, it's a solar panel
+	-- Do nothing, it's a wind gen
 end
 
 function ENT:turnOff(caller)
-	-- Do nothing, it's a solar panel
+	-- Do nothing, it's a wind gen
 end
 
 function ENT:toggle(caller)
-	-- Do nothing, it's a solar panel
+	-- Do nothing, it's a wind gen
 end
 
 

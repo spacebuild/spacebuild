@@ -50,6 +50,7 @@ function ENT:Initialize()
 		end
 	end
 	self:registerDevice()
+    self.lastthink = CurTime()
 end
 
 function ENT:registerDevice()
@@ -173,12 +174,29 @@ if SERVER then
 		self:leakEnergy(leakEnergy)
 		self:leakGas(leakGas)
 		self:leakLiquid(leakLiquid)
-	end
+    end
+
+    --- Gets called about every second
+    -- @param time CurTime()
+    --
+    function ENT:performUpdate(time)
+        self:performLeakCheck()
+        SB.util.wire.triggerOutputs(self)
+    end
+
+    --- Gets called about every 0.1 seconds
+    -- @param time CurTime()
+    --
+    function ENT:performAnimationUpdate(time) end
 
 	function ENT:Think()
-		self:performLeakCheck()
-
-		self:NextThink(CurTime() + 1)
+        local time = CurTime()
+        if self.lastthink + 1 < time then
+            self:performUpdate(time)
+            self.lastthink = time
+        end
+        self:performAnimationUpdate(time)
+		self:NextThink(time + 0.1)
 		return true
 	end
 

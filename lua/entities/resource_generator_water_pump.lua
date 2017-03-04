@@ -67,7 +67,6 @@ function ENT:Initialize()
 		self.rdobject:generatesResource("water", 0, 0)
 		self.rdobject:requiresResource("energy", 0, 0)
 		self.active = false
-		self.thinkcount = 0
 	end
 end
 
@@ -130,24 +129,18 @@ if SERVER then
 		return self.rdobject:getResourceAmount("energy") >= self.rdobject:getRequiresResource("energy"):getAmount()
 	end
 
-	function ENT:Think()
-		baseClass.Think(self)
-		if self.active then
-			self.thinkcount = self.thinkcount + 1
-			if self.thinkcount == 10 then
-				local rate = 0
-				if self.active then
-					rate = self:getRate()
-					self.rdobject:supplyResource("water", rate)
-				end
-				self.thinkcount = 0
-			end
-		else
-			self.thinkcount = 0
-		end
+	function ENT:performAnimationUpdate(time)
+		baseClass.performAnimationUpdate(self, time)
 		self:doSequence(1, self.active)
-		self:NextThink(CurTime() + 0.1)
-		return true
+	end
+
+	function ENT:performUpdate(time)
+		baseClass.performUpdate(self, time)
+		if self.active then
+			if self.active then
+				self.rdobject:supplyResource("water", self:getRate())
+			end
+		end
 	end
 end
 

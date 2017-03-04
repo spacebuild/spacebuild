@@ -104,8 +104,7 @@ if SERVER then
 		end
 	end
 
-	function ENT:Think()
-		baseClass.Think(self)
+	function ENT:performUpdate(time)
 		if self:WaterLevel() > 0 then
 			self.active = false
 		else
@@ -115,13 +114,14 @@ if SERVER then
 		if self.active then
 			self.rdobject:supplyResource("energy", self:getRate() or 0)
 		end
-
-		self:NextThink(CurTime() + 1)
-		return true
 	end
 end
 
 function ENT:AcceptInput(name, activator, caller)
+	-- Do nothing, it's a solar panel
+end
+
+function ENT:TriggerInput(name, value)
 	-- Do nothing, it's a solar panel
 end
 
