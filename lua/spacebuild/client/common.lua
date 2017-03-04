@@ -330,8 +330,7 @@ end
 
 hook.Add( "HUDPaint", "sb.ui.hud", function()
     local ply = LocalPlayer()
-    if ( not IsValid( ply ) ) then return end
-    if not ply:Alive() then return end
+    if GetConVarNumber( "cl_drawhud" ) == 0 or not IsValid( ply ) or not ply:Alive() then return end
 
     local width = ScrW()
     local height = ScrH()
