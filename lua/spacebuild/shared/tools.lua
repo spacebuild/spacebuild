@@ -268,7 +268,7 @@ end
         + models/Items/battery.mdl
 
     HL2 Models - generators
-        - models/props_wasteland/laundry_washer003.mdl
+        + models/props_wasteland/laundry_washer003.mdl
         - models/props_wasteland/laundry_washer001a.mdl
         - models/props_c17/TrapPropeller_Engine.mdl
         - models/props_combine/CombineThumper002.mdl
@@ -1253,6 +1253,58 @@ SB:registerDeviceInfo(
         ent.rdobject:generatesResource("water", 300, 0)
         ent.rdobject:requiresResource("energy", 15, 5)
         SB.util.wire.registerDefaultOutputs(ent, true, {"WaterRate", "EnergyRate"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Oxygen extractor",
+    "resource_generator_gas_atmosphere",
+    "models/props_wasteland/laundry_washer003.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("oxygen", 300, 0)
+        ent.rdobject:requiresResource("energy", 15, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Carbon dioxide extractor",
+    "resource_generator_gas_atmosphere",
+    "models/props_wasteland/laundry_washer003.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("carbon dioxide", 300, 0)
+        ent.rdobject:requiresResource("energy", 15, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Hydrogen extractor",
+    "resource_generator_gas_atmosphere",
+    "models/props_wasteland/laundry_washer003.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("hydrogen", 300, 0)
+        ent.rdobject:requiresResource("energy", 15, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Nitrogen extractor",
+    "resource_generator_gas_atmosphere",
+    "models/props_wasteland/laundry_washer003.mdl",
+    function(ent)
+        ent.rdobject:generatesResource("nitrogen", 300, 0)
+        ent.rdobject:requiresResource("energy", 15, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
         SB.util.wire.registerDefaultInputs(ent, true)
     end
 )

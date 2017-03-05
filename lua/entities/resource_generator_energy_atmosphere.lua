@@ -32,18 +32,6 @@ ENT.AdminOnly = false
 
 local SB = SPACEBUILD
 
-function ENT:SpawnFunction(ply, tr)
-	if (not tr.HitWorld) then return end
-
-	local ent = ents.Create("resource_generator_energy_atmosphere")
-	ent:SetPos(tr.HitPos + Vector(0, 0, 50))
-	ent:SetModel("models/props_phx/life_support/panel_medium.mdl")
-	ent:Spawn()
-
-	ent.rdobject:generatesResource("energy", 15, 0)
-	return ent
-end
-
 function ENT:Initialize()
 	baseClass.Initialize(self)
 	if SERVER then
