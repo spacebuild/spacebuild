@@ -69,7 +69,7 @@ if SERVER then
 	end
 
 	function ENT:getRate()
-		local waterlevel, water, energy, waterToGet, leftOver, temperature = 0, self.rdobject:getGeneratorResource("water"), self.rdobject:getRequiresResource("energy"), 0, 0, 300
+		local waterlevel, water, energy, waterToGet, leftOver, temperature = self:WaterLevel(), self.rdobject:getGeneratorResource("water"), self.rdobject:getRequiresResource("energy"), 0, 0, 300
 		if self.rdobject:getResourceAmount("energy") < energy:getAmount() then
 			self:turnOff() --Not enough power
 			return 0
@@ -78,11 +78,6 @@ if SERVER then
 		waterToGet = water:getMaxAmount();
 		if leftOver > 0 then
 			waterToGet = water:getAmount();
-		end
-		if self.WaterLevel2 then
-			waterlevel = self:WaterLevel2()
-		elseif self.WaterLevel then
-			waterlevel = self:WaterLevel()
 		end
 		if self.environment then
 			temperature = self.environment:getTemperature(self) --Check to see if it's in lava or ice

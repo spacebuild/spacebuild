@@ -66,19 +66,12 @@ if SERVER then
 	function ENT:performUpdate(time)
 		baseClass.performUpdate(self, time)
 		if self.active then
-			local waterlevel, resources, energy, toGet, leftOver, notEnough = 0, self.rdobject:generatorResources(), self.rdobject:getRequiresResource("energy"), 0, 0, 0
+			local waterlevel, resources, energy, toGet, leftOver, notEnough = self:WaterLevel(), self.rdobject:generatorResources(), self.rdobject:getRequiresResource("energy"), 0, 0, 0
 			if self.rdobject:getResourceAmount("energy") < energy:getAmount() then
 				self:turnOff() --Not enough power
 				return 0
 			end
 			leftOver = self.rdobject:consumeResource("energy", energy:getMaxAmount())
-
-			if self.WaterLevel2 then
-				waterlevel = self:WaterLevel2()
-			elseif self.WaterLevel then
-				waterlevel = self:WaterLevel()
-			end
-
 			if waterlevel > 1 then
 				SB.util.damage.doDamage(self, math.random(2, 3))
 			else

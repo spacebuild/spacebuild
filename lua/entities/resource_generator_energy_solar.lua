@@ -95,13 +95,7 @@ if SERVER then
 
 	function ENT:performUpdate(time)
 		baseClass.performUpdate(self, time)
-		local waterlevel = 0
-		if self.WaterLevel2 then
-			waterlevel = self:WaterLevel2()
-		elseif self.WaterLevel then
-			waterlevel = self:WaterLevel()
-		end
-		if waterlevel > 0 then
+		if self:WaterLevel() > 0 then
 			self.active = false
 		else
 			self.active = true

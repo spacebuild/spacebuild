@@ -82,13 +82,7 @@ function ENT:Extract_Energy()
 end
 
 function ENT:GenEnergy()
-    local waterlevel = 0
-    if CAF then
-        waterlevel = self:WaterLevel2()
-    else
-        waterlevel = self:WaterLevel()
-    end
-    if (waterlevel > 1) then
+    if (self:WaterLevel() > 1) then
         self:TurnOff()
         self:Destruct()
     else

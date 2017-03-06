@@ -92,13 +92,7 @@ if SERVER then
 	function ENT:leakEnergy(energy)
 		local zapme = SB.util.damage.zapArea
 		if energy > 0 then
-			local waterlevel = 0
-			if self.WaterLevel2 then
-				waterlevel = self:WaterLevel2()
-			else
-				waterlevel = self:WaterLevel()
-			end
-			if (waterlevel > 0) then
+			if self:WaterLevel() > 0 then
 				if zapme then
 					zapme(self:GetPos(), 1)
 				end

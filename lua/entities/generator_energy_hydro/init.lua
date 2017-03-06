@@ -52,12 +52,7 @@ function ENT:Destruct()
 end
 
 function ENT:Extract_Energy()
-    local waterlevel = 0
-    if CAF then
-        waterlevel = self:WaterLevel2()
-    else
-        waterlevel = self:WaterLevel()
-    end
+    local waterlevel = self:WaterLevel()
     if (waterlevel > 0) then
         waterlevel = waterlevel / 3
     else
@@ -69,13 +64,7 @@ function ENT:Extract_Energy()
 end
 
 function ENT:GenEnergy()
-    local waterlevel = 0
-    if CAF then
-        waterlevel = self:WaterLevel2()
-    else
-        waterlevel = self:WaterLevel()
-    end
-    if (waterlevel > 0) then
+    if (self:WaterLevel() > 0) then
         if (self.Active == 0) then
             self.Active = 1
             self:SetOOO(1)

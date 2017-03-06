@@ -63,12 +63,6 @@ end
 
 function ENT:Think()
     self.BaseClass.Think(self)
-    local waterlevel = 0
-    if CAF then
-        waterlevel = self:WaterLevel2()
-    else
-        waterlevel = self:WaterLevel()
-    end
     local mul = 1
     if self.environment and self.environment.GetTemperature then
         local temperature = self.environment:GetTemperature(self)
@@ -88,7 +82,7 @@ function ENT:Think()
     end
     self.resco2 = self:GetResourceAmount("carbon dioxide")
     self.reswater = self:GetResourceAmount("water")
-    if waterlevel > 0 then
+    if self:WaterLevel() > 0 then
         if self.water < 100 then
             if self.Active == 0 then
                 self:SetColor(Color(255, 255, 255, 255))

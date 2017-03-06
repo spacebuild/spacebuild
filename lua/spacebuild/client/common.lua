@@ -356,3 +356,9 @@ local function init()
     net.SendToServer()
 end
 hook.Add( "InitPostEntity", "sb.client.ready", init )
+
+local function SpacebuildTab()
+    spawnmenu.AddToolTab("Spacebuild", "Spacebuild")
+end
+
+hook.Add("AddToolMenuTabs", "Spacebuild.spawnmenu.tab", SpacebuildTab)
