@@ -192,8 +192,8 @@ wire.triggerOutputs = function(ent)
                 end
             elseif ent.rdobject:containsResource(k) then
                 WireLib.TriggerOutput(ent, k, ent.rdobject:getResourceAmount(k), nil)
-            elseif k:StartWith("max ") and ent.rdobject:containsResource(k:sub(5)) then
-                WireLib.TriggerOutput(ent, k, ent.rdobject:getMaxResourceAmount(k:sub(5)), nil)
+            elseif k:EndsWith(" - max") and ent.rdobject:containsResource(k:Left(-7)) then
+                WireLib.TriggerOutput(ent, k, ent.rdobject:getMaxResourceAmount(k:Left(-7)), nil)
             elseif ent[get] then
                 WireLib.TriggerOutput(ent, k, ent[get](ent), nil)
             end
@@ -225,9 +225,9 @@ wire.registerDefaultOutputs = function(ent, onOff, extra)
             if ent.rdobject:isA("ResourceNetwork") then
                 resources = SB:getResourceRegistry():getRegisteredResources()
             end
-            for k, v in pairs(resources) do
+            for k, v in SortedPairs(resources) do
                 table.insert(outputs, k)
-                table.insert(outputs, "max "..k)
+                table.insert(outputs, k.." - max")
             end
         end
         ent.Outputs = WireLib.CreateOutputs(ent, outputs)
