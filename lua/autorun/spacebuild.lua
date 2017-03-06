@@ -28,9 +28,6 @@ if SERVER then
     include("spacebuild/documentation/send.lua")
     include("spacebuild/tests/shared/send.lua")
     include("spacebuild/languages/send.lua")
-
-    --Deprecated
-    include("caf/send.lua")
 end
 
 AddCSLuaFile() -- send this file to the client, but only after all the others have been send!
@@ -123,17 +120,6 @@ if CLIENT then
         MsgN("Tests completed: "..lu.LuaUnit.run('-v'))
     end)
 end
-
--- Load legacy auto loader files
-if SERVER then
-    include("caf/autostart/server/sv_caf_autostart.lua")
-end
-
-if CLIENT then
-    include("caf/autostart/client/cl_caf_autostart.lua")
-end
-include("caf/autostart/resources_api.lua")
--- End load legacy auto loader files
 
 -- Prevent outside access to internal tables
 SB.log = createReadOnlyTable(SB.log)
