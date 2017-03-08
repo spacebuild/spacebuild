@@ -285,10 +285,11 @@ end
     HL2 Models - others
         - models/props_combine/health_charger001.mdl
         - models/props_combine/suit_charger001.mdl
+        + models/props_combine/combine_mine01.mdl
 
     HL2 Models - Lamps
-        - models/props_wasteland/prison_lamp001c.mdl
-        - models/props_wasteland/light_spotlight01_lamp.mdl
+        + models/props_wasteland/prison_lamp001c.mdl
+        + models/props_wasteland/light_spotlight01_lamp.mdl
 
     CSS Models - Storage
         - models/props/CS_militia/silo_01.mdl
@@ -1314,6 +1315,48 @@ SB:registerDeviceInfo(
 -- Register environmental devices
 category = "Environmental"
 SB:registerCategory(category, 10)
+
+SB:registerDeviceInfo(
+    category,
+    "Environment probe",
+    "spacebuild_probe",
+    "models/props_combine/combine_mine01.mdl",
+    function(ent)
+        ent.rdobject:requiresResource("energy", 10, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate", "Pressure", "Temperature", "Gravity", "OxygenPercentage"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+category = "Other"
+SB:registerCategory(category, 10)
+
+SB:registerDeviceInfo(
+    category,
+    "Prison lamp",
+    "rd_lamp",
+    "models/props_wasteland/prison_lamp001c.mdl",
+    function(ent)
+        ent.rdobject:requiresResource("energy", 10, 5)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Spotlight",
+    "rd_lamp",
+    "models/props_wasteland/light_spotlight01_lamp.mdl",
+    function(ent)
+        ent.rdobject:requiresResource("energy", 15, 10)
+        SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate"})
+        SB.util.wire.registerDefaultInputs(ent, true)
+        ent.lightangle =  Angle(0, 0, 0)
+    end
+)
+
+
 
 
 

@@ -19,7 +19,7 @@ AddCSLuaFile()
 
 local baseClass = baseclass.Get("base_resource_generator")
 
-ENT.PrintName = "Water Generator Pump"
+ENT.PrintName = "Spacebuild probe"
 ENT.Author = "SnakeSVx"
 ENT.Contact = ""
 ENT.Purpose = "Testing"
@@ -35,7 +35,6 @@ local SB = SPACEBUILD
 function ENT:Initialize()
 	baseClass.Initialize(self)
 	if SERVER then
-		self.rdobject:generatesResource("water", 0, 0)
 		self.rdobject:requiresResource("energy", 0, 0)
 		self.active = false
 		self.rate = 0
@@ -44,78 +43,49 @@ end
 
 if SERVER then
 
-	function ENT:doSequence(spinrate, active)
-		if active ~= nil then
-			local newStateIsRunning = active
-			if self.isRunning == nil or newStateIsRunning ~= self.isRunning then
-				if newStateIsRunning then
-					self.sequence = self:LookupSequence("walk")
-					self:EmitSound("Airboat_engine_idle")
-				else
-					self.sequence = self:LookupSequence("idle")
-					self:StopSound("Airboat_engine_idle")
-				end
-				if self.sequence and self.sequence ~= -1 then
-					self:SetSequence(self.sequence)
-					self:SetPlaybackRate(spinrate)
-				end
-				self.isRunning = newStateIsRunning
-			end
-		end
-		if self.sequence and self.sequence ~= -1 then
-			self:ResetSequence(self.sequence)
-			self:SetPlaybackRate(spinrate)
-		end
-	end
-
-	function ENT:getRate()
-		local waterlevel, water, energy, waterToGet, leftOver, temperature = self:WaterLevel(), self.rdobject:getGeneratorResource("water"), self.rdobject:getRequiresResource("energy"), 0, 0, 300
-		if self.rdobject:getResourceAmount("energy") < energy:getAmount() then
-			self:turnOff() --Not enough power
-			return 0
-		end
-		leftOver = self.rdobject:consumeResource("energy", energy:getMaxAmount())
-		waterToGet = water:getMaxAmount();
-		if leftOver > 0 then
-			waterToGet = water:getAmount();
-		end
-		if self.environment then
-			temperature = self.environment:getTemperature(self) --Check to see if it's in lava or ice
-		end
-		-- We are either not in water or  in frozen water or in lava, damage the pump and return 0, 273 = freezing point
-		if waterlevel == 0 or temperature < 253 or temperature > 1000 then
-			SB.util.damage.doDamage(self, math.random(2, 3))
-			return 0
-		elseif waterlevel == 1 then
-			waterToGet = math.Round(waterToGet/2)
-		end
-		return waterToGet
-	end
-
 	function ENT:canTurnOn()
 		return self.rdobject:getResourceAmount("energy") >= self.rdobject:getRequiresResource("energy"):getAmount()
 	end
 
-	function ENT:performAnimationUpdate(time)
-		baseClass.performAnimationUpdate(self, time)
-		self:doSequence(1, self.active)
-	end
-
 	function ENT:performUpdate(time)
 		baseClass.performUpdate(self, time)
-		self.rate = 0
+		local energy = self.rdobject:getRequiresResource("energy")
 		if self.active then
-			self.rate = self:getRate()
-			self.rdobject:supplyResource("water", self.rate)
+			if  self.rdobject:getResourceAmount("energy") < energy:getAmount() then
+				self:turnOff() --Not enough power
+				return
+			end
+			self.rdobject:consumeResource("energy", energy:getMaxAmount())
+			if not self.flashlight then
+				self.flashlight = ents.Create("env_projectedtexture")
+				self.flashlight:SetParent(self)
+
+				-- The local positions are the offsets from parent..
+				self.flashlight:SetLocalPos(self.lightpos or  Vector(0, 0, 0))
+				self.flashlight:SetLocalAngles(self.lightangle or Angle(90, 90, 90))
+
+				-- Looks like only one flashlight can have shadows enabled!
+				self.flashlight:SetKeyValue("enableshadows", 1)
+				self.flashlight:SetKeyValue("farz", 2048)
+				self.flashlight:SetKeyValue("nearz", 8)
+
+				--the size of the light
+				self.flashlight:SetKeyValue("lightfov", 50)
+
+				-- Color.. white is default
+				self.flashlight:SetKeyValue("lightcolor", "255 255 255")
+				self.flashlight:Spawn()
+				self.flashlight:Input("SpotlightTexture", NULL, NULL, "effects/flashlight001")
+			end
+		elseif self.flashlight then
+			SafeRemoveEntity(self.flashlight)
+			self.flashlight = nil
 		end
 	end
 
 	-- wire ouput method
 	function ENT:getEnergyRate()
 		return (self.active and self.rdobject:getRequiresResource("energy"):getMaxAmount()) or 0
-	end
-	function ENT:getWaterRate()
-		return self.rate
 	end
 	-- end wire output method
 end
