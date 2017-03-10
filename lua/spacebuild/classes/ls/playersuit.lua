@@ -149,7 +149,7 @@ end
 local function calculateEnergyRequired(suitTemperature)
 	local required = 0
 	if suitTemperature < const.TEMPERATURE_SAFE_MIN then
-		required = 5
+		required = 5 + math.Round((const.TEMPERATURE_SAFE_MIN - suitTemperature) / const.BASE_LS_TEMPERATE_DEGRADE)
 	end
 	return required
 end
@@ -157,7 +157,7 @@ end
 local function calculateCoolantRequired(suitTemperature)
 	local required = 0
 	if suitTemperature > const.TEMPERATURE_SAFE_MAX then
-		required = 5
+		required = 5 + math.Round((suitTemperature - const.TEMPERATURE_SAFE_MAX) / const.BASE_LS_TEMPERATE_DEGRADE)
 	end
 	return required
 end
@@ -256,6 +256,9 @@ function C:processEnvironment()
 				self:setBreath(self:getBreath() - rand)
 			elseif self:getBreath() > 0 then
 				self:setBreath(0)
+			else
+				self.ply:EmitSound("Player.DrownStart")
+				self.ply:TakeDamage(const.BASE_LS_DAMAGE, 0)
 			end
 		elseif self.ply:WaterLevel() == 3 or (GM:onSBMap() and env and not env:hasEnoughOxygen()) then
 			if self:getBreath() >= 5 then

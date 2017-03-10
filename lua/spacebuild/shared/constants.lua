@@ -40,6 +40,7 @@ const.BASE_ENERGY_USE = 5
 const.BASE_COOLANT_USE = 0
 
 const.BASE_LS_DAMAGE = 5
+const.BASE_LS_TEMPERATE_DEGRADE = 20
 
 const.colors = int.readOnlyTable({
 	white = Color(255, 255, 255, 255),
