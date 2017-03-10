@@ -310,11 +310,9 @@ local function drawRdInfo(ply, width, height)
                 height = height + 16
                 draw.DrawText( "Requires", "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
                 for k, v in pairs(resources) do
-                    if  v:getMaxAmount() > 0 then
-                        height = height + 16
-                        draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
-                        draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
-                    end
+                    height = height + 16
+                    draw.DrawText( v:getMaxAmount().." "..v:getUnit() , "FANormal", width - 24, height, whiteColor, TEXT_ALIGN_RIGHT )
+                    draw.DrawText( v:getDisplayName(), "FANormal", width - 165, height, whiteColor, TEXT_ALIGN_LEFT)
                 end
             end
         elseif rdobject:isA("ResourceNetwork") then

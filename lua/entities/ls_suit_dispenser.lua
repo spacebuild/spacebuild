@@ -17,7 +17,7 @@
 
 AddCSLuaFile()
 
-DEFINE_BASECLASS("base_resource_generator")
+local baseClass = baseclass.Get("base_resource_generator")
 
 ENT.PrintName = "LS Suit Dispenser"
 ENT.Author = "SnakeSVx"
@@ -25,50 +25,56 @@ ENT.Contact = ""
 ENT.Purpose = "Testing"
 ENT.Instructions = ""
 
-ENT.Spawnable = true
+ENT.Spawnable = false
 ENT.AdminOnly = false
 
+local SB = SPACEBUILD
+
 function ENT:Initialize()
-	BaseClass.Initialize(self)
+	baseClass.Initialize(self)
 	if SERVER then
-		self:PhysicsInit(SOLID_VPHYSICS)
-		self:SetMoveType(MOVETYPE_VPHYSICS)
-		self:SetSolid(SOLID_VPHYSICS)
-
-		-- Wake the physics object up. It's time to have fun!
-		local phys = self:GetPhysicsObject()
-		if (phys:IsValid()) then
-			phys:Wake()
+		self.rdobject:requiresResource("energy", 0, 0)
+		self.rdobject:requiresResource("oxygen", 0, 0)
+		for _, res in pairs(SB:getResourceRegistry():getRegisteredCoolants()) do
+			self.rdobject:requiresResource(res, 0, 0)
 		end
-
-		self.rdobject:addResource("energy", 0, 0)
-		self.rdobject:addResource("oxygen", 0, 0)
-		for _, res in pairs(GAMEMODE:getRegisteredCoolants()) do
-			self.rdobject:addResource(res, 0, 0)
-		end
-		self.energygen = 8
-		self.active = true
+		self.active = false
 	end
 end
 
-function ENT:SpawnFunction(ply, tr)
-	if (not tr.HitWorld) then return end
+function ENT:AcceptInput(name, activator, ply)
+	if name == "Use" and ply:IsPlayer() and ply:KeyDownLast(IN_USE) == false and ply.suit then
+		local res = {
+			SB.constants.suit.MAX_ENERGY - ply.suit:getEnergy(),
+			SB.constants.suit.MAX_OXYGEN - ply.suit:getOxygen(),
+			SB.constants.suit.MAX_COOLANT - ply.suit:getCoolant()
+		}
+		local notEnough = {
+			self.rdobject:consumeResource("energy", res[1]),
+			self.rdobject:consumeResource("oxygen", res[2]),
+			self.rdobject:consumeResourceByAttribute(SB.RESTYPES.COOLANT, res[3]),
+		}
 
-	local ent = ents.Create("ls_suit_dispenser")
-	ent:SetPos(tr.HitPos + Vector(0, 0, 50))
-	ent:SetModel("models/hunter/blocks/cube1x1x1.mdl")
-	ent:Spawn()
-
-	return ent
+		ply.suit:setOxygen(ply.suit:getOxygen() + res[2] - notEnough[2])
+		ply.suit:setCoolant(ply.suit:getCoolant() + res[3] - notEnough[3])
+		ply.suit:setEnergy(ply.suit:getEnergy() + res[1] - notEnough[1])
+	end
 end
 
-function ENT:Use(ply)
-	if ply:IsPlayer() and ply.ls_suit then
-		ply.ls_suit:setActive(true)
-		ply.ls_suit:setOxygen(GAMEMODE.constants.suit.MAX_OXYGEN)
-		ply.ls_suit:setCoolant(GAMEMODE.constants.suit.MAX_COOLANT)
-		ply.ls_suit:setEnergy(GAMEMODE.constants.suit.MAX_ENERGY)
-	end
+function ENT:TriggerInput(name, value)
+	-- Do nothing, it's a wind gen
+end
+
+function ENT:turnOn(caller)
+	-- Do nothing, it's a wind gen
+end
+
+function ENT:turnOff(caller)
+	-- Do nothing, it's a wind gen
+end
+
+function ENT:toggle(caller)
+	-- Do nothing, it's a wind gen
 end
 
 

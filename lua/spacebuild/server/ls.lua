@@ -36,6 +36,17 @@ local function LSResetSpawnFunc( ply )
 end
 hook.Add( "PlayerSpawn", "spacebuild.mod.ls.spawn", LSResetSpawnFunc )
 
+local function preventHeatDamage( ent, temperature, environment )
+    if ent.suit and ent.suit:isActive() then return true end
+end
+hook.Add( "SBPreventHeatDamage", "spacebuild.mod.ls.heat.damage", preventHeatDamage )
+
+local function preventPressureDamage( ent, pressure, environment )
+    if ent.suit and ent.suit:isActive() then return true end
+end
+hook.Add( "SBPreventPressureDamage", "spacebuild.mod.ls.pressure.damage", preventPressureDamage )
+
+
 SB.core.ls = {
     player = {
         think = function(ply, time)

@@ -284,7 +284,7 @@ end
 
     HL2 Models - others
         - models/props_combine/health_charger001.mdl
-        - models/props_combine/suit_charger001.mdl
+        + models/props_combine/suit_charger001.mdl
         + models/props_combine/combine_mine01.mdl
 
     HL2 Models - Lamps
@@ -1325,6 +1325,15 @@ SB:registerDeviceInfo(
         ent.rdobject:requiresResource("energy", 10, 5)
         SB.util.wire.registerDefaultOutputs(ent, true, {"EnergyRate", "Pressure", "Temperature", "Gravity", "OxygenPercentage"})
         SB.util.wire.registerDefaultInputs(ent, true)
+    end
+)
+
+SB:registerDeviceInfo(
+    category,
+    "Suit recharger",
+    "ls_suit_dispenser",
+    "models/props_combine/suit_charger001.mdl",
+    function(ent)
     end
 )
 

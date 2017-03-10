@@ -25,7 +25,6 @@ ENT.Contact = ""
 ENT.Purpose = "Testing"
 ENT.Instructions = ""
 ENT.Category        = "Spacebuild"
-ENT.AutomaticFrameAdvance = true --Enable animations
 
 ENT.Spawnable = false
 ENT.AdminOnly = false

@@ -21,6 +21,7 @@ local pairs = pairs
 local table = table
 -- Class specific
 local C = CLASS
+local SB = SPACEBUILD
 
 
 function C:isA(className)
@@ -55,7 +56,7 @@ function C:getRegisteredCoolants()
     if self.coolant_resources == nil then
         self.coolant_resources = {}
         for k, v in pairs(self.resources_names_table) do
-            if v:hasAttribute("COOLANT") then
+            if v:hasAttribute(SB.RESTYPES.COOLANT) then
                 table.insert(self.coolant_resources, v:getName())
             end
         end
