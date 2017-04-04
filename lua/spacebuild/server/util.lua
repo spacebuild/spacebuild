@@ -121,6 +121,34 @@ local function Explode2( ent )
     end
 end
 
+-- Damage addon
+damage.registerEnt = function(ent, health, armor)
+    if ACF_Activate then
+        ACF_Activate( ent )
+    else
+        damage.maxHealth(ent, health)
+        damage.health(ent, health)
+    end
+end
+
+damage.isValid = function(ent)
+    if ACF_Check  then
+        return ACF_Check ( ent )
+    end
+    return true
+end
+
+damage.doDamage = function(ent, damage, pierce, pos1, pos2, damageDealer)
+    log.debug("Should do damage: ", ent, damage, pierce, pos1, pos2, damageDealer)
+end
+
+damage.doBlastDamage = function(position, radius, damage, damageDealer)
+    log.debug("Should do blast damage: ", position, radius, damage, damageDealer)
+end
+-- end damage addon
+
+
+
 damage.destruct = function ( ent, useSimpleEffects )
     if useSimpleEffects then
         Explode2( ent )
