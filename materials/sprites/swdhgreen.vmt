@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+	"$basetexture" "sprites/SWDHgreen"
+	"$translucent" 1
+	//"$model"     1
+}

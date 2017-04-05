@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "player models\red_source/cloth_underlay"
+	"$model" 1
+}

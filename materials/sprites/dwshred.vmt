@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+	"$basetexture" "sprites/DWSHred"
+	"$translucent" 1
+	//"$model"     1
+}

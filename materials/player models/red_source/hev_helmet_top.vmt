@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "player models\red_source/hev_helmet_top"
+	"$model" 1
+}
