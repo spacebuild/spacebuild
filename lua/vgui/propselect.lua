@@ -53,7 +53,7 @@ function PANEL:AddModel( model, ConVars )
 	Icon:SetModel( model )
 	Icon:SetTooltip( model )
 	Icon.Model = model
-	Icon.ConVars = ConVars || {}
+	Icon.ConVars = ConVars or {}
 
 	local ConVarName = self:ConVar()
 
@@ -80,10 +80,10 @@ function PANEL:AddModelEx( name, model, skin )
 	-- Creeate a spawnicon and set the model
 	local Icon = vgui.Create( "SpawnIcon", self )
 	Icon:SetModel( model, skin )
-	Icon:SetTooltip( name || model )
+	Icon:SetTooltip( name or model )
 	Icon.Model = model
 	Icon.Value = name
-	Icon.ConVars = ConVars || {}
+	Icon.ConVars = ConVars or {}
 
 	local ConVarName = self:ConVar()
 
@@ -100,7 +100,7 @@ function PANEL:ControlValues( kv )
 
 	self.BaseClass.ControlValues( self, kv )
 
-	self.Height = kv.height || 2
+	self.Height = kv.height or 2
 
 	-- Load the list of models from our keyvalues file
 	-- This is the old way
@@ -117,12 +117,12 @@ function PANEL:ControlValues( kv )
 	if ( kv.modelstable ) then
 		local tmp = {} -- HACK: Order by skin too.
 		for k, v in SortedPairsByMemberValue( kv.modelstable, "model" ) do
-			tmp[ k ] = v.model .. ( v.skin || 0 )
+			tmp[ k ] = v.model .. ( v.skin or 0 )
 		end
 
 		for k, v in SortedPairsByValue( tmp ) do
 			v = kv.modelstable[ k ]
-			self:AddModelEx( k, v.model, v.skin || 0 )
+			self:AddModelEx( k, v.model, v.skin or 0 )
 		end
 	end
 
@@ -157,7 +157,7 @@ function PANEL:FindAndSelectButton( Value )
 
 	for k, Icon in pairs( self.Controls ) do
 
-		if ( Icon.Model == Value || Icon.Value == Value ) then
+		if ( Icon.Model == Value or Icon.Value == Value ) then
 
 			-- Remove the old overlay
 			if ( self.SelectedIcon ) then
