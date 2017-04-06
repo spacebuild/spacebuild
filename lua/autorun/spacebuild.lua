@@ -25,6 +25,7 @@ if SERVER then
     include("spacebuild/shared/send.lua")
     include("spacebuild/classes/send.lua")
     include("spacebuild/client/send.lua")
+    include("spacebuild/tools/send.lua")
     include("spacebuild/documentation/send.lua")
     include("spacebuild/tests/shared/send.lua")
     include("spacebuild/languages/send.lua")
@@ -100,6 +101,8 @@ if CLIENT then
     include("spacebuild/documentation/menu.lua")
     include("spacebuild/client/include.lua")
 end
+
+include("spacebuild/tools/include.lua")
 
 if SERVER then
     concommand.Add("run_sb_server_tests", function()

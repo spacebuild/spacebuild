@@ -16,6 +16,7 @@
   ============================================================================]]
 
 local SB = SPACEBUILD
+local log = SB.log
 
 local function initEnergyStorageTools(SB)
     local category = "Storage"
@@ -319,6 +320,7 @@ local function initWaterPumps(SB)
 end
 
 function SB:registerExtensionsLS()
+    log.info("Registering extension", "life support")
     initEnergyStorageTools(self)
     initResourceNodes(self)
     initWaterPumps(self)

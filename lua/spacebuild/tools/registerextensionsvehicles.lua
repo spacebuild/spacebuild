@@ -16,7 +16,7 @@
   ============================================================================]]
 
 --[[============================================================================
-  Project spacebuild                                                           =
+  Project spacebuild extensions                                                =
   Copyright Spacebuild project (http://github.com/spacebuild)                  =
                                                                                =
   Licensed under the Apache License, Version 2.0 (the "License");              =
@@ -32,6 +32,12 @@
    limitations under the License.                                              =
   ============================================================================]]
 
-local base = "spacebuild/stools/"
+local SB = SPACEBUILD
+local log = SB.log
 
-include(base.."registerextensionsls.lua")
+function SB:registerExtensionsVehicles()
+    log.info("Registering extension", "vehicles")
+
+
+end
+
