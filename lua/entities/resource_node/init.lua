@@ -11,7 +11,7 @@ function ENT:Initialize()
 	self:SetSolid( SOLID_VPHYSICS )
 	self.netid = CAF.GetAddon("Resource Distribution").CreateNetwork(self)
 	self:SetNetworkedInt( "netid", self.netid )
-	self:SetNetworkedInt( "overlaymode", 2 )
+	self:SetNetworkedInt( "overlaymode", 1 )
 	self.range = self.range or 512
 	self:SetNetworkedInt( "range", self.range )
 	-- Will add the ability to the node to store 1000 units of energy
