@@ -9,6 +9,8 @@ Facepunch Page: [Located Here][facepunch]
 
 Discord Server: [Located Here][discord]
 
+The Spacebuild Expansion Pack is not part of this repository. It is [Located Here](https://github.com/spacebuild/sbep)
+
 *Please do not upload to the workshop, use the* **Official** *workshop version, this repository will be synced with it.*
 
 # Build Status
