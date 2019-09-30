@@ -386,7 +386,7 @@ function CAF2.Notice(message, title)
 	lbl:SetText(message);
 	lbl:SizeToContents();
 	
-	dfpopup:SetSize(lbl:GetWide() + 4, lbl:GetTall() + 25);
+	dfpopup:SetSize(lbl:GetWide() + 19, lbl:GetTall() + 35);
 	dfpopup:Center();
 	dfpopup:MakePopup();
 	return true;
@@ -413,7 +413,7 @@ local function GetClientMenu(contentpanel)
 	
 	x = x + lbl:GetWide() + 2;
 	
-	--[[local selection = vgui.Create("DMultiChoice", panel)
+	local selection = vgui.Create("DComboBox", panel)
 	selection:SetPos(x, y);
 	for k, v in pairs(CAF.LANGUAGE) do
 		selection:AddChoice( k ) 
@@ -428,7 +428,7 @@ local function GetClientMenu(contentpanel)
 	
 	y = y + 15
 	x = x - lbl:GetWide() - 5
-	--Other options here]]
+	--Other options here
 	
 	panel:SetSize(contentpanel:GetWide(), y + 10);
 	return panel;
@@ -533,6 +533,9 @@ end
 
 local function GetStatusPanel(frame)
 	local panel = vgui.Create("DPanel", frame)
+	panel.Paint = function( pnl, w, h )
+		draw.RoundedBox( 8, 0, 0, w, h, Color( 0, 0, 0, 0 ) )
+	end
 	panel:StretchToParent( 6, 36, 6, 6 )
 	local List = vgui.Create("DPanelList", panel)
 	List:EnableHorizontal(false)
@@ -674,8 +677,8 @@ local function GetAboutPanel(frame)
 	mylist:SetMultiSelect(false)
 	mylist:SetPos(1,1)
 	mylist:SetSize(panel:GetWide()- 2, panel:GetTall()-2)
-	local colum =  mylist:AddColumn( "")
-	colum:SetFixedWidth(5)
+	--local colum =  mylist:AddColumn( "")
+	--colum:SetFixedWidth(5)
 	local colum1 =  mylist:AddColumn( "About")
 	colum1:SetFixedWidth(mylist:GetWide() - 5)
 	mylist.SortByColumn = function()
@@ -683,11 +686,20 @@ local function GetAboutPanel(frame)
 	----------
 	--Text--
 	----------
-	mylist:AddLine( "", "Custom Addon Framework" )
-	mylist:AddLine( "", "More info to be added" )
-	mylist:AddLine( "", "" )
-	mylist:AddLine( "", "Made By SnakeSVx" )
-	mylist:AddLine( "", "Official website: http://www.snakesvx.net" )
+	mylist:AddLine( "Custom Addon Framework" )
+	mylist:AddLine( "More info to be added" )
+	mylist:AddLine( "" )
+	mylist:AddLine( "Made by the Spacebuild Development Team" )
+	mylist:AddLine( "Official website: https://github.com/spacebuild" )
+	mylist:AddLine( "" )
+	mylist:AddLine( "Spacebuild Enhancement Pack:" )
+	mylist:AddLine( "https://github.com/spacebuild/sbep" )
+	mylist:AddLine( "" )
+	mylist:AddLine( "All Contributors:" )
+	mylist:AddLine( "https://github.com/thrimbor/sbep/issues/1" )
+	mylist:AddLine( "" )
+	mylist:AddLine( "Menu fixed by Aperture Development" )
+	mylist:AddLine( "Aperture Development Website: https://www.Aperture-Development.de" )
 	--
 	return panel
 end
@@ -714,6 +726,13 @@ function CAF2.OpenMainMenu()
 	MainFrame:Center()
 	local ContentPanel = vgui.Create( "DPropertySheet", MainFrame )
 	ContentPanel:Dock(FILL)
+	--[[
+		Comment: We need this function for "panel:StretchToParent" to work. Otherwise the panels wont be visible as they have the wrong size.
+
+		https://wiki.garrysmod.com/page/Panel/Dock
+	]]
+	ContentPanel:InvalidateParent( true )
+	
 	ContentPanel:AddSheet( CAF.GetLangVar("Installed Addons"), GetStatusPanel(ContentPanel), "icon16/application.png", true, true )
 	ContentPanel:AddSheet( CAF.GetLangVar("Info and Help"), GetHelpPanel(ContentPanel), "icon16/box.png", true, true )
 	if LocalPlayer():IsAdmin() then
