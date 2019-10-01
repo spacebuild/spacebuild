@@ -287,12 +287,14 @@ function sb_space.Get()
 		if not phys:IsValid() then return end
 		local trace = {}
 		local pos = ent:GetPos()
+		ent.CurrentGravityPlate = nil
 		trace.start = pos
 		trace.endpos = pos - Vector(0,0,512)
 		trace.filter = { ent }
 		local tr = util.TraceLine( trace )
 		if (tr.Hit) then
 			if (tr.Entity.grav_plate == 1 and (not ent.grav_plate or ent.grav_plate ~= 1)) then
+				ent.CurrentGravityPlate = tr.Entity
 				ent:SetGravity(1)
 				ent.gravity = 1
 				phys:EnableGravity( true )
