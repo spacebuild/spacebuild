@@ -224,10 +224,3 @@ hook.Add( "InitPostEntity", "override_tele_jump_with_grav_plating", function()
 	gmod_wire_teleporter_meta.t.TriggerInput = TriggerInputOverride
 
 end)
-
-local gmod_wire_teleporter_meta = scripted_ents.GetStored( "gmod_wire_teleporter" )
-
-	gmod_wire_teleporter_meta.t.Jump = JumpWithPlayers
-	gmod_wire_teleporter_meta.t.Initialize = InitializeOverride
-	gmod_wire_teleporter_meta.TeleportRadius = 0
-	gmod_wire_teleporter_meta.t.TriggerInput = TriggerInputOverride
