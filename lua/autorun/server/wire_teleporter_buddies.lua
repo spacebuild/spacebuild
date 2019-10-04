@@ -2,7 +2,7 @@
 local playerMeta = FindMetaTable("Player")
 
 function playerMeta:CPPICanBeTeleportedBy(ply)
-    if (CPPI and self.Buddies[ply]) then
+    if (CPPI and self.Buddies and self.Buddies[ply]) then
     	if (self.Buddies[ply]["Physgun"]) then
     		return true
     	end
@@ -10,6 +10,7 @@ function playerMeta:CPPICanBeTeleportedBy(ply)
 
     return false
 end
+
 
 -- this is the ENT:Jump function from gmod_wire_teleporter.lua with gravity plate handling added
 function JumpWithPlayers( self, withangles )
@@ -155,6 +156,8 @@ function JumpWithPlayers( self, withangles )
 
 	-- Call the next stage after a short time. This small delay is necessary for sounds and effects to work properly.
 	timer.Simple( 0.05, function() self:Jump_Part2( withangles ) end )
+
+	
 end
 
 -- this is the original teleporter triggerinput with TeleportRadius added
@@ -187,7 +190,9 @@ function TriggerInputOverride(self, iname, value)
 	self:ShowOutput()
 end
 
+-- this is the original init with inputs and resources added, because we need it to not create the default inputs
 function InitializeOverride(self)
+	
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
@@ -211,6 +216,7 @@ function InitializeOverride(self)
 	self:ShowOutput()
 
 	self.Inputs = Wire_CreateInputs( self, { "Jump", "TargetPos [VECTOR]", "X", "Y", "Z", "TargetAngle [ANGLE]", "Sound", "Radius" })
+
 end
 
 
