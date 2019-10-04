@@ -67,7 +67,6 @@ function JumpWithPlayers( self, withangles )
 		if ( ent:IsPlayer() )  then
 			-- if they can be teleported by the owner of the teleporter
 			if (ent:CPPICanBeTeleportedBy(TeleOwner)) then
-				print(1)
 				-- if they're in a vehicle
 				if (ent:InVehicle()) then
 					-- add each entity if it's not already in there
