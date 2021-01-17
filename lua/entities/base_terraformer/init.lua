@@ -103,10 +103,11 @@ function ENT:TurnOffOverdrive()
 end
 
 function ENT:SetActive(value, caller)
-    umsg.Start("TF_Open_Menu", caller)
-    umsg.Entity(self)
-    umsg.End()
+    net.Start("TF_Open_Menu")
+        net.WriteEntity(self)
+    net.Send(caller)
 end
+util.AddNetworkString("TF_Open_Menu")
 
 function ENT:TriggerInput(iname, value)
     if (iname == "On") then

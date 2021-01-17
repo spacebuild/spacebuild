@@ -58,11 +58,11 @@ function ENT:AcceptInput(name, activator, caller)
             local num = 1
             for k, v in pairs(self.Inputs) do
                 if num >= maxz then last = true end
-                umsg.Start("RD_AddInputToMenu", caller)
-                umsg.Bool(last)
-                umsg.String(v.Name)
-                umsg.Short(self:EntIndex())
-                umsg.End()
+                net.Start("RD_AddInputToMenu")
+                    net.WriteBool(last)
+                    net.WriteString(v.Name)
+                    net.WriteEntity(self)
+                net.Send(caller)
                 num = num + 1
             end
         else
@@ -70,8 +70,7 @@ function ENT:AcceptInput(name, activator, caller)
         end
     end
 end
-
-
+util.AddNetworkString("RD_AddInputToMenu")
 
 function ENT:OnTakeDamage(DmgInfo) --should make the damage go to the shield if the shield is installed(CDS)
     if self.Shield then

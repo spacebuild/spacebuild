@@ -8,6 +8,9 @@ util.PrecacheSound( "RD/pump/beep-5.wav" )
 include('shared.lua')
 local pumps = {}
 
+util.AddNetworkString("RD_Add_ResourceRate_to_Pump")
+util.AddNetworkString("RD_Open_Pump_Menu")
+
 --[[
 	--SetResourceAmount
 	--PumpTurnOn
@@ -22,7 +25,7 @@ local function TurnOnPump(ply, com, args)
 		ent:TurnOn()
 	end
 end
-concommand.Add( "PumpTurnOn", TurnOnPump )  
+concommand.Add( "PumpTurnOn", TurnOnPump )
 
 local function TurnOffPump(ply, com, args)
 	local id = args[1]
@@ -33,7 +36,7 @@ local function TurnOffPump(ply, com, args)
 		ent:TurnOff()
 	end
 end
-concommand.Add( "PumpTurnOff", TurnOffPump )  
+concommand.Add( "PumpTurnOff", TurnOffPump )
 
 local function SetResourceAmount(ply, com, args)
 	local id = args[1]
@@ -46,11 +49,11 @@ local function SetResourceAmount(ply, com, args)
 			amount = 0
 		end
 		ent.ResourcesToSend[args[2]] = amount
-		umsg.Start("RD_Add_ResourceRate_to_Pump")
-			umsg.Entity(ent)
-			umsg.String(args[2])
-			umsg.Short(amount)
-		umsg.End()
+		net.Start("RD_Add_ResourceRate_to_Pump")
+			net.WriteEntity(ent)
+			net.WriteString(args[2])
+			net.WriteInt(amount, 32)
+		net.Broadcast()
 	end
 end
 concommand.Add( "SetResourceAmount", SetResourceAmount )
@@ -102,7 +105,7 @@ local function UnlinkPump(ply, com, args)
 		ent:Disconnect()
 	end
 end
-concommand.Add( "UnlinkPump", UnlinkPump )    
+concommand.Add( "UnlinkPump", UnlinkPump )
 
 local function UserConnect(ply)
 	if table.Count(pumps) > 0 then
@@ -110,18 +113,18 @@ local function UserConnect(ply)
 			if IsValid(v) then
 				if table.Count(v.ResourcesToSend) > 0 then
 					for l, w in pairs(v.ResourcesToSend) do
-						umsg.Start("RD_Add_ResourceRate_to_Pump", ply)
-							umsg.Entity(v)
-							umsg.String(l)
-							umsg.Short(w)
-						umsg.End()
+						net.Start("RD_Add_ResourceRate_to_Pump")
+							net.WriteEntity(v)
+							net.WriteString(l)
+							net.WriteInt(w, 32)
+						net.Send(ply)
 					end
 				end
 			end
 		end
 	end
 end
-hook.Add("PlayerInitialSpawn", "RD_Pump_info_Update", UserConnect)
+hook.Add("PlayerFullLoad", "RD_Pump_info_Update", UserConnect)
 
 function ENT:Initialize()
 	--self.BaseClass.Initialize(self) --use this in all ents
@@ -220,9 +223,9 @@ end
 --override to do overdrive
 --AcceptInput (use action) calls this function with value = nil
 function ENT:SetActive( value, caller )
-	umsg.Start("RD_Open_Pump_Menu", caller)
-		umsg.Entity(self)
-	umsg.End()
+	net.Start("RD_Open_Pump_Menu")
+		net.WriteEntity(self)
+	net.Send(caller)
 end
 
 function ENT:SetResourceNode(node)

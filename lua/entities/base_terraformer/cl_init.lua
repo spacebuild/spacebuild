@@ -9,8 +9,8 @@ OOO[2] = "Overdrive"
 
 local MainFrames = {}
 
-local function OpenMenu(um)
-    local ent = um:ReadEntity()
+local function OpenMenu()
+    local ent = net.ReadEntity()
     if not ent then return end
     if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then MainFrames[ent:EntIndex()]:Close() end
 
@@ -57,4 +57,4 @@ local function OpenMenu(um)
     MainFrame:MakePopup()
 end
 
-usermessage.Hook("TF_Open_Menu", OpenMenu)
+net.Receive("TF_Open_Menu", OpenMenu)

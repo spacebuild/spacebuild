@@ -981,7 +981,141 @@ function ENT:PosInEnvironment(pos, other)
 	return other
 end
 
+function ENT:SendData(ply)
+	net.Start("AddPlanet")
+		net.WriteEntity(self) --planet.num
+		net.WriteString(self:GetEnvironmentName())
+		net.WriteFloat(self.sbenvironment.size)
+		if self.sbenvironment.bloom ~= nil then
+			net.WriteBool(true)
+			net.WriteInt(self.sbenvironment.bloom.Col_r, 16)
+			net.WriteInt(self.sbenvironment.bloom.Col_g, 16)
+			net.WriteInt(self.sbenvironment.bloom.Col_b, 16)
+			net.WriteFloat(self.sbenvironment.bloom.SizeX)
+			net.WriteFloat(self.sbenvironment.bloom.SizeY)
+			net.WriteFloat(self.sbenvironment.bloom.Passes)
+			net.WriteFloat(self.sbenvironment.bloom.Darken)
+			net.WriteFloat(self.sbenvironment.bloom.Multiply)
+			net.WriteFloat(self.sbenvironment.bloom.Color)
+		else
+			net.WriteBool(false)
+		end
+		if self.sbenvironment.color ~= nil then
+			net.WriteBool(true)
+			net.WriteInt(self.sbenvironment.color.AddColor_r, 16)
+			net.WriteInt(self.sbenvironment.color.AddColor_g, 16)
+			net.WriteInt(self.sbenvironment.color.AddColor_b, 16)
+			net.WriteInt(self.sbenvironment.color.MulColor_r, 16)
+			net.WriteInt(self.sbenvironment.color.MulColor_g, 16)
+			net.WriteInt(self.sbenvironment.color.MulColor_b, 16)
+			net.WriteFloat(self.sbenvironment.color.Brightness)
+			net.WriteFloat(self.sbenvironment.color.Contrast)
+			net.WriteFloat(self.sbenvironment.color.Color)
+		else
+			net.WriteBool(false)
+		end
 
+	if ply then
+		net.Send(ply)
+	else
+		net.Broadcast()
+	end
+end
+
+function ENT:BloomEffect(Col_r, Col_g, Col_b, SizeX, SizeY, Passes, Darken, Multiply, Color)
+	if SB_DEBUG then
+		Msg("Col_r/b/g: " .. tostring(Col_r) .. "/" .. tostring(Col_b) .. "/" .. tostring(Col_g) .. "\n")
+		Msg("SizeX/Y: " .. tostring(SizeX) .. "/" .. tostring(SizeY) .. "\n")
+		Msg("Passes: " .. tostring(Passes) .. "\n")
+		Msg("Darken: " .. tostring(Darken) .. "\n")
+		Msg("Multiply: " .. tostring(Multiply) .. "\n")
+		Msg("Color: " .. tostring(Color) .. "\n")
+	end
+	if Col_r then
+		self.sbenvironment.bloom.Col_r = Col_r
+	end
+	if Col_g then
+		self.sbenvironment.bloom.Col_g = Col_g
+	end
+	if Col_b then
+		self.sbenvironment.bloom.Col_b = Col_b
+	end
+	if SizeX then
+		self.sbenvironment.bloom.SizeX = SizeX
+	end
+	if SizeY then
+		self.sbenvironment.bloom.SizeY = SizeY
+	end
+	if Passes then
+		self.sbenvironment.bloom.Passes = Passes
+	end
+	if Darken then
+		self.sbenvironment.bloom.Darken = Darken
+	end
+	if Multiply then
+		self.sbenvironment.bloom.Multiply = Multiply
+	end
+	if Color then
+		self.sbenvironment.bloom.Color = Color
+	end
+	Msg("Sending bloom update\n")
+	self:SendData()
+end
+
+function ENT:ColorEffect(AddColor_r, AddColor_g, AddColor_b, MulColor_r, MulColor_g, MulColor_b, Brightness, Contrast, Color)
+	if SB_DEBUG then
+		Msg("AddColor_r/b/g: " .. tostring(AddColor_r) .. "/" .. tostring(AddColor_b) .. "/" .. tostring(AddColor_g) .. "\n")
+		Msg("AddColor_r/b/g: " .. tostring(MulColor_r) .. "/" .. tostring(MulColor_b) .. "/" .. tostring(MulColor_g) .. "\n")
+		Msg("Brightness: " .. tostring(Brightness) .. "\n")
+		Msg("Contrast: " .. tostring(Contrast) .. "\n")
+		Msg("Color: " .. tostring(Color) .. "\n")
+	end
+	if AddColor_r then
+		self.sbenvironment.color.AddColor_r = AddColor_r
+	end
+	if AddColor_g then
+		self.sbenvironment.color.AddColor_g = AddColor_g
+	end
+	if AddColor_b then
+		self.sbenvironment.color.AddColor_b = AddColor_b
+	end
+	if MulColor_r then
+		self.sbenvironment.color.MulColor_r = MulColor_r
+	end
+	if MulColor_g then
+		self.sbenvironment.color.MulColor_g = MulColor_g
+	end
+	if MulColor_b then
+		self.sbenvironment.color.MulColor_b = MulColor_b
+	end
+	if Brightness then
+		self.sbenvironment.color.Brightness = Brightness
+	end
+	if Contrast then
+		self.sbenvironment.color.Contrast = Contrast
+	end
+	if Color then
+		self.sbenvironment.color.Color = Color
+	end
+	Msg("Sending color update\n")
+	self:SendData()
+end
+
+function ENT:SendSunBeam(ply)
+	net.Start("AddStar")
+		net.WriteEntity(self)
+		net.WriteString(self:GetName())
+		net.WriteFloat(self.sbenvironment.size)
+
+	if ply then
+		net.Send(ply)
+	else
+		net.Broadcast()
+	end
+end
+
+util.AddNetworkString("AddStar")
+util.AddNetworkString("AddPlanet")
 
 function ENT:Remove()
 		self.BaseClass.Remove(self)

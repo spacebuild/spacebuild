@@ -676,17 +676,19 @@ end
 function Ply:UpdateLSClient()
 	local SB = CAF.GetAddon("Spacebuild");
 	if SB and SB.GetStatus() then
-		umsg.Start("LS_umsg1", self)
-			umsg.Float( self.environment:GetO2Percentage() or -1)
-			umsg.Short( self.suit.air or -1 )
-			umsg.Short( self.environment:GetTemperature(self) or -1)
-			umsg.Short( self.suit.coolant or -1)
-			umsg.Short( self.suit.energy  or -1)
-		umsg.End() 
+		net.Start("LS_umsg1")
+			net.WriteFloat(self.environment:GetO2Percentage() or -1)
+			net.WriteInt(self.suit.air or -1, 32)
+			net.WriteInt(self.environment:GetTemperature(self) or -1, 32)
+			net.WriteInt(self.suit.coolant or -1, 32)
+			net.WriteInt(self.suit.energy or -1, 32)
+		net.Send(self)
 	else
-		umsg.Start("LS_umsg2", self)
-			umsg.Short( self.suit.air or -1 )
-		umsg.End() 
+		net.Start("LS_umsg2")
+			net.WriteInt(self.suit.air or -1, 32)
+		net.Send(self)
 	end
 end
 
+util.AddNetworkString("LS_umsg1")
+util.AddNetworkString("LS_umsg2")

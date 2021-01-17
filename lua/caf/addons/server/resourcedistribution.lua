@@ -18,190 +18,6 @@ util.PrecacheSound( "physics/metal/metal_box_impact_soft2.wav" )
 
 local nextnetid = 1;
 
---These functions send all needed info the client
-
---nettable
---[[local function CreateEmptyNetwork(netid, ply)
-	umsg.Start("RD_AddNet", ply)
-		umsg.Short(netid)
-	umsg.End()
-end
-
-local function SendResoureDataToNetwork(netid, resource, maxvalue, value, ply)
-	umsg.Start("RD_AddResoureToNet", ply)
-		umsg.Short(netid)
-		umsg.String(resource)
-		umsg.Long(maxvalue)
-		umsg.Long(value)
-	umsg.End()
-end
-
---Needed?
-local function AddConToNetwork(netid, conid, ply)
-	umsg.Start("RD_AddConToNet", ply)
-		umsg.Short(netid)
-		umsg.Short(conid)
-	umsg.End()
-end
-
---Needed?
-local function ClearCons(netid, ply)
-	umsg.Start("RD_RemoveNetCons", ply)
-		umsg.Short(netid)
-	umsg.End()
-end
-
-local function RemoveNetWork(netid, ply)
-	umsg.Start("RD_RemoveNet", ply)
-		umsg.Short(netid)
-	umsg.End()
-end
-
-	--ent_table
-
-local function CreateEmptyEntity(entid, ply)
-	umsg.Start("RD_AddEnt", ply)
-		umsg.Short(entid)
-	umsg.End()
-end
-
-local function SendResoureDataToEntity(entid, resource, maxvalue, value, ply)
-	umsg.Start("RD_AddResoureToEnt", ply)
-		umsg.Short(entid)
-		umsg.String(resource)
-		umsg.Long(maxvalue)
-		umsg.Long(value)
-	umsg.End()
-end
-
-local function ChangeNetWorkOnEntity(entid, netid, ply)
-	umsg.Start("RD_ChangeNetOnEnt", ply)
-		umsg.Short(entid)
-		umsg.Short(netid)
-	umsg.End()
-end
-
-local function RemoveEnt(entid, ply)
-	umsg.Start("RD_RemoveEnt", ply)
-		umsg.Short(entid)
-	umsg.End()
-end]]
-
--- End: These functions send all needed info the client
-
---[[local function UpdateNetworksAndEntities()
-	--Sentd ent_table first
-	if table.Count(ent_table) ~= 0 then
-		for k, v in pairs(ent_table) do
-			if v.clear then
-				RemoveEnt(k)
-				ent_table[k] = nil
-			elseif v.new then
-				CreateEmptyEntity(k)
-				if v.network ~= 0 then
-					ChangeNetWorkOnEntity(k, v.network)
-				end
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						SendResoureDataToEntity(k, l, w.maxvalue, w.value)
-					end
-				end
-				v.new = false
-				v.haschanged = false
-			elseif v.haschanged then
-				ChangeNetWorkOnEntity(k, v.network)
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						if w.haschanged then
-							SendResoureDataToEntity(k, l, w.maxvalue, w.value)
-							w.haschanged = false
-						end
-					end
-				end
-				v.haschanged = false
-			end
-		end
-	end
-	--now lets send the nettable
-	if table.Count(nettable) ~= 0 then
-		for k, v in pairs(nettable) do
-			if v.clear then
-				RemoveNetWork(k)
-				nettable[k] = nil
-			elseif v.new then
-				CreateEmptyNetwork(k)
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						SendResoureDataToNetwork(k, l, w.maxvalue, w.value)
-						w.haschanged = false
-					end
-				end
-				if table.Count(v.cons) > 0 then
-					for l, w in pairs(v.cons) do
-						AddConToNetwork(k, w)
-					end
-				end
-				v.new = false
-				v.haschanged = false
-			elseif v.haschanged then
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						if w.haschanged then
-							SendResoureDataToNetwork(k, l, w.maxvalue, w.value)
-							w.haschanged = false
-						end
-					end
-				end
-				ClearCons(k)
-				if table.Count(v.cons) > 0 then
-					for l, w in pairs(v.cons) do
-						AddConToNetwork(k, w)
-					end
-				end
-				v.haschanged = false
-			end
-		end
-	end
-end
-
-local function SendEntireNetWorkToClient(ply)
-	--Sentd ent_table first
-	if table.Count(ent_table) ~= 0 then
-		for k, v in pairs(ent_table) do
-			if not v.clear then
-				CreateEmptyEntity(k, ply)
-				if v.network ~= 0 then
-					ChangeNetWorkOnEntity(k, v.network, ply)
-				end
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						SendResoureDataToEntity(k, l, w.maxvalue, w.value, ply)
-					end
-				end
-			end
-		end
-	end
-	--now lets send the nettable
-	if table.Count(nettable) ~= 0 then
-		for k, v in pairs(nettable) do
-			if not v.clear then
-				CreateEmptyNetwork(k, ply)
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						SendResoureDataToNetwork(k, l, w.maxvalue, w.value, ply)
-					end
-				end
-				if table.Count(v.cons) > 0 then
-					for l, w in pairs(v.cons) do
-						AddConToNetwork(k, w, ply)
-					end
-				end
-			end
-		end
-	end
-end]]
-
-
 local function WriteBool(bool)
    net.WriteBit(bool)
 end
@@ -373,13 +189,10 @@ local function ClearEntities()
 end
 
 local function ClearNets()
-	umsg.Start("RD_ClearNets")
-	umsg.End()
+	net.Start("RD_ClearNets")
+	net.Broadcast()
 end
-
-local function RD_Initial_Spawn( ply )
-	--SendEntireNetWorkToClient(ply)
-end
+util.AddNetworkString("RD_ClearNets")
 
 --End local functions
 
@@ -394,7 +207,6 @@ function RD.__Construct()
 	nettable = {};
 	ent_table = {};
 	CAF.AddHook("think3", UpdateNetworksAndEntities)
-	hook.Add( "PlayerInitialSpawn", "RD_Initial_Spawn", RD_Initial_Spawn )
 	for k, ply in pairs(player.GetAll( )) do
 		SendEntireNetWorkToClient(ply)
 	end
@@ -414,7 +226,6 @@ function RD.__Destruct()
 	nettable = {};
 	ent_table = {};
 	CAF.RemoveHook("think3", UpdateNetworksAndEntities)
-	hook.Remove( "PlayerInitialSpawn", "RD_Initial_Spawn")
 	CAF.RemoveServerTag("RD")
 	status = false
 	return true

@@ -25,8 +25,8 @@ local function GetPumps(ent, range)
 	return pumps
 end
 
-local function OpenMenu(um)
-	local ent = um:ReadEntity()
+local function OpenMenu()
+	local ent = net.ReadEntity()
 	if not ent then return end
 	if MainFrames[ent:EntIndex()] and MainFrames[ent:EntIndex()]:IsActive() and MainFrames[ent:EntIndex()]:IsVisible() then MainFrames[ent:EntIndex()]:Close() end
 	local MainFrame= vgui.Create("DFrame")
@@ -187,16 +187,16 @@ local function OpenMenu(um)
 	end
 	MainFrame:MakePopup()
 end
-usermessage.Hook("RD_Open_Pump_Menu", OpenMenu)
+net.Receive("RD_Open_Pump_Menu", OpenMenu)
 
-local function AddResource(um)
-	local ent = um:ReadEntity()
-	local res = um:ReadString()
-	local val = um:ReadShort()
+local function AddResource()
+	local ent = net.ReadEntity()
+	local res = net.ReadString()
+	local val = net.ReadInt(32)
 	if not ent or not ent.IsPump then return end
 	ent.ResourcesToSend[res] = val
 end
-usermessage.Hook("RD_Add_ResourceRate_to_Pump", AddResource)
+net.Receive("RD_Add_ResourceRate_to_Pump", AddResource)
 
 function ENT:Draw( bDontDrawModel )
 	self:DoNormalDraw()

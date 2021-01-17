@@ -59,17 +59,6 @@ function ENT:GetPriority()
     return 2
 end
 
-local function SendSunBeam(ent)
-    for k, ply in pairs(player.GetAll()) do
-        umsg.Start("AddStar", ply)
-        --umsg.Entity( ent ) --planet.num
-        umsg.Short(ent:EntIndex())
-        umsg.Vector(ent:GetPos()) --planet.num
-        umsg.Float(ent.sbenvironment.size)
-        umsg.End()
-    end
-end
-
 function ENT:CreateEnvironment(radius, temp1, temp2, temp3, name)
     if radius and type(radius) == "number" then
         if radius < 0 then
@@ -90,7 +79,7 @@ function ENT:CreateEnvironment(radius, temp1, temp2, temp3, name)
         self.sbenvironment.temperature3 = temp3
     end
     self.BaseClass.CreateEnvironment(self, 0, 100, temp1, 0, 0, 100, 0, name)
-    SendSunBeam(self)
+    self:SendSunBeam()
 end
 
 function ENT:UpdateEnvironment(radius, temp1, temp2, temp3)
@@ -106,7 +95,7 @@ function ENT:UpdateEnvironment(radius, temp1, temp2, temp3)
     if temp3 and type(temp3) == "number" then
         self.sbenvironment.temperature3 = temp3
     end
-    SendSunBeam(self)
+    self:SendSunBeam()
 end
 
 function ENT:IsStar()
