@@ -516,7 +516,7 @@ local function GenUseMenu(ent)
 		SendButton:SetText("Send Command")
 		SendButton:SizeToContents()
 		SendButton.DoClick = function()
-			RunConsoleCommand("send_input_selection_to_server",ent.serverindex,v,client_chosen_number:GetInt(),client_chosen_hold:GetFloat())
+			RunConsoleCommand("send_input_selection_to_server",ent:EntIndex(),v,client_chosen_number:GetInt(),client_chosen_hold:GetFloat())
 		end
 		
 		ypos = ypos + 40
@@ -529,7 +529,6 @@ local function RecieveInputs()
 	local last = net.ReadBool()
 	local input = net.ReadString()
 	local ent = net.ReadEntity()
-	ent.serverindex = index
 	if not ent.Inputs then ent.Inputs = {} end
 	if not table.HasValue(ent.Inputs,input) then table.insert(ent.Inputs,input) end
 	if last and last == true then
