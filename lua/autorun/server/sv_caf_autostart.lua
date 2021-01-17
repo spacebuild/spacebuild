@@ -313,6 +313,7 @@ function CAF2.Start()
 	end
 	CAF2.StartingUp = false
 	net.Start("CAF_Start_false")
+	net.Broadcast()
 end
 hook.Add( "InitPostEntity", "CAF_Start", CAF2.Start)
 
@@ -569,3 +570,22 @@ for k, File in ipairs(Files) do
 		Msg("Sent: Successfully\n")
 	end
 end
+
+hook.Add("PlayerInitialSpawn", "FullLoadSetup", function(plyOuter)
+	local hookID = "FullLoadSetup_" .. tostring(plyOuter)
+	local hasFired = false
+	local function PlayerLoadTrigger()
+		if hasFired then return end
+		hasFired = true
+		if IsValid(plyOuter) then
+			hook.Run("PlayerFullLoad", plyOuter)
+		end
+		hook.Remove("SetupMove", hookID)
+	end
+	timer.Simple(60, PlayerLoadTrigger)
+	hook.Add("SetupMove", hookID, function(self, ply, _, cmd)
+		if self == ply and not cmd:IsForced() then
+			PlayerLoadTrigger()
+		end
+	end)
+end)
