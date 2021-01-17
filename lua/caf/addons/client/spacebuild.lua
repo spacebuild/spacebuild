@@ -299,6 +299,14 @@ function SB.GetStatus()
 	return status
 end
 
+function SB.GetPlanets()
+	return planets
+end
+
+function SB.GetStars()
+	return stars
+end
+
 --[[
 	Get the Version of this Custom Addon Class
 ]]
