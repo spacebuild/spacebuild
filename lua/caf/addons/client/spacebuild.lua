@@ -315,7 +315,7 @@ function SB.FindClosestPlanet(pos, starsto)
 				if not closestplanet then
 					closestplanet = v
 				else
-					if (v:GetPos():Distance(pos) < closestplanet:GetPos():Distance(pos)) then
+					if (v.position:Distance(pos) < closestplanet.position:Distance(pos)) then
 						closestplanet = v
 					end
 				end
@@ -328,7 +328,7 @@ function SB.FindClosestPlanet(pos, starsto)
 				if not closestplanet then
 					closestplanet = v
 				else
-					if (v:GetPos():Distance(pos) < closestplanet:GetPos():Distance(pos)) then
+					if (v.position:Distance(pos) < closestplanet.position:Distance(pos)) then
 						closestplanet = v
 					end
 				end
