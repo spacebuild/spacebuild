@@ -158,7 +158,9 @@ function CAFEnts.MakeEnt(tool, ply, Ang, Pos, class, type, sub_type, model, froz
             end
         end
     end
-
+    if ent.CAF_PostInit then
+        ent:CAF_PostInit()
+    end
     return ent
 end
 
@@ -166,7 +168,3 @@ end
 function CAFEnts.RegDupeFunction(class, MakeFunc)
     duplicator.RegisterEntityClass(class, MakeFunc, "Ang", "Pos", "Class", "type", "sub_type", "Model", "frozen", "Extra_Data", "Data")
 end
-
-
-
-
