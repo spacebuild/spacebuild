@@ -307,6 +307,37 @@ function SB.GetStars()
 	return stars
 end
 
+function SB.FindClosestPlanet(pos, starsto)
+	local closestplanet = nil
+	if table.Count(planets) > 0 then
+		for k, v in pairs(planets) do
+			if v and IsValid(v) then
+				if not closestplanet then
+					closestplanet = v
+				else
+					if (v:GetPos():Distance(pos) < closestplanet:GetPos():Distance(pos)) then
+						closestplanet = v
+					end
+				end
+			end
+		end
+	end
+	if starsto and table.Count(stars) > 0 then
+		for k, v in pairs(stars) do
+			if v and IsValid(v) then
+				if not closestplanet then
+					closestplanet = v
+				else
+					if (v:GetPos():Distance(pos) < closestplanet:GetPos():Distance(pos)) then
+						closestplanet = v
+					end
+				end
+			end
+		end
+	end
+	return closestplanet
+end
+
 --[[
 	Get the Version of this Custom Addon Class
 ]]
