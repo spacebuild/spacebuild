@@ -572,20 +572,10 @@ for k, File in ipairs(Files) do
 end
 
 hook.Add("PlayerInitialSpawn", "FullLoadSetup", function(plyOuter)
-	local hookID = "FullLoadSetup_" .. tostring(plyOuter)
-	local hasFired = false
-	local function PlayerLoadTrigger()
-		if hasFired then return end
-		hasFired = true
-		if IsValid(plyOuter) then
-			hook.Run("PlayerFullLoad", plyOuter)
-		end
-		hook.Remove("SetupMove", hookID)
-	end
-	timer.Simple(60, PlayerLoadTrigger)
-	hook.Add("SetupMove", hookID, function(self, ply, _, cmd)
+	hook.Add("SetupMove", plyOuter, function(self, ply, _, cmd)
 		if self == ply and not cmd:IsForced() then
-			PlayerLoadTrigger()
+			hook.Run("PlayerFullLoad", self)
+			hook.Remove("SetupMove", self)
 		end
 	end)
 end)
