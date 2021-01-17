@@ -272,9 +272,11 @@ function ENT:Extract_Energy()
         --only supply 5-25% of the normal amount
         if (inc > 0) then inc = math.ceil(inc / math.random(12 - math.ceil(8 * (self:GetResourceAmount("water") / math.ceil(Coolant_Increment * self:GetMultiplier()))), 20)) end
     else
-        local consumed = self:ConsumeResource("water", math.ceil(Coolant_Increment * self:GetMultiplier()))
-        self:SupplyResource("steam", math.ceil(consumed * 0.92))
-        self:SupplyResource("water", math.ceil(consumed * 0.08))
+        local water_consumed = self:ConsumeResource("water", math.ceil(Coolant_Increment * self:GetMultiplier()))
+        local steam_generated = math.ceil(water_consumed*0.92)
+        local water_generated = water_consumed - steam_generated
+        self:SupplyResource("steam", steam_generated)
+        self:SupplyResource("water", water_generated)
     end
 
     --heavy water check (water adds stability)
