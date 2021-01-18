@@ -52,7 +52,7 @@ local function SetResourceAmount(ply, com, args)
 		net.Start("RD_Add_ResourceRate_to_Pump")
 			net.WriteEntity(ent)
 			net.WriteString(args[2])
-			net.WriteInt(amount, 32)
+			net.WriteUInt(amount, 32)
 		net.Broadcast()
 	end
 end
@@ -116,7 +116,7 @@ local function UserConnect(ply)
 						net.Start("RD_Add_ResourceRate_to_Pump")
 							net.WriteEntity(v)
 							net.WriteString(l)
-							net.WriteInt(w, 32)
+							net.WriteUInt(w, 32)
 						net.Send(ply)
 					end
 				end

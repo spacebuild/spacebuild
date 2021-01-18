@@ -74,12 +74,12 @@ local function OpenMenu()
 	end
 	
 	
-	local NumSlider = vgui.Create( "DNumSlider", RightPanel )
-	NumSlider:SetPos(20, 60)
-	NumSlider:SetSize(140, 30)
-	NumSlider:SetMin( 0 ) 
-	NumSlider:SetMax( 256 )  
-	NumSlider:SetDecimals( 0 )
+	local NumSelector = vgui.Create( "DNumberWang", RightPanel )
+	NumSelector:SetPos(20, 60)
+	NumSelector:SetSize(140, 30)
+	NumSelector:SetMin( 0 ) 
+	NumSelector:SetMax( 4000000000 )	-- 4 billion per tick, pretty much infinte (limited by uint32)
+	NumSelector:SetDecimals( 0 )
 	
 	local RButton = vgui.Create("DButton", RightPanel)
 	RButton:SetPos(20, 95)
@@ -88,8 +88,8 @@ local function OpenMenu()
 	RButton:SetText("Update Amount")
 	function RButton:DoClick()
 		if SelectedNode then
-			RunConsoleCommand("SetResourceAmount", ent:EntIndex(), SelectedNode.res, NumSlider:GetValue())
-			ent.ResourcesToSend[SelectedNode.res] = tonumber(NumSlider:GetValue())
+			RunConsoleCommand("SetResourceAmount", ent:EntIndex(), SelectedNode.res, NumSelector:GetValue())
+			ent.ResourcesToSend[SelectedNode.res] = tonumber(NumSelector:GetValue())
 		end
 	end
 	
@@ -177,9 +177,9 @@ local function OpenMenu()
 			function node:DoClick()
 				SelectedNode = self
 				if ent.ResourcesToSend[self.res] then
-					NumSlider:SetValue(ent.ResourcesToSend[self.res])
+					NumSelector:SetValue(ent.ResourcesToSend[self.res])
 				else
-					NumSlider:SetValue(0)
+					NumSelector:SetValue(0)
 				end
 				RButton:SetDisabled(false)
 			end
@@ -192,7 +192,7 @@ net.Receive("RD_Open_Pump_Menu", OpenMenu)
 local function AddResource()
 	local ent = net.ReadEntity()
 	local res = net.ReadString()
-	local val = net.ReadInt(32)
+	local val = net.ReadUInt(32)
 	if not ent or not ent.IsPump then return end
 	ent.ResourcesToSend[res] = val
 end
