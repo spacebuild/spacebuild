@@ -1,4 +1,4 @@
---[[
+﻿--[[
     --
     nettable= {}
     nettable[netid] = {}
@@ -44,11 +44,3 @@
             Cons:
                 No linking between devices anymore, always an intermediate Resource Node in between
 ]]
-
-
-
-
-
-
-
-

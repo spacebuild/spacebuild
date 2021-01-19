@@ -1,3 +1,2 @@
-include('shared.lua')
-
+﻿include('shared.lua')
 language.Add("other_dispenser", "Dispenser")

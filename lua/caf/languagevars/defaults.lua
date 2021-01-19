@@ -1,19 +1,16 @@
---[[
+﻿--[[
 	@translators:
 	Take care before you hit save button: this file always needs to be saved in UTF-8 without BOM format!
 	
 	Garrysmod uses in most cases ISO639-1 for language code tags, some uses a additional region code tag
 	Check convar gmod_language (after you changed language in mainmenu) and match against the array key you are translating for
-]]--
-
+]]
+--
 CAF.LANGUAGE = CAF.LANGUAGE or {}
-
 local t = CAF.LANGUAGE["en"] or {}
-
 --Custom Addon Framework
 t["caf_menu_title"] = "Custom Addon Framework Menu"
 t["caf_menu_tab_title"] = "Custom Addon Framework"
-
 --Life Support
 t["Life Support"] = "Life Support"
 t["Generator"] = "Generator"
@@ -30,7 +27,6 @@ t["Environmental Controls"] = "Environmental Controls"
 t["sb_dev_plants_title"] = "Spacebuild Dev Plants"
 t["sb_dev_plants_desc"] = "Create Dev Plants attached to any surface."
 t["sb_dev_plants_desc2"] = "Left-Click: Spawn a Dev Plant.(Admin Only)  Reload: Repair Plant."
-
 t["O2 Refresh Rate"] = "O2 Refresh Rate"
 t["Dev Plants (Auto O2 Refresher)"] = "Dev Plants (Auto O2 Refresher)"
 t["#Dev Plants"] = "Admin-only Plants"
@@ -55,7 +51,6 @@ t["Beta"] = "Beta"
 t["This Addon is already Active!"] = "This Addon is already Active!"
 t["Resource Distribution is Required and needs to be Active!"] = "Resource Distribution is Required and needs to be Active!"
 t["This addon wasn't on in the first place"] = "This addon wasn't on in the first place"
-
 --CAF Stuff
 t["Error unloading Addon"] = "Error unloading Addon"
 t["Error loading Addon"] = "Error loading Addon"
@@ -88,32 +83,25 @@ t["Client Settings"] = "Client Settings"
 t["About"] = "About"
 t["Unknown"] = "Unknown"
 t["Loading"] = "Loading"
-
 --New CAF Stuff
-t["This Addon is up to date"] = "This Addon is up to date";
-t["This Addon is out of date"] = "This Addon is out of date";
-t["No Update Information Available"] = "No Update Information Available";
-
+t["This Addon is up to date"] = "This Addon is up to date"
+t["This Addon is out of date"] = "This Addon is out of date"
+t["No Update Information Available"] = "No Update Information Available"
 --Default Stool Stuff
 t["caf_stool_disabled"] = "This Stool is not active"
 t["caf_stool_entity_disabled"] = "This Stool Entity is not active"
 t["caf_stool_entity_model_disabled"] = "This Stool Entity Model is not active"
-t["caf_stool_admin_required"] = "This Stool requires you to be an Admin";
-t["caf_stool_entity_admin_required"] = "This Stool Entity requires you to be an Admin";
-t["caf_stool_entity_model_admin_required"] = "This Stool Entity Model requires you to be an Admin";
-
+t["caf_stool_admin_required"] = "This Stool requires you to be an Admin"
+t["caf_stool_entity_admin_required"] = "This Stool Entity requires you to be an Admin"
+t["caf_stool_entity_model_admin_required"] = "This Stool Entity Model requires you to be an Admin"
 t["This Addon is already Active!"] = "This Addon is already Active!"
 t["This Addon is already disabled!"] = "This Addon is already disabled!"
 t["Not on a Spacebuild Map!"] = "Not on a Spacebuild Map!"
-
-CAF.LANGUAGE["en"] = t;
-
+CAF.LANGUAGE["en"] = t
 local t = CAF.LANGUAGE["nl"] or {}
-
 --Custom Addon Framework
 t["caf_menu_title"] = "Custom Addon Framework Menu"
 t["caf_menu_tab_title"] = "Custom Addon Framework"
-
 --Life Support
 t["Life Support"] = "Life Support"
 t["Generator"] = "Generator"
@@ -130,7 +118,6 @@ t["Environmental Controls"] = "Environmental Controls"
 t["sb_dev_plants_title"] = "Spacebuild Dev Plants"
 t["sb_dev_plants_desc"] = "Maak als admin nieuwe \"Dev Plants\" op eendert welk oppervlak aan."
 t["sb_dev_plants_desc2"] = "Linksklikken: Spawn een Dev Plant.(Alleen Admins)  Herladen: Repareer de plant."
-
 t["O2 Refresh Rate"] = "O2 Herstel ratio"
 t["Dev Plants (Auto O2 Refresher)"] = "Dev Plants (Auto O2 hersteller)"
 t["#Dev Plants"] = "Admin-only planten"
@@ -155,7 +142,6 @@ t["Beta"] = "Beta"
 t["This Addon is already Active!"] = "Deze addon is al actief!"
 t["Resource Distribution is Required and needs to be Active!"] = "Resource Distribution is nodig en moet actief zijn!"
 t["This addon wasn't on in the first place"] = "Deze addon was nog nie eens actief"
-
 --CAF Stuff
 t["Error unloading Addon"] = "Er is een fout opgetreden bij het stoppen van de Addon"
 t["Error loading Addon"] = "Er is een fout opgetreden bij het laden van de Addon"
@@ -188,32 +174,25 @@ t["Client Settings"] = "Client Instellingen"
 t["About"] = "Over"
 t["Unknown"] = "Onbekend"
 t["Loading"] = "Bezig met laden van"
-
 --New CAF Stuff
-t["This Addon is up to date"] = "Deze addon is volledig up to date";
-t["This Addon is out of date"] = "Deze addon moet geupdate worden";
-t["No Update Information Available"] = "Geen Update informatie gevonden";
-
+t["This Addon is up to date"] = "Deze addon is volledig up to date"
+t["This Addon is out of date"] = "Deze addon moet geupdate worden"
+t["No Update Information Available"] = "Geen Update informatie gevonden"
 --Default Stool Stuff
 t["caf_stool_disabled"] = "Deze Stool is niet actief"
 t["caf_stool_entity_disabled"] = "Deze Stool Entity is niet actief"
 t["caf_stool_entity_model_disabled"] = "Dit Stool Entity Model is niet actief"
-t["caf_stool_admin_required"] = "Om deze Stool te gebruiken moet je Admin rechten hebben.";
-t["caf_stool_entity_admin_required"] = "Om deze Stool Entity te gebruiken moet je Admin rechten hebben.";
-t["caf_stool_entity_model_admin_required"] = "Om dit Stool Entity Model te gebruiken moet je Admin rechten hebben.";
-
+t["caf_stool_admin_required"] = "Om deze Stool te gebruiken moet je Admin rechten hebben."
+t["caf_stool_entity_admin_required"] = "Om deze Stool Entity te gebruiken moet je Admin rechten hebben."
+t["caf_stool_entity_model_admin_required"] = "Om dit Stool Entity Model te gebruiken moet je Admin rechten hebben."
 t["This Addon is already Active!"] = "Deze Addon is al actief!"
 t["This Addon is already disabled!"] = "Deze Addon is niet actief!"
 t["Not on a Spacebuild Map!"] = "Niet op een Spacebuild Kaart!"
-
-CAF.LANGUAGE["nl"] = t;
-
+CAF.LANGUAGE["nl"] = t
 local t = CAF.LANGUAGE["de"] or {}
-
 --Custom Addon Framework
 t["caf_menu_title"] = "Custom Addon Framework Menü"
 t["caf_menu_tab_title"] = "Custom Addon Framework"
-
 --Life Support
 t["Life Support"] = "Lebenserhaltung"
 t["Generator"] = "Generator"
@@ -230,7 +209,6 @@ t["Environmental Controls"] = "Umweltkontrollsysteme"
 t["sb_dev_plants_title"] = "Spacebuild Dev-Pflanzen"
 t["sb_dev_plants_desc"] = "Erstelle Dev-Pflanzen auf jeder Oberfläche."
 t["sb_dev_plants_desc2"] = "Links-Klick: Erstelle eine Dev-Pflanze.(nur Admins)  Nachladen: Pflanze aufpäppeln."
-
 t["O2 Refresh Rate"] = "O2 Aktualisierungs-Rate"
 t["Dev Plants (Auto O2 Refresher)"] = "Dev-Pflanzen (Automatische O2 Auffrischung)"
 t["#Dev Plants"] = "Admin-Pflanzen"
@@ -255,7 +233,6 @@ t["Beta"] = "Beta"
 t["This Addon is already Active!"] = "Dieses Addon ist bereits aktiv!"
 t["Resource Distribution is Required and needs to be Active!"] = "Resource Distribution wird benötigt und muss aktiv sein!"
 t["This addon wasn't on in the first place"] = "Dieses Addon war noch nicht aktiv"
-
 --CAF Stuff
 t["Error unloading Addon"] = "Fehler beim Entladen des Addons"
 t["Error loading Addon"] = "Fehler beim Laden des Addons"
@@ -288,32 +265,25 @@ t["Client Settings"] = "Client Einstellungen"
 t["About"] = "Über"
 t["Unknown"] = "Unbekannt"
 t["Loading"] = "Lade"
-
 --New CAF Stuff
-t["This Addon is up to date"] = "Dieses Addon ist aktuell";
-t["This Addon is out of date"] = "Dieses Addon ist veraltet";
-t["No Update Information Available"] = "Keine Update-Informationen verfügbar";
-
+t["This Addon is up to date"] = "Dieses Addon ist aktuell"
+t["This Addon is out of date"] = "Dieses Addon ist veraltet"
+t["No Update Information Available"] = "Keine Update-Informationen verfügbar"
 --Default Stool Stuff
 t["caf_stool_disabled"] = "Dieses Stool ist deaktiviert"
 t["caf_stool_entity_disabled"] = "Dieses Stool Entity ist deaktiviert"
 t["caf_stool_entity_model_disabled"] = "Dieses Stool Entity Model ist deaktiviert"
-t["caf_stool_admin_required"] = "Dieses Stool benötigt Adminrechte";
-t["caf_stool_entity_admin_required"] = "Dieses Stool Entity benötigt Adminrechte";
-t["caf_stool_entity_model_admin_required"] = "Dieses Stool Entity Model benötigt Adminrechte";
-
+t["caf_stool_admin_required"] = "Dieses Stool benötigt Adminrechte"
+t["caf_stool_entity_admin_required"] = "Dieses Stool Entity benötigt Adminrechte"
+t["caf_stool_entity_model_admin_required"] = "Dieses Stool Entity Model benötigt Adminrechte"
 t["This Addon is already Active!"] = "Dieses Addon ist bereits aktiv!"
 t["This Addon is already disabled!"] = "Dieses Addon ist bereits deaktiviert!"
 t["Not on a Spacebuild Map!"] = "Dieses ist keine Spacebuild-Map!"
-
-CAF.LANGUAGE["de"] = t;
-
+CAF.LANGUAGE["de"] = t
 local t = CAF.LANGUAGE["pt-BR"] or {}
-
 --Custom Addon Framework
 t["caf_menu_title"] = "Menu Custom Addon Framework"
 t["caf_menu_tab_title"] = "Custom Addon Framework"
-
 --Life Support
 t["Life Support"] = "Suporte de Vida"
 t["Generator"] = "Gerador"
@@ -330,7 +300,6 @@ t["Environmental Controls"] = "Controles de Ambiente"
 t["sb_dev_plants_title"] = "Planta Dev Spacebuild"
 t["sb_dev_plants_desc"] = "Criar Plantas Dev fixadas á qualquer superfície."
 t["sb_dev_plants_desc2"] = "Clique Esquerdo: Criar uma Planta Dev.(Somente Admins) Recarregar: Consertar Planta."
-
 t["O2 Refresh Rate"] = "Taxa de Recarregamento O2"
 t["Dev Plants (Auto O2 Refresher)"] = "Plantas Dev (Recarregador de O2 Automático)"
 t["#Dev Plants"] = "#Planta Dev"
@@ -355,7 +324,6 @@ t["Beta"] = "Beta"
 t["This Addon is already Active!"] = "Esse Addon já está Ativo!"
 t["Resource Distribution is Required and needs to be Active!"] = "Resource Distribution é necessário e precisa estar Ativo!"
 t["This addon wasn't on in the first place"] = "Esse Addon não estava ligado para começar"
-
 --CAF Stuff
 t["Error unloading Addon"] = "Erro upando Addon"
 t["Error loading Addon"] = "Erro carregando Addon"
@@ -388,23 +356,18 @@ t["Client Settings"] = "Configurações do Cliente"
 t["About"] = "Sobre"
 t["Unknown"] = "Desconhecido"
 t["Loading"] = "Carregando"
-
 --New CAF Stuff
-t["This Addon is up to date"] = "Esse Addon está atualizado";
-t["This Addon is out of date"] = "Esse Addon está destualizado";
-t["No Update Information Available"] = "Nenhuma Informção de Atualização Disponível";
-
+t["This Addon is up to date"] = "Esse Addon está atualizado"
+t["This Addon is out of date"] = "Esse Addon está destualizado"
+t["No Update Information Available"] = "Nenhuma Informção de Atualização Disponível"
 --Default Stool Stuff
 t["caf_stool_disabled"] = "Esse Stool não está ativo"
 t["caf_stool_entity_disabled"] = "Esse Entidade Stool não está ativa"
 t["caf_stool_entity_model_disabled"] = "Esse Modelo de Entidade Stool não está ativo"
-t["caf_stool_admin_required"] = "Esse Stool é exclusivo para Admins";
-t["caf_stool_entity_admin_required"] = "Essa Entidade Stool é exclusiva para Admins";
-t["caf_stool_entity_model_admin_required"] = "Esse Modelo de Entidade Stool é exclusivo para Admins";
-
+t["caf_stool_admin_required"] = "Esse Stool é exclusivo para Admins"
+t["caf_stool_entity_admin_required"] = "Essa Entidade Stool é exclusiva para Admins"
+t["caf_stool_entity_model_admin_required"] = "Esse Modelo de Entidade Stool é exclusivo para Admins"
 t["This Addon is already Active!"] = "Esse Addon já está Ativo!"
 t["This Addon is already disabled!"] = "Esse Addon já está Desativado!"
 t["Not on a Spacebuild Map!"] = "Esse não é um Mapa Spacebuild!"
-
-CAF.LANGUAGE["pt-BR"] = t;
-
+CAF.LANGUAGE["pt-BR"] = t
