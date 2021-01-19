@@ -18,7 +18,6 @@
 		limitations under the License.
 ]]
 --Simple cache mechanism using the LRU Strategy
-local table = table
 local setmetatable = setmetatable
 local CurTime = CurTime
 local tonumber = tonumber
@@ -30,7 +29,6 @@ local list = {}
 list.__index = list
 list.type = "cache"
 local time
-local index
 
 local function removeOldData(cache)
 	time = CurTime()

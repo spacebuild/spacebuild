@@ -146,7 +146,6 @@ local function RequestResourceData(ply, com, args)
 
 				if num ~= -1 then
 					storage = false
-					local v
 
 					if resnames and table.Count(resnames) > 0 then
 						for _, k in pairs(resnames) do
@@ -576,7 +575,6 @@ function RD.ConsumeResource(ent, resource, amount)
 	if not IsValid(ent) then return 0, "Not a valid entity" end
 	if not resource then return 0, "No resource given" end
 	if not amount then return 0, "No amount given" end
-	local origamount = amount
 	local consumed = 0
 
 	if ent_table[ent:EntIndex()] then

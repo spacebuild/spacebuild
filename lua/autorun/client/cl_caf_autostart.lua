@@ -45,7 +45,6 @@ hooks["think2"] = {}
 hooks["think3"] = {}
 hooks["OnAddonDestruct"] = {}
 hooks["OnAddonConstruct"] = {}
-hooks["OnAddonExtraOptionChange"] = {}
 
 local function ErrorOffStuff(String)
 	Msg("----------------------------------------------------------------------\n")
@@ -121,18 +120,6 @@ local function OnAddonConstruct(name)
 		end
 
 		CAF2.RefreshMainMenu()
-	end
-end
-
-local function OnAddonExtraOptionChange(AddonName, OptionName, NewStatus)
-	if not AddonName or not OptionName then return nil, CAF.GetLangVar("Missing Argument") end
-
-	for k, v in pairs(hooks["OnAddonExtraOptionChange"]) do
-		local ok, err = pcall(v, AddonName, OptionName, NewStatus)
-
-		if not ok then
-			CAF2.WriteToDebugFile("CAF_Hooks", "OnAddonExtraOptionChange Error " .. err .. "\n")
-		end
 	end
 end
 
@@ -254,10 +241,6 @@ local function DrawPopups()
 end
 
 hook.Add("HUDPaint", "CAF_Core_POPUPS", DrawPopups)
-
-local function MessageOfTheDay()
-	return "Welcome to CAF\nYou are using version " .. CAF2.version
-end
 
 --local function ShowNextTopMessage()
 local function ShowNextPopupMessage()
@@ -519,7 +502,6 @@ local function AddCAFInfoToStatus(List)
 	--Start Add Custom Stuff
 	local x = 0
 	local y = 0
-	local ply = LocalPlayer()
 	--Version Check
 	local versionupdatetext = vgui.Create("DLabel", contentpanel)
 	versionupdatetext:SetPos(x + 10, y)
@@ -622,7 +604,6 @@ local function GetStatusPanel(frame)
 				--Start Add Custom Stuff
 				local x = 0
 				local y = 0
-				local ply = LocalPlayer()
 				--Version Check
 				local versionupdatetext = vgui.Create("DLabel", contentpanel)
 				versionupdatetext:SetPos(x + 10, y)

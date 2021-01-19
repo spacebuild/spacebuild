@@ -55,7 +55,6 @@ function ENT:DoNormalDraw(bDontDrawModel)
 	end
 
 	if (EyePos():Distance(self:GetPos()) < rd_overlay_dist and mode ~= 0) and ((mode ~= 1 and not string.find(self:GetModel(), "s_small_res")) or LocalPlayer():GetEyeTrace().Entity == self) then
-		local trace = LocalPlayer():GetEyeTrace()
 
 		if (not bDontDrawModel) then
 			self:DrawModel()
@@ -186,7 +185,6 @@ function ENT:DoNormalDraw(bDontDrawModel)
 				local cons = nettable.cons
 
 				if (table.Count(cons) > 0) then
-					local i = 0
 					surface.SetFont("Flavour")
 					surface.SetTextColor(200, 200, 255, 255)
 

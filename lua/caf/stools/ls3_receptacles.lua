@@ -201,28 +201,6 @@ local function liquid_nitrogen_tank_func(ent, type, sub_type, devinfo, Extra_Dat
 	return mass, maxhealth
 end
 
-local function hot_liquid_nitrogen_tank_func(ent, type, sub_type, devinfo, Extra_Data, ent_extras)
-	local volume_mul = 1
-	local base_volume = 4084
-	local base_mass = 20
-	local base_health = 200
-	local phys = ent:GetPhysicsObject()
-
-	if phys:IsValid() and phys.GetVolume then
-		local vol = phys:GetVolume()
-		vol = math.Round(vol)
-		volume_mul = vol / base_volume
-	end
-
-	CAF.GetAddon("Resource Distribution").AddResource(ent, "hot liquid nitrogen", math.Round(2500 * volume_mul))
-	ent.MAXRESOURCE = math.Round(2500 * volume_mul)
-	local mass = math.Round(base_mass * volume_mul)
-	ent.mass = mass
-	local maxhealth = math.Round(base_health * volume_mul)
-
-	return mass, maxhealth
-end
-
 local function heavywater_tank_func(ent, type, sub_type, devinfo, Extra_Data, ent_extras)
 	local volume_mul = 1
 	local base_volume = 4084

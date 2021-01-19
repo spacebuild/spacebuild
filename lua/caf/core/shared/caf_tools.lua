@@ -242,7 +242,7 @@ if (SERVER) then
 		local const
 
 		if (not DontWeld) and (trace.Entity:IsValid() or AllowWorldWeld) then
-			local const = constraint.Weld(ent, trace.Entity, 0, trace.PhysicsBone, 0, true) --add true to turn DOR on
+			const = constraint.Weld(ent, trace.Entity, 0, trace.PhysicsBone, 0, true) --add true to turn DOR on
 		end
 
 		undo.Create(ToolName)

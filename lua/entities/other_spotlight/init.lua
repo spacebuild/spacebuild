@@ -95,7 +95,6 @@ function ENT:Think()
 
 	if self.Active == 1 and not self.flashlight then
 		--self:SetOn(true)
-		local angForward = self:GetAngles() + Angle(0, 0, 0)
 		self.flashlight = ents.Create("env_projectedtexture")
 		self.flashlight:SetParent(self)
 		-- The local positions are the offsets from parent..

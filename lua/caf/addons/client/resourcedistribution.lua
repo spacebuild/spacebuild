@@ -1,5 +1,4 @@
 ﻿local RD = {}
---local nettable = {};
 --local ent_table = {};
 local resourcenames = {}
 local resources = {}
@@ -15,12 +14,6 @@ local client_chosen_number = CreateClientConVar("number_to_send", "1", false, fa
 local client_chosen_hold = CreateClientConVar("number_to_hold", "0", false, false)
 
 ----------NetTable functions
-local function CreateNetTable(netid)
-	nettable[netid] = {}
-	local index = nettable[netid]
-	index.resources = {}
-	index.cons = {}
-end
 
 local function ClearNets()
 	rd_cache:clear()
@@ -57,7 +50,6 @@ local function AddEntityToCache(nrofbytes)
 
 	data.network = ReadShort() --network key
 	data.resources = {}
-	local i = 0
 	local nr_of_resources = ReadShort()
 
 	if (nr_of_resources > 0) then
@@ -98,7 +90,6 @@ local function AddNetworkToCache(nrofbytes)
 	end
 
 	data.resources = {}
-	local i = 0
 	local nr_of_resources = ReadShort()
 
 	if (nr_of_resources > 0) then
@@ -109,7 +100,7 @@ local function AddNetworkToCache(nrofbytes)
 		local localmaxvalue
 		local localvalue
 
-		for i = 1, nr_of_resources do
+		for _ = 1, nr_of_resources do
 			--print(i)
 			resource = net.ReadString()
 			maxvalue = ReadLong()
@@ -250,30 +241,6 @@ end
 
 CAF.RegisterAddon("Resource Distribution", RD, "1")
 
---[[ Shared stuff ]]
---TODO UPDATE FROM HERE
---RD.GetEntityTable(ent)
---RD.GetNetTable(netid)
---[[function RD.getConnectedNets(netid) -- NEEDED ANYWHERE?
-	local contable = {}
-	local tmpcons = { netid}
-	while(table.Count(tmpcons) > 0) do
-		for k, v in pairs(tmpcons) do
-			if not table.HasValue(contable, v) then
-				table.insert(contable, v)
-				if nettable[v] and nettable[v].cons then
-					if table.Count(nettable[v].cons) > 0 then
-						for l, w in pairs(nettable[v].cons) do
-							table.insert(tmpcons, w)
-						end
-					end
-				end
-			end
-			table.remove(tmpcons, k)
-		end
-	end
-	return contable
-end]]
 function RD.GetNetResourceAmount(netid, resource)
 	if not resource then return 0, "No resource given" end
 	local data = RD.GetNetTable(netid)
@@ -401,24 +368,11 @@ function RD.GetRegisteredResources()
 	return table.Copy(resources)
 end
 
---[[function RD.GetNetworkIDs() --NEEDED FOR SOMEONE?
-	local ids = {}
-	if table.Count(nettable) > 0 then
-		for k, v in pairs(nettable) do
-			if not v.clear then
-				table.insert(ids, k)
-			end
-		end
-	end
-	return ids
-end]]
+
 function RD.PrintDebug(ent)
 	if ent then
 		if ent.IsNode then
-			local nettable = RD.GetNetTable(ent.netid)
-			PrintTable(nettable)
-		elseif ent.IsValve then
-		elseif ent.IsPump then
+			PrintTable(RD.GetNetTable(ent.netid))
 		else -- --
 			local enttable = RD.GetEntityTable(ent)
 			PrintTable(enttable)
@@ -453,7 +407,7 @@ function RD.Beam_Render(ent)
 	--if we have beams, then create them
 	if intBeams and intBeams ~= 0 then
 		--make some vars we are about to use
-		local i, start, scroll = 1, ent:GetNWVector("Beam1"), CurTime() * 0.5
+		local start, scroll = ent:GetNWVector("Beam1"), CurTime() * 0.5
 		--get beam info and explode into a table
 		local beamInfo = string.Explode(";", ent:GetNWString("BeamInfo"))
 		--get beam info from table (1: beamMaterial 2: beamSize 3: beamR 4: beamG 5: beamB 6: beamAlpha)

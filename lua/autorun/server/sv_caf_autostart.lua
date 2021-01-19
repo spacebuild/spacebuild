@@ -38,7 +38,6 @@ hooks["think3"] = {}
 hooks["OnEntitySpawn"] = {}
 hooks["OnAddonDestruct"] = {}
 hooks["OnAddonConstruct"] = {}
-hooks["OnAddonExtraOptionChange"] = {}
 hooks["TOOL_Allow_Entity_Spawn"] = {}
 
 function CAF2.AllowSpawn(type, sub_type, class, model)
@@ -171,18 +170,6 @@ local function OnAddonConstruct(name)
 			if not (ok) then
 				CAF2.WriteToDebugFile("CAF_Hooks", "OnAddonConstruct Error: " .. err .. "\n")
 			end
-		end
-	end
-end
-
-local function OnAddonExtraOptionChange(AddonName, OptionName, NewStatus)
-	if not AddonName or not OptionName then return nil, "Missing Argument" end
-
-	for k, v in pairs(hooks["OnAddonExtraOptionChange"]) do
-		local ok, err = pcall(v, AddonName, OptionName, NewStatus)
-
-		if not (ok) then
-			CAF2.WriteToDebugFile("CAF_Hooks", "OnAddonExtraOptionChange Error: " .. err .. "\n")
 		end
 	end
 end

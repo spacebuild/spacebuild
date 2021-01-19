@@ -1,5 +1,4 @@
 ﻿local LS = {}
-local this = LS
 local status = false
 --Local Stuff
 local Display_temperature = CreateClientConVar("LS_Display_Temperature", "K", true, false)
@@ -25,10 +24,8 @@ surface.CreateFont("LS3HudSubSubtitle", {
 })
 
 --Temperate 
-local Temp_Min = 0
 local FairTemp_Min = 283
 local FairTemp_Max = 308
-local Temp_Max = 546
 --Hook Values
 local ls_environment = {}
 ls_environment.o2 = 0

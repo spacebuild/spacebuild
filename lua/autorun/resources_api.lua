@@ -181,7 +181,6 @@ if (SERVER) then
 
 	-- No idea how this works.
 	function meta:ResourcesGetConnected()
-		local ent = self
 	end
 
 	function meta:ResourcesApplyDupeInfo(ply, entity, CreatedEntities)

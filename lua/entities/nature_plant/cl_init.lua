@@ -42,7 +42,6 @@ function ENT:DoNormalDraw(bDontDrawModel)
 			OverlayText = OverlayText .. CAF.GetAddon("Resource Distribution").GetProperResourceName("water") .. ": " .. CAF.GetAddon("Resource Distribution").GetResourceAmount(self, "water") .. "\n"
 			AddWorldTip(self:EntIndex(), OverlayText, 0.5, self:GetPos(), self)
 		else
-			local rot = Vector(0, 0, 90)
 			local TempY = 0
 			--local pos = self:GetPos() + (self:GetForward() ) + (self:GetUp() * 40 ) + (self:GetRight())
 			local pos = self:GetPos() + (self:GetUp() * (self:BoundingRadius() + 10))

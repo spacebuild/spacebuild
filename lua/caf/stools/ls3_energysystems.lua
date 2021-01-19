@@ -197,8 +197,8 @@ local function energy_generator_func(ent, type, sub_type, devinfo, Extra_Data, e
 			volume_mul = volume / base_volume
 		end
 
-		local base_mass = 100
-		local base_health = 150
+		base_mass = 100
+		base_health = 150
 		ent:AddResource("energy", math.ceil(volume_mul * 100))
 	elseif type == "generator_energy_solar" then
 		base_volume = 1982 --2950 --1014
@@ -252,7 +252,6 @@ TOOL.Devices = {
 				model = "models/chipstiks_ls3_models/OxygenCompressor/oxygencompressor.mdl",
 				skin = 0,
 				legacy = false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
-				
 			},
 		},
 	},
@@ -267,7 +266,6 @@ TOOL.Devices = {
 				model = "models/chipstiks_ls3_models/OxygenCompressor/oxygencompressor.mdl",
 				skin = 0,
 				legacy = false, --these two vars must be defined per ent as the old tanks (defined in external file) require different values
-				
 			},
 		},
 	},

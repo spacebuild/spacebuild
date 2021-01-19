@@ -69,7 +69,6 @@ function TOOL:LeftClick(trace)
 	if (iNum > 1) then
 		local Ent1 = self:GetEnt(1) --get first ent
 		local Ent2 = self:GetEnt(iNum) --get last ent
-		local length = (self:GetPos(1) - self:GetPos(iNum)):Length()
 
 		if Ent1.IsNode and Ent2.IsValve and Ent2.IsEntityValve then
 			if Ent1:GetPos():Distance(Ent2:GetPos()) <= Ent1.range then

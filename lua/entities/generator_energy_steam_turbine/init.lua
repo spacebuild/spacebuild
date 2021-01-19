@@ -186,7 +186,6 @@ end
 
 function ENT:Pump_Air()
 	self.steam = self:GetResourceAmount("steam")
-	local mul = 1
 	local sinc = (Steam_Increment + (self.overdrive * Steam_Increment)) * self.Multiplier
 	sinc = math.ceil(sinc * self:GetMultiplier())
 

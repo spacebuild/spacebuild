@@ -97,9 +97,7 @@ function ENT:GenEnergy()
 	else
 		local entpos = self:GetPos()
 		local trace = {}
-		local lit = false
 		local SunAngle2 = SunAngle or Vector(0, 0, 1)
-		local SunAngle
 
 		if TrueSun and table.Count(TrueSun) > 0 then
 			local output = 0

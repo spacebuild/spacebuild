@@ -45,20 +45,6 @@ function ENT:TurnOn()
 		self:EmitSound("apc_engine_start")
 		self.Active = 1
 		self:UpdateSize(self.sbenvironment.size, self.currentsize) --We turn the forcefield that contains the environment on
-		--[[if self.environment and not self.environment:IsSpace() then --Fill the environment with air if the surounding environment has o2, replace with CO2
-              self.sbenvironment.air.o2 = self.sbenvironment.air.o2 + self.environment:Convert(0, -1, math.Round(self.sbenvironment.air.max/18))
-              self.sbenvironment.air.empty = self.sbenvironment.air.empty - self.sbenvironment.air.o2
-          end*]]
-		local oxygen = self:GetResourceAmount("oxygen")
-		--[[if oxygen >= math.ceil(self.sbenvironment.air.max/ 18) then
-              local left = RD.ConsumeResource(self, "oxygen", math.ceil(self.sbenvironment.air.max/ 18) )
-              self.sbenvironment.air.o2 = math.ceil(self.sbenvironment.air.max/ 18) - left
-              self.sbenvironment.air.empty = self.sbenvironment.air.empty - self.sbenvironment.air.o2
-          elseif oxygen > 0 then
-              local left = RD.ConsumeResource(self, "oxygen", oxygen )
-              self.sbenvironment.air.o2 = oxygen - left
-              self.sbenvironment.air.empty = self.sbenvironment.air.empty - self.sbenvironment.air.o2
-          end]]
 		self:ConsumeResource("energy", math.ceil(self.sbenvironment.size / self.maxsize) * 200 * math.ceil(self.maxsize / 1024))
 
 		if not (WireAddon == nil) then

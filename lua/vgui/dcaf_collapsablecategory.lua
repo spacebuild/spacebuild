@@ -28,8 +28,7 @@ function PANEL:Init()
 	self:SetText("Show More")
 end
 
-function PANEL:PerformLayout()
-	local w, h = self:GetWide(), self:GetTall()
+function PANEL:PerformLayout(w)
 	self.Name:SetSize(w - 60, 15)
 	self.Status:SetSize(w - 60, 15)
 	self.Version:SetSize(w - 60, 15)

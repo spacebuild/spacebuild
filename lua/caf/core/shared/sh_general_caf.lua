@@ -1,6 +1,5 @@
 ﻿local CAF2 = CAF
 local CAF3 = CAF2.CAF3
-local DEBUG = CAF3.DEBUG
 local Addons = CAF3.Addons
 local addonlevel = CAF3.addonlevel
 local hooks = CAF3.hooks
@@ -117,7 +116,6 @@ end
 		OnEntitySpawn: Get's called when an entity spawns (parameters: Entity, Type(string), Player who spawned it)
 		OnAddonDestruct: Gets called when an addon gets disabled (Parameters: Name of addon)
 		OnAddonConstruct: Get called when an addon gets Enabled (parameters: Name of addon)
-		OnAddonExtraOptionChange: Gets called when an Extra option on an addon changes (Parameters: Addonname, CustomStatusname, NewStatus value)
 		
 ]]
 function CAF2.AddHook(HookName, func)

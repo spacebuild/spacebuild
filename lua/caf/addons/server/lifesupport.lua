@@ -7,20 +7,6 @@ CreateConVar("LS_AllowNukeEffect", "1") --Update to something changeable later o
 local SB_AIR_O2 = 0
 local SB_AIR_CO2 = 1
 
-local function CheckRegulators()
-	for k, v in pairs(LS.generators.air) do
-		if not v then
-			table.remove(LS.generators.air, k)
-		end
-	end
-
-	for k, v in pairs(LS.generators.temperature) do
-		if not v then
-			table.remove(LS.generators.temperature, k)
-		end
-	end
-end
-
 LS.generators = {}
 LS.generators.air = {}
 LS.generators.temperature = {}

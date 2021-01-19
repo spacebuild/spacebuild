@@ -184,7 +184,6 @@ function ENT:OnRemove()
 end
 
 function ENT:Proc_Water()
-	local energy = self:GetResourceAmount("energy")
 	local o2 = self:GetResourceAmount("oxygen")
 	local h = self:GetResourceAmount("hydrogen")
 	local einc = Energy_Increment + (self.overdrive * Energy_Increment)

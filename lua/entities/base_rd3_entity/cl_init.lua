@@ -4,8 +4,8 @@ local OOO = {}
 OOO[0] = "Off"
 OOO[1] = "On"
 OOO[2] = "Overdrive"
-local client_chosen_number = CreateClientConVar("number_to_send", "0", true, false)
-local client_chosen_hold = CreateClientConVar("number_to_hold", "1", true, false)
+CreateClientConVar("number_to_send", "0", true, false) -- TODO Unused?
+CreateClientConVar("number_to_hold", "1", true, false)
 
 function ENT:Draw(bDontDrawModel)
 	self:DoNormalDraw()
@@ -57,7 +57,6 @@ function ENT:DoNormalDraw(bDontDrawModel)
 		local OverlaySettings = list.Get("LSEntOverlayText")[self:GetClass()]
 		local HasOOO = OverlaySettings.HasOOO
 		local num = OverlaySettings.num or 0
-		local strings = OverlaySettings.strings
 		local resnames = OverlaySettings.resnames
 		local genresnames = OverlaySettings.genresnames
 		--End overlaysettings
@@ -138,7 +137,6 @@ function ENT:DoNormalDraw(bDontDrawModel)
 
 			AddWorldTip(self:EntIndex(), OverlayText, 0.5, self:GetPos(), self)
 		else
-			local rot = Vector(0, 0, 90)
 			local TempY = 0
 			local maxvector = self:OBBMaxs()
 			local getpos = self:GetPos()

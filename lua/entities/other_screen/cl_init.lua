@@ -185,7 +185,6 @@ function ENT:DoNormalDraw(bDontDrawModel)
 	end
 
 	if (EyePos():Distance(self:GetPos()) < rd_overlay_dist and self:GetOOO() == 1) then
-		local trace = LocalPlayer():GetEyeTrace()
 
 		if (not bDontDrawModel) then
 			self:DrawModel()
