@@ -2,9 +2,12 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
 include('shared.lua')
+
+DEFINE_BASECLASS("base_rd3_entity")
+
 --Todo: Add Cooldown? = toWater
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.damaged = 0
     self.vent = false
     if not (WireAddon == nil) then
@@ -28,7 +31,7 @@ function ENT:TriggerInput(iname, value)
 end
 
 function ENT:OnRemove()
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     local air = self:GetResourceAmount("steam")
     self:ConsumeResource("steam", air);
     if self.environment then
@@ -48,7 +51,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self:StopSound("PhysicsCannister.ThrusterLoop") --Change to a new air Vent/Escaping Sound
     self.damaged = 0
@@ -94,7 +97,7 @@ function ENT:UpdateMass()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if (self.damaged == 1 or self.vent) then
         self:Leak()
     end

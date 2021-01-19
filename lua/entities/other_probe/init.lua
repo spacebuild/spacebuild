@@ -5,11 +5,13 @@ util.PrecacheSound("Buttons.snd17")
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 local Energy_Increment = 4
 local BeepCount = 3
 
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.damaged = 0
     if not (WireAddon == nil) then
@@ -60,7 +62,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -112,7 +114,7 @@ function ENT:ShowOutput()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
 
     if (self.Active == 1) then
         self:Sense()

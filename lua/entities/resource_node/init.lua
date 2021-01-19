@@ -5,7 +5,6 @@ AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
 function ENT:Initialize()
-	--self.BaseClass.Initialize(self) --use this in all ents
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
@@ -14,10 +13,6 @@ function ENT:Initialize()
 	self:SetNetworkedInt( "overlaymode", 2 )
 	self.range = self.range or 512
 	self:SetNetworkedInt( "range", self.range )
-	-- Will add the ability to the node to store 1000 units of energy
-	--CAF.GetAddon("Resource Distribution").AddNetResource(self.netid, "energy", 1000)
-	-- Will Add the ability to the node to store 1000 units of water, with the startup amount at 500 units
-	--CAF.GetAddon("Resource Distribution").AddNetResource(self.netid, "water", 1000, 500)
 end
 
 function ENT:SetCustomNodeName(name)
@@ -39,7 +34,7 @@ end
 function ENT:AcceptInput(name,activator,caller)
 end
 
-function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
+function ENT:OnTakeDamage(DmgInfo) --should make the damage go to the shield if the shield is installed(CDS)
 	if self.Shield then
 		self.Shield:ShieldDamage(DmgInfo:GetDamage())
 		CDS_ShieldImpact(self:GetPos())
@@ -97,12 +92,10 @@ function ENT:OnRemove()
 end
 
 function ENT:OnRestore()
-	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
 	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
-	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
 	local RD = CAF.GetAddon("Resource Distribution")
 	RD.BuildDupeInfo(self)
 	if not (WireAddon == nil) then
@@ -114,7 +107,6 @@ function ENT:PreEntityCopy()
 end
 
 function ENT:PostEntityPaste( Player, Ent, CreatedEntities )
-	--self.BaseClass.PostEntityPaste(self, Player, Ent, CreatedEntities ) --use this if you have to use PostEntityPaste
 	local RD = CAF.GetAddon("Resource Distribution")
 	RD.ApplyDupeInfo(Ent, CreatedEntities)
 	if not (WireAddon == nil) and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then

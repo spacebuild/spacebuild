@@ -7,8 +7,10 @@ util.PrecacheSound("common/warning.wav")
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_sb_environment")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.damaged = 0
     self:CreateEnvironment(1, 1, 1, 0, 0, 0, 0, 0)
@@ -117,7 +119,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -129,7 +131,7 @@ end
 
 function ENT:OnRemove()
     CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     self:StopSound("apc_engine_start")
 end
 
@@ -422,7 +424,7 @@ function ENT:Climate_Control()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     self:Climate_Control()
     self:NextThink(CurTime() + 1)
     return true

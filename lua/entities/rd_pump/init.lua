@@ -127,7 +127,6 @@ end
 hook.Add("PlayerFullLoad", "RD_Pump_info_Update", UserConnect)
 
 function ENT:Initialize()
-	--self.BaseClass.Initialize(self) --use this in all ents
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
@@ -343,7 +342,6 @@ function ENT:Disconnect()
 end
 
 function ENT:OnRemove()
-	--self.BaseClass.OnRemove(self) --use this if you have to use OnRemove
 	self:Disconnect()
 	CAF.GetAddon("Resource Distribution").Unlink(self)
 	CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
@@ -351,12 +349,10 @@ function ENT:OnRemove()
 end
 
 function ENT:OnRestore()
-	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
 	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
-	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
 	local RD = CAF.GetAddon("Resource Distribution")
 	RD.BuildDupeInfo(self)
 	if not (WireAddon == nil) then
@@ -368,7 +364,6 @@ function ENT:PreEntityCopy()
 end
 
 function ENT:PostEntityPaste( Player, Ent, CreatedEntities )
-	--self.BaseClass.PostEntityPaste(self, Player, Ent, CreatedEntities ) --use this if you have to use PostEntityPaste
 	local RD = CAF.GetAddon("Resource Distribution")
 	RD.ApplyDupeInfo(Ent, CreatedEntities)
 	if not (WireAddon == nil) and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then

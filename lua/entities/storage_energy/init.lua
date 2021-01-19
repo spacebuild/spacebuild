@@ -2,8 +2,10 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.energy = 0
     self.damaged = 0
     self.vent = false
@@ -31,7 +33,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -84,7 +86,7 @@ function ENT:Leak()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if ((self.damaged == 1 or self.vent)) then
         self:Leak()
     end

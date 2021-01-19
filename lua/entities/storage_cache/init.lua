@@ -4,8 +4,10 @@ util.PrecacheSound("ambient.steam01")
 --Extra Resources Added by DataSchmuck for the McBuild's Community
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.damaged = 0
     self.venten = false
     self.ventoxy = false
@@ -93,7 +95,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
     self:StopSound("PhysicsCannister.ThrusterLoop")
@@ -107,7 +109,7 @@ function ENT:Destruct()
 end
 
 function ENT:OnRemove()
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     local air = self:GetResourceAmount("oxygen")
     local co2 = self:GetResourceAmount("carbon dioxide")
     local hydrogen = self:GetResourceAmount("hydrogen")
@@ -269,7 +271,7 @@ function ENT:UpdateMass()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
 
     if (self.damaged == 1 or self.venten) then
         self:ExpEnergy()

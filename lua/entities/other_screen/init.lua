@@ -8,6 +8,8 @@ util.PrecacheSound( "Buttons.snd17" )
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 --
 local screens = {}
 
@@ -99,7 +101,7 @@ hook.Add("PlayerInitialSpawn", "LS_Screen_info_Update", UserConnect)
 local Energy_Increment = 4
 
 function ENT:Initialize()
-	self.BaseClass.Initialize(self)
+	BaseClass.Initialize(self)
 	self.Active = 0
 	self.damaged = 0
 	self.resources = {}
@@ -159,7 +161,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.BaseClass.Repair(self)
+	BaseClass.Repair(self)
 	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
@@ -171,7 +173,7 @@ function ENT:Destruct()
 end
 
 function ENT:Think()
-	self.BaseClass.Think(self)
+	BaseClass.Think(self)
 	
 	if (self.Active == 1) then
 		if (self:GetResourceAmount("energy") < math.Round(Energy_Increment * self:GetMultiplier())) then

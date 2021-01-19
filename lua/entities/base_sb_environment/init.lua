@@ -9,7 +9,6 @@ local SB_AIR_N = 2
 local SB_AIR_H = 3
 
 function ENT:Initialize()
-	--self.BaseClass.Initialize(self) --use this in all ents
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
@@ -193,7 +192,7 @@ function ENT:AcceptInput(name,activator,caller)
 	end
 end
 
-function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if the shield is installed(CDS)
+function ENT:OnTakeDamage(DmgInfo) --should make the damage go to the shield if the shield is installed(CDS)
 	if self.Shield then
 		self.Shield:ShieldDamage(DmgInfo:GetDamage())
 		CDS_ShieldImpact(self:GetPos())
@@ -205,7 +204,6 @@ function ENT:OnTakeDamage(DmgInfo)--should make the damage go to the shield if t
 end
 
 function ENT:Think()
-	--self.BaseClass.Think(self) --use this in all ents that use standard setoverlaytext
 	if (self.NextOverlayTextTime) and (CurTime() >= self.NextOverlayTextTime) then
 		if (self.NextOverlayText) then
 			self:SetNetworkedString( "GModOverlayText", self.NextOverlayText )
@@ -216,7 +214,6 @@ function ENT:Think()
 end
 
 function ENT:OnRemove()
-	--self.BaseClass.OnRemove(self) --use this if you have to use OnRemove
 	if CAF and CAF.GetAddon("Resource Distribution") then
 		CAF.GetAddon("Resource Distribution").Unlink(self)
 		CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
@@ -225,12 +222,10 @@ function ENT:OnRemove()
 end
 
 function ENT:OnRestore()
-	--self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
 	if not (WireAddon == nil) then Wire_Restored(self) end
 end
 
 function ENT:PreEntityCopy()
-	--self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
 	if CAF and CAF.GetAddon("Resource Distribution") then
 		local RD = CAF.GetAddon("Resource Distribution")
 		RD.BuildDupeInfo(self)
@@ -244,7 +239,6 @@ function ENT:PreEntityCopy()
 end
 
 function ENT:PostEntityPaste( Player, Ent, CreatedEntities )
-	--self.BaseClass.PostEntityPaste(self, Player, Ent, CreatedEntities ) --use this if you have to use PostEntityPaste
 	if CAF and CAF.GetAddon("Resource Distribution") then
 		local RD = CAF.GetAddon("Resource Distribution")
 		RD.ApplyDupeInfo(Ent, CreatedEntities)
@@ -256,93 +250,53 @@ end
 
 --NEW Functions 
 function ENT:RegisterNonStorageDevice()
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		RD.RegisterNonStorageDevice(self);
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	RD.RegisterNonStorageDevice(self);
 end
 
 function ENT:AddResource(resource, maxamount, defaultvalue)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.AddResource(self, resource, maxamount, defaultvalue)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.AddResource(self, resource, maxamount, defaultvalue)
 end
 
 function ENT:ConsumeResource( resource, amount)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.ConsumeResource(self, resource, amount)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.ConsumeResource(self, resource, amount)
 end
 
 function ENT:SupplyResource(resource, amount)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.SupplyResource(self, resource, amount)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.SupplyResource(self, resource, amount)
 end
 
 function ENT:Link(netid)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		RD.Link(self, netid)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	RD.Link(self, netid)
 end
 
 function ENT:Unlink()
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		RD.Unlink(self)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	RD.Unlink(self)
 end
 
 function ENT:GetResourceAmount(resource)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.GetResourceAmount(self, resource);
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.GetResourceAmount(self, resource);
 end
 
 function ENT:GetUnitCapacity(resource)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.GetUnitCapacity(self, resource)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.GetUnitCapacity(self, resource)
 end
 
 function ENT:GetNetworkCapacity(resource)
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.GetNetworkCapacity(self, resource)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.GetNetworkCapacity(self, resource)
 end
 
 function ENT:GetEntityTable()
-	if self.caf.custom.rdentitydata then
-	
-	else
-		local RD = CAF.GetAddon("Resource Distribution");
-		return RD.GetEntityTable(self)
-	end
+	local RD = CAF.GetAddon("Resource Distribution");
+	return RD.GetEntityTable(self)
 end
 
 --END NEW Functions
@@ -955,7 +909,7 @@ function ENT:OnEnvironment(ent, environment, space)
 				end
 			end
 		end
-	end	
+	end
 	return environment
 end
 
@@ -981,143 +935,7 @@ function ENT:PosInEnvironment(pos, other)
 	return other
 end
 
-function ENT:SendData(ply)
-	net.Start("AddPlanet")
-		net.WriteEntity(self) --planet.num
-		net.WriteString(self:GetEnvironmentName())
-		net.WriteFloat(self.sbenvironment.size)
-		if self.sbenvironment.bloom ~= nil then
-			net.WriteBool(true)
-			net.WriteInt(self.sbenvironment.bloom.Col_r, 16)
-			net.WriteInt(self.sbenvironment.bloom.Col_g, 16)
-			net.WriteInt(self.sbenvironment.bloom.Col_b, 16)
-			net.WriteFloat(self.sbenvironment.bloom.SizeX)
-			net.WriteFloat(self.sbenvironment.bloom.SizeY)
-			net.WriteFloat(self.sbenvironment.bloom.Passes)
-			net.WriteFloat(self.sbenvironment.bloom.Darken)
-			net.WriteFloat(self.sbenvironment.bloom.Multiply)
-			net.WriteFloat(self.sbenvironment.bloom.Color)
-		else
-			net.WriteBool(false)
-		end
-		if self.sbenvironment.color ~= nil then
-			net.WriteBool(true)
-			net.WriteInt(self.sbenvironment.color.AddColor_r, 16)
-			net.WriteInt(self.sbenvironment.color.AddColor_g, 16)
-			net.WriteInt(self.sbenvironment.color.AddColor_b, 16)
-			net.WriteInt(self.sbenvironment.color.MulColor_r, 16)
-			net.WriteInt(self.sbenvironment.color.MulColor_g, 16)
-			net.WriteInt(self.sbenvironment.color.MulColor_b, 16)
-			net.WriteFloat(self.sbenvironment.color.Brightness)
-			net.WriteFloat(self.sbenvironment.color.Contrast)
-			net.WriteFloat(self.sbenvironment.color.Color)
-		else
-			net.WriteBool(false)
-		end
-
-	if ply then
-		net.Send(ply)
-	else
-		net.Broadcast()
-	end
-end
-
-function ENT:BloomEffect(Col_r, Col_g, Col_b, SizeX, SizeY, Passes, Darken, Multiply, Color)
-	if SB_DEBUG then
-		Msg("Col_r/b/g: " .. tostring(Col_r) .. "/" .. tostring(Col_b) .. "/" .. tostring(Col_g) .. "\n")
-		Msg("SizeX/Y: " .. tostring(SizeX) .. "/" .. tostring(SizeY) .. "\n")
-		Msg("Passes: " .. tostring(Passes) .. "\n")
-		Msg("Darken: " .. tostring(Darken) .. "\n")
-		Msg("Multiply: " .. tostring(Multiply) .. "\n")
-		Msg("Color: " .. tostring(Color) .. "\n")
-	end
-	if Col_r then
-		self.sbenvironment.bloom.Col_r = Col_r
-	end
-	if Col_g then
-		self.sbenvironment.bloom.Col_g = Col_g
-	end
-	if Col_b then
-		self.sbenvironment.bloom.Col_b = Col_b
-	end
-	if SizeX then
-		self.sbenvironment.bloom.SizeX = SizeX
-	end
-	if SizeY then
-		self.sbenvironment.bloom.SizeY = SizeY
-	end
-	if Passes then
-		self.sbenvironment.bloom.Passes = Passes
-	end
-	if Darken then
-		self.sbenvironment.bloom.Darken = Darken
-	end
-	if Multiply then
-		self.sbenvironment.bloom.Multiply = Multiply
-	end
-	if Color then
-		self.sbenvironment.bloom.Color = Color
-	end
-	Msg("Sending bloom update\n")
-	self:SendData()
-end
-
-function ENT:ColorEffect(AddColor_r, AddColor_g, AddColor_b, MulColor_r, MulColor_g, MulColor_b, Brightness, Contrast, Color)
-	if SB_DEBUG then
-		Msg("AddColor_r/b/g: " .. tostring(AddColor_r) .. "/" .. tostring(AddColor_b) .. "/" .. tostring(AddColor_g) .. "\n")
-		Msg("AddColor_r/b/g: " .. tostring(MulColor_r) .. "/" .. tostring(MulColor_b) .. "/" .. tostring(MulColor_g) .. "\n")
-		Msg("Brightness: " .. tostring(Brightness) .. "\n")
-		Msg("Contrast: " .. tostring(Contrast) .. "\n")
-		Msg("Color: " .. tostring(Color) .. "\n")
-	end
-	if AddColor_r then
-		self.sbenvironment.color.AddColor_r = AddColor_r
-	end
-	if AddColor_g then
-		self.sbenvironment.color.AddColor_g = AddColor_g
-	end
-	if AddColor_b then
-		self.sbenvironment.color.AddColor_b = AddColor_b
-	end
-	if MulColor_r then
-		self.sbenvironment.color.MulColor_r = MulColor_r
-	end
-	if MulColor_g then
-		self.sbenvironment.color.MulColor_g = MulColor_g
-	end
-	if MulColor_b then
-		self.sbenvironment.color.MulColor_b = MulColor_b
-	end
-	if Brightness then
-		self.sbenvironment.color.Brightness = Brightness
-	end
-	if Contrast then
-		self.sbenvironment.color.Contrast = Contrast
-	end
-	if Color then
-		self.sbenvironment.color.Color = Color
-	end
-	Msg("Sending color update\n")
-	self:SendData()
-end
-
-function ENT:SendSunBeam(ply)
-	net.Start("AddStar")
-		net.WriteEntity(self)
-		net.WriteString(self:GetName())
-		net.WriteFloat(self.sbenvironment.size)
-
-	if ply then
-		net.Send(ply)
-	else
-		net.Broadcast()
-	end
-end
-
-util.AddNetworkString("AddStar")
-util.AddNetworkString("AddPlanet")
 
 function ENT:Remove()
-		self.BaseClass.Remove(self)
 	CAF.GetAddon("Spacebuild").RemoveEnvironment(self)
 end

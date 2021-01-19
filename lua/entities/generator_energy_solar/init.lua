@@ -6,8 +6,10 @@ include('shared.lua')
 --Was 15, reduced by popular request.
 local Energy_Increment = 8
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.damaged = 0
     if not (WireAddon == nil) then
         self.WireDebugName = self.PrintName
@@ -38,7 +40,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -174,7 +176,7 @@ function ENT:GenEnergy()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     self:GenEnergy()
     self:NextThink(CurTime() + 1)
     return true

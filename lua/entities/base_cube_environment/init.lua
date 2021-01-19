@@ -2,8 +2,12 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
+require("caf_util")
+
+DEFINE_BASECLASS("base_sb_environment")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self:PhysicsInit(SOLID_NONE)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_NONE)
@@ -28,91 +32,59 @@ function ENT:GetUnstable()
     return self.sbenvironment.unstable
 end
 
-local function Extract_Bit(bit, field)
-    if not bit or not field then return false end
-    local retval = 0
-    if ((field <= 7) and (bit <= 4)) then
-        if (field >= 4) then
-            field = field - 4
-            if (bit == 4) then return true end
-        end
-        if (field >= 2) then
-            field = field - 2
-            if (bit == 2) then return true end
-        end
-        if (field >= 1) then
-            field = field - 1
-            if (bit == 1) then return true end
-        end
-    end
-    return false
-end
 
 function ENT:SetFlags(flags)
     if not flags or type(flags) ~= "number" then return end
-    self.sbenvironment.unstable = Extract_Bit(1, flags)
-    self.sbenvironment.sunburn = Extract_Bit(2, flags)
+    self.sbenvironment.unstable = caf_util.isBitSet(flags, 1)
+    self.sbenvironment.sunburn = caf_util.isBitSet(flags, 2)
 end
 
 function ENT:GetTemperature(ent)
     if not ent then return end
     local entpos = ent:GetPos()
-    local trace = {}
     local lit = false
     local SunAngle2 = SunAngle
     local SunAngle
-    if table.Count(TrueSun) > 0 then
-        for k, v in pairs(TrueSun) do
-            SunAngle = (entpos - v)
-            SunAngle:Normalize()
-            local startpos = (entpos - (SunAngle * 4096))
-            trace.start = startpos
-            trace.endpos = entpos --+ Vector(0,0,30)
-            local tr = util.TraceLine(trace)
-            if (tr.Hit) then
-                if (tr == ent) then
-                    if (ent:IsPlayer()) then
-                        if self.sbenvironment.sunburn then
-                            if (ent:Health() > 0) then
-                                ent:TakeDamage(5, 0)
-                                ent:EmitSound("HL2Player.BurnPain")
-                            end
-                        end
-                    end
-                    lit = true
-                else
-                    --lit = false
-                end
-            else
-                lit = true
-            end
+    for k, v in pairs(TrueSun) do
+        SunAngle = (entpos - v)
+        SunAngle:Normalize()
+        local tr = util.TraceLine({
+            start = entpos - (SunAngle * 4096),
+            endpos = entpos -- + Vector(0,0,30)
+        })
+        if not tr.Hit then
+            lit = true
+            continue
+        end
+        if (tr.Entity ~= ent) then
+            continue
+        end
+
+        lit = true
+
+        if self.sbenvironment.sunburn and ent:IsPlayer() and ent:Health() > 0 then
+            ent:TakeDamage(5, 0)
+            ent:EmitSound("HL2Player.BurnPain")
         end
     end
-    local startpos = (entpos - (SunAngle2 * 4096))
-    trace.start = startpos
-    trace.endpos = entpos --+ Vector(0,0,30)
-    local tr = util.TraceLine(trace)
-    if (tr.Hit) then
-        if (tr == ent) then
-            if (ent:IsPlayer()) then
-                if self.sbenvironment.sunburn then
-                    if (ent:Health() > 0) then
-                        ent:TakeDamage(5, 0)
-                        ent:EmitSound("HL2Player.BurnPain")
-                    end
-                end
-            end
+
+    local tr = util.TraceLine({
+        start = entpos - (SunAngle2 * 4096),
+        entpos -- + Vector(0,0,30)
+    })
+    if tr.Hit then
+        if tr.Entity == ent then
             lit = true
-        else
-            --lit = false
+            if self.sbenvironment.sunburn and ent:IsPlayer() and ent:Health() > 0 then
+                ent:TakeDamage(5, 0)
+                ent:EmitSound("HL2Player.BurnPain")
+            end
         end
     else
         lit = true
     end
-    if lit then
-        if self.sbenvironment.temperature2 then
-            return self.sbenvironment.temperature2 + ((self.sbenvironment.temperature2 * ((self:GetCO2Percentage() - self.sbenvironment.air.co2per) / 100)) / 2)
-        end
+    if lit and self.sbenvironment.temperature2 then
+        return self.sbenvironment.temperature2 + ((self.sbenvironment.temperature2 * ((self:GetCO2Percentage() - self.sbenvironment.air.co2per) / 100)) / 2)
     end
     if not self.sbenvironment.temperature then
         return 0
@@ -148,7 +120,7 @@ function ENT:CreateEnvironment(ent, radius, gravity, atmosphere, pressure, tempe
     if temperature2 and type(temperature2) == "number" then
         self.sbenvironment.temperature2 = temperature2
     end
-    self.BaseClass.CreateEnvironment(self, gravity, atmosphere, pressure, temperature, o2, co2, n, h, name)
+    BaseClass.CreateEnvironment(self, gravity, atmosphere, pressure, temperature, o2, co2, n, h, name)
 end
 
 
@@ -161,7 +133,7 @@ function ENT:UpdateEnvironment(radius, gravity, atmosphere, pressure, temperatur
     if temperature2 and type(temperature2) == "number" then
         self.sbenvironment.temperature2 = temperature2
     end
-    self.BaseClass.UpdateEnvironment(self, gravity, atmosphere, pressure, temperature, o2, co2, n, h)
+    BaseClass.UpdateEnvironment(self, gravity, atmosphere, pressure, temperature, o2, co2, n, h)
 end
 
 function ENT:IsPlanet()

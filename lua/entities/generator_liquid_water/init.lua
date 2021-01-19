@@ -7,8 +7,10 @@ include('shared.lua')
 local Pressure_Increment = 80
 local Energy_Increment = 10
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.overdrive = 0
     self.damaged = 0
@@ -149,7 +151,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -161,7 +163,7 @@ function ENT:Destruct()
 end
 
 function ENT:OnRemove()
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     self:StopSound("Airboat_engine_idle")
 end
 
@@ -205,7 +207,7 @@ function ENT:Pump_Water()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if self.sequence and self.sequence ~= -1 then
         self:ResetSequence(self.sequence)
         --self:SetSequence(self.sequence)

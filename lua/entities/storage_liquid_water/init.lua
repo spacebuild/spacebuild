@@ -3,10 +3,12 @@ AddCSLuaFile("shared.lua")
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 --ToDo: Add HeatUP? = toSteam
 
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.damaged = 0
     self.vent = false
     if not (WireAddon == nil) then
@@ -37,7 +39,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self:StopSound("PhysicsCannister.ThrusterLoop") --Change to a new air Vent/Escaping Sound
     self.damaged = 0
@@ -50,7 +52,7 @@ function ENT:Destruct()
 end
 
 function ENT:OnRemove()
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     self:StopSound("PhysicsCannister.ThrusterLoop") --Change to a new Liquid Vent/Escaping Sound
 end
 
@@ -78,7 +80,7 @@ function ENT:UpdateMass()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if (self.damaged == 1 or self.vent) then
         self:Leak()
     end

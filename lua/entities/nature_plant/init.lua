@@ -2,8 +2,10 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.damaged = 0
     self.time = 0
     self.water = 100
@@ -12,7 +14,7 @@ function ENT:Initialize()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
     self.time = 0
@@ -45,7 +47,7 @@ function ENT:OnRemove()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     local waterlevel = 0
     if CAF then
         waterlevel = self:WaterLevel2()

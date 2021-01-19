@@ -7,8 +7,10 @@ include('shared.lua')
 
 local Energy_Increment = 100 --60
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.damaged = 0
     self.thinkcount = 0
@@ -23,7 +25,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -90,7 +92,7 @@ function ENT:GenEnergy()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if self.sequence and self.sequence ~= -1 then
         self:ResetSequence(self.sequence)
         self:SetPlaybackRate(1)

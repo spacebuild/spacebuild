@@ -4,7 +4,6 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 function ENT:Initialize()
-    --self.BaseClass.Initialize(self) --use this in all ents
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -41,15 +40,6 @@ function ENT:Repair()
     self:SetHealth(self:GetMaxHealth())
 end
 
---[[
-function ENT:AcceptInput(name,activator,caller)
-	if name == "Use" and caller:IsPlayer() and caller:KeyDownLast(IN_USE) == false then
-		self:SetActive( nil, caller )
-	end
-end
-]]
---Considering I don't want to break RD until it's working, I'll work inside commented code...for now.
-
 function ENT:AcceptInput(name, activator, caller)
     if name == "Use" and caller:IsPlayer() and caller:KeyDownLast(IN_USE) == false then
         if self.Inputs and caller.useaction and caller.useaction == true then
@@ -84,7 +74,6 @@ function ENT:OnTakeDamage(DmgInfo) --should make the damage go to the shield if 
 end
 
 function ENT:OnRemove()
-    --self.BaseClass.OnRemove(self) --use this if you have to use OnRemove
     CAF.GetAddon("Resource Distribution").Unlink(self)
     CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
     if WireLib then WireLib.Remove(self) end
@@ -98,104 +87,62 @@ end
 
 --NEW Functions 
 function ENT:RegisterNonStorageDevice()
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        RD.RegisterNonStorageDevice(self);
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    RD.RegisterNonStorageDevice(self);
 end
 
 function ENT:AddResource(resource, maxamount, defaultvalue)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.AddResource(self, resource, maxamount, defaultvalue)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.AddResource(self, resource, maxamount, defaultvalue)
 end
 
 function ENT:ConsumeResource(resource, amount)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.ConsumeResource(self, resource, amount)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.ConsumeResource(self, resource, amount)
 end
 
 function ENT:SupplyResource(resource, amount)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.SupplyResource(self, resource, amount)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.SupplyResource(self, resource, amount)
 end
 
 function ENT:Link(netid)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        RD.Link(self, netid)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    RD.Link(self, netid)
 end
 
 function ENT:Unlink()
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        RD.Unlink(self)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    RD.Unlink(self)
 end
 
 function ENT:GetResourceAmount(resource)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetResourceAmount(self, resource);
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.GetResourceAmount(self, resource);
 end
 
 function ENT:GetUnitCapacity(resource)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetUnitCapacity(self, resource)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.GetUnitCapacity(self, resource)
 end
 
 function ENT:GetNetworkCapacity(resource)
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetNetworkCapacity(self, resource)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.GetNetworkCapacity(self, resource)
 end
 
 function ENT:GetEntityTable()
-    if self.caf.custom.rdentitydata then
-
-    else
-        local RD = CAF.GetAddon("Resource Distribution");
-        return RD.GetEntityTable(self)
-    end
+    local RD = CAF.GetAddon("Resource Distribution");
+    return RD.GetEntityTable(self)
 end
 
 --END NEW Functions
 
 function ENT:OnRestore()
-    --self.BaseClass.OnRestore(self) --use this if you have to use OnRestore
     if WireLib then WireLib.Restored(self) end
 end
 
 function ENT:PreEntityCopy()
-    --self.BaseClass.PreEntityCopy(self) --use this if you have to use PreEntityCopy
     local RD = CAF.GetAddon("Resource Distribution")
     RD.BuildDupeInfo(self)
     if WireLib then
@@ -207,7 +154,6 @@ function ENT:PreEntityCopy()
 end
 
 function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
-    --self.BaseClass.PostEntityPaste(self, Player, Ent, CreatedEntities ) --use this if you have to use PostEntityPaste
     local RD = CAF.GetAddon("Resource Distribution")
     RD.ApplyDupeInfo(Ent, CreatedEntities)
     if WireLib and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then

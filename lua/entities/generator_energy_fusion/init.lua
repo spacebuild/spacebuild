@@ -12,13 +12,16 @@ util.PrecacheSound("coast.siren_citizen")
 util.PrecacheSound("common/warning.wav")
 
 include('shared.lua')
+
+DEFINE_BASECLASS("base_rd3_entity")
+
 -- Was 2200, increased
 local Energy_Increment = 5000
 local Coolant_Increment = 45 --WATER NOW -- 15 nitrogen produced per 150 energy, so 45 is about 450 energy , 2000 - 450 = 1550 energy left - the requirements to generate the N
 local HW_Increment = 1
 
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.damaged = 0
     self.critical = 0
@@ -68,7 +71,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
     self.critical = 0
@@ -190,7 +193,7 @@ function ENT:OnRemove()
     self:StopSound("ambient/levels/labs/electric_explosion3.wav")
     self:StopSound("ambient/levels/labs/electric_explosion4.wav")
     self:StopSound("ambient/levels/labs/electric_explosion1.wav")
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
 end
 
 function ENT:Extract_Energy()
@@ -334,7 +337,7 @@ function ENT:Leak() --leak cause this is like with storage, make be it could lea
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
 
     if (self.Active == 1) then
         self:Extract_Energy()

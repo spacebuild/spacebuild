@@ -3,8 +3,10 @@ AddCSLuaFile("shared.lua")
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.damaged = 0
     self.gtemp = 0
@@ -166,12 +168,12 @@ end
 
 function ENT:TriggerInput(iname, value)
     if (iname == "On") then
-        self.BaseClass.SetActive(self, value)
+        BaseClass.SetActive(self, value)
     end
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if (self.Active == 1) then
         self:ConsumeBaseResources()
         self:CheckResources()
@@ -215,7 +217,7 @@ end
 
 --check
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -227,7 +229,7 @@ end
 
 --check
 function ENT:OnRemove()
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     self:StopSound(self.startsound)
     CAF.GetAddon("Life Support").RemoveTemperatureRegulator(self)
 end

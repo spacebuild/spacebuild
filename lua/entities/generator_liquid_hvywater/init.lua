@@ -5,12 +5,14 @@ util.PrecacheSound("apc_engine_stop")
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 local Energy_Increment = 200 --320
 local Water_Increment = 400 --640
 local HW_Increment = 4 --15
 
 function ENT:Initialize()
-    self.BaseClass.Initialize(self)
+    BaseClass.Initialize(self)
     self.Active = 0
     self.overdrive = 0
     self.damaged = 0
@@ -137,7 +139,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-    self.BaseClass.Repair(self)
+    BaseClass.Repair(self)
     self:SetColor(Color(255, 255, 255, 255))
     self.damaged = 0
 end
@@ -149,7 +151,7 @@ function ENT:Destruct()
 end
 
 function ENT:OnRemove()
-    self.BaseClass.OnRemove(self)
+    BaseClass.OnRemove(self)
     self:StopSound("apc_engine_start")
 end
 
@@ -188,7 +190,7 @@ function ENT:Proc_Water()
 end
 
 function ENT:Think()
-    self.BaseClass.Think(self)
+    BaseClass.Think(self)
     if (self.Active == 1) then self:Proc_Water() end
     self:NextThink(CurTime() + 1)
     return true

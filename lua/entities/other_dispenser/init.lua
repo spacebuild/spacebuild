@@ -4,8 +4,10 @@ util.PrecacheSound( "ambient.steam01" )
 
 include('shared.lua')
 
+DEFINE_BASECLASS("base_rd3_entity")
+
 function ENT:Initialize()
-	self.BaseClass.Initialize(self)
+	BaseClass.Initialize(self)
 	self.damaged = 0
 	self:AddResource("oxygen", 0)
 	self:AddResource("energy", 0)
@@ -21,7 +23,7 @@ function ENT:Damage()
 end
 
 function ENT:Repair()
-	self.BaseClass.Repair(self)
+	BaseClass.Repair(self)
 	self:SetColor(Color(255, 255, 255, 255))
 	self.damaged = 0
 end
