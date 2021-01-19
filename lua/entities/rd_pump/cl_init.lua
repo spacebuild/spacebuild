@@ -100,7 +100,7 @@ local function OpenMenu()
 	RText2:SetValue("")
 	local pumps = GetPumps(ent, 768)
 
-	if pumps and table.Count(pumps) > 0 then
+	if pumps then
 		for k, v in pairs(pumps) do
 			local title = v:GetNWString("name")
 			local node = RightTree:AddNode(title)
@@ -171,7 +171,7 @@ local function OpenMenu()
 	local netid = ent:GetNWInt("netid")
 	local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(netid)
 
-	if nettable and table.Count(nettable) > 0 and nettable.resources and table.Count(nettable.resources) > 0 then
+	if nettable and nettable.resources then
 		for k, v in pairs(nettable.resources) do
 			local title = k
 			local node = LeftTree:AddNode(title)

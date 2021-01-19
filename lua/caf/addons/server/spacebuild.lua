@@ -84,13 +84,13 @@ end
 
 --Send the player info about the Stars and Planets for Effects
 local function PlayerInitialSpawn(ply)
-	if Planets and table.Count(Planets) > 0 then
+	if Planets then
 		for k, v in pairs(Planets) do
 			v:SendData(ply)
 		end
 	end
 
-	if Stars and table.Count(Stars) > 0 then
+	if Stars then
 		for k, v in pairs(Stars) do
 			v:SendSunBeam(ply)
 		end
@@ -401,7 +401,7 @@ local function Register_Environments()
 				SB_InSpace = 1
 
 				--SetGlobalInt("InSpace", 1)
-				if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+				if not table.HasValue(TrueSun, pos) then
 					case2 = tonumber(case2) --radius
 					case3 = tonumber(case3) -- gravity
 					case4 = tonumber(case4) -- atmosphere
@@ -446,7 +446,7 @@ local function Register_Environments()
 				SB_InSpace = 1
 
 				--SetGlobalInt("InSpace", 1)
-				if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+				if  not table.HasValue(TrueSun, pos) then
 					case2 = tonumber(case2) -- radius
 					case3 = tonumber(case3) -- gravity
 					case4 = tonumber(case4) -- atmosphere
@@ -496,7 +496,7 @@ local function Register_Environments()
 				SB_InSpace = 1
 
 				--SetGlobalInt("InSpace", 1)
-				if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+				if table.HasValue(TrueSun, pos) then
 					case2 = tonumber(case2) -- radius
 					case3 = tonumber(case3) -- gravity
 					case4 = tonumber(case4) -- atmosphere
@@ -621,7 +621,7 @@ local function Register_Environments()
 				SB_InSpace = 1
 
 				--SetGlobalInt("InSpace", 1)
-				if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+				if not table.HasValue(TrueSun, pos) then
 					local planet = ents.Create("base_sb_star1")
 					planet:SetModel("models/props_lab/huladoll.mdl")
 					planet:SetAngles(angles)
@@ -635,7 +635,7 @@ local function Register_Environments()
 				SB_InSpace = 1
 
 				--SetGlobalInt("InSpace", 1)
-				if table.Count(TrueSun) == 0 or not table.HasValue(TrueSun, pos) then
+				if not table.HasValue(TrueSun, pos) then
 					case2 = tonumber(case2) -- radius
 					case3 = tonumber(case3) -- temp1
 					case4 = tonumber(case4) -- temp2
@@ -1002,12 +1002,10 @@ end
 function SB.GetPlanets()
 	local tmp = {}
 
-	if table.Count(Planets) > 0 then
-		for k, v in pairs(Planets) do
-			--if v.IsPlanet and v:IsPlanet() then
-			table.insert(tmp, v)
-			--end
-		end
+	for k, v in pairs(Planets) do
+		--if v.IsPlanet and v:IsPlanet() then
+		table.insert(tmp, v)
+		--end
 	end
 
 	return tmp
@@ -1016,12 +1014,10 @@ end
 function SB.GetStars()
 	local tmp = {}
 
-	if table.Count(Stars) > 0 then
-		for k, v in pairs(Stars) do
-			--if v.IsStar and v:IsStar() then
-			table.insert(tmp, v)
-			--end
-		end
+	for k, v in pairs(Stars) do
+		--if v.IsStar and v:IsStar() then
+		table.insert(tmp, v)
+		--end
 	end
 
 	return tmp
@@ -1031,12 +1027,10 @@ end
 function SB.GetArtificialEnvironments()
 	local tmp = {}
 
-	if table.Count(Environments) > 0 then
-		for k, v in pairs(Environments) do
-			--if v.IsStar and not v:IsStar() and v.IsPlanet and not v:IsPlanet() then
-			table.insert(tmp, v)
-			--end
-		end
+	for k, v in pairs(Environments) do
+		--if v.IsStar and not v:IsStar() and v.IsPlanet and not v:IsPlanet() then
+		table.insert(tmp, v)
+		--end
 	end
 
 	return tmp
@@ -1284,21 +1278,19 @@ end
 function SB.FindClosestPlanet(pos, starsto)
 	local closestplanet = nil
 
-	if table.Count(Planets) > 0 then
-		for k, v in pairs(Planets) do
-			if v and IsValid(v) and v.IsPlanet and v.IsPlanet() then
-				if not closestplanet then
+	for k, v in pairs(Planets) do
+		if v and IsValid(v) and v.IsPlanet and v.IsPlanet() then
+			if not closestplanet then
+				closestplanet = v
+			else
+				if (v:GetPos():Distance(pos) - v:GetSize() < closestplanet:GetPos():Distance(pos) - closestplanet:GetSize()) then
 					closestplanet = v
-				else
-					if (v:GetPos():Distance(pos) - v:GetSize() < closestplanet:GetPos():Distance(pos) - closestplanet:GetSize()) then
-						closestplanet = v
-					end
 				end
 			end
 		end
 	end
 
-	if starsto and table.Count(Stars) > 0 then
+	if starsto then
 		for k, v in pairs(Stars) do
 			if v and IsValid(v) and v.IsStar and v.IsStar() then
 				if not closestplanet then
@@ -1318,15 +1310,13 @@ end
 function SB.FindEnvironmentOnPos(pos)
 	local env = nil
 
-	if table.Count(Planets) > 0 then
-		for k, v in pairs(Planets) do
-			if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
-				env = v:PosInEnvironment(pos, env)
-			end
+	for k, v in pairs(Planets) do
+		if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
+			env = v:PosInEnvironment(pos, env)
 		end
 	end
 
-	if not env and table.Count(Stars) > 0 then
+	if not env then
 		for k, v in pairs(Stars) do
 			if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
 				env = v:PosInEnvironment(pos, env)
@@ -1334,11 +1324,9 @@ function SB.FindEnvironmentOnPos(pos)
 		end
 	end
 
-	if table.Count(Environments) > 0 then
-		for k, v in pairs(Environments) do
-			if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
-				env = v:PosInEnvironment(pos, env)
-			end
+	for k, v in pairs(Environments) do
+		if v and IsValid(v) and v.IsEnvironment and v:IsEnvironment() then
+			env = v:PosInEnvironment(pos, env)
 		end
 	end
 

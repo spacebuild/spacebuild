@@ -34,15 +34,12 @@ local function sendEntityData(ply, entid, rddata)
 	WriteShort(entid) --send key to update
 	WriteBool(false) --Update
 	WriteShort(rddata.network) --send network used in entity
-	local nr_of_resources = table.Count(rddata.resources)
-	WriteShort(nr_of_resources) --How many resources are going to be send?
+	WriteShort(table.Count(rddata.resources)) --How many resources are going to be send?
 
-	if nr_of_resources > 0 then
-		for l, w in pairs(rddata.resources) do
-			net.WriteString(l)
-			WriteLong(w.maxvalue)
-			WriteLong(w.value)
-		end
+	for l, w in pairs(rddata.resources) do
+		net.WriteString(l)
+		WriteLong(w.maxvalue)
+		WriteLong(w.value)
 	end
 
 	if ply then
@@ -59,17 +56,14 @@ local function sendNetworkData(ply, netid, rddata)
 	net.Start("RD_Network_Data")
 	WriteShort(netid) --send key to update
 	WriteBool(false) --Update
-	local nr_of_resources = table.Count(rddata.resources)
-	WriteShort(nr_of_resources) --How many resources are going to be send?
+	WriteShort(table.Count(rddata.resources)) --How many resources are going to be send?
 
-	if nr_of_resources > 0 then
-		for l, w in pairs(rddata.resources) do
-			net.WriteString(l)
-			WriteLong(w.maxvalue)
-			WriteLong(w.value)
-			WriteLong(w.localmaxvalue)
-			WriteLong(w.localvalue)
-		end
+	for l, w in pairs(rddata.resources) do
+		net.WriteString(l)
+		WriteLong(w.maxvalue)
+		WriteLong(w.value)
+		WriteLong(w.localmaxvalue)
+		WriteLong(w.localvalue)
 	end
 
 	local nr_of_cons = #rddata.cons
@@ -147,7 +141,7 @@ local function RequestResourceData(ply, com, args)
 				if num ~= -1 then
 					storage = false
 
-					if resnames and table.Count(resnames) > 0 then
+					if resnames then
 						for _, k in pairs(resnames) do
 							data.resources[k] = {
 								value = RD.GetResourceAmount(tmpdata.ent, k),
@@ -156,7 +150,7 @@ local function RequestResourceData(ply, com, args)
 						end
 					end
 
-					if genresnames and table.Count(genresnames) > 0 then
+					if genresnames then
 						for _, k in pairs(genresnames) do
 							data.resources[k] = {
 								value = RD.GetResourceAmount(tmpdata.ent, k),
@@ -223,13 +217,11 @@ concommand.Add("RD_REQUEST_RESOURCE_DATA", RequestResourceData)
 
 --Remove All Entities that are registered by RD, without RD they won't work anyways!
 local function ClearEntities()
-	if table.Count(ent_table) ~= 0 then
-		for k, v in pairs(ent_table) do
-			local ent = ents.GetByIndex(k)
+	for k, v in pairs(ent_table) do
+		local ent = ents.GetByIndex(k)
 
-			if ent and IsValid(ent) and ent ~= NULL then
-				ent:Remove()
-			end
+		if ent and IsValid(ent) and ent ~= NULL then
+			ent:Remove()
 		end
 	end
 end
@@ -1036,21 +1028,17 @@ function RD.BuildDupeInfo(ent)
 	--info.resources = table.Copy(nettable.resources)
 	local entids = {}
 
-	if table.Count(nettable.entities) > 0 then
-		for k, v in pairs(nettable.entities) do
-			table.insert(entids, v:EntIndex())
-		end
+	for k, v in pairs(nettable.entities) do
+		table.insert(entids, v:EntIndex())
 	end
 
 	local cons = {}
 
-	if table.Count(nettable.cons) > 0 then
-		for k, v in pairs(nettable.cons) do
-			local nettab = RD.GetNetTable(v)
+	for k, v in pairs(nettable.cons) do
+		local nettab = RD.GetNetTable(v)
 
-			if nettab and table.Count(nettab) > 0 and nettab.nodeent and IsValid(nettab.nodeent) then
-				table.insert(cons, nettab.nodeent:EntIndex())
-			end
+		if nettab and nettab.nodeent and IsValid(nettab.nodeent) then
+			table.insert(cons, nettab.nodeent:EntIndex())
 		end
 	end
 
@@ -1068,7 +1056,7 @@ function RD.ApplyDupeInfo(ent, CreatedEntities)
 	if (ent.EntityMods) and (ent.EntityMods.RDDupeInfo) and (ent.EntityMods.RDDupeInfo.entities) then
 		local RDDupeInfo = ent.EntityMods.RDDupeInfo
 
-		if RDDupeInfo.entities and table.Count(RDDupeInfo.entities) > 0 then
+		if RDDupeInfo.entities then
 			for _, ent2ID in pairs(RDDupeInfo.entities) do
 				local ent2 = CreatedEntities[ent2ID]
 
@@ -1078,7 +1066,7 @@ function RD.ApplyDupeInfo(ent, CreatedEntities)
 			end
 		end
 
-		if RDDupeInfo.cons and table.Count(RDDupeInfo.cons) > 0 then
+		if RDDupeInfo.cons then
 			for _, ent2ID in pairs(RDDupeInfo.cons) do
 				local ent2 = CreatedEntities[ent2ID]
 
@@ -1153,16 +1141,14 @@ function RD.getConnectedNets(netid)
 
 	local tmpcons = {netid}
 
-	while (table.Count(tmpcons) > 0) do
+	while #tmpcons > 0 do
 		for k, v in pairs(tmpcons) do
 			if not table.HasValue(contable, v) then
 				table.insert(contable, v)
 
 				if nettable[v] and nettable[v].cons then
-					if table.Count(nettable[v].cons) > 0 then
-						for l, w in pairs(nettable[v].cons) do
-							table.insert(tmpcons, w)
-						end
+					for l, w in pairs(nettable[v].cons) do
+						table.insert(tmpcons, w)
 					end
 				end
 			end
@@ -1318,11 +1304,9 @@ end
 function RD.GetNetworkIDs()
 	local ids = {}
 
-	if table.Count(nettable) > 0 then
-		for k, v in pairs(nettable) do
-			if not v.clear then
-				table.insert(ids, k)
-			end
+	for k, v in pairs(nettable) do
+		if not v.clear then
+			table.insert(ids, k)
 		end
 	end
 

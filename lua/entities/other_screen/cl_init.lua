@@ -13,12 +13,10 @@ local function loadSelectedResourcesTree(ent)
 		local LeftTree = MainFrames[ent:EntIndex()].lefttree
 		LeftTree:Clear()
 
-		if table.Count(ent.resources) > 0 then
-			for k, v in pairs(ent.resources) do
-				local title = RD.GetProperResourceName(v)
-				local node = LeftTree:AddLine(title)
-				node.res = v
-			end
+		for k, v in pairs(ent.resources) do
+			local title = RD.GetProperResourceName(v)
+			local node = LeftTree:AddLine(title)
+			node.res = v
 		end
 	end
 end
@@ -42,11 +40,9 @@ local function OpenMenu()
 	local resources = RD.GetRegisteredResources()
 	local res2 = RD.GetAllRegisteredResources()
 
-	if table.Count(res2) > 0 then
-		for k, v in pairs(res2) do
-			if not table.HasValue(resources, k) then
-				table.insert(resources, k)
-			end
+	for k, v in pairs(res2) do
+		if not table.HasValue(resources, k) then
+			table.insert(resources, k)
 		end
 	end
 
@@ -67,7 +63,7 @@ local function OpenMenu()
 	RightPanel:SetSize(180, 250)
 	RightPanel:SetPos(210, 25)
 
-	if resources and table.Count(resources) > 0 then
+	if resources then
 		for k, v in pairs(resources) do
 			local title = RD.GetProperResourceName(v)
 			local node = RightTree:AddLine(title)
@@ -257,16 +253,14 @@ function ENT:DoNormalDraw(bDontDrawModel)
 				if enttable.network and enttable.network ~= 0 then
 					local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(enttable.network)
 
-					if table.Count(nettable) > 0 then
-						if nettable.resources and nettable.resources[v] then
-							firstNetworkCapacity = nettable.resources[v].localmaxvalue or 0
-							firstNetworkAmount = nettable.resources[v].localvalue or 0
-							otherNetworksCapacity = CAF.GetAddon("Resource Distribution").GetNetNetworkCapacity(enttable.network, v) - firstNetworkCapacity
-							otherNetworksAmount = CAF.GetAddon("Resource Distribution").GetNetResourceAmount(enttable.network, v) - firstNetworkAmount
-						else
-							otherNetworksCapacity = CAF.GetAddon("Resource Distribution").GetNetNetworkCapacity(enttable.network, v)
-							otherNetworksAmount = CAF.GetAddon("Resource Distribution").GetNetResourceAmount(enttable.network, v)
-						end
+					if nettable.resources and nettable.resources[v] then
+						firstNetworkCapacity = nettable.resources[v].localmaxvalue or 0
+						firstNetworkAmount = nettable.resources[v].localvalue or 0
+						otherNetworksCapacity = CAF.GetAddon("Resource Distribution").GetNetNetworkCapacity(enttable.network, v) - firstNetworkCapacity
+						otherNetworksAmount = CAF.GetAddon("Resource Distribution").GetNetResourceAmount(enttable.network, v) - firstNetworkAmount
+					else
+						otherNetworksCapacity = CAF.GetAddon("Resource Distribution").GetNetNetworkCapacity(enttable.network, v)
+						otherNetworksAmount = CAF.GetAddon("Resource Distribution").GetNetResourceAmount(enttable.network, v)
 					end
 				end
 

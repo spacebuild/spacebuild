@@ -320,14 +320,12 @@ local function GetHelpPanel(frame)
 	if not MainInfoMenuData then
 		MainInfoMenuData = {}
 
-		if table.Count(Addons) > 0 then
-			for k, v in pairs(Addons) do
-				local ok, err = pcall(v.GetMenu)
+		for k, v in pairs(Addons) do
+			local ok, err = pcall(v.GetMenu)
 
-				if ok then
-					if err then
-						MainInfoMenuData[k] = err
-					end
+			if ok then
+				if err then
+					MainInfoMenuData[k] = err
 				end
 			end
 		end
@@ -336,58 +334,56 @@ local function GetHelpPanel(frame)
 	LeftTree:Clear()
 
 	--Fill the Tree
-	if table.Count(MainInfoMenuData) > 0 then
-		for k, v in pairs(MainInfoMenuData) do
-			--Addon Info
-			local title = k
-			local node = LeftTree:AddNode(title)
+	for k, v in pairs(MainInfoMenuData) do
+		--Addon Info
+		local title = k
+		local node = LeftTree:AddNode(title)
 
-			--node.Icon:SetImage(devlist.icon)
-			for l, w in pairs(v) do
-				--Sub Menu's
-				local Node = node:AddNode(l)
+		--node.Icon:SetImage(devlist.icon)
+		for l, w in pairs(v) do
+			--Sub Menu's
+			local Node = node:AddNode(l)
 
-				function Node.DoClick(btn)
-					if (w.hasmenu) then
+			function Node.DoClick(btn)
+				if (w.hasmenu) then
+					--To Implement
+				elseif (CAF2.HasInternet and w.interneturl) then
+					local HTMLTest = vgui.Create("HTML", RightPanel)
+					HTMLTest:StretchToParent(10, 10, 10, 10)
+					HTMLTest:OpenURL(w.interneturl)
+				elseif (w.localurl) then
+					local HTMLTest = vgui.Create("HTML", RightPanel)
+					HTMLTest:StretchToParent(10, 10, 10, 10)
+					HTMLTest:SetHTML(file.Read(w.localurl))
+				end
+			end
+
+			function Node.DoRightClick(btn)
+				-- To Implement
+			end
+
+			for m, x in pairs(w) do
+				--Links in submenu
+				local cnode = Node:AddNode(m)
+
+				function cnode.DoClick(btn)
+					if (x.hasmenu) then
 						--To Implement
-					elseif (CAF2.HasInternet and w.interneturl) then
+					elseif (CAF2.HasInternet and x.interneturl) then
+						RightPanel:Clear()
 						local HTMLTest = vgui.Create("HTML", RightPanel)
 						HTMLTest:StretchToParent(10, 10, 10, 10)
-						HTMLTest:OpenURL(w.interneturl)
-					elseif (w.localurl) then
+						HTMLTest:OpenURL(x.interneturl)
+					elseif (x.localurl) then
+						RightPanel:Clear()
 						local HTMLTest = vgui.Create("HTML", RightPanel)
 						HTMLTest:StretchToParent(10, 10, 10, 10)
-						HTMLTest:SetHTML(file.Read(w.localurl))
+						HTMLTest:SetHTML(file.Read(x.localurl))
 					end
 				end
 
-				function Node.DoRightClick(btn)
+				function cnode.DoRightClick(btn)
 					-- To Implement
-				end
-
-				for m, x in pairs(w) do
-					--Links in submenu
-					local cnode = Node:AddNode(m)
-
-					function cnode.DoClick(btn)
-						if (x.hasmenu) then
-							--To Implement
-						elseif (CAF2.HasInternet and x.interneturl) then
-							RightPanel:Clear()
-							local HTMLTest = vgui.Create("HTML", RightPanel)
-							HTMLTest:StretchToParent(10, 10, 10, 10)
-							HTMLTest:OpenURL(x.interneturl)
-						elseif (x.localurl) then
-							RightPanel:Clear()
-							local HTMLTest = vgui.Create("HTML", RightPanel)
-							HTMLTest:StretchToParent(10, 10, 10, 10)
-							HTMLTest:SetHTML(file.Read(x.localurl))
-						end
-					end
-
-					function cnode.DoRightClick(btn)
-						-- To Implement
-					end
 				end
 			end
 		end
@@ -568,101 +564,95 @@ local function GetStatusPanel(frame)
 	List:SetSpacing(5)
 	List:StretchToParent(2, 2, 2, 2)
 	List:SetPos(2, 2)
-	local iteration = 0
+
 	AddCAFInfoToStatus(List)
-	iteration = iteration + 1
 
-	if table.Count(Addons) > 0 then
-		for k, v in pairs(Addons) do
-			if v.IsVisible == nil or v.IsVisible() then
-				iteration = iteration + 1
-				local descriptiontxt = nil
+	for k, v in pairs(Addons) do
+		if v.IsVisible == nil or v.IsVisible() then
+			local descriptiontxt = nil
 
-				if v.GetDescription then
-					descriptiontxt = v.GetDescription()
-					--else
-					--	descriptiontxt = {CAF.GetLangVar("No Description")};
-				end
+			if v.GetDescription then
+				descriptiontxt = v.GetDescription()
+				--else
+				--	descriptiontxt = {CAF.GetLangVar("No Description")};
+			end
 
-				local cat = vgui.Create("DCAFCollapsibleCategory")
-				cat:Setup(k, v)
-				--cat:SetExtraButtonAction(function() frame:Close()  end)
-				local contentpanel = vgui.Create("DPanelList", cat)
-				contentpanel:SetWide(List:GetWide())
-				local clientMenu = nil
+			local cat = vgui.Create("DCAFCollapsibleCategory")
+			cat:Setup(k, v)
+			--cat:SetExtraButtonAction(function() frame:Close()  end)
+			local contentpanel = vgui.Create("DPanelList", cat)
+			contentpanel:SetWide(List:GetWide())
+			local clientMenu = nil
 
-				if v.GetClientMenu then
-					clientMenu = v.GetClientMenu(contentpanel)
-				end
+			if v.GetClientMenu then
+				clientMenu = v.GetClientMenu(contentpanel)
+			end
 
-				local serverMenu = nil
+			local serverMenu = nil
 
-				if v.GetServerMenu then
-					serverMenu = v.GetServerMenu(contentpanel)
-				end
+			if v.GetServerMenu then
+				serverMenu = v.GetServerMenu(contentpanel)
+			end
 
-				--Start Add Custom Stuff
-				local x = 0
-				local y = 0
-				--Version Check
-				local versionupdatetext = vgui.Create("DLabel", contentpanel)
-				versionupdatetext:SetPos(x + 10, y)
-				versionupdatetext:SetText(CAF.GetLangVar("No Update Information Available"))
-				versionupdatetext:SetTextColor(Color(200, 200, 0, 200))
-				versionupdatetext:SizeToContents()
-				y = y + 30
+			--Start Add Custom Stuff
+			local x = 0
+			local y = 0
+			--Version Check
+			local versionupdatetext = vgui.Create("DLabel", contentpanel)
+			versionupdatetext:SetPos(x + 10, y)
+			versionupdatetext:SetText(CAF.GetLangVar("No Update Information Available"))
+			versionupdatetext:SetTextColor(Color(200, 200, 0, 200))
+			versionupdatetext:SizeToContents()
+			y = y + 30
 
-				--ServerMenu
-				if serverMenu then
-					serverMenu:SetPos(x, y)
-					y = y + serverMenu:GetTall() + 15
-				end
+			--ServerMenu
+			if serverMenu then
+				serverMenu:SetPos(x, y)
+				y = y + serverMenu:GetTall() + 15
+			end
 
-				--Clientside menu
-				if clientMenu then
-					clientMenu:SetPos(x, y)
-					y = y + clientMenu:GetTall() + 15
-				end
+			--Clientside menu
+			if clientMenu then
+				clientMenu:SetPos(x, y)
+				y = y + clientMenu:GetTall() + 15
+			end
+
+			--Description
+			if descriptiontxt ~= nil then
+				local list = vgui.Create("DPanelList", contentpanel)
+				list:SetPos(x, y)
+				local size = 1
+				list:SetPadding(10)
+				--Description Blank Line
+				lab = vgui.Create("DLabel", list)
+				lab:SetText(CAF.GetLangVar("Description") .. ":")
+				lab:SizeToContents()
+				list:AddItem(lab)
+				size = size + 1
 
 				--Description
-				if descriptiontxt ~= nil then
-					local list = vgui.Create("DPanelList", contentpanel)
-					list:SetPos(x, y)
-					local size = 1
-					list:SetPadding(10)
-					--Description Blank Line
+				for k, v in pairs(descriptiontxt) do
 					lab = vgui.Create("DLabel", list)
-					lab:SetText(CAF.GetLangVar("Description") .. ":")
+					lab:SetText(v)
 					lab:SizeToContents()
 					list:AddItem(lab)
 					size = size + 1
-
-					--Description
-					for k, v in pairs(descriptiontxt) do
-						lab = vgui.Create("DLabel", list)
-						lab:SetText(v)
-						lab:SizeToContents()
-						list:AddItem(lab)
-						size = size + 1
-					end
-
-					list:SetSize(List:GetWide() - 10, 15 * size)
-					contentpanel:SizeToContents()
-					y = y + (15 * size) + 15
 				end
 
-				contentpanel:SetTall(y)
-				--End Add Custom Stuff
-				cat:SetContents(contentpanel)
-				cat:SizeToContents()
-				cat:InvalidateLayout()
-				--[[if iteration == 1 then
-					cat:SetExpanded(true)
-				else]]
-				cat:SetExpanded(false)
-				--end
-				List:AddItem(cat)
+				list:SetSize(List:GetWide() - 10, 15 * size)
+				contentpanel:SizeToContents()
+				y = y + (15 * size) + 15
 			end
+
+			contentpanel:SetTall(y)
+			--End Add Custom Stuff
+			cat:SetContents(contentpanel)
+			cat:SizeToContents()
+			cat:InvalidateLayout()
+
+			cat:SetExpanded(false)
+			--end
+			List:AddItem(cat)
 		end
 	end
 

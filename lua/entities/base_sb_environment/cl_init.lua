@@ -208,7 +208,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
 						end
 					end
 				else
-					if resnames and table.Count(resnames) > 0 then
+					if resnames then
 						for _, k in pairs(resnames) do
 							stringUsage = stringUsage .. "[" .. CAF.GetAddon("Resource Distribution").GetProperResourceName(k) .. ": " .. CAF.GetAddon("Resource Distribution").GetResourceAmount(self, k) .. "/" .. CAF.GetAddon("Resource Distribution").GetNetworkCapacity(self, k) .. "] "
 							i = i + 1

@@ -85,17 +85,13 @@ end
 concommand.Add("RemoveLSSCreenResource", RemoveResource)
 
 local function UserConnect(ply)
-	if table.Count(screens) > 0 then
-		for k, v in pairs(screens) do
-			if IsValid(v) then
-				if table.Count(v.resources) > 0 then
-					for l, w in pairs(v.resources) do
-						net.Start("LS_Add_ScreenResource", ply)
-						net.WriteEntity(v)
-						net.WriteString(w)
-						net.Send(ply)
-					end
-				end
+	for k, v in pairs(screens) do
+		if IsValid(v) then
+			for l, w in pairs(v.resources) do
+				net.Start("LS_Add_ScreenResource", ply)
+				net.WriteEntity(v)
+				net.WriteString(w)
+				net.Send(ply)
 			end
 		end
 	end
@@ -248,13 +244,11 @@ function ENT:PostEntityPaste(ply, ent, CreatedEntities)
 		local info = ent.EntityMods.SBOtherScreen
 		ent.resources = info.resources
 
-		if table.Count(ent.resources) > 0 then
-			for _, res in pairs(ent.resources) do
-				net.Start("LS_Add_ScreenResource")
-				net.WriteEntity(ent)
-				net.WriteString(res)
-				net.Broadcast()
-			end
+		for _, res in pairs(ent.resources) do
+			net.Start("LS_Add_ScreenResource")
+			net.WriteEntity(ent)
+			net.WriteString(res)
+			net.Broadcast()
 		end
 
 		if info.Active == 1 and ent.IsScreen then
