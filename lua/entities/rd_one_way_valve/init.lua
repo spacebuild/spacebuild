@@ -13,7 +13,7 @@ function ENT:Initialize()
 	self.connected.node1 = nil
 	self.connected.node2 = nil
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"Open"})
@@ -103,7 +103,7 @@ function ENT:TurnOn()
 			self.Active = 1
 			self:SetOOO(1)
 
-			if not (WireAddon == nil) then
+			if WireAddon ~= nil then
 				Wire_TriggerOutput(self, "Open", self.Active)
 			end
 		end
@@ -125,7 +125,7 @@ function ENT:TurnOff()
 			self.Active = 0
 			self:SetOOO(0)
 
-			if not (WireAddon == nil) then
+			if WireAddon ~= nil then
 				Wire_TriggerOutput(self, "Open", self.Active)
 			end
 		end
@@ -226,13 +226,13 @@ end
 function ENT:OnRemove()
 	self:TurnOff()
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_Remove(self)
 	end
 end
 
 function ENT:OnRestore()
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_Restored(self)
 	end
 end
@@ -241,7 +241,7 @@ function ENT:PreEntityCopy()
 	local RD = CAF.GetAddon("Resource Distribution")
 	RD.BuildDupeInfo(self)
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		local DupeInfo = WireLib.BuildDupeInfo(self)
 
 		if DupeInfo then
@@ -254,7 +254,7 @@ function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
 	local RD = CAF.GetAddon("Resource Distribution")
 	RD.ApplyDupeInfo(Ent, CreatedEntities)
 
-	if not (WireAddon == nil) and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then
+	if WireAddon ~= nil and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then
 		WireLib.ApplyDupeInfo(Player, Ent, Ent.EntityMods.WireDupeInfo, function(id) return CreatedEntities[id] end)
 	end
 end

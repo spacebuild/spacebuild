@@ -11,7 +11,7 @@ function ENT:Initialize()
 	self.damaged = 0
 	self.flashlight = nil
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On"})
@@ -32,7 +32,7 @@ function ENT:TurnOn()
 		self.Active = 1
 		self:SetOOO(1)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", 1)
 		end
 	end
@@ -47,7 +47,7 @@ function ENT:TurnOff(warn)
 		self.Active = 0
 		self:SetOOO(0)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", 0)
 		end
 	end

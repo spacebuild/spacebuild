@@ -9,7 +9,7 @@ function ENT:Initialize()
 	self.damaged = 0
 	self.gtemp = 0
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On"})
@@ -180,7 +180,7 @@ function ENT:TurnOn()
 		self:EmitSound(self.startsound)
 		self.Active = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Out", self.Active)
 		end
 
@@ -194,7 +194,7 @@ function ENT:TurnOff()
 		self:EmitSound(self.stopsound)
 		self.Active = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Out", self.Active)
 		end
 

@@ -102,7 +102,7 @@ end
 function ENT:ConvertResource(res1, res2, amount)
 	local ignore = {"o2per", "co2per", "nper", "hper", "emptyper", "max"}
 
-	if not res1 or not res2 or not amount or not type(amount) == "number" then return 0 end
+	if not res1 or not res2 or not amount or type(amount) ~= "number" then return 0 end
 
 	if type(res1) == "number" and type(res2) == "number" then
 		return self:Convert(res1, res2, amount)
@@ -263,13 +263,13 @@ function ENT:OnRemove()
 		CAF.GetAddon("Resource Distribution").RemoveRDEntity(self)
 	end
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_Remove(self)
 	end
 end
 
 function ENT:OnRestore()
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_Restored(self)
 	end
 end
@@ -280,7 +280,7 @@ function ENT:PreEntityCopy()
 		RD.BuildDupeInfo(self)
 	end
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		local DupeInfo = WireLib.BuildDupeInfo(self)
 
 		if DupeInfo then
@@ -295,7 +295,7 @@ function ENT:PostEntityPaste(Player, Ent, CreatedEntities)
 		RD.ApplyDupeInfo(Ent, CreatedEntities)
 	end
 
-	if not (WireAddon == nil) and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then
+	if WireAddon ~= nil and (Ent.EntityMods) and (Ent.EntityMods.WireDupeInfo) then
 		WireLib.ApplyDupeInfo(Player, Ent, Ent.EntityMods.WireDupeInfo, function(id) return CreatedEntities[id] end)
 	end
 end

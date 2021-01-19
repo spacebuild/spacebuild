@@ -18,7 +18,7 @@ function ENT:Initialize()
 	self.Mute = 0
 	self.Multiplier = 1
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On", "Overdrive", "Mute", "Multiplier"})
@@ -44,7 +44,7 @@ function ENT:TurnOn()
 
 		self.Active = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -65,7 +65,7 @@ function ENT:TurnOff()
 		self.Active = 0
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -84,7 +84,7 @@ function ENT:TurnOnOverdrive()
 		self:SetOOO(2)
 		self.overdrive = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -101,14 +101,14 @@ function ENT:TurnOffOverdrive()
 		self:SetOOO(1)
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
 end
 
 function ENT:SetActive(value)
-	if not (value == nil) then
+	if value ~= nil then
 		if (value ~= 0 and self.Active == 0) then
 			self:TurnOn()
 		elseif (value == 0 and self.Active == 1) then
@@ -189,7 +189,7 @@ function ENT:Pump_Air()
 	local sinc = (Steam_Increment + (self.overdrive * Steam_Increment)) * self.Multiplier
 	sinc = math.ceil(sinc * self:GetMultiplier())
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "SteamUsage", math.Round(sinc))
 	end
 
@@ -200,11 +200,11 @@ function ENT:Pump_Air()
 		winc = math.ceil(winc * self:GetMultiplier())
 		self:ConsumeResource("steam", sinc)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "EnergyProduction", math.Round(einc))
 		end
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "WaterProduction", math.Round(winc))
 		end
 

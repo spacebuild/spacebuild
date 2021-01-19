@@ -12,7 +12,7 @@ function ENT:Initialize()
 	self.damaged = 0
 	self.thinkcount = 0
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Outputs = Wire_CreateOutputs(self, {"Out"})
@@ -55,7 +55,7 @@ function ENT:Extract_Energy()
 	local energy = math.Round(Energy_Increment * self:GetMultiplier() * waterlevel)
 	self:SupplyResource("energy", energy)
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "Out", energy)
 	end
 end
@@ -101,7 +101,7 @@ function ENT:GenEnergy()
 				self:SetPlaybackRate(1)
 			end
 
-			if not (WireAddon == nil) then
+			if WireAddon ~= nil then
 				Wire_TriggerOutput(self, "Out", 0)
 			end
 		end

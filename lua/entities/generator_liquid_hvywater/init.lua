@@ -17,7 +17,7 @@ function ENT:Initialize()
 	self.Mute = 0
 	self.Multiplier = 1
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On", "Overdrive", "Mute", "Multiplier"})
@@ -43,7 +43,7 @@ function ENT:TurnOn()
 
 		self.Active = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -64,7 +64,7 @@ function ENT:TurnOff()
 		self.Active = 0
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -83,7 +83,7 @@ function ENT:TurnOnOverdrive()
 		self:SetOOO(2)
 		self.overdrive = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -100,7 +100,7 @@ function ENT:TurnOffOverdrive()
 		self:SetOOO(1)
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -189,14 +189,14 @@ function ENT:Proc_Water()
 	local einc = Energy_Increment + (self.overdrive * Energy_Increment * 3)
 	einc = (math.ceil(einc * self:GetMultiplier())) * self.Multiplier
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "EnergyUsage", math.Round(einc))
 	end
 
 	local winc = Water_Increment + (self.overdrive * Water_Increment * 3)
 	winc = (math.ceil(winc * self:GetMultiplier())) * self.Multiplier
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "WaterUsage", math.Round(winc))
 	end
 
@@ -220,7 +220,7 @@ function ENT:Proc_Water()
 		--if (wchance <= 1+(self.overdrive)) then
 		self:SupplyResource("heavy water", (math.ceil(HW_Increment * self:GetMultiplier()) * self.Multiplier) * (1 + (self.overdrive * 2)))
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "HeavyWaterProduction", (math.ceil(HW_Increment * self:GetMultiplier()) * self.Multiplier) * (1 + (self.overdrive * 2)))
 		end
 		--end

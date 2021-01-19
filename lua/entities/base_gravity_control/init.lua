@@ -15,7 +15,7 @@ function ENT:Initialize()
 	self.currentsize = 1024
 	self.maxsize = 1024
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On", "Radius", "Gravity"})
@@ -42,7 +42,7 @@ function ENT:TurnOn()
 		self.Active = 1
 		self.sbenvironment.size = self.currentsize
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -57,7 +57,7 @@ function ENT:TurnOff()
 		self.Active = 0
 		self.sbenvironment.size = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 

@@ -11,7 +11,7 @@ function ENT:Initialize()
 	self.Active = 0
 	self.damaged = 0
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On"})
@@ -34,7 +34,7 @@ function ENT:TurnOn()
 	self:Sense()
 	self:ShowOutput()
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "On", 1)
 	end
 end
@@ -48,7 +48,7 @@ function ENT:TurnOff(warn)
 	self:SetOOO(0)
 	self:ShowOutput()
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "On", 0)
 		Wire_TriggerOutput(self, "O2 Level", 0)
 		Wire_TriggerOutput(self, "CO2 Level", 0)
@@ -100,7 +100,7 @@ function ENT:Sense()
 		end
 	end
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		if self.environment then
 			Wire_TriggerOutput(self, "O2 Level", self.environment:GetO2Percentage())
 			Wire_TriggerOutput(self, "CO2 Level", self.environment:GetCO2Percentage())

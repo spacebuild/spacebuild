@@ -12,7 +12,7 @@ function ENT:Initialize()
 	self:AddResource("water", 0)
 	self:AddResource("nitrogen", 0)
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 	end
 end

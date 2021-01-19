@@ -157,7 +157,7 @@ function CAF_ToolRegister(TOOL, Models_List, MakeFunc, ToolName, ToolLimit, Make
 	TOOL.ClientConVar['type'] = ''
 	TOOL.ClientConVar['model'] = ''
 
-	if not (Models_List == nil) then
+	if Models_List ~= nil then
 		for k, v in pairs(Models_List) do
 			CAF_AddStoolItem(ToolName, v[1], v[2], v[3], MakeFunc, v[4]) --v[4] can be a MakeCAFEntSupFunction or nil
 		end

@@ -18,7 +18,7 @@ function ENT:Initialize()
 	self.Mute = 0
 	self.Multiplier = 1
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On", "Overdrive", "Mute", "Multiplier"})
@@ -44,7 +44,7 @@ function ENT:TurnOn()
 
 		self.Active = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -65,7 +65,7 @@ function ENT:TurnOff()
 		self.Active = 0
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -84,7 +84,7 @@ function ENT:TurnOnOverdrive()
 		self:SetOOO(2)
 		self.overdrive = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -101,7 +101,7 @@ function ENT:TurnOffOverdrive()
 		self:SetOOO(1)
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -190,14 +190,14 @@ function ENT:Proc_Water()
 	local einc = Energy_Increment + (self.overdrive * Energy_Increment)
 	einc = (math.ceil(einc * self:GetMultiplier())) * self.Multiplier
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "EnergyUsage", math.Round(einc))
 	end
 
 	local winc = Nitrogen_Increment + (self.overdrive * Nitrogen_Increment)
 	winc = (math.ceil(winc * self:GetMultiplier())) * self.Multiplier
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "NitrogenUsage", math.Round(winc))
 	end
 
@@ -218,7 +218,7 @@ function ENT:Proc_Water()
 		self:ConsumeResource("nitrogen", winc)
 		self:SupplyResource("liquid nitrogen", math.ceil((Liquid_Nitrogen_Increment + (self.overdrive * Liquid_Nitrogen_Increment)) * self:GetMultiplier()) * self.Multiplier)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "LiquidNitrogenProduction", math.ceil((Liquid_Nitrogen_Increment + (self.overdrive * Liquid_Nitrogen_Increment)) * self:GetMultiplier()) * self.Multiplier)
 		end
 	else

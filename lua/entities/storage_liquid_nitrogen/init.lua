@@ -8,7 +8,7 @@ function ENT:Initialize()
 	self.damaged = 0
 	self.vent = false
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"Vent"})
@@ -93,7 +93,7 @@ function ENT:Think()
 		self:Leak()
 	end
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self:UpdateWireOutput()
 	end
 

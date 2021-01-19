@@ -16,7 +16,7 @@ function ENT:Initialize()
 	self.maxsize = 4096
 	self.maxO2Level = 100
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On", "Radius", "Gravity", "Max O2 level"})
@@ -47,7 +47,7 @@ function ENT:TurnOn()
 		self:UpdateSize(self.sbenvironment.size, self.currentsize) --We turn the forcefield that contains the environment on
 		self:ConsumeResource("energy", math.ceil(self.sbenvironment.size / self.maxsize) * 200 * math.ceil(self.maxsize / 1024))
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -87,7 +87,7 @@ function ENT:TurnOff()
 		self.sbenvironment.temperature = 0
 		self:UpdateSize(self.sbenvironment.size, 0) --We turn the forcefield that contains the environment off!
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -486,7 +486,7 @@ function ENT:Climate_Control()
 		end
 	end
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		Wire_TriggerOutput(self, "Oxygen-Level", tonumber(self:GetO2Percentage()))
 		Wire_TriggerOutput(self, "Temperature", tonumber(self.sbenvironment.temperature))
 		Wire_TriggerOutput(self, "Gravity", tonumber(self.sbenvironment.gravity))

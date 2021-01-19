@@ -17,7 +17,7 @@ function ENT:Initialize()
 	self.Mute = 0
 	self.Multiplier = 1
 
-	if not (WireAddon == nil) then
+	if WireAddon ~= nil then
 		self.WireDebugName = self.PrintName
 
 		self.Inputs = Wire_CreateInputs(self, {"On", "Overdrive", "Mute", "Multiplier"})
@@ -43,7 +43,7 @@ function ENT:TurnOn()
 
 		self.Active = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -64,7 +64,7 @@ function ENT:TurnOff()
 		self.Active = 0
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "On", self.Active)
 		end
 
@@ -83,7 +83,7 @@ function ENT:TurnOnOverdrive()
 		self:SetOOO(2)
 		self.overdrive = 1
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -100,7 +100,7 @@ function ENT:TurnOffOverdrive()
 		self:SetOOO(1)
 		self.overdrive = 0
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "Overdrive", self.overdrive)
 		end
 	end
@@ -206,13 +206,13 @@ function ENT:Proc_Water()
 
 		self:ConsumeResource("energy", einc)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "EnergyUsage", einc)
 		end
 
 		self:ConsumeResource("water", winc)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "WaterUsage", winc)
 		end
 
@@ -220,14 +220,14 @@ function ENT:Proc_Water()
 		local supplyO2 = math.Round(winc / 2)
 		local leftO2 = self:SupplyResource("oxygen", supplyO2)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "OxygenProduction", supplyO2)
 		end
 
 		local supplyH = winc * 2
 		local leftH = self:SupplyResource("hydrogen", supplyH)
 
-		if not (WireAddon == nil) then
+		if WireAddon ~= nil then
 			Wire_TriggerOutput(self, "HydrogenProduction", supplyH)
 		end
 
