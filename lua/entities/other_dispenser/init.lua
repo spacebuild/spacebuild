@@ -1,7 +1,7 @@
 ﻿AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 util.PrecacheSound("ambient.steam01")
-include('shared.lua')
+include("shared.lua")
 DEFINE_BASECLASS("base_rd3_entity")
 
 function ENT:Initialize()

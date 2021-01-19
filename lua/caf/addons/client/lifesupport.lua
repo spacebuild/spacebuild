@@ -82,7 +82,7 @@ local MaxAmounts = 4000
 local MaxAmountsDivide = MaxAmounts / 100
 
 local function lifesupport_HUDPaint()
-	if GetConVarString('cl_hudversion') == "" then
+	if GetConVarString("cl_hudversion") == "" then
 		local ls_sb_mode = false
 
 		if CAF.GetAddon("Spacebuild") and CAF.GetAddon("Spacebuild").GetStatus() then

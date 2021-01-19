@@ -9,7 +9,7 @@ util.PrecacheSound("k_lab.ambient_powergenerators")
 util.PrecacheSound("ambient/machines/thumper_startup1.wav")
 util.PrecacheSound("coast.siren_citizen")
 util.PrecacheSound("common/warning.wav")
-include('shared.lua')
+include("shared.lua")
 DEFINE_BASECLASS("base_rd3_entity")
 -- Was 2200, increased
 local Energy_Increment = 5000

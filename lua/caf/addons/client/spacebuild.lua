@@ -146,15 +146,15 @@ local function DrawSunEffects()
 			);]]
 			-- draw color.
 			local tab = {
-				['$pp_colour_addr'] = 0.35 * frac,
-				['$pp_colour_addg'] = 0.15 * frac,
-				['$pp_colour_addb'] = 0.05 * frac,
-				['$pp_colour_brightness'] = 0.8 * frac,
-				['$pp_colour_contrast'] = 1 + (0.15 * frac),
-				['$pp_colour_colour'] = 1,
-				['$pp_colour_mulr'] = 0,
-				['$pp_colour_mulg'] = 0,
-				['$pp_colour_mulb'] = 0,
+				["$pp_colour_addr"] = 0.35 * frac,
+				["$pp_colour_addg"] = 0.15 * frac,
+				["$pp_colour_addb"] = 0.05 * frac,
+				["$pp_colour_brightness"] = 0.8 * frac,
+				["$pp_colour_contrast"] = 1 + (0.15 * frac),
+				["$pp_colour_colour"] = 1,
+				["$pp_colour_mulr"] = 0,
+				["$pp_colour_mulg"] = 0,
+				["$pp_colour_mulb"] = 0,
 			}
 
 			-- draw colormod.

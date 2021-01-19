@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 util.PrecacheSound("RD/pump/beep-4.wav")
 util.PrecacheSound("RD/pump/beep-3.wav")
 util.PrecacheSound("RD/pump/beep-5.wav")
-include('shared.lua')
+include("shared.lua")
 local pumps = {}
 util.AddNetworkString("RD_Add_ResourceRate_to_Pump")
 util.AddNetworkString("RD_Open_Pump_Menu")

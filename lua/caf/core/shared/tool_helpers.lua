@@ -57,13 +57,13 @@ end
 function CAFToolSetup.MaxLimit()
 	if TOOL.Limited == true and TOOL.Limit >= 0 then
 		TOOL.LimitName = TOOL.LimitName or TOOL.Mode
-		local sbox = 'sbox_max' .. TOOL.LimitName
-		MsgN(sbox, ' -> ', TOOL.Limit)
+		local sbox = "sbox_max" .. TOOL.LimitName
+		MsgN(sbox, " -> ", TOOL.Limit)
 
 		if SERVER then
 			CreateConVar(sbox, TOOL.Limit)
 		elseif CLIENT and TOOL.DeviceNamePlural then
-			language.Add('SBoxLimit_' .. TOOL.LimitName, 'Maximum ' .. TOOL.DeviceNamePlural .. ' Reached')
+			language.Add("SBoxLimit_" .. TOOL.LimitName, "Maximum " .. TOOL.DeviceNamePlural .. " Reached")
 		end
 	end
 end
@@ -363,9 +363,9 @@ function CAFTool.LeftClick(self, trace)
 	if NoHit(self, trace) then return false end
 	if CLIENT then return true end
 	local ply = self:GetOwner()
-	local AllowWorldWeld = self:GetClientNumber('AllowWorldWeld') == 1
-	local DontWeld = self:GetClientNumber('DontWeld') == 1
-	local Frozen = self:GetClientNumber('Frozen') == 1 or (not AllowWorldWeld and trace.Entity:IsWorld())
+	local AllowWorldWeld = self:GetClientNumber("AllowWorldWeld") == 1
+	local DontWeld = self:GetClientNumber("DontWeld") == 1
+	local Frozen = self:GetClientNumber("Frozen") == 1 or (not AllowWorldWeld and trace.Entity:IsWorld())
 	local ent
 
 	--like wire
@@ -391,10 +391,10 @@ function CAFTool.LeftClick(self, trace)
 		Ang.pitch = Ang.pitch + 90
 
 		if self.DevSelect then
-			local type = self:GetClientInfo('type')
-			local sub_type = self:GetClientInfo('sub_type')
+			local type = self:GetClientInfo("type")
+			local sub_type = self:GetClientInfo("sub_type")
 
-			if not type or type == '' then
+			if not type or type == "" then
 				ErrorNoHalt("RD: GetClientInfo('type') is nil!\n")
 
 				return false

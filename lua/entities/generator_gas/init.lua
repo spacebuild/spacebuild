@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 util.PrecacheSound("Airboat_engine_idle")
 util.PrecacheSound("Airboat_engine_stop")
 util.PrecacheSound("apc_engine_start")
-include('shared.lua')
+include("shared.lua")
 DEFINE_BASECLASS("base_rd3_entity")
 local Pressure_Increment = 80
 local Energy_Increment = 10

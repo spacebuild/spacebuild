@@ -2,7 +2,7 @@
 AddCSLuaFile("shared.lua")
 util.PrecacheSound("Airboat_engine_idle")
 util.PrecacheSound("Airboat_engine_stop")
-include('shared.lua')
+include("shared.lua")
 local Energy_Increment = 100 --60
 DEFINE_BASECLASS("base_rd3_entity")
 

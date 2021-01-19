@@ -3,10 +3,10 @@
 --dev link stool
 --TOOL			= ToolObj:Create()
 TOOL.Mode = "rd3_dev_link3"
-TOOL.Category = 'Resource Distribution'
-TOOL.Name = '#Auto Link Tool'
+TOOL.Category = "Resource Distribution"
+TOOL.Name = "#Auto Link Tool"
 TOOL.Command = nil
-TOOL.ConfigName = ''
+TOOL.ConfigName = ""
 
 if (CLIENT and GetConVarNumber("CAF_UseTab") == 1) then
 	TOOL.Tab = "Custom Addon Framework"

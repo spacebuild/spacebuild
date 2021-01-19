@@ -1,4 +1,4 @@
-﻿include('shared.lua')
+﻿include("shared.lua")
 language.Add("other_screen", "Life Support Screen")
 local MainFrames = {}
 

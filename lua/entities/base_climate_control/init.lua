@@ -4,7 +4,7 @@ AddCSLuaFile("shared.lua")
 util.PrecacheSound("apc_engine_start")
 util.PrecacheSound("apc_engine_stop")
 util.PrecacheSound("common/warning.wav")
-include('shared.lua')
+include("shared.lua")
 DEFINE_BASECLASS("base_sb_environment")
 
 function ENT:Initialize()

@@ -1,6 +1,6 @@
 ﻿AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-include('shared.lua')
+include("shared.lua")
 require("caf_util")
 DEFINE_BASECLASS("base_sb_environment")
 

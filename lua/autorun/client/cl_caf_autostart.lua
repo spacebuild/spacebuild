@@ -181,7 +181,7 @@ local Font = "GModCAFNotify"
 
 --End popupsettings
 local function DrawPopups()
-	if GetConVarString('cl_hudversion') == "" then
+	if GetConVarString("cl_hudversion") == "" then
 		if displaypopups["top"] then
 			local obj = displaypopups["top"]
 			surface.SetFont(Font)

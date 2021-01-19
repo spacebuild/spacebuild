@@ -4,7 +4,7 @@ util.AddNetworkString("LS_Open_Screen_Menu")
 util.AddNetworkString("LS_Add_ScreenResource")
 util.AddNetworkString("LS_Remove_ScreenResource")
 util.PrecacheSound("Buttons.snd17")
-include('shared.lua')
+include("shared.lua")
 DEFINE_BASECLASS("base_rd3_entity")
 --
 local screens = {}

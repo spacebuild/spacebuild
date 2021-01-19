@@ -1,4 +1,4 @@
-﻿include('shared.lua')
+﻿include("shared.lua")
 language.Add("nature_planet", "Plant")
 
 function ENT:DoNormalDraw(bDontDrawModel)

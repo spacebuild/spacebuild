@@ -2,7 +2,7 @@
 AddCSLuaFile("shared.lua")
 util.PrecacheSound("apc_engine_start")
 util.PrecacheSound("apc_engine_stop")
-include('shared.lua')
+include("shared.lua")
 DEFINE_BASECLASS("base_rd3_entity")
 local Energy_Increment = 200 --320
 local Water_Increment = 400 --640

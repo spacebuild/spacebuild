@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 util.PrecacheSound("apc_engine_start")
 util.PrecacheSound("apc_engine_stop")
 util.PrecacheSound("common/warning.wav")
-include('shared.lua')
+include("shared.lua")
 local Energy_Increment = 25
 DEFINE_BASECLASS("base_sb_environment")
 

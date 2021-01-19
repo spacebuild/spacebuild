@@ -1,6 +1,6 @@
 ﻿AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-include('shared.lua')
+include("shared.lua")
 --Was 15, reduced by popular request.
 local Energy_Increment = 8
 DEFINE_BASECLASS("base_rd3_entity")

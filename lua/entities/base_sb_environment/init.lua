@@ -1,6 +1,6 @@
 ﻿AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-include('shared.lua')
+include("shared.lua")
 local SB_AIR_O2 = 0
 local SB_AIR_CO2 = 1
 local SB_AIR_N = 2
