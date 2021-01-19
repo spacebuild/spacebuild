@@ -223,7 +223,6 @@ local function recvSun(msg)
 		Position = position,
 		Radius = radius, -- * 2
 		BeamRadius = radius * 1.5, --*3
-		
 	}
 end
 

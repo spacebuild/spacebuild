@@ -51,7 +51,6 @@ function ENT:GetTemperature(ent)
 		local tr = util.TraceLine({
 			start = entpos - (SunAngle * 4096),
 			endpos = entpos -- + Vector(0,0,30)
-			
 		})
 
 		if not tr.Hit then
