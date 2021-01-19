@@ -10,8 +10,8 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetNetworkedInt("overlaymode", 1)
-	self:SetNetworkedInt("OOO", 0)
+	self:SetNWInt("overlaymode", 1)
+	self:SetNWInt("OOO", 0)
 	self.Active = 0
 	self.Active = 0
 	self.sbenvironment = {}
@@ -217,7 +217,7 @@ function ENT:SetActive(value, caller)
 end
 
 function ENT:SetOOO(value)
-	self:SetNetworkedInt("OOO", value)
+	self:SetNWInt("OOO", value)
 end
 
 AccessorFunc(ENT, "LSMULTIPLIER", "Multiplier", FORCE_NUMBER)
@@ -249,7 +249,7 @@ end
 function ENT:Think()
 	if (self.NextOverlayTextTime) and (CurTime() >= self.NextOverlayTextTime) then
 		if (self.NextOverlayText) then
-			self:SetNetworkedString("GModOverlayText", self.NextOverlayText)
+			self:SetNWString("GModOverlayText", self.NextOverlayText)
 			self.NextOverlayText = nil
 		end
 

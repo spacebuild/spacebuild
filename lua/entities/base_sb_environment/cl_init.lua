@@ -28,7 +28,7 @@ function ENT:DrawTranslucent(bDontDrawModel)
 end
 
 function ENT:GetOOO()
-	return self:GetNetworkedInt("OOO") or 0
+	return self:GetNWInt("OOO") or 0
 end
 
 function ENT:DoNormalDraw(bDontDrawModel)
@@ -38,7 +38,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
 		RD = CAF.GetAddon("Resource Distribution")
 	end
 
-	local mode = self:GetNetworkedInt("overlaymode")
+	local mode = self:GetNWInt("overlaymode")
 
 	-- Don't enable it if disabled by default!
 	if RD_OverLay_Mode and mode ~= 0 then

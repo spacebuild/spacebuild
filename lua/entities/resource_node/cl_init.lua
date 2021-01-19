@@ -29,7 +29,7 @@ function ENT:DrawTranslucent(bDontDrawModel)
 end
 
 function ENT:DoNormalDraw(bDontDrawModel)
-	local mode = self:GetNetworkedInt("overlaymode")
+	local mode = self:GetNWInt("overlaymode")
 
 	-- Don't enable it if disabled by default!
 	if RD_OverLay_Mode and mode ~= 0 then
@@ -60,11 +60,11 @@ function ENT:DoNormalDraw(bDontDrawModel)
 			self:DrawModel()
 		end
 
-		local netid = self:GetNetworkedInt("netid")
+		local netid = self:GetNWInt("netid")
 		local nettable = CAF.GetAddon("Resource Distribution").GetNetTable(netid)
-		local range = self:GetNetworkedInt("range")
+		local range = self:GetNWInt("range")
 		local playername = self:GetPlayerName()
-		local nodename = self:GetNetworkedString("rd_node_name")
+		local nodename = self:GetNWString("rd_node_name")
 
 		if playername == "" then
 			playername = "World"

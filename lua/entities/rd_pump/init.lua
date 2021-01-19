@@ -140,12 +140,12 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetNetworkedInt("overlaymode", 1)
-	self:SetNetworkedInt("OOO", 0)
+	self:SetNWInt("overlaymode", 1)
+	self:SetNWInt("OOO", 0)
 	self.Active = 0
 	self.ResourcesToSend = {}
 	self.netid = 0
-	self:SetNetworkedInt("netid", self.netid)
+	self:SetNWInt("netid", self.netid)
 	self.otherpump = nil
 	self.WireConnectPump = -1
 	table.insert(pumps, self)
@@ -176,22 +176,22 @@ function ENT:Initialize()
 		}
 	end
 
-	self:SetNetworkedString("name", "test")
+	self:SetNWString("name", "test")
 	self:SetPumpName("Pump_" .. tostring(self:EntIndex()))
 end
 
 function ENT:GetPumpName()
-	return self:GetNetworkedString("name")
+	return self:GetNWString("name")
 end
 
 function ENT:SetPumpName(name)
-	self:SetNetworkedString("name", name)
+	self:SetNWString("name", name)
 end
 
 function ENT:SetNetwork(netid)
 	if not netid then return end
 	self.netid = netid
-	self:SetNetworkedInt("netid", self.netid)
+	self:SetNWInt("netid", self.netid)
 end
 
 function ENT:TurnOn()
@@ -268,7 +268,7 @@ function ENT:SetResourceNode(node)
 end
 
 function ENT:SetOOO(value)
-	self:SetNetworkedInt("OOO", value)
+	self:SetNWInt("OOO", value)
 end
 
 AccessorFunc(ENT, "LSMULTIPLIER", "Multiplier", FORCE_NUMBER)
@@ -364,9 +364,9 @@ end
 
 function ENT:Connect(ent)
 	if ent and ent.IsPump then
-		self:SetNetworkedInt("connectedpump", ent:EntIndex())
+		self:SetNWInt("connectedpump", ent:EntIndex())
 		self.otherpump = ent
-		ent:SetNetworkedInt("connectedpump", self:EntIndex())
+		ent:SetNWInt("connectedpump", self:EntIndex())
 		ent.otherpump = self
 		Wire_TriggerOutput(self, "ConnectedPumpID", ent:EntIndex())
 		Wire_TriggerOutput(ent, "ConnectedPumpID", self:EntIndex())
@@ -379,11 +379,11 @@ function ENT:Disconnect()
 	if self.otherpump then
 		self:EmitSound("RD/pump/beep-4.wav", 256)
 		self.otherpump:EmitSound("RD/pump/beep-4.wav", 256)
-		self.otherpump:SetNetworkedInt("connectedpump", 0)
+		self.otherpump:SetNWInt("connectedpump", 0)
 		self.otherpump.otherpump = nil
 		Wire_TriggerOutput(self, "ConnectedPumpID", -1)
 		Wire_TriggerOutput(self.otherpump, "ConnectedPumpID", -1)
-		self:SetNetworkedInt("connectedpump", 0)
+		self:SetNWInt("connectedpump", 0)
 		self.otherpump = nil
 	end
 end

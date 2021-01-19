@@ -2,7 +2,7 @@
 language.Add("nature_planet", "Plant")
 
 function ENT:DoNormalDraw(bDontDrawModel)
-	local mode = self:GetNetworkedInt("overlaymode")
+	local mode = self:GetNWInt("overlaymode")
 
 	if (LocalPlayer():GetEyeTrace().Entity == self and EyePos():Distance(self:GetPos()) < 256 and mode ~= 0) then
 		local trace = LocalPlayer():GetEyeTrace()
@@ -34,7 +34,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
 			if self:GetOOO() == 0 then
 				OverlayText = OverlayText .. "This Plant needs water\n"
 			else
-				OverlayText = OverlayText .. "This plant is healthy and has " .. tostring(self:GetNetworkedInt(1)) .. " water left\n"
+				OverlayText = OverlayText .. "This plant is healthy and has " .. tostring(self:GetNWInt(1)) .. " water left\n"
 			end
 
 			OverlayText = OverlayText .. "Connected resources:\n"
@@ -87,7 +87,7 @@ function ENT:DoNormalDraw(bDontDrawModel)
 			if self:GetOOO() == 0 then
 				surface.DrawText("This Plant needs water")
 			else
-				surface.DrawText("This plant is healthy and has " .. tostring(self:GetNetworkedInt(1)) .. " water left")
+				surface.DrawText("This plant is healthy and has " .. tostring(self:GetNWInt(1)) .. " water left")
 			end
 
 			TempY = TempY + 70

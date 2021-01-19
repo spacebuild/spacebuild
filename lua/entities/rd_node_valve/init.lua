@@ -6,8 +6,8 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetNetworkedInt("overlaymode", 1)
-	self:SetNetworkedInt("OOO", 0)
+	self:SetNWInt("overlaymode", 1)
+	self:SetNWInt("OOO", 0)
 	self.Active = 0
 	self.connected = {}
 	self.connected.node1 = nil
@@ -50,9 +50,9 @@ function ENT:SetNode1(node1)
 	self.connected.node1 = node1
 
 	if node1 then
-		self:SetNetworkedInt("netid1", node1.netid)
+		self:SetNWInt("netid1", node1.netid)
 	else
-		self:SetNetworkedInt("netid1", 0)
+		self:SetNWInt("netid1", 0)
 	end
 end
 
@@ -70,9 +70,9 @@ function ENT:SetNode2(node2)
 	self.connected.node2 = node2
 
 	if node2 then
-		self:SetNetworkedInt("netid2", node2.netid)
+		self:SetNWInt("netid2", node2.netid)
 	else
-		self:SetNetworkedInt("netid2", 0)
+		self:SetNWInt("netid2", 0)
 	end
 end
 
@@ -132,7 +132,7 @@ function ENT:SetActive(value, caller)
 end
 
 function ENT:SetOOO(value)
-	self:SetNetworkedInt("OOO", value)
+	self:SetNWInt("OOO", value)
 end
 
 function ENT:Repair()
@@ -164,13 +164,13 @@ function ENT:Think()
 	if self.connected.node1 and not IsValid(self.connected.node1) then
 		self:TurnOff()
 		self.connected.node1 = nil
-		self:SetNetworkedInt("netid1", 0)
+		self:SetNWInt("netid1", 0)
 	end
 
 	if self.connected.node2 and not IsValid(self.connected.node2) then
 		self:TurnOff()
 		self.connected.node2 = nil
-		self:SetNetworkedInt("netid2", 0)
+		self:SetNWInt("netid2", 0)
 	end
 
 	-- Check if they are still in range!
@@ -178,7 +178,7 @@ function ENT:Think()
 		if self:GetPos():Distance(self.connected.node1:GetPos()) > self.connected.node1.range then
 			self:TurnOff()
 			self.connected.node1 = nil
-			self:SetNetworkedInt("netid1", 0)
+			self:SetNWInt("netid1", 0)
 		end
 	end
 
@@ -186,7 +186,7 @@ function ENT:Think()
 		if self:GetPos():Distance(self.connected.node2:GetPos()) > self.connected.node2.range then
 			self:TurnOff()
 			self.connected.node2 = nil
-			self:SetNetworkedInt("netid2", 0)
+			self:SetNWInt("netid2", 0)
 		end
 	end
 

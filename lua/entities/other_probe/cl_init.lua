@@ -6,7 +6,7 @@ OOO[1] = "On"
 OOO[2] = "Overdrive"
 
 function ENT:DoNormalDraw(bDontDrawModel)
-	local mode = self:GetNetworkedInt("overlaymode")
+	local mode = self:GetNWInt("overlaymode")
 
 	-- Don't enable it if disabled by default!
 	if RD_OverLay_Mode and mode ~= 0 then
@@ -71,15 +71,15 @@ function ENT:DoNormalDraw(bDontDrawModel)
 
 			if self:GetOOO() == 1 then
 				OverlayText = OverlayText .. "Environment Info:\n"
-				OverlayText = OverlayText .. "Name:" .. tostring(self:GetNetworkedString(8)) .. "\n"
-				OverlayText = OverlayText .. "O2 Level: " .. string.format("%g", self:GetNetworkedInt(1)) .. "%" .. "\n"
-				OverlayText = OverlayText .. "CO2 Level: " .. string.format("%g", self:GetNetworkedInt(2)) .. "%" .. "\n"
-				OverlayText = OverlayText .. "Nitrogen Level: " .. string.format("%g", self:GetNetworkedInt(3)) .. "%" .. "\n"
-				OverlayText = OverlayText .. "Hydrogen Level: " .. string.format("%g", self:GetNetworkedInt(4)) .. "%" .. "\n"
-				OverlayText = OverlayText .. "Vacuum: " .. string.format("%g", self:GetNetworkedInt(9)) .. "%" .. "\n"
-				OverlayText = OverlayText .. "Pressure: " .. tostring(self:GetNetworkedInt(5)) .. "\n"
-				OverlayText = OverlayText .. "Temperature: " .. tostring(self:GetNetworkedInt(6)) .. "\n"
-				OverlayText = OverlayText .. "Gravity: " .. tostring(self:GetNetworkedInt(7)) .. "\n"
+				OverlayText = OverlayText .. "Name:" .. tostring(self:GetNWString(8)) .. "\n"
+				OverlayText = OverlayText .. "O2 Level: " .. string.format("%g", self:GetNWInt(1)) .. "%" .. "\n"
+				OverlayText = OverlayText .. "CO2 Level: " .. string.format("%g", self:GetNWInt(2)) .. "%" .. "\n"
+				OverlayText = OverlayText .. "Nitrogen Level: " .. string.format("%g", self:GetNWInt(3)) .. "%" .. "\n"
+				OverlayText = OverlayText .. "Hydrogen Level: " .. string.format("%g", self:GetNWInt(4)) .. "%" .. "\n"
+				OverlayText = OverlayText .. "Vacuum: " .. string.format("%g", self:GetNWInt(9)) .. "%" .. "\n"
+				OverlayText = OverlayText .. "Pressure: " .. tostring(self:GetNWInt(5)) .. "\n"
+				OverlayText = OverlayText .. "Temperature: " .. tostring(self:GetNWInt(6)) .. "\n"
+				OverlayText = OverlayText .. "Gravity: " .. tostring(self:GetNWInt(7)) .. "\n"
 			end
 
 			AddWorldTip(self:EntIndex(), OverlayText, 0.5, self:GetPos(), self)
@@ -148,46 +148,46 @@ function ENT:DoNormalDraw(bDontDrawModel)
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("Name: " .. tostring(self:GetNetworkedString(8)))
+			surface.DrawText("Name: " .. tostring(self:GetNWString(8)))
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("O2 Level: " .. string.format("%g", self:GetNetworkedInt(1)) .. "%")
+			surface.DrawText("O2 Level: " .. string.format("%g", self:GetNWInt(1)) .. "%")
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("CO2 Level: " .. string.format("%g", self:GetNetworkedInt(2)) .. "%")
+			surface.DrawText("CO2 Level: " .. string.format("%g", self:GetNWInt(2)) .. "%")
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("Nitrogen Level: " .. string.format("%g", self:GetNetworkedInt(3)) .. "%")
+			surface.DrawText("Nitrogen Level: " .. string.format("%g", self:GetNWInt(3)) .. "%")
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("Hydrogen Level: " .. string.format("%g", self:GetNetworkedInt(4)) .. "%")
+			surface.DrawText("Hydrogen Level: " .. string.format("%g", self:GetNWInt(4)) .. "%")
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("'Empty' air Level: " .. string.format("%g", self:GetNetworkedInt(9)) .. "%")
+			surface.DrawText("'Empty' air Level: " .. string.format("%g", self:GetNWInt(9)) .. "%")
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("Pressure: " .. tostring(self:GetNetworkedInt(5)))
+			surface.DrawText("Pressure: " .. tostring(self:GetNWInt(5)))
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("Temperature: " .. tostring(self:GetNetworkedInt(6)))
+			surface.DrawText("Temperature: " .. tostring(self:GetNWInt(6)))
 			TempY = TempY + 70
 			surface.SetFont("Flavour")
 			surface.SetTextColor(155, 155, 255, 255)
 			surface.SetTextPos(textStartPos + 15, TempY)
-			surface.DrawText("Gravity: " .. tostring(self:GetNetworkedInt(7)))
+			surface.DrawText("Gravity: " .. tostring(self:GetNWInt(7)))
 			TempY = TempY + 70
 			--Stop rendering
 			cam.End3D2D()
