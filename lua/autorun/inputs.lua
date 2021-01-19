@@ -15,7 +15,7 @@ if not inputs or not inputs.version or inputs.version < version then
 
 	inputs.types = types
 
-	local convert = {tostring, tonumber, function(vector_string) return {} --TODO end, function(ent_id) return Entity(tonumer(entid)) end}
+	local convert = {tostring, tonumber, function(vector_string) return {} --[[TODO]] end, function(ent_id) return Entity(tonumer(entid)) end}
 
 	local inpts = inputs
 	inpts.version = version
