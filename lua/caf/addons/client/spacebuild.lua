@@ -103,7 +103,7 @@ local function DrawSunEffects()
 		local entpos = Sun.Position --Sun.ent:LocalToWorld( Vector(0,0,0) )
 		local normVec = Vector(entpos - EyePos())
 		normVec:Normalize()
-		local dot = math.Clamp(EyeAngles():Forward():DotProduct(normVec), -1, 1)
+		local dot = math.Clamp(EyeAngles():Forward():Dot(normVec), -1, 1)
 		dot = math.abs(dot)
 		--local dist = Vector( entpos - EyePos() ):Length();
 		local dist = entpos:Distance(EyePos()) / 1.5

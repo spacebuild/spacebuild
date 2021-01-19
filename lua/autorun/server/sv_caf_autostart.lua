@@ -112,10 +112,10 @@ local function LoadAddonStatus(addon, defaultstatus)
 	if (not data) then
 		SaveAddonStatus(addon, defaultstatus)
 	else
-		return util.tobool(data[1]["status"])
+		return tobool(data[1]["status"])
 	end
 
-	return util.tobool(defaultstatus)
+	return tobool(defaultstatus)
 end
 
 local function OnEntitySpawn(ent, enttype, ply)

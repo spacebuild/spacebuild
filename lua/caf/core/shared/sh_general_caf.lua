@@ -155,11 +155,11 @@ function CAF2.RemoveHook(HookName, func)
 	if (HookName == "think") then
 	elseif (HookName == "think2") then
 		if (#hooks[HookName] == 0) then
-			timer.Destroy("CAF Think 2")
+			timer.Remove("CAF Think 2")
 		end
 	elseif (HookName == "think3") then
 		if (#hooks[HookName] == 0) then
-			timer.Destroy("CAF Think 3")
+			timer.Remove("CAF Think 3")
 		end
 	end
 

@@ -148,7 +148,7 @@ function PANEL:Init()
 	self:SetMouseInputEnabled(true)
 	self:SetAnimTime(0.2)
 	self.animSlide = Derma_Anim("Anim", self, self.AnimSlide)
-	self:SetDrawBackground(true)
+	self:SetPaintBackground(true)
 end
 
 --[[---------------------------------------------------------

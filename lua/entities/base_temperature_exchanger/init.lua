@@ -31,7 +31,7 @@ function ENT:Initialize()
 end
 
 function ENT:IsActive()
-	return util.tobool(self.Active)
+	return tobool(self.Active)
 end
 
 function ENT:SetStartSound(sound)

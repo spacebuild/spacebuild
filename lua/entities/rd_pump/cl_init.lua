@@ -64,7 +64,7 @@ local function OpenMenu()
 	nameButton:SetImage("icon16/folder_go.png")
 	nameButton:SetPos(140, 25)
 	nameButton:SetSize(20, 20)
-	nameButton:SetToolTip("Update Pump Name")
+	nameButton:SetTooltip("Update Pump Name")
 
 	nameButton.DoClick = function()
 		RunConsoleCommand("SetPumpName", ent:EntIndex(), tostring(NameText:GetValue()))
