@@ -121,9 +121,9 @@ local function LoadAddonStatus( addon, defaultstatus )
 end
 
 local function OnEntitySpawn(ent , enttype , ply)
-	if ent == NULL then
+	if IsValid(ent) ~= true then
 		return
-	end	
+	end
 	ent.caf = ent.caf or {}
 	ent.caf.custom = ent.caf.custom or {}
 	if ent.caf.custom.canreceivedamage == nil then
@@ -313,6 +313,7 @@ function CAF2.Start()
 	end
 	CAF2.StartingUp = false
 	net.Start("CAF_Start_false")
+	net.Broadcast()
 end
 hook.Add( "InitPostEntity", "CAF_Start", CAF2.Start)
 
