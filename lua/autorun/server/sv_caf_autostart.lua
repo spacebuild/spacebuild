@@ -121,9 +121,9 @@ local function LoadAddonStatus( addon, defaultstatus )
 end
 
 local function OnEntitySpawn(ent , enttype , ply)
-	if ent == NULL then
+	if ent:IsValid() ~= true then
 		return
-	end	
+	end
 	ent.caf = ent.caf or {}
 	ent.caf.custom = ent.caf.custom or {}
 	if ent.caf.custom.canreceivedamage == nil then
