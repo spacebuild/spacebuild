@@ -313,6 +313,7 @@ function CAF2.Start()
 	end
 	CAF2.StartingUp = false
 	net.Start("CAF_Start_false")
+	net.Broadcast()
 end
 hook.Add( "InitPostEntity", "CAF_Start", CAF2.Start)
 
