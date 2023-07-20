@@ -121,7 +121,7 @@ local function LoadAddonStatus( addon, defaultstatus )
 end
 
 local function OnEntitySpawn(ent , enttype , ply)
-	if ent:IsValid() ~= true then
+	if IsValid(ent) ~= true then
 		return
 	end
 	ent.caf = ent.caf or {}
