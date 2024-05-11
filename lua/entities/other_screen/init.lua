@@ -114,11 +114,15 @@ function ENT:Initialize()
 end
 
 function ENT:TurnOn()
-	if self.Active == 0 then
-		self:EmitSound( "Buttons.snd17" )
-		self.Active = 1
-		self:SetOOO(1)
-		if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
+	if(self:GetResourceAmount("energy") > math.Round(Energy_Increment * self:GetMultiplier())) then
+		if self.Active == 0 then
+			self:EmitSound( "Buttons.snd17" )
+			self.Active = 1
+			self:SetOOO(1)
+			if not (WireAddon == nil) then Wire_TriggerOutput(self, "On", 1) end
+		end
+	else
+		self:EmitSound("common/warning.wav")
 	end
 end
 
